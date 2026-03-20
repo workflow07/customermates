@@ -51,6 +51,16 @@ export function generateMetadataFromMeta({
 
   const canonicalRoute = routePath === "/" ? `/${metadataLocale}` : `/${metadataLocale}${routePath}`;
   const canonical = `${BASE_URL}${canonicalRoute}`;
+  const ogImageParams = new URLSearchParams({ title });
+
+  if (description) ogImageParams.set("description", description);
+
+  const image = {
+    alt: title,
+    height: 630,
+    url: `/og/image.png?${ogImageParams.toString()}`,
+    width: 1200,
+  };
 
   const metadata: Metadata = {
     alternates:
@@ -61,19 +71,21 @@ export function generateMetadataFromMeta({
           }
         : { canonical },
     openGraph: {
+      description,
+      images: [image],
       title,
       type,
+    },
+    twitter: {
+      card: "summary_large_image",
+      description,
+      images: [image],
+      title,
     },
     title,
   };
 
-  if (description) {
-    metadata.description = description;
-    metadata.openGraph = {
-      ...metadata.openGraph,
-      description,
-    };
-  }
+  if (description) metadata.description = description;
 
   if (isOpenApiSlugRoute && locale !== ROUTING_DEFAULT_LOCALE) {
     metadata.robots = {

@@ -38,6 +38,11 @@ export async function generateMetadata(): Promise<Metadata> {
   alternates["x-default"] = `${BASE_URL}/${ROUTING_DEFAULT_LOCALE}`;
 
   const canonical = `${BASE_URL}/${locale}`;
+  const params = new URLSearchParams({
+    description: rootMetadata.defaultDescription,
+    title: rootMetadata.defaultTitle,
+  });
+  const defaultOgImageUrl = `/og/image.png?${params.toString()}`;
 
   return {
     title: {
@@ -45,12 +50,27 @@ export async function generateMetadata(): Promise<Metadata> {
       template: rootMetadata.titleTemplate,
     },
     description: rootMetadata.defaultDescription,
+    metadataBase: new URL(BASE_URL),
     icons: {
       icon: rootMetadata.icon,
+    },
+    openGraph: {
+      description: rootMetadata.defaultDescription,
+      images: [defaultOgImageUrl],
+      siteName: "Customermates",
+      title: rootMetadata.defaultTitle,
+      type: "website",
+      url: canonical,
     },
     alternates: {
       canonical,
       languages: alternates,
+    },
+    twitter: {
+      card: "summary_large_image",
+      description: rootMetadata.defaultDescription,
+      images: [defaultOgImageUrl],
+      title: rootMetadata.defaultTitle,
     },
   };
 }
