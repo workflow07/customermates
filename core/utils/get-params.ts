@@ -110,11 +110,11 @@ export function decodeGetParams(
     } catch {}
   }
 
-  const validPageSizes = [5, 10, 25, 100, 1000];
-  const parsedPageSize = pageSize ? Number(pageSize) : 1000;
+  const validPageSizes = [5, 10, 25, 100];
+  const parsedPageSize = pageSize ? Number(pageSize) : 100;
   const validPageSize = validPageSizes.includes(parsedPageSize)
     ? (parsedPageSize as PaginationRequest["pageSize"])
-    : 1000;
+    : 100;
 
   const pagination: PaginationRequest | undefined =
     page || pageSize ? { page: Number(page || 1), pageSize: validPageSize } : undefined;

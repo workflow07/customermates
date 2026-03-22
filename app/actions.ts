@@ -21,6 +21,16 @@ import { UpdateOrganizationInteractor } from "@/features/organizations/upsert/up
 import { UpdateDealInteractor } from "@/features/deals/upsert/update-deal.interactor";
 import { UpdateServiceInteractor } from "@/features/services/upsert/update-service.interactor";
 import { UpdateTaskInteractor } from "@/features/tasks/upsert/update-task.interactor";
+import { UpdateManyContactsInteractor } from "@/features/contacts/upsert/update-many-contacts.interactor";
+import { UpdateManyOrganizationsInteractor } from "@/features/organizations/upsert/update-many-organizations.interactor";
+import { UpdateManyDealsInteractor } from "@/features/deals/upsert/update-many-deals.interactor";
+import { UpdateManyServicesInteractor } from "@/features/services/upsert/update-many-services.interactor";
+import { UpdateManyTasksInteractor } from "@/features/tasks/upsert/update-many-tasks.interactor";
+import { DeleteManyContactsInteractor } from "@/features/contacts/delete/delete-many-contacts.interactor";
+import { DeleteManyOrganizationsInteractor } from "@/features/organizations/delete/delete-many-organizations.interactor";
+import { DeleteManyDealsInteractor } from "@/features/deals/delete/delete-many-deals.interactor";
+import { DeleteManyServicesInteractor } from "@/features/services/delete/delete-many-services.interactor";
+import { DeleteManyTasksInteractor } from "@/features/tasks/delete/delete-many-tasks.interactor";
 import { serializeResult } from "@/core/utils/action-result";
 
 export async function deleteCustomColumnAction(id: string) {
@@ -65,5 +75,52 @@ export async function updateEntityCustomFieldValueAction(data: {
       return serializeResult(di.get(UpdateServiceInteractor).invoke({ id: entityId, customFieldValues }));
     case EntityType.task:
       return serializeResult(di.get(UpdateTaskInteractor).invoke({ id: entityId, customFieldValues }));
+  }
+}
+
+export async function bulkDeleteEntitiesAction(data: { entityType: EntityType; ids: string[] }) {
+  const { entityType, ids } = data;
+  switch (entityType) {
+    case EntityType.contact:
+      await di.get(DeleteManyContactsInteractor).invoke({ ids });
+      break;
+    case EntityType.organization:
+      await di.get(DeleteManyOrganizationsInteractor).invoke({ ids });
+      break;
+    case EntityType.deal:
+      await di.get(DeleteManyDealsInteractor).invoke({ ids });
+      break;
+    case EntityType.service:
+      await di.get(DeleteManyServicesInteractor).invoke({ ids });
+      break;
+    case EntityType.task:
+      await di.get(DeleteManyTasksInteractor).invoke({ ids });
+      break;
+  }
+}
+
+export async function bulkUpdateCustomFieldValuesAction(data: {
+  entityType: EntityType;
+  entityIds: string[];
+  customFieldValues: CustomFieldValueDto[];
+}) {
+  const { entityType, entityIds, customFieldValues } = data;
+  const items = entityIds.map((id) => ({ id, customFieldValues }));
+  switch (entityType) {
+    case EntityType.contact:
+      await di.get(UpdateManyContactsInteractor).invoke({ contacts: items });
+      break;
+    case EntityType.organization:
+      await di.get(UpdateManyOrganizationsInteractor).invoke({ organizations: items });
+      break;
+    case EntityType.deal:
+      await di.get(UpdateManyDealsInteractor).invoke({ deals: items });
+      break;
+    case EntityType.service:
+      await di.get(UpdateManyServicesInteractor).invoke({ services: items });
+      break;
+    case EntityType.task:
+      await di.get(UpdateManyTasksInteractor).invoke({ tasks: items });
+      break;
   }
 }

@@ -888,6 +888,14 @@
   "Loading": {
     "text": "Loading..."
   },
+  "MassActions": {
+    "customFields": "Custom Fields",
+    "delete": "Delete selected",
+    "selectedCount": "{count, plural, one {# item selected} other {# items selected}}",
+    "selectField": "Select field",
+    "selectValue": "Select value",
+    "updateValue": "Apply value"
+  },
   "NavigationBar": {
     "addContact": "Add contact",
     "addDeal": "Add deal",

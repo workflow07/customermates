@@ -31,7 +31,7 @@ import { preserveTenantContext } from "@/core/decorators/tenant-context";
 
 export const UpdateManyDealsSchema = z
   .object({
-    deals: z.array(BaseUpdateDealSchema).min(1).max(10),
+    deals: z.array(BaseUpdateDealSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const { di } = await import("@/core/dependency-injection/container");

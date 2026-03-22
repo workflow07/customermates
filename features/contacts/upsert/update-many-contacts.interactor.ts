@@ -29,7 +29,7 @@ import { preserveTenantContext } from "@/core/decorators/tenant-context";
 
 export const UpdateManyContactsSchema = z
   .object({
-    contacts: z.array(BaseUpdateContactSchema).min(1).max(10),
+    contacts: z.array(BaseUpdateContactSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const { di } = await import("@/core/dependency-injection/container");

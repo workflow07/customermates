@@ -1,4 +1,4 @@
-import type { IReactionDisposer } from "mobx";
+import type { IReactionDisposer, ObservableSet } from "mobx";
 import type { RootStore } from "../stores/root.store";
 import type { Filter, FilterableField, PaginationRequest, SortDescriptor } from "./base-get.schema";
 import type { GetResult } from "./base-get.interactor";
@@ -8,7 +8,7 @@ import type { SavedFilterPreset } from "@/features/p13n/prisma-p13n.repository";
 
 import { makeObservable, observable, computed, action, toJS, runInAction, reaction } from "mobx";
 import deepEqual from "fast-deep-equal/es6";
-import { Action } from "@/generated/prisma";
+import { Action, CustomColumnType } from "@/generated/prisma";
 
 import type { Resource, EntityType } from "@/generated/prisma";
 
@@ -49,6 +49,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
   savedFilterPresets?: SavedFilterPreset[] = undefined;
   viewMode: ViewMode = ViewMode.table;
   groupingColumnId?: string | null;
+  selectedIds: ObservableSet<string> = observable.set();
 
   public readonly resource?: Resource;
   public readonly rootStore?: RootStore;
@@ -86,6 +87,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       savedFilterPresets: observable,
       viewMode: observable,
       groupingColumnId: observable,
+      selectedIds: observable,
 
       orderedColumns: computed,
       headerColumns: computed,
@@ -95,6 +97,9 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       canAccess: computed,
       canManage: computed,
       isDisabled: computed,
+      hasSelection: computed,
+      selectedCount: computed,
+      singleSelectCustomColumns: computed,
 
       setViewOptions: action,
       setQueryOptions: action,
@@ -108,6 +113,8 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       setCustomColumns: action,
       executeOnChanges: action,
       setItems: action,
+      setSelectedIds: action,
+      clearSelection: action,
     });
   }
 
@@ -140,6 +147,28 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
 
     return !this.rootStore.userStore.canManage(this.resource);
   }
+
+  get hasSelection(): boolean {
+    return this.selectedIds.size > 0;
+  }
+
+  get selectedCount(): number {
+    return this.selectedIds.size;
+  }
+
+  get singleSelectCustomColumns(): CustomColumnDto[] {
+    return this.customColumns.filter((col) => col.type === CustomColumnType.singleSelect);
+  }
+
+  setSelectedIds = (keys: "all" | Set<string>) => {
+    this.selectedIds.clear();
+    if (keys === "all") this.items.forEach((item) => this.selectedIds.add(item.id));
+    else keys.forEach((id) => this.selectedIds.add(id));
+  };
+
+  clearSelection = () => {
+    this.selectedIds.clear();
+  };
 
   get activePresetId(): string | undefined {
     if (!this.savedFilterPresets) return undefined;
@@ -258,7 +287,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
 
     if ("groupingColumnId" in updates && this.groupingColumnId !== updates.groupingColumnId) {
       this.groupingColumnId = updates.groupingColumnId ?? null;
-      if (updates.groupingColumnId) this.pagination = { page: 1, pageSize: 1000 };
+      if (updates.groupingColumnId) this.pagination = { page: 1, pageSize: 100 };
 
       hasChanges = true;
     }

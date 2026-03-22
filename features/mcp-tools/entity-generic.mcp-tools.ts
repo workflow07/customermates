@@ -62,7 +62,7 @@ const NotesEntitySchema = z.object({
 
 const DeleteEntitySchema = z.object({
   entity: EntitySchema,
-  ids: z.array(z.uuid()).min(1).max(10),
+  ids: z.array(z.uuid()).min(1).max(100),
 });
 
 const UpdateCustomFieldEntitySchema = z.object({
@@ -75,7 +75,7 @@ const UpdateCustomFieldEntitySchema = z.object({
       }),
     )
     .min(1)
-    .max(10),
+    .max(100),
 });
 
 type Entity = z.infer<typeof EntitySchema>;
@@ -86,7 +86,7 @@ type ListQueryParams = {
   searchTerm?: string;
   filters?: FilterInput[];
   sortDescriptor?: SortInput;
-  pagination: { page: number; pageSize: 5 | 10 | 25 | 100 | 1000 };
+  pagination: { page: number; pageSize: 5 | 10 | 25 | 100 };
 };
 
 const singularLabels: Record<Entity, string> = {

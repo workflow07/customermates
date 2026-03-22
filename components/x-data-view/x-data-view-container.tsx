@@ -21,6 +21,7 @@ import { XDataViewPaginator } from "./x-data-view-paginator";
 import { XDataViewSearch } from "./x-header/x-data-view-search";
 import { XDataViewToggle } from "./x-header/x-data-view-toggle";
 import { XDataViewSortButton } from "./x-header/x-data-view-sort-button";
+import { XMassActionsCard } from "./x-mass-actions/x-mass-actions-card";
 
 import { XCard } from "@/components/x-card/x-card";
 import { XCardHeader } from "@/components/x-card/x-card-header";
@@ -63,95 +64,107 @@ export const XDataViewContainer = observer(
     if (!store.isReady) return null;
 
     const { canManage, isDisabled } = store;
+    const showMassActions = store.hasSelection && store.viewMode === ViewMode.table;
+
+    const isTableView = store.viewMode === ViewMode.table;
+
+    const headerContent = (
+      <div className="flex flex-col space-y-3 w-full">
+        <div className="flex flex-col xs:flex-row xs:items-center gap-3 w-full">
+          <h2 className="text-x-lg grow truncate mr-2">{title}</h2>
+
+          <div className="flex gap-3 flex-wrap">
+            {store.filterableFields.length > 0 && (
+              <XTooltip content={t("ariaLabels.tooltipFilters")}>
+                <div>
+                  <XDataViewFiltersButton />
+                </div>
+              </XTooltip>
+            )}
+
+            {isSearchable && (
+              <XTooltip content={searchTooltip ?? t("ariaLabels.tooltipSearch")}>
+                <div>
+                  <XDataViewSearch />
+                </div>
+              </XTooltip>
+            )}
+
+            <XTooltip content={t("ariaLabels.tooltipFields")}>
+              <div>
+                <XDataViewFieldsSelect />
+              </div>
+            </XTooltip>
+
+            <XDataViewToggle />
+
+            {store.viewMode === ViewMode.card && (
+              <>
+                <XTooltip content={t("ariaLabels.tooltipSort")}>
+                  <div>
+                    <XDataViewSortButton />
+                  </div>
+                </XTooltip>
+
+                <XDataViewKanbanGroupButton />
+              </>
+            )}
+
+            {onAdd && canManage && (
+              <XTooltip content={t("ariaLabels.tooltipAdd")}>
+                <Button isIconOnly color="primary" isDisabled={isDisabled} size="sm" variant="flat" onPress={onAdd}>
+                  <XIcon icon={PlusIcon} />
+                </Button>
+              </XTooltip>
+            )}
+          </div>
+
+          {actions && actions}
+        </div>
+
+        {store.filterableFields.length > 0 && <XDataViewFiltersBar />}
+      </div>
+    );
+
+    const tableContent = (
+      <XCard className="sticky left-0 overflow-visible">
+        <XCardHeader>{headerContent}</XCardHeader>
+
+        <XTableView renderCell={renderCell} onRowAction={onRowAction} />
+
+        <XDataViewPaginator />
+      </XCard>
+    );
+
+    if (isTableView) {
+      return (
+        <XDataViewContext.Provider value={store as unknown as BaseDataViewStore<HasId>}>
+          {showMassActions ? (
+            <div className="flex flex-col-reverse gap-4 md:gap-6 lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
+              <div className="flex flex-col gap-4 md:gap-6 min-w-0">{tableContent}</div>
+
+              <XMassActionsCard />
+            </div>
+          ) : (
+            tableContent
+          )}
+        </XDataViewContext.Provider>
+      );
+    }
 
     return (
       <XDataViewContext.Provider value={store as unknown as BaseDataViewStore<HasId>}>
         <XCard className="sticky left-0 overflow-visible">
-          <XCardHeader className={store.viewMode === ViewMode.card ? "pb-6" : ""}>
-            <div className="flex flex-col space-y-3 w-full">
-              <div className="flex flex-col xs:flex-row xs:items-center gap-3 w-full">
-                <h2 className="text-x-lg grow truncate mr-2">{title}</h2>
-
-                <div className="flex gap-3 flex-wrap">
-                  {store.filterableFields.length > 0 && (
-                    <XTooltip content={t("ariaLabels.tooltipFilters")}>
-                      <div>
-                        <XDataViewFiltersButton />
-                      </div>
-                    </XTooltip>
-                  )}
-
-                  {isSearchable && (
-                    <XTooltip content={searchTooltip ?? t("ariaLabels.tooltipSearch")}>
-                      <div>
-                        <XDataViewSearch />
-                      </div>
-                    </XTooltip>
-                  )}
-
-                  <XTooltip content={t("ariaLabels.tooltipFields")}>
-                    <div>
-                      <XDataViewFieldsSelect />
-                    </div>
-                  </XTooltip>
-
-                  <XDataViewToggle />
-
-                  {store.viewMode === ViewMode.card && (
-                    <>
-                      <XTooltip content={t("ariaLabels.tooltipSort")}>
-                        <div>
-                          <XDataViewSortButton />
-                        </div>
-                      </XTooltip>
-
-                      <XDataViewKanbanGroupButton />
-                    </>
-                  )}
-
-                  {onAdd && canManage && (
-                    <XTooltip content={t("ariaLabels.tooltipAdd")}>
-                      <Button
-                        isIconOnly
-                        color="primary"
-                        isDisabled={isDisabled}
-                        size="sm"
-                        variant="flat"
-                        onPress={onAdd}
-                      >
-                        <XIcon icon={PlusIcon} />
-                      </Button>
-                    </XTooltip>
-                  )}
-                </div>
-
-                {actions && actions}
-              </div>
-
-              {store.filterableFields.length > 0 && <XDataViewFiltersBar />}
-            </div>
-          </XCardHeader>
-
-          {store.viewMode === ViewMode.table && (
-            <>
-              <XTableView renderCell={renderCell} onRowAction={onRowAction} />
-
-              <XDataViewPaginator />
-            </>
-          )}
+          <XCardHeader className="pb-6">{headerContent}</XCardHeader>
         </XCard>
 
-        {store.viewMode === ViewMode.card && (
-          <>
-            {store.groupingColumnId ? (
-              <XKanbanView renderCell={renderCell} onCardAction={onRowAction} />
-            ) : (
-              <XGridView renderCell={renderCell} onCardAction={onRowAction} />
-            )}
-
-            <XDataViewPaginator />
-          </>
+        {store.groupingColumnId ? (
+          <XKanbanView renderCell={renderCell} onCardAction={onRowAction} />
+        ) : (
+          <XGridView renderCell={renderCell} onCardAction={onRowAction} />
         )}
+
+        <XDataViewPaginator />
       </XDataViewContext.Provider>
     );
   },

@@ -20,7 +20,7 @@ export const XDataViewPaginator = observer(() => {
   const currentPage = store.pagination?.page ?? 1;
   const pageSize = store.pagination?.pageSize ?? 25;
   const totalPages = store.pagination?.totalPages || Math.ceil(totalItems / pageSize);
-  const pageSizeOptions = [5, 10, 25, 100, 1000] as const;
+  const pageSizeOptions = [5, 10, 25, 100] as const;
 
   if (totalItems <= 5) return null;
 

@@ -17,7 +17,7 @@ import { preserveTenantContext } from "@/core/decorators/tenant-context";
 
 export const DeleteManyDealsSchema = z
   .object({
-    ids: z.array(z.uuid()).min(1).max(10),
+    ids: z.array(z.uuid()).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const { di } = await import("@/core/dependency-injection/container");

@@ -41,7 +41,7 @@ export const listWebhooksTool = {
   execute: async (params: z.infer<typeof ListWebhooksSchema>) => {
     const result = await di.get(GetWebhooksInteractor).invoke({
       searchTerm: params.searchTerm,
-      pagination: { page: 1, pageSize: 1000 },
+      pagination: { page: 1, pageSize: 100 },
     });
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(formatDatesInResponse(result.data.items));

@@ -70,7 +70,6 @@ export const PaginationRequestSchema = z.object({
     z.literal(10).meta({ title: "10" }),
     z.literal(25).meta({ title: "25" }),
     z.literal(100).meta({ title: "100" }),
-    z.literal(1000).meta({ title: "1000" }),
   ]),
 });
 export type PaginationRequest = Data<typeof PaginationRequestSchema>;

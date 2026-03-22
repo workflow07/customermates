@@ -112,7 +112,7 @@ export abstract class BaseGetInteractor<T> {
 
     const items = await this.repo.getItems({ ...baseParams, pagination });
     const total = await this.repo.getCount({ filters, searchTerm });
-    const pageSize = pagination?.pageSize || 1000;
+    const pageSize = pagination?.pageSize || 100;
     const page = pagination?.page || 1;
 
     return {

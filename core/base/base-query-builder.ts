@@ -136,9 +136,9 @@ export abstract class BaseQueryBuilder<TWhereInput extends Record<string, unknow
   }
 
   private buildPagination(pagination?: PaginationRequest | null) {
-    if (!pagination) return { skip: 0, take: 1000 };
+    if (!pagination) return { skip: 0, take: 100 };
 
-    const pageSize = pagination.pageSize ?? 1000;
+    const pageSize = pagination.pageSize ?? 100;
     const page = pagination.page ?? 1;
 
     return {

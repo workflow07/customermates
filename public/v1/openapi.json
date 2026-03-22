@@ -727,7 +727,7 @@
               "application/json": {
                 "schema": {
                   "minItems": 1,
-                  "maxItems": 10,
+                  "maxItems": 100,
                   "type": "array",
                   "items": {
                     "type": "string",
@@ -985,11 +985,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -1676,11 +1671,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -4555,7 +4545,7 @@
               "application/json": {
                 "schema": {
                   "minItems": 1,
-                  "maxItems": 10,
+                  "maxItems": 100,
                   "type": "array",
                   "items": {
                     "type": "string",
@@ -4813,11 +4803,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -5504,11 +5489,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -8547,7 +8527,7 @@
               "application/json": {
                 "schema": {
                   "minItems": 1,
-                  "maxItems": 10,
+                  "maxItems": 100,
                   "type": "array",
                   "items": {
                     "type": "string",
@@ -8805,11 +8785,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -9496,11 +9471,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -12501,7 +12471,7 @@
               "application/json": {
                 "schema": {
                   "minItems": 1,
-                  "maxItems": 10,
+                  "maxItems": 100,
                   "type": "array",
                   "items": {
                     "type": "string",
@@ -12759,11 +12729,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -13450,11 +13415,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -16131,7 +16091,7 @@
               "application/json": {
                 "schema": {
                   "minItems": 1,
-                  "maxItems": 10,
+                  "maxItems": 100,
                   "type": "array",
                   "items": {
                     "type": "string",
@@ -16389,11 +16349,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -17080,11 +17035,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -19162,11 +19112,6 @@
                             "title": "100",
                             "type": "number",
                             "const": 100
-                          },
-                          {
-                            "title": "1000",
-                            "type": "number",
-                            "const": 1000
                           }
                         ]
                       }
@@ -19240,11 +19185,6 @@
                               "title": "100",
                               "type": "number",
                               "const": 100
-                            },
-                            {
-                              "title": "1000",
-                              "type": "number",
-                              "const": 1000
                             }
                           ]
                         },
@@ -19984,7 +19924,7 @@
         "properties": {
           "ids": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -20173,7 +20113,7 @@
         "properties": {
           "contacts": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20294,7 +20234,7 @@
         "properties": {
           "ids": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -20475,7 +20415,7 @@
         "properties": {
           "organizations": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20592,7 +20532,7 @@
         "properties": {
           "ids": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -20817,7 +20757,7 @@
         "properties": {
           "deals": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20962,7 +20902,7 @@
         "properties": {
           "ids": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -21135,7 +21075,7 @@
         "properties": {
           "services": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -21241,7 +21181,7 @@
         "properties": {
           "ids": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "string",
@@ -21386,7 +21326,7 @@
         "properties": {
           "tasks": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",

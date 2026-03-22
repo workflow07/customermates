@@ -1,9 +1,9 @@
-import type { SortDescriptor } from "@heroui/table";
+import type { Selection, SortDescriptor } from "@heroui/table";
 import type { HasId } from "@/core/base/base-data-view.store";
 
 import { useTranslations } from "next-intl";
 import { observer } from "mobx-react-lite";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { Table, TableBody, TableHeader, TableRow } from "@heroui/table";
 import { cn } from "@heroui/theme";
 
@@ -52,6 +52,16 @@ export const XTableView = observer(<E extends HasId>({ renderCell, onRowAction }
       } as SortDescriptor)
     : undefined;
 
+  const enableSelection = Boolean(store.entityType && store.canManage);
+
+  const onSelectionChange = useCallback(
+    (keys: Selection) => {
+      if (keys === "all") store.setSelectedIds("all");
+      else store.setSelectedIds(new Set(Array.from(keys).map(String)));
+    },
+    [store],
+  );
+
   function onSortChange(sortDescriptor: SortDescriptor) {
     const newSortDescriptor = sortDescriptor.column
       ? {
@@ -74,13 +84,15 @@ export const XTableView = observer(<E extends HasId>({ renderCell, onRowAction }
         classNames={{
           base: "contents",
           th: "bg-transparent",
-          tbody:
-            "[&>tr:hover>td]:bg-content2 dark:[&>tr:hover>td]:bg-content4 [&>tr:hover>td:first-child]:rounded-l-lg [&>tr:hover>td:last-child]:rounded-r-lg",
+          tbody: "[&>tr:hover>td]:bg-content2 dark:[&>tr:hover>td]:bg-content4",
+          td: "group-data-[first=true]/tr:first:before:rounded-none group-data-[first=true]/tr:last:before:rounded-none group-data-[middle=true]/tr:before:rounded-none group-data-[last=true]/tr:first:before:rounded-none group-data-[last=true]/tr:last:before:rounded-none data-[selected=true]:before:bg-primary/10 data-[selected=true]:text-foreground",
           thead: cn({
             "sticky z-30 [&>:first-child]:shadow-small [&>:first-child]:bg-content1/80 *:first:backdrop-blur-lg *:first:transition-all *:first:duration-300":
               isSticky,
           }),
         }}
+        selectedKeys={enableSelection ? new Set(store.selectedIds) : undefined}
+        selectionMode={enableSelection ? "multiple" : "none"}
         sortDescriptor={sortDescriptor}
         onRowAction={
           onRowAction
@@ -90,6 +102,7 @@ export const XTableView = observer(<E extends HasId>({ renderCell, onRowAction }
               }
             : undefined
         }
+        onSelectionChange={enableSelection ? onSelectionChange : undefined}
         onSortChange={onSortChange}
       >
         <TableHeader columns={effectiveHeaderColumns}>{renderTableColumn}</TableHeader>

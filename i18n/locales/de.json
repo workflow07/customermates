@@ -885,6 +885,14 @@
   "Loading": {
     "text": "Laden..."
   },
+  "MassActions": {
+    "customFields": "Benutzerdefinierte Felder",
+    "delete": "Ausgewählte löschen",
+    "selectedCount": "{count, plural, one {# Element ausgewählt} other {# Elemente ausgewählt}}",
+    "selectField": "Feld auswählen",
+    "selectValue": "Wert auswählen",
+    "updateValue": "Wert anwenden"
+  },
   "NavigationBar": {
     "addContact": "Kontakt hinzufügen",
     "addDeal": "Deal hinzufügen",
