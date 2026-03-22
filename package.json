@@ -136,8 +136,8 @@
     "start": "next start -p 4000",
     "templates:sync-openclaw": "bash ee/scripts/sync-openclaw-templates.sh",
     "templates:sync-orthogonal": "bash ee/scripts/sync-orthogonal-skill.sh",
-    "vercel-build": "prisma generate && prisma migrate deploy && yarn openapi:generate && next build && bash ee/scripts/fly-deploy.sh",
-    "vercel-preview-build": "prisma generate && yarn db:reset && yarn openapi:generate && next build && bash ee/scripts/fly-deploy.sh --reset"
+    "vercel-build": "prisma generate && prisma migrate deploy && yarn openapi:generate && next build && bash ee/scripts/fly-deploy-if-needed.sh",
+    "vercel-preview-build": "prisma generate && yarn db:reset && yarn openapi:generate && next build && bash ee/scripts/fly-deploy-if-needed.sh --reset"
   },
   "type": "module",
   "version": "1.0.1"
