@@ -126,39 +126,39 @@ path:focus {
 
 @layer utilities {
   .text-x-4xl {
-    @apply z-10 text-4xl md:text-5xl lg:text-7xl px-4 tracking-tight font-bold text-neutral-900 dark:text-transparent dark:bg-clip-text dark:bg-linear-to-b dark:from-white dark:via-gray-100 dark:to-gray-400;
+    @apply relative text-4xl md:text-5xl lg:text-7xl px-4 tracking-tight font-bold text-neutral-900 dark:text-transparent dark:bg-clip-text dark:bg-linear-to-b dark:from-white dark:via-gray-100 dark:to-gray-400;
   }
 
   .text-x-3xl {
-    @apply text-3xl md:text-4xl tracking-tight font-bold;
+    @apply relative text-3xl md:text-4xl tracking-tight font-bold;
   }
 
   .text-x-2xl {
-    @apply text-xl md:text-2xl tracking-tight font-medium;
+    @apply relative text-xl md:text-2xl tracking-tight font-medium;
   }
 
   .text-x-xl {
-    @apply text-base md:text-xl tracking-tight font-medium;
+    @apply relative text-base md:text-xl tracking-tight font-medium;
   }
 
   .text-x-lg {
-    @apply text-lg tracking-tight font-medium;
+    @apply relative text-lg tracking-tight font-medium;
   }
 
   .text-x-md {
-    @apply text-base tracking-tight;
+    @apply relative text-base tracking-tight;
   }
 
   .text-x-sm {
-    @apply text-sm tracking-tight;
+    @apply relative text-sm tracking-tight;
   }
 
   .text-x-xs {
-    @apply text-xs tracking-tight;
+    @apply relative text-xs tracking-tight;
   }
 
   .text-subdued {
-    @apply text-default-800 dark:text-default-600;
+    @apply relative text-default-800 dark:text-default-600;
   }
 
   .prose
