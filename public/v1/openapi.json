@@ -7806,32 +7806,15 @@
                           },
                           "amount": {
                             "type": "number"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "amount"
-                        ],
-                        "additionalProperties": false
-                      }
-                    },
-                    "servicesWithQuantity": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "serviceId": {
-                            "type": "string",
-                            "format": "uuid",
-                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                           },
                           "quantity": {
                             "type": "number"
                           }
                         },
                         "required": [
-                          "serviceId",
+                          "id",
+                          "name",
+                          "amount",
                           "quantity"
                         ],
                         "additionalProperties": false
@@ -7877,7 +7860,6 @@
                     "users",
                     "contacts",
                     "services",
-                    "servicesWithQuantity",
                     "customFieldValues"
                   ],
                   "additionalProperties": false
@@ -8092,32 +8074,15 @@
                             },
                             "amount": {
                               "type": "number"
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "name",
-                            "amount"
-                          ],
-                          "additionalProperties": false
-                        }
-                      },
-                      "servicesWithQuantity": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "serviceId": {
-                              "type": "string",
-                              "format": "uuid",
-                              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                             },
                             "quantity": {
                               "type": "number"
                             }
                           },
                           "required": [
-                            "serviceId",
+                            "id",
+                            "name",
+                            "amount",
                             "quantity"
                           ],
                           "additionalProperties": false
@@ -8163,7 +8128,6 @@
                       "users",
                       "contacts",
                       "services",
-                      "servicesWithQuantity",
                       "customFieldValues"
                     ],
                     "additionalProperties": false
@@ -8377,32 +8341,15 @@
                             },
                             "amount": {
                               "type": "number"
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "name",
-                            "amount"
-                          ],
-                          "additionalProperties": false
-                        }
-                      },
-                      "servicesWithQuantity": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "serviceId": {
-                              "type": "string",
-                              "format": "uuid",
-                              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                             },
                             "quantity": {
                               "type": "number"
                             }
                           },
                           "required": [
-                            "serviceId",
+                            "id",
+                            "name",
+                            "amount",
                             "quantity"
                           ],
                           "additionalProperties": false
@@ -8448,7 +8395,6 @@
                       "users",
                       "contacts",
                       "services",
-                      "servicesWithQuantity",
                       "customFieldValues"
                     ],
                     "additionalProperties": false
@@ -9827,32 +9773,15 @@
                                 },
                                 "amount": {
                                   "type": "number"
-                                }
-                              },
-                              "required": [
-                                "id",
-                                "name",
-                                "amount"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "servicesWithQuantity": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "serviceId": {
-                                  "type": "string",
-                                  "format": "uuid",
-                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                                 },
                                 "quantity": {
                                   "type": "number"
                                 }
                               },
                               "required": [
-                                "serviceId",
+                                "id",
+                                "name",
+                                "amount",
                                 "quantity"
                               ],
                               "additionalProperties": false
@@ -9898,7 +9827,6 @@
                           "users",
                           "contacts",
                           "services",
-                          "servicesWithQuantity",
                           "customFieldValues"
                         ],
                         "additionalProperties": false
@@ -10722,32 +10650,15 @@
                                   },
                                   "amount": {
                                     "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "id",
-                                  "name",
-                                  "amount"
-                                ],
-                                "additionalProperties": false
-                              }
-                            },
-                            "servicesWithQuantity": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "serviceId": {
-                                    "type": "string",
-                                    "format": "uuid",
-                                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                                   },
                                   "quantity": {
                                     "type": "number"
                                   }
                                 },
                                 "required": [
-                                  "serviceId",
+                                  "id",
+                                  "name",
+                                  "amount",
                                   "quantity"
                                 ],
                                 "additionalProperties": false
@@ -10793,7 +10704,6 @@
                             "users",
                             "contacts",
                             "services",
-                            "servicesWithQuantity",
                             "customFieldValues"
                           ],
                           "additionalProperties": false
@@ -11623,32 +11533,15 @@
                           },
                           "amount": {
                             "type": "number"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "amount"
-                        ],
-                        "additionalProperties": false
-                      }
-                    },
-                    "servicesWithQuantity": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "serviceId": {
-                            "type": "string",
-                            "format": "uuid",
-                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                           },
                           "quantity": {
                             "type": "number"
                           }
                         },
                         "required": [
-                          "serviceId",
+                          "id",
+                          "name",
+                          "amount",
                           "quantity"
                         ],
                         "additionalProperties": false
@@ -11694,7 +11587,6 @@
                     "users",
                     "contacts",
                     "services",
-                    "servicesWithQuantity",
                     "customFieldValues"
                   ],
                   "additionalProperties": false
@@ -23364,31 +23256,15 @@
                         },
                         "amount": {
                           "type": "number"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name",
-                        "amount"
-                      ]
-                    }
-                  },
-                  "servicesWithQuantity": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "serviceId": {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                         },
                         "quantity": {
                           "type": "number"
                         }
                       },
                       "required": [
-                        "serviceId",
+                        "id",
+                        "name",
+                        "amount",
                         "quantity"
                       ]
                     }
@@ -23432,7 +23308,6 @@
                   "users",
                   "contacts",
                   "services",
-                  "servicesWithQuantity",
                   "customFieldValues"
                 ]
               }
@@ -23614,31 +23489,15 @@
                             },
                             "amount": {
                               "type": "number"
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "name",
-                            "amount"
-                          ]
-                        }
-                      },
-                      "servicesWithQuantity": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "serviceId": {
-                              "type": "string",
-                              "format": "uuid",
-                              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                             },
                             "quantity": {
                               "type": "number"
                             }
                           },
                           "required": [
-                            "serviceId",
+                            "id",
+                            "name",
+                            "amount",
                             "quantity"
                           ]
                         }
@@ -23682,7 +23541,6 @@
                       "users",
                       "contacts",
                       "services",
-                      "servicesWithQuantity",
                       "customFieldValues"
                     ]
                   },
@@ -23979,12 +23837,16 @@
                                 },
                                 "amount": {
                                   "type": "number"
+                                },
+                                "quantity": {
+                                  "type": "number"
                                 }
                               },
                               "required": [
                                 "id",
                                 "name",
-                                "amount"
+                                "amount",
+                                "quantity"
                               ]
                             }
                           },
@@ -24003,60 +23865,15 @@
                                 },
                                 "amount": {
                                   "type": "number"
+                                },
+                                "quantity": {
+                                  "type": "number"
                                 }
                               },
                               "required": [
                                 "id",
                                 "name",
-                                "amount"
-                              ]
-                            }
-                          }
-                        },
-                        "required": [
-                          "previous",
-                          "current"
-                        ]
-                      },
-                      "servicesWithQuantity": {
-                        "type": "object",
-                        "properties": {
-                          "previous": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "serviceId": {
-                                  "type": "string",
-                                  "format": "uuid",
-                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                                },
-                                "quantity": {
-                                  "type": "number"
-                                }
-                              },
-                              "required": [
-                                "serviceId",
-                                "quantity"
-                              ]
-                            }
-                          },
-                          "current": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "serviceId": {
-                                  "type": "string",
-                                  "format": "uuid",
-                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                                },
-                                "quantity": {
-                                  "type": "number"
-                                }
-                              },
-                              "required": [
-                                "serviceId",
+                                "amount",
                                 "quantity"
                               ]
                             }
@@ -24311,31 +24128,15 @@
                         },
                         "amount": {
                           "type": "number"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name",
-                        "amount"
-                      ]
-                    }
-                  },
-                  "servicesWithQuantity": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "serviceId": {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                         },
                         "quantity": {
                           "type": "number"
                         }
                       },
                       "required": [
-                        "serviceId",
+                        "id",
+                        "name",
+                        "amount",
                         "quantity"
                       ]
                     }
@@ -24379,7 +24180,6 @@
                   "users",
                   "contacts",
                   "services",
-                  "servicesWithQuantity",
                   "customFieldValues"
                 ]
               }

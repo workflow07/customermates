@@ -1,62 +1,72 @@
 [
   {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-18T08:45:27.747Z",
-    "id": "21260099-c310-4a57-9876-15cd14883d74",
-    "name": "Follow up with John Doe from Acme Corp after demo",
-    "notes": null,
-    "relatedUserId": null,
-    "type": "custom",
-    "updatedAt": "2025-12-18T08:45:27.747Z"
-  },
-  {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-18T08:46:12.636Z",
-    "id": "7371526c-7816-49e1-a769-4ae5deb2f1a0",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:27:50.103Z",
+    "id": "006d0bb6-9cbf-4cfd-aa20-16c1e30d60ef",
     "name": "Prepare and send a proposal for Contoso",
     "notes": null,
     "relatedUserId": null,
     "type": "custom",
-    "updatedAt": "2025-12-18T08:46:12.636Z"
+    "updatedAt": "2026-03-24T10:27:50.103Z"
   },
   {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-18T08:45:40.012Z",
-    "id": "8d9060ef-1f0a-4cf4-9225-5b7114dccbf7",
-    "name": "Schedule discovery call with Contoso",
-    "notes": null,
-    "relatedUserId": null,
-    "type": "custom",
-    "updatedAt": "2025-12-18T08:45:40.012Z"
-  },
-  {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-29T19:17:38.880Z",
-    "id": "b09766c4-31b0-4bf6-b909-20b9fde2b6d2",
-    "name": "User Pending Authorization (julia.weber@customermates.com)",
-    "notes": null,
-    "relatedUserId": "1aa83c25-7869-4a52-8e8a-adfb843dcf6b",
-    "type": "userPendingAuthorization",
-    "updatedAt": "2026-01-29T19:23:32.944Z"
-  },
-  {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-18T08:47:15.520Z",
-    "id": "b13ab345-0fdd-4351-ac4b-0a67f4c68fa2",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:28:11.690Z",
+    "id": "13960b18-f867-4aa5-8463-224185631cd4",
     "name": "Review inbound lead from website and assign qualification score",
     "notes": null,
     "relatedUserId": null,
     "type": "custom",
-    "updatedAt": "2025-12-18T08:47:15.520Z"
+    "updatedAt": "2026-03-24T10:28:11.690Z"
   },
   {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-18T08:47:42.330Z",
-    "id": "e00ed867-fe44-4e73-9132-49da07db9326",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:29:23.436Z",
+    "id": "5f30dc78-fc42-4658-9caa-e60d0a7becfa",
+    "name": "Schedule discovery call with Contoso",
+    "notes": null,
+    "relatedUserId": null,
+    "type": "custom",
+    "updatedAt": "2026-03-24T10:29:23.436Z"
+  },
+  {
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:35:18.760Z",
+    "id": "7d1d55b7-9513-46fd-b915-2098a9960274",
+    "name": "User Pending Authorization (julia.weber@customermates.com)",
+    "notes": null,
+    "relatedUserId": "ce83487f-63f4-43b7-9545-9bf32ca304a2",
+    "type": "userPendingAuthorization",
+    "updatedAt": "2026-03-24T10:36:38.540Z"
+  },
+  {
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:27:32.290Z",
+    "id": "9068872a-8725-43f4-8bdc-1f5b7ecda44a",
     "name": "Follow up with legal on contract approval for Globex",
     "notes": null,
     "relatedUserId": null,
     "type": "custom",
-    "updatedAt": "2026-01-28T07:40:56.272Z"
+    "updatedAt": "2026-03-24T10:27:32.290Z"
+  },
+  {
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:27:16.432Z",
+    "id": "93366589-8fb6-4e53-927a-3348b808958c",
+    "name": "Schedule discovery call with Contoso",
+    "notes": null,
+    "relatedUserId": null,
+    "type": "custom",
+    "updatedAt": "2026-03-24T10:27:16.432Z"
+  },
+  {
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:26:42.081Z",
+    "id": "d95910d6-32a2-421c-932b-45178951b448",
+    "name": "Follow up with John Doe from Acme Corp after demo",
+    "notes": null,
+    "relatedUserId": null,
+    "type": "custom",
+    "updatedAt": "2026-03-24T10:26:42.081Z"
   }
 ]

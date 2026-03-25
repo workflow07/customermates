@@ -1,79 +1,71 @@
 [
   {
-    "aggregationType": "dealValue",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-30T14:21:52.367Z",
+    "aggregationType": "dealQuantity",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:54:29.803Z",
     "data": [
       {
-        "label": "Open",
-        "value": 725500
-      },
-      {
-        "label": "Won",
-        "value": 545500
-      },
-      {
-        "label": "Lost",
-        "value": 538500
+        "label": "Total",
+        "value": 1121
       }
     ],
     "dealFilters": [],
     "displayOptions": {
-      "barColors": ["success1", "warning1", "danger1"],
+      "barColors": ["secondary1"],
       "displayType": "doughnutChart",
       "reverseXAxis": false,
       "reverseYAxis": false
     },
     "entityFilters": [
       {
-        "field": "d316aec1-1f10-49f7-9127-d6f94b032c99",
-        "operator": "notIn",
-        "value": ["5e455e56-4da6-4b06-ae9f-cc7a09c27083"]
+        "field": "540b062c-7961-487c-af39-bcd37903ac2f",
+        "operator": "in",
+        "value": ["a1fc15bb-065b-4564-85eb-ac1c75ab945a"]
       }
     ],
-    "entityType": "deal",
-    "groupByCustomColumnId": "d316aec1-1f10-49f7-9127-d6f94b032c99",
-    "groupByType": "customColumn",
-    "id": "07dfa0f7-0e19-47dc-a126-bc5bbf70e3a8",
+    "entityType": "service",
+    "groupByCustomColumnId": null,
+    "groupByType": "none",
+    "id": "135c2934-9bd8-4c42-8cb8-2a13d0799ef5",
     "isTemplate": false,
     "layout": {
       "lg": {
         "h": 2,
-        "i": "07dfa0f7-0e19-47dc-a126-bc5bbf70e3a8",
+        "i": "135c2934-9bd8-4c42-8cb8-2a13d0799ef5",
         "w": 2,
-        "x": 10,
-        "y": 0
+        "x": 6,
+        "y": 3
       },
       "md": {
-        "h": 2,
-        "i": "07dfa0f7-0e19-47dc-a126-bc5bbf70e3a8",
+        "h": 3,
+        "i": "135c2934-9bd8-4c42-8cb8-2a13d0799ef5",
         "w": 2,
-        "x": 0,
-        "y": 0
+        "x": 2,
+        "y": 4
       },
       "sm": {
-        "h": 2,
-        "i": "07dfa0f7-0e19-47dc-a126-bc5bbf70e3a8",
+        "h": 3,
+        "i": "135c2934-9bd8-4c42-8cb8-2a13d0799ef5",
         "w": 1,
         "x": 1,
-        "y": 0
+        "y": 4
       },
       "xs": {
         "h": 2,
-        "i": "07dfa0f7-0e19-47dc-a126-bc5bbf70e3a8",
+        "i": "135c2934-9bd8-4c42-8cb8-2a13d0799ef5",
         "w": 1,
         "x": 1,
-        "y": 2
+        "y": 11
       }
     },
-    "name": "Σ Deal Value",
-    "updatedAt": "2026-02-15T19:21:22.615Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
+    "name": "# Sold Hardware",
+    "updatedAt": "2026-03-24T11:01:03.162Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
   },
   {
     "aggregationType": "count",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-07T20:35:25.434Z",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:48:25.413Z",
     "data": [
       {
         "label": "Total",
@@ -89,393 +81,59 @@
     },
     "entityFilters": [
       {
-        "field": "4c6ab6a0-b232-4386-8201-3176757e5281",
+        "field": "ee3c1793-3c0a-4325-bda1-ceda10e2b368",
         "operator": "in",
-        "value": ["54cab74f-4bf9-4ad5-8bb1-eca862f4ad3a"]
+        "value": ["eea27d41-f9ea-461f-b994-8f57cfe9891e"]
+      },
+      {
+        "field": "userIds",
+        "operator": "in",
+        "value": ["f637539f-fa74-4af1-b473-b5d19ef4cbe7"]
       }
     ],
     "entityType": "contact",
     "groupByCustomColumnId": null,
     "groupByType": "none",
-    "id": "12b48747-2ebe-4962-99e0-a0bfb56e595a",
-    "isTemplate": true,
+    "id": "61805201-3a8a-445f-b026-25415bca151c",
+    "isTemplate": false,
     "layout": {
       "lg": {
         "h": 2,
-        "i": "12b48747-2ebe-4962-99e0-a0bfb56e595a",
+        "i": "61805201-3a8a-445f-b026-25415bca151c",
         "w": 2,
         "x": 2,
         "y": 0
       },
       "md": {
         "h": 2,
-        "i": "12b48747-2ebe-4962-99e0-a0bfb56e595a",
+        "i": "61805201-3a8a-445f-b026-25415bca151c",
         "w": 2,
         "x": 6,
         "y": 3
       },
       "sm": {
         "h": 2,
-        "i": "12b48747-2ebe-4962-99e0-a0bfb56e595a",
+        "i": "61805201-3a8a-445f-b026-25415bca151c",
         "w": 1,
         "x": 3,
         "y": 3
       },
       "xs": {
         "h": 2,
-        "i": "12b48747-2ebe-4962-99e0-a0bfb56e595a",
+        "i": "61805201-3a8a-445f-b026-25415bca151c",
         "w": 1,
         "x": 1,
         "y": 7
       }
     },
     "name": "# Contacts (New)",
-    "updatedAt": "2026-02-15T19:21:22.608Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
-  },
-  {
-    "aggregationType": "count",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-10T21:17:05.419Z",
-    "data": [
-      {
-        "label": "New",
-        "value": 10
-      },
-      {
-        "label": "Won",
-        "value": 5
-      },
-      {
-        "label": "Lost",
-        "value": 4
-      },
-      {
-        "label": "Contact",
-        "value": 4
-      },
-      {
-        "label": "In Progress",
-        "value": 4
-      },
-      {
-        "label": "Qualified",
-        "value": 4
-      }
-    ],
-    "dealFilters": [],
-    "displayOptions": {
-      "barColors": ["default1", "default2", "primary1", "primary2", "secondary1", "secondary2"],
-      "displayType": "doughnutChart",
-      "reverseXAxis": false,
-      "reverseYAxis": false
-    },
-    "entityFilters": [],
-    "entityType": "contact",
-    "groupByCustomColumnId": "4c6ab6a0-b232-4386-8201-3176757e5281",
-    "groupByType": "customColumn",
-    "id": "21c6ce75-019c-498e-ad04-79e29345c1f0",
-    "isTemplate": false,
-    "layout": {
-      "lg": {
-        "h": 2,
-        "i": "21c6ce75-019c-498e-ad04-79e29345c1f0",
-        "w": 2,
-        "x": 0,
-        "y": 0
-      },
-      "md": {
-        "h": 2,
-        "i": "21c6ce75-019c-498e-ad04-79e29345c1f0",
-        "w": 2,
-        "x": 4,
-        "y": 3
-      },
-      "sm": {
-        "h": 2,
-        "i": "21c6ce75-019c-498e-ad04-79e29345c1f0",
-        "w": 1,
-        "x": 2,
-        "y": 3
-      },
-      "xs": {
-        "h": 2,
-        "i": "21c6ce75-019c-498e-ad04-79e29345c1f0",
-        "w": 1,
-        "x": 0,
-        "y": 7
-      }
-    },
-    "name": "Sales Pipeline",
-    "updatedAt": "2026-02-15T19:21:22.610Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
-  },
-  {
-    "aggregationType": "count",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-07T20:35:47.594Z",
-    "data": [
-      {
-        "label": "Direct customer",
-        "value": 11
-      },
-      {
-        "label": "Affiliated company",
-        "value": 8
-      }
-    ],
-    "dealFilters": [],
-    "displayOptions": {
-      "barColors": ["primary1", "secondary1"],
-      "displayType": "doughnutChart",
-      "reverseXAxis": false,
-      "reverseYAxis": false
-    },
-    "entityFilters": [],
-    "entityType": "organization",
-    "groupByCustomColumnId": "3d1e44c5-15cd-4317-a24d-a0c9fff2f964",
-    "groupByType": "customColumn",
-    "id": "40eef008-878a-4f91-bed3-7f642e8ef3fc",
-    "isTemplate": true,
-    "layout": {
-      "lg": {
-        "h": 2,
-        "i": "40eef008-878a-4f91-bed3-7f642e8ef3fc",
-        "w": 2,
-        "x": 4,
-        "y": 3
-      },
-      "md": {
-        "h": 3,
-        "i": "40eef008-878a-4f91-bed3-7f642e8ef3fc",
-        "w": 2,
-        "x": 0,
-        "y": 4
-      },
-      "sm": {
-        "h": 3,
-        "i": "40eef008-878a-4f91-bed3-7f642e8ef3fc",
-        "w": 1,
-        "x": 0,
-        "y": 4
-      },
-      "xs": {
-        "h": 2,
-        "i": "40eef008-878a-4f91-bed3-7f642e8ef3fc",
-        "w": 1,
-        "x": 0,
-        "y": 11
-      }
-    },
-    "name": "# Organizations",
-    "updatedAt": "2026-02-15T19:21:22.611Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
+    "updatedAt": "2026-03-24T11:01:03.158Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
   },
   {
     "aggregationType": "dealValue",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-30T14:22:50.636Z",
-    "data": [
-      {
-        "label": "Open",
-        "value": 725500
-      },
-      {
-        "label": "Won",
-        "value": 545500
-      },
-      {
-        "label": "Lost",
-        "value": 538500
-      },
-      {
-        "label": "Abandoned",
-        "value": 156400
-      }
-    ],
-    "dealFilters": [],
-    "displayOptions": {
-      "barColors": ["warning1", "success1", "danger1", "default1"],
-      "displayType": "verticalBarChart",
-      "reverseXAxis": true,
-      "reverseYAxis": false
-    },
-    "entityFilters": [],
-    "entityType": "deal",
-    "groupByCustomColumnId": "d316aec1-1f10-49f7-9127-d6f94b032c99",
-    "groupByType": "customColumn",
-    "id": "410958c1-30aa-4894-ac01-283caa4c7bde",
-    "isTemplate": false,
-    "layout": {
-      "lg": {
-        "h": 3,
-        "i": "410958c1-30aa-4894-ac01-283caa4c7bde",
-        "w": 4,
-        "x": 8,
-        "y": 2
-      },
-      "md": {
-        "h": 2,
-        "i": "410958c1-30aa-4894-ac01-283caa4c7bde",
-        "w": 4,
-        "x": 0,
-        "y": 2
-      },
-      "sm": {
-        "h": 2,
-        "i": "410958c1-30aa-4894-ac01-283caa4c7bde",
-        "w": 2,
-        "x": 0,
-        "y": 2
-      },
-      "xs": {
-        "h": 2,
-        "i": "410958c1-30aa-4894-ac01-283caa4c7bde",
-        "w": 2,
-        "x": 0,
-        "y": 0
-      }
-    },
-    "name": "Deal Value | State",
-    "updatedAt": "2026-02-15T19:21:22.613Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
-  },
-  {
-    "aggregationType": "dealValue",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-29T19:04:14.519Z",
-    "data": [
-      {
-        "label": "Service",
-        "value": 1112700
-      },
-      {
-        "label": "Hardware",
-        "value": 853200
-      }
-    ],
-    "dealFilters": [],
-    "displayOptions": {
-      "barColors": ["secondary1", "secondary2"],
-      "displayType": "verticalBarChart",
-      "reverseXAxis": false,
-      "reverseYAxis": false
-    },
-    "entityFilters": [],
-    "entityType": "service",
-    "groupByCustomColumnId": "05899962-9370-4976-97b2-42b67337ea83",
-    "groupByType": "customColumn",
-    "id": "90566953-b308-4352-8380-d0fec5cbc1f9",
-    "isTemplate": false,
-    "layout": {
-      "lg": {
-        "h": 3,
-        "i": "90566953-b308-4352-8380-d0fec5cbc1f9",
-        "w": 4,
-        "x": 4,
-        "y": 0
-      },
-      "md": {
-        "h": 2,
-        "i": "90566953-b308-4352-8380-d0fec5cbc1f9",
-        "w": 4,
-        "x": 4,
-        "y": 5
-      },
-      "sm": {
-        "h": 2,
-        "i": "90566953-b308-4352-8380-d0fec5cbc1f9",
-        "w": 2,
-        "x": 2,
-        "y": 5
-      },
-      "xs": {
-        "h": 2,
-        "i": "90566953-b308-4352-8380-d0fec5cbc1f9",
-        "w": 2,
-        "x": 0,
-        "y": 9
-      }
-    },
-    "name": "Services / Hardware Value",
-    "updatedAt": "2026-02-15T19:21:22.612Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
-  },
-  {
-    "aggregationType": "count",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-30T14:20:39.126Z",
-    "data": [
-      {
-        "label": "Won",
-        "value": 4
-      },
-      {
-        "label": "Open",
-        "value": 3
-      },
-      {
-        "label": "Lost",
-        "value": 2
-      }
-    ],
-    "dealFilters": [],
-    "displayOptions": {
-      "barColors": ["success1", "warning1", "danger1"],
-      "displayType": "verticalBarChart",
-      "reverseXAxis": false,
-      "reverseYAxis": false
-    },
-    "entityFilters": [
-      {
-        "field": "d316aec1-1f10-49f7-9127-d6f94b032c99",
-        "operator": "notIn",
-        "value": ["5e455e56-4da6-4b06-ae9f-cc7a09c27083"]
-      }
-    ],
-    "entityType": "deal",
-    "groupByCustomColumnId": "d316aec1-1f10-49f7-9127-d6f94b032c99",
-    "groupByType": "customColumn",
-    "id": "a3628b07-c7c0-4de2-ac69-62155cfaf941",
-    "isTemplate": false,
-    "layout": {
-      "lg": {
-        "h": 2,
-        "i": "a3628b07-c7c0-4de2-ac69-62155cfaf941",
-        "w": 2,
-        "x": 8,
-        "y": 0
-      },
-      "md": {
-        "h": 2,
-        "i": "a3628b07-c7c0-4de2-ac69-62155cfaf941",
-        "w": 2,
-        "x": 2,
-        "y": 0
-      },
-      "sm": {
-        "h": 2,
-        "i": "a3628b07-c7c0-4de2-ac69-62155cfaf941",
-        "w": 1,
-        "x": 0,
-        "y": 0
-      },
-      "xs": {
-        "h": 2,
-        "i": "a3628b07-c7c0-4de2-ac69-62155cfaf941",
-        "w": 1,
-        "x": 0,
-        "y": 2
-      }
-    },
-    "name": "# Deals",
-    "updatedAt": "2026-02-15T19:21:22.616Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
-  },
-  {
-    "aggregationType": "dealValue",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2025-12-07T20:37:38.303Z",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:52:36.295Z",
     "data": [
       {
         "label": "Continental",
@@ -510,13 +168,7 @@
         "value": 67500
       }
     ],
-    "dealFilters": [
-      {
-        "field": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "operator": "notIn",
-        "value": ["lost"]
-      }
-    ],
+    "dealFilters": [],
     "displayOptions": {
       "barColors": ["default1", "default2"],
       "displayType": "horizontalBarChartWithLabels",
@@ -527,103 +179,450 @@
     "entityType": "organization",
     "groupByCustomColumnId": null,
     "groupByType": "organization",
-    "id": "d7650d82-43f5-46e5-b06f-e0aea71093a1",
-    "isTemplate": true,
+    "id": "847c9509-db5b-4430-b151-799b6cd09036",
+    "isTemplate": false,
     "layout": {
       "lg": {
         "h": 3,
-        "i": "d7650d82-43f5-46e5-b06f-e0aea71093a1",
+        "i": "847c9509-db5b-4430-b151-799b6cd09036",
         "w": 4,
         "x": 0,
         "y": 2
       },
       "md": {
         "h": 3,
-        "i": "d7650d82-43f5-46e5-b06f-e0aea71093a1",
+        "i": "847c9509-db5b-4430-b151-799b6cd09036",
         "w": 4,
         "x": 4,
         "y": 0
       },
       "sm": {
         "h": 3,
-        "i": "d7650d82-43f5-46e5-b06f-e0aea71093a1",
+        "i": "847c9509-db5b-4430-b151-799b6cd09036",
         "w": 2,
         "x": 2,
         "y": 0
       },
       "xs": {
         "h": 3,
-        "i": "d7650d82-43f5-46e5-b06f-e0aea71093a1",
+        "i": "847c9509-db5b-4430-b151-799b6cd09036",
         "w": 2,
         "x": 0,
         "y": 4
       }
     },
     "name": "Deal Value | Organizations",
-    "updatedAt": "2026-02-15T19:21:22.614Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
+    "updatedAt": "2026-03-24T11:01:03.164Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
   },
   {
-    "aggregationType": "dealQuantity",
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-29T19:06:04.781Z",
+    "aggregationType": "count",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:46:41.130Z",
     "data": [
       {
-        "label": "Total",
-        "value": 1121
+        "label": "New",
+        "value": 10
+      },
+      {
+        "label": "Lost",
+        "value": 4
+      },
+      {
+        "label": "Contact",
+        "value": 4
+      },
+      {
+        "label": "Won",
+        "value": 4
+      },
+      {
+        "label": "Qualified",
+        "value": 4
+      },
+      {
+        "label": "In Progress",
+        "value": 4
       }
     ],
     "dealFilters": [],
     "displayOptions": {
-      "barColors": ["secondary1", "secondary2"],
+      "barColors": ["default1", "default2", "primary1", "primary2", "secondary1", "secondary2"],
+      "displayType": "doughnutChart",
+      "reverseXAxis": false,
+      "reverseYAxis": false
+    },
+    "entityFilters": [],
+    "entityType": "contact",
+    "groupByCustomColumnId": "ee3c1793-3c0a-4325-bda1-ceda10e2b368",
+    "groupByType": "customColumn",
+    "id": "8c6ff2c8-e291-493c-bde2-913100b6421d",
+    "isTemplate": false,
+    "layout": {
+      "lg": {
+        "h": 2,
+        "i": "8c6ff2c8-e291-493c-bde2-913100b6421d",
+        "w": 2,
+        "x": 0,
+        "y": 0
+      },
+      "md": {
+        "h": 2,
+        "i": "8c6ff2c8-e291-493c-bde2-913100b6421d",
+        "w": 2,
+        "x": 4,
+        "y": 3
+      },
+      "sm": {
+        "h": 2,
+        "i": "8c6ff2c8-e291-493c-bde2-913100b6421d",
+        "w": 1,
+        "x": 2,
+        "y": 3
+      },
+      "xs": {
+        "h": 2,
+        "i": "8c6ff2c8-e291-493c-bde2-913100b6421d",
+        "w": 1,
+        "x": 0,
+        "y": 7
+      }
+    },
+    "name": "Sales Pipeline",
+    "updatedAt": "2026-03-24T11:01:03.160Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
+  },
+  {
+    "aggregationType": "dealValue",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:51:22.448Z",
+    "data": [
+      {
+        "label": "Open",
+        "value": 725500
+      },
+      {
+        "label": "Won",
+        "value": 545500
+      },
+      {
+        "label": "Lost",
+        "value": 538500
+      }
+    ],
+    "dealFilters": [],
+    "displayOptions": {
+      "barColors": ["success1", "warning1", "danger1"],
       "displayType": "doughnutChart",
       "reverseXAxis": false,
       "reverseYAxis": false
     },
     "entityFilters": [
       {
-        "field": "05899962-9370-4976-97b2-42b67337ea83",
-        "operator": "in",
-        "value": ["0e05a4fe-7d04-4020-96b9-b1ed3664e7fa"]
+        "field": "8c5dedf6-a2be-43fa-ae0e-936da4403215",
+        "operator": "notIn",
+        "value": ["2d3776bf-e5b0-44bf-9a09-a258be512990"]
       }
     ],
-    "entityType": "service",
-    "groupByCustomColumnId": null,
-    "groupByType": "none",
-    "id": "ea05d3ef-7352-470d-8ff7-ce9c057dcfe3",
+    "entityType": "deal",
+    "groupByCustomColumnId": "8c5dedf6-a2be-43fa-ae0e-936da4403215",
+    "groupByType": "customColumn",
+    "id": "c91d3b67-bc92-4744-ac47-871027d53fa1",
     "isTemplate": false,
     "layout": {
       "lg": {
         "h": 2,
-        "i": "ea05d3ef-7352-470d-8ff7-ce9c057dcfe3",
+        "i": "c91d3b67-bc92-4744-ac47-871027d53fa1",
         "w": 2,
-        "x": 6,
+        "x": 10,
+        "y": 0
+      },
+      "md": {
+        "h": 2,
+        "i": "c91d3b67-bc92-4744-ac47-871027d53fa1",
+        "w": 2,
+        "x": 0,
+        "y": 0
+      },
+      "sm": {
+        "h": 2,
+        "i": "c91d3b67-bc92-4744-ac47-871027d53fa1",
+        "w": 1,
+        "x": 1,
+        "y": 0
+      },
+      "xs": {
+        "h": 2,
+        "i": "c91d3b67-bc92-4744-ac47-871027d53fa1",
+        "w": 1,
+        "x": 1,
+        "y": 0
+      }
+    },
+    "name": "Σ Deal Value",
+    "updatedAt": "2026-03-24T11:01:03.161Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
+  },
+  {
+    "aggregationType": "dealValue",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:49:08.817Z",
+    "data": [
+      {
+        "label": "Service",
+        "value": 1112700
+      },
+      {
+        "label": "Hardware",
+        "value": 853200
+      }
+    ],
+    "dealFilters": [],
+    "displayOptions": {
+      "barColors": ["secondary1", "secondary2"],
+      "displayType": "verticalBarChart",
+      "reverseXAxis": false,
+      "reverseYAxis": false
+    },
+    "entityFilters": [],
+    "entityType": "service",
+    "groupByCustomColumnId": "540b062c-7961-487c-af39-bcd37903ac2f",
+    "groupByType": "customColumn",
+    "id": "e1317ffc-9eb2-4dd8-90f5-ec336214ffd7",
+    "isTemplate": false,
+    "layout": {
+      "lg": {
+        "h": 3,
+        "i": "e1317ffc-9eb2-4dd8-90f5-ec336214ffd7",
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "md": {
+        "h": 2,
+        "i": "e1317ffc-9eb2-4dd8-90f5-ec336214ffd7",
+        "w": 4,
+        "x": 4,
+        "y": 5
+      },
+      "sm": {
+        "h": 2,
+        "i": "e1317ffc-9eb2-4dd8-90f5-ec336214ffd7",
+        "w": 2,
+        "x": 2,
+        "y": 5
+      },
+      "xs": {
+        "h": 2,
+        "i": "e1317ffc-9eb2-4dd8-90f5-ec336214ffd7",
+        "w": 2,
+        "x": 0,
+        "y": 9
+      }
+    },
+    "name": "Services / Hardware Value",
+    "updatedAt": "2026-03-24T11:01:03.160Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
+  },
+  {
+    "aggregationType": "dealValue",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:55:21.933Z",
+    "data": [
+      {
+        "label": "Open",
+        "value": 725500
+      },
+      {
+        "label": "Won",
+        "value": 545500
+      },
+      {
+        "label": "Lost",
+        "value": 538500
+      },
+      {
+        "label": "Abandoned",
+        "value": 156400
+      }
+    ],
+    "dealFilters": [],
+    "displayOptions": {
+      "barColors": ["warning1", "success1", "danger1", "default1"],
+      "displayType": "verticalBarChart",
+      "reverseXAxis": true,
+      "reverseYAxis": false
+    },
+    "entityFilters": [],
+    "entityType": "deal",
+    "groupByCustomColumnId": "8c5dedf6-a2be-43fa-ae0e-936da4403215",
+    "groupByType": "customColumn",
+    "id": "e22d2059-226b-4caa-a745-4841e135e9d5",
+    "isTemplate": false,
+    "layout": {
+      "lg": {
+        "h": 3,
+        "i": "e22d2059-226b-4caa-a745-4841e135e9d5",
+        "w": 4,
+        "x": 8,
+        "y": 2
+      },
+      "md": {
+        "h": 2,
+        "i": "e22d2059-226b-4caa-a745-4841e135e9d5",
+        "w": 4,
+        "x": 0,
+        "y": 2
+      },
+      "sm": {
+        "h": 2,
+        "i": "e22d2059-226b-4caa-a745-4841e135e9d5",
+        "w": 2,
+        "x": 0,
+        "y": 2
+      },
+      "xs": {
+        "h": 2,
+        "i": "e22d2059-226b-4caa-a745-4841e135e9d5",
+        "w": 2,
+        "x": 0,
+        "y": 2
+      }
+    },
+    "name": "Deal Value | State",
+    "updatedAt": "2026-03-24T11:01:03.163Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
+  },
+  {
+    "aggregationType": "count",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:49:41.573Z",
+    "data": [
+      {
+        "label": "Won",
+        "value": 4
+      },
+      {
+        "label": "Open",
+        "value": 3
+      },
+      {
+        "label": "Lost",
+        "value": 2
+      }
+    ],
+    "dealFilters": [],
+    "displayOptions": {
+      "barColors": ["success1", "warning1", "danger1"],
+      "displayType": "verticalBarChart",
+      "reverseXAxis": false,
+      "reverseYAxis": false
+    },
+    "entityFilters": [
+      {
+        "field": "8c5dedf6-a2be-43fa-ae0e-936da4403215",
+        "operator": "notIn",
+        "value": ["2d3776bf-e5b0-44bf-9a09-a258be512990"]
+      }
+    ],
+    "entityType": "deal",
+    "groupByCustomColumnId": "8c5dedf6-a2be-43fa-ae0e-936da4403215",
+    "groupByType": "customColumn",
+    "id": "e6af922e-b70f-43ad-903f-2d2377833c47",
+    "isTemplate": false,
+    "layout": {
+      "lg": {
+        "h": 2,
+        "i": "e6af922e-b70f-43ad-903f-2d2377833c47",
+        "w": 2,
+        "x": 8,
+        "y": 0
+      },
+      "md": {
+        "h": 2,
+        "i": "e6af922e-b70f-43ad-903f-2d2377833c47",
+        "w": 2,
+        "x": 2,
+        "y": 0
+      },
+      "sm": {
+        "h": 2,
+        "i": "e6af922e-b70f-43ad-903f-2d2377833c47",
+        "w": 1,
+        "x": 0,
+        "y": 0
+      },
+      "xs": {
+        "h": 2,
+        "i": "e6af922e-b70f-43ad-903f-2d2377833c47",
+        "w": 1,
+        "x": 0,
+        "y": 0
+      }
+    },
+    "name": "# Deals",
+    "updatedAt": "2026-03-24T11:01:03.165Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
+  },
+  {
+    "aggregationType": "count",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T10:53:14.026Z",
+    "data": [
+      {
+        "label": "Direct customer",
+        "value": 11
+      },
+      {
+        "label": "Affiliated company",
+        "value": 8
+      }
+    ],
+    "dealFilters": [],
+    "displayOptions": {
+      "barColors": ["primary1", "secondary1"],
+      "displayType": "doughnutChart",
+      "reverseXAxis": false,
+      "reverseYAxis": false
+    },
+    "entityFilters": [],
+    "entityType": "organization",
+    "groupByCustomColumnId": "6b104eb7-a96f-4f53-9d2f-4729f92f638e",
+    "groupByType": "customColumn",
+    "id": "f05e992f-e513-4eb9-ad90-e513288908d6",
+    "isTemplate": false,
+    "layout": {
+      "lg": {
+        "h": 2,
+        "i": "f05e992f-e513-4eb9-ad90-e513288908d6",
+        "w": 2,
+        "x": 4,
         "y": 3
       },
       "md": {
         "h": 3,
-        "i": "ea05d3ef-7352-470d-8ff7-ce9c057dcfe3",
+        "i": "f05e992f-e513-4eb9-ad90-e513288908d6",
         "w": 2,
-        "x": 2,
+        "x": 0,
         "y": 4
       },
       "sm": {
         "h": 3,
-        "i": "ea05d3ef-7352-470d-8ff7-ce9c057dcfe3",
+        "i": "f05e992f-e513-4eb9-ad90-e513288908d6",
         "w": 1,
-        "x": 1,
+        "x": 0,
         "y": 4
       },
       "xs": {
         "h": 2,
-        "i": "ea05d3ef-7352-470d-8ff7-ce9c057dcfe3",
+        "i": "f05e992f-e513-4eb9-ad90-e513288908d6",
         "w": 1,
-        "x": 1,
+        "x": 0,
         "y": 11
       }
     },
-    "name": "# Sold Hardware",
-    "updatedAt": "2026-02-15T19:21:22.614Z",
-    "userId": "ea120bc5-0849-4fab-9491-1a351b65051b"
+    "name": "# Organizations",
+    "updatedAt": "2026-03-24T11:01:03.163Z",
+    "userId": "f637539f-fa74-4af1-b473-b5d19ef4cbe7"
   }
 ]

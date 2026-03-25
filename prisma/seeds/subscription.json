@@ -1,15 +1,15 @@
 [
   {
-    "companyId": "19389c8e-db5d-4c6e-bf45-7cd04a8e8842",
-    "createdAt": "2026-01-23T13:29:07.493Z",
+    "companyId": "b7de4dd8-5848-4347-84bc-f613a56f1f8f",
+    "createdAt": "2026-03-24T08:58:34.385Z",
     "currentPeriodEnd": null,
-    "id": "6702c920-45a3-4c4d-a5d0-705d353e5f94",
+    "id": "4c904adf-b92a-4d2b-b558-f0c996359142",
     "lemonSqueezyId": null,
     "lemonSqueezyVariantId": null,
     "plan": "pro",
     "quantity": null,
     "status": "trial",
     "trialEndDate": null,
-    "updatedAt": "2026-01-23T13:29:07.493Z"
+    "updatedAt": "2026-03-24T08:58:34.385Z"
   }
 ]
