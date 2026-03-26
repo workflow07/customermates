@@ -2,14 +2,16 @@
 
 import type { CustomColumnDto } from "@/features/custom-column/custom-column.schema";
 
+import { Fragment, type ReactNode } from "react";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Avatar } from "@heroui/avatar";
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import deepEqual from "fast-deep-equal/es6";
 
-import { isEmpty, processChanges } from "./entity-history-details.utils";
+import { isEmpty, isRelationFieldKey, partitionRelationIds, processChanges } from "./entity-history-details.utils";
 
 import { XModal } from "@/components/x-modal/x-modal";
 import { XCard } from "@/components/x-card/x-card";
@@ -105,6 +107,38 @@ export const EntityHistoryDetailsModal = observer(() => {
   const customColumnsById = new Map(store.customColumns.map((customColumn) => [customColumn.id, customColumn]));
   const changes = processChanges(item, customColumnsById, t);
 
+  const isCreatedEvent = item.event.endsWith(".created");
+
+  function renderChangeRow(change: (typeof changes)[number]): ReactNode {
+    if (isCreatedEvent)
+      return <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>;
+
+    if (isRelationFieldKey(change.key)) {
+      if (!deepEqual(change.previous, change.current)) {
+        return (
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="min-w-0 text-subdued">{renderValue(change.key, change.previous, change.customColumn)}</div>
+
+            <XIcon className="text-subdued shrink-0 self-center" icon={ArrowRightIcon} size="sm" />
+
+            <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>
+          </div>
+        );
+      }
+      return null;
+    }
+
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="min-w-0 text-subdued">{renderValue(change.key, change.previous, change.customColumn)}</div>
+
+        <XIcon className="text-subdued shrink-0 self-center" icon={ArrowRightIcon} size="sm" />
+
+        <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>
+      </div>
+    );
+  }
+
   function handleClose() {
     store.clear();
     store.close();
@@ -131,25 +165,51 @@ export const EntityHistoryDetailsModal = observer(() => {
 
         <XCardBody>
           <div className="max-h-[60vh] space-y-3 overflow-auto">
-            {changes.map((change, index) => (
-              <div key={`${item.id}-${change.field}-${index}`} className="space-y-1">
-                <span className="text-x-xs font-medium text-subdued">{change.field}</span>
+            {changes.map((change, index) => {
+              const key = `${item.id}-${change.field}-${index}`;
 
-                <div className="flex flex-wrap items-center gap-2 text-x-xs">
-                  {!item.event.endsWith(".created") && (
-                    <>
-                      <div className="min-w-0 text-subdued">
-                        {renderValue(change.key, change.previous, change.customColumn)}
-                      </div>
+              if (!isCreatedEvent && isRelationFieldKey(change.key)) {
+                const { added, removed } = partitionRelationIds(change.previous, change.current);
+                if (added.length > 0 || removed.length > 0) {
+                  return (
+                    <Fragment key={key}>
+                      {removed.length > 0 && (
+                        <div className="space-y-1">
+                          <span className="text-x-xs font-medium text-subdued">
+                            {t("AuditLogModal.relationsDeleted", { field: change.field })}
+                          </span>
 
-                      <XIcon className="text-subdued shrink-0 self-center" icon={ArrowRightIcon} size="sm" />
-                    </>
-                  )}
+                          <div className="min-w-0 text-x-xs">
+                            {renderValue(change.key, removed, change.customColumn)}
+                          </div>
+                        </div>
+                      )}
 
-                  <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>
+                      {added.length > 0 && (
+                        <div className="space-y-1">
+                          <span className="text-x-xs font-medium text-subdued">
+                            {t("AuditLogModal.relationsAdded", { field: change.field })}
+                          </span>
+
+                          <div className="min-w-0 text-x-xs">{renderValue(change.key, added, change.customColumn)}</div>
+                        </div>
+                      )}
+                    </Fragment>
+                  );
+                }
+              }
+
+              const row = renderChangeRow(change);
+              if (row === null) return null;
+
+              return (
+                <div key={key} className="space-y-1">
+                  <span className="text-x-xs font-medium text-subdued">{change.field}</span>
+
+                  <div className="text-x-xs">{row}</div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </XCardBody>
       </XCard>

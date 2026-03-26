@@ -4,6 +4,24 @@ import type { DomainEvent, DomainEventMap } from "@/features/event/domain-events
 
 import deepEqual from "fast-deep-equal/es6";
 
+export const RELATION_FIELD_KEYS = ["users", "contacts", "organizations", "deals", "services"] as const;
+
+export type RelationFieldKey = (typeof RELATION_FIELD_KEYS)[number];
+
+export function isRelationFieldKey(key: string): key is RelationFieldKey {
+  return (RELATION_FIELD_KEYS as readonly string[]).includes(key);
+}
+
+export function partitionRelationIds(previous: unknown, current: unknown) {
+  const prevArr = Array.isArray(previous) ? previous : [];
+  const currArr = Array.isArray(current) ? current : [];
+  const prevIds = new Set(prevArr.map((x: { id: string }) => x.id));
+  const currIds = new Set(currArr.map((x: { id: string }) => x.id));
+  const added = currArr.filter((x: { id: string }) => !prevIds.has(x.id));
+  const removed = prevArr.filter((x: { id: string }) => !currIds.has(x.id));
+  return { added, removed };
+}
+
 export type ProcessedChange = {
   key: string;
   field: string;

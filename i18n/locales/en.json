@@ -46,6 +46,8 @@
     "eventAt": "{event} at {date}",
     "eventData": "Event Data",
     "noValue": "No value",
+    "relationsAdded": "{field} Added",
+    "relationsDeleted": "{field} Removed",
     "title": "Audit Log Details",
     "titleHistory": "Change History",
     "userId": "User"
