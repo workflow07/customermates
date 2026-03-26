@@ -41,7 +41,7 @@ export const XDataCard = observer(<E extends HasId>({ item, renderCell, classNam
             return (
               <div
                 key={column.uid}
-                className="flex w-full items-center justify-between gap-3 mb-1 [&_.truncate]:line-clamp-3 [&_.truncate]:whitespace-normal [&_.truncate]:text-ellipsis"
+                className="mb-1 flex w-full items-center justify-between gap-3 [&_.truncate:not(.flex)]:line-clamp-3 [&_.truncate:not(.flex)]:whitespace-normal [&_.truncate:not(.flex)]:text-ellipsis"
               >
                 {cellContent}
               </div>

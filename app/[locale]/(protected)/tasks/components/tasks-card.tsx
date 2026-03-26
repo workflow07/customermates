@@ -43,14 +43,14 @@ export const TasksCardComponent = observer(({ tasks }: Props) => {
         const displayName = nameTranslationKey ? t(nameTranslationKey) : item.name;
 
         return (
-          <XDataViewCell className="text-x-sm flex items-center gap-2">
+          <XDataViewCell className="text-x-sm flex min-w-0 items-center gap-2">
             {isSystemTask && (
               <XTooltip content={t("TasksCard.systemTaskTooltip")}>
-                <XIcon className="text-warning" icon={InformationCircleIcon} size="lg" />
+                <XIcon className="shrink-0 text-warning" icon={InformationCircleIcon} size="lg" />
               </XTooltip>
             )}
 
-            <span className="truncate">{displayName}</span>
+            <span className="min-w-0 truncate">{displayName}</span>
           </XDataViewCell>
         );
       }
