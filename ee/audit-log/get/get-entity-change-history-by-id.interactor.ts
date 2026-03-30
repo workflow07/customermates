@@ -7,6 +7,7 @@ import { Action, EntityType, Resource } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
+import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 
 export const GetEntityChangeHistoryByIdSchema = z.object({
   entityId: z.uuid(),
@@ -29,6 +30,7 @@ const ENTITY_TYPE_PREFIX_MAP: Record<string, EntityType> = {
   "task.": EntityType.task,
 };
 
+@AllowInDemoMode
 @TentantInteractor({ resource: Resource.auditLog, action: Action.readAll })
 export class GetEntityChangeHistoryByIdInteractor {
   constructor(
