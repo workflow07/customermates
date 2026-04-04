@@ -3,10 +3,11 @@ import type { MDXComponents } from "mdx/types";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
 import { APIPage } from "./api-page";
-import { DocsImage } from "./docs-image";
+import { MarkdownImage } from "./markdown-image";
 import { markdownBaseComponents } from "./markdown-base-components";
 import { Mermaid } from "./mermaid";
 import { StatusAvailable, StatusPartial, StatusUnavailable } from "./status-icon";
+import { YouTube } from "./youtube-embed";
 
 export const fumadocsMarkdownComponents = markdownBaseComponents;
 
@@ -15,11 +16,12 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...defaultMdxComponents,
     ...markdownBaseComponents,
     APIPage,
-    DocsImage,
+    MarkdownImage,
     Mermaid,
     StatusAvailable,
     StatusPartial,
     StatusUnavailable,
+    YouTube,
     ...components,
   };
 }

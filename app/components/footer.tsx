@@ -2,24 +2,65 @@ import { getLocale } from "next-intl/server";
 
 import { FooterContent } from "./footer-content";
 
-import { compareSource } from "@/core/fumadocs/source";
+import { compareSource, featurePagesSource, forPagesSource } from "@/core/fumadocs/source";
+
+// Top SEO opportunities per section (by optimization score from knowledge base)
+const FOOTER_COMPARE = new Set([
+  "hubspot-alternative",
+  "pipedrive-alternative",
+  "zoho-crm-alternative",
+  "notion-alternative",
+  "cobra-alternative",
+  "vtiger-alternative",
+]);
+
+const FOOTER_FOR = new Set([
+  "healthcare",
+  "ecommerce",
+  "property-management",
+  "manufacturing",
+  "marketing",
+  "agencies",
+]);
+
+const FOOTER_FEATURES = new Set([
+  "cloud-crm",
+  "contact-management",
+  "lead-management",
+  "sales-automation",
+  "workflow-automation",
+  "self-hosted",
+]);
 
 export async function Footer() {
   const locale = await getLocale();
-  const pages = compareSource.getPages(locale);
 
-  const competitors = pages
+  const competitors = compareSource
+    .getPages(locale)
     .map((page) => {
-      const url = page.url;
-      const displayName = page.data.competitorName;
-
-      if (!url || !displayName) return null;
-
-      const slug = url.split("/").pop() || "";
-
-      return { slug, displayName };
+      const slug = page.url?.split("/").pop() || "";
+      if (!FOOTER_COMPARE.has(slug)) return null;
+      return { slug, displayName: page.data.competitorName };
     })
-    .filter((competitor): competitor is { slug: string; displayName: string } => competitor !== null);
+    .filter((item): item is { slug: string; displayName: string } => item !== null);
 
-  return <FooterContent competitors={competitors} />;
+  const industries = forPagesSource
+    .getPages(locale)
+    .map((page) => {
+      const slug = page.url?.split("/").pop() || "";
+      if (!FOOTER_FOR.has(slug)) return null;
+      return { slug, displayName: page.data.industryName };
+    })
+    .filter((item): item is { slug: string; displayName: string } => item !== null);
+
+  const featureLinks = featurePagesSource
+    .getPages(locale)
+    .map((page) => {
+      const slug = page.url?.split("/").pop() || "";
+      if (!FOOTER_FEATURES.has(slug)) return null;
+      return { slug, displayName: page.data.featureName };
+    })
+    .filter((item): item is { slug: string; displayName: string } => item !== null);
+
+  return <FooterContent competitors={competitors} featureLinks={featureLinks} industries={industries} />;
 }

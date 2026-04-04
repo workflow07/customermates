@@ -13,7 +13,9 @@ import {
   blogPosts,
   compare,
   docs,
+  featurePages,
   features,
+  forPages,
   helpAndFeedback,
   homepage,
   legal,
@@ -76,10 +78,22 @@ export const pricingSource = loader({
   source: toFumadocsSource(pricing, []),
 });
 
+export const featurePagesSource = loader({
+  baseUrl: "/features",
+  i18n,
+  source: toFumadocsSource(featurePages, []),
+});
+
 export const featuresSource = loader({
   baseUrl: "/features",
   i18n,
   source: toFumadocsSource(features, []),
+});
+
+export const forPagesSource = loader({
+  baseUrl: "/for",
+  i18n,
+  source: toFumadocsSource(forPages, []),
 });
 
 export const helpAndFeedbackSource = loader({

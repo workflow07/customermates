@@ -22,6 +22,8 @@ export const PUBLIC_ROUTES_SEO = [
   "/pricing",
   "/n8n-crm",
   "/compare/:competitor",
+  "/for/:industry",
+  "/features/:slug",
   "/affiliate",
   "/docs",
   "/docs/:slug",

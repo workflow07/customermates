@@ -10,7 +10,7 @@ type Props = {
   src?: string;
 };
 
-export function DocsImage({ alt, src = "docs-placeholder.png" }: Props) {
+export function MarkdownImage({ alt, src = "docs-placeholder.png" }: Props) {
   const [imageSrc, setImageSrc] = useState(src);
 
   return (

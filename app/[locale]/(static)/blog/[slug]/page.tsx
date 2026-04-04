@@ -8,6 +8,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { BlogPostCard } from "../blog-post-card";
 
 import { blogPostsSource } from "@/core/fumadocs/source";
+import { ShowcaseFrame } from "@/components/showcase-frame";
 import { Footer } from "@/app/components/footer";
 import { XIcon } from "@/components/x-icon";
 import { XChip } from "@/components/x-chip/x-chip";
@@ -55,7 +56,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .slice(0, 3);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="relative flex flex-col items-center justify-center">
       <section className="pt-12 md:pt-16 pb-16 md:pb-24 w-full">
         <article className="max-w-6xl mx-auto px-4 flex-1">
           <Link className="inline-flex items-center text-subdued mb-8" href={`/${locale}/blog`}>
@@ -65,15 +66,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </Link>
 
           <header>
-            <XImage
-              isLocalized
-              alt={hero.title}
-              className="w-full mb-8 overflow-hidden rounded-4xl max-w-full! object-bottom max-h-108 object-cover z-0"
-              height={1080}
-              loading="eager"
-              src={`${slug}.png`}
-              width={1920}
-            />
+            <ShowcaseFrame className="mb-8">
+              <XImage
+                isLocalized
+                alt={hero.title}
+                className="w-full h-auto rounded-none"
+                height={1080}
+                loading="eager"
+                src={`${slug}.png`}
+                width={1920}
+              />
+            </ShowcaseFrame>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-sm text-subdued pb-6">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">

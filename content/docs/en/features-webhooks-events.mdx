@@ -14,7 +14,7 @@ The delivery model focuses on lifecycle changes for the main CRM entities, and d
 
 > This feature is most useful when CRM changes should trigger something outside the app, or when downstream systems need a reliable event source.
 
-<DocsImage alt="Feature webhooks and events overview showing subscriptions and delivery history" src="docs-features-webhooks-events-overview.png" />
+<MarkdownImage alt="Feature webhooks and events overview showing subscriptions and delivery history" src="docs-features-webhooks-events-overview.png" />
 
 ## Available events
 
@@ -34,7 +34,7 @@ When a subscribed event is triggered, Customermates sends a `POST` request with 
 
 The actual setup usually happens in a modal where the destination URL, the subscribed events, the optional secret, and the enabled state are defined.
 
-<DocsImage alt="Webhook setup modal showing target URL, subscribed events, secret, and enabled state" src="docs-features-webhooks-events-webhook-modal.png" />
+<MarkdownImage alt="Webhook setup modal showing target URL, subscribed events, secret, and enabled state" src="docs-features-webhooks-events-webhook-modal.png" />
 
 For day-to-day operations, two details matter most. Failed deliveries are preserved instead of disappearing silently, and teams can inspect and resend them manually when they need to verify fixes or replay an integration step.
 

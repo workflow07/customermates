@@ -9,7 +9,9 @@ import { blogPostsSchema } from "./schemas/blog-posts";
 import { blogSchema } from "./schemas/blog";
 import { compareSchema } from "./schemas/compare";
 import { docsSchema } from "./schemas/docs";
+import { featurePagesSchema } from "./schemas/feature-pages";
 import { featuresSchema } from "./schemas/features";
+import { forPagesSchema } from "./schemas/for-pages";
 import { helpAndFeedbackSchema } from "./schemas/help-and-feedback";
 import { homepageSchema } from "./schemas/homepage";
 import { legalSchema } from "./schemas/legal";
@@ -65,10 +67,22 @@ export const pricing = defineCollections({
   schema: pricingSchema,
 });
 
+export const featurePages = defineCollections({
+  type: "doc",
+  dir: "content/feature-pages",
+  schema: featurePagesSchema,
+});
+
 export const features = defineCollections({
   type: "doc",
   dir: "content/features",
   schema: featuresSchema,
+});
+
+export const forPages = defineCollections({
+  type: "doc",
+  dir: "content/for-pages",
+  schema: forPagesSchema,
 });
 
 export const helpAndFeedback = defineCollections({

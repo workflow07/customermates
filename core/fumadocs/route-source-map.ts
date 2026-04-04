@@ -10,7 +10,9 @@ import {
   blogSource,
   compareSource,
   docsSource,
+  featurePagesSource,
   featuresSource,
+  forPagesSource,
   helpAndFeedbackSource,
   homepageSource,
   legalSource,
@@ -29,7 +31,9 @@ type Loader =
   | typeof blogSource
   | typeof compareSource
   | typeof docsSource
+  | typeof featurePagesSource
   | typeof featuresSource
+  | typeof forPagesSource
   | typeof helpAndFeedbackSource
   | typeof homepageSource
   | typeof legalSource
@@ -103,6 +107,14 @@ export const ROUTE_SOURCE_MAP: Record<
   "/compare/:competitor": {
     source: compareSource,
     path: [":competitor"],
+  },
+  "/for/:industry": {
+    source: forPagesSource,
+    path: [":industry"],
+  },
+  "/features/:slug": {
+    source: featurePagesSource,
+    path: [":slug"],
   },
   "/affiliate": {
     source: affiliateSource,

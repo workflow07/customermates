@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 
-import { ComparisonHero } from "./comparison-hero";
-
+import { PageHero } from "@/components/page-hero";
 import { Footer } from "@/app/components/footer";
 import { XComparisonTable } from "@/components/x-comparison-table/x-comparison-table";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
@@ -42,7 +41,7 @@ export default async function CompetitorComparePage({ params }: Props) {
 
   return (
     <div className="flex flex-col items-center justify-center pt-16 md:pt-24">
-      <ComparisonHero {...page.data.hero} />
+      <PageHero {...page.data.hero} />
 
       <XComparisonTable
         competitorName={page.data.comparison.competitorName}

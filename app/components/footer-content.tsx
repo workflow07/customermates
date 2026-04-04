@@ -12,13 +12,15 @@ import { XLink } from "@/components/x-link";
 import { XImage } from "@/components/x-image";
 import { XThemeSwitcher } from "@/components/x-theme-switcher";
 
-type CompetitorLink = {
+type LinkItem = {
   slug: string;
   displayName: string;
 };
 
 type FooterProps = {
-  competitors?: CompetitorLink[];
+  competitors?: LinkItem[];
+  featureLinks?: LinkItem[];
+  industries?: LinkItem[];
 };
 
 function UneedBadge() {
@@ -46,17 +48,17 @@ function UneedBadge() {
   );
 }
 
-export function FooterContent({ competitors = [] }: FooterProps) {
+export function FooterContent({ competitors = [], featureLinks = [], industries = [] }: FooterProps) {
   const t = useTranslations("Footer");
   const tNav = useTranslations("NavigationBar");
-  const tDocs = useTranslations("DocsSidebar");
+
   const tCommon = useTranslations("Common");
   const tUserAvatar = useTranslations("UserAvatar");
 
   return (
     <footer className="border-t border-divider bg-content2 dark:bg-content1 mt-auto w-full text-x-sm">
       <div className="max-w-[1300px] mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8 mb-12">
           <div className="space-y-6">
             <XLink aria-label={`${tCommon("imageAlt.logo")} ${tUserAvatar("home")}`} href="/">
               <XImage alt={tCommon("imageAlt.logo")} height={27} src="customermates.svg" width={156} />
@@ -151,54 +153,34 @@ export function FooterContent({ competitors = [] }: FooterProps) {
             <h3 className="font-semibold text-foreground">{t("features")}</h3>
 
             <ul className="space-y-2">
-              <li>
-                <XLink className="text-subdued" href="/docs/features-report-statistics">
-                  {tDocs("reportAndStatistics")}
-                </XLink>
-              </li>
-
-              <li>
-                <XLink className="text-subdued" href="/docs/features-custom-columns">
-                  {tDocs("customColumns")}
-                </XLink>
-              </li>
-
-              <li>
-                <XLink className="text-subdued" href="/docs/features-table-kanban-view">
-                  {tDocs("tableAndKanbanView")}
-                </XLink>
-              </li>
-
-              <li>
-                <XLink className="text-subdued" href="/docs/features-webhooks-events">
-                  {tDocs("webhooksEvents")}
-                </XLink>
-              </li>
-
-              <li>
-                <XLink className="text-subdued" href="/docs/features-permissions-roles">
-                  {tDocs("permissionsRoles")}
-                </XLink>
-              </li>
-
-              <li>
-                <XLink className="text-subdued" href="/docs/features-audit-logging">
-                  {tDocs("auditLogging")}
-                </XLink>
-              </li>
+              {featureLinks.map(({ slug, displayName }) => (
+                <li key={slug}>
+                  <XLink className="text-subdued" href={`/features/${slug}`}>
+                    {displayName}
+                  </XLink>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">{t("resources")}</h3>
+            <h3 className="font-semibold text-foreground">{t("solutions")}</h3>
 
             <ul className="space-y-2">
-              <li>
-                <XLink className="text-subdued" href="/help-and-feedback">
-                  {t("helpAndFeedback")}
-                </XLink>
-              </li>
+              {industries.map(({ slug, displayName }) => (
+                <li key={slug}>
+                  <XLink className="text-subdued" href={`/for/${slug}`}>
+                    {displayName}
+                  </XLink>
+                </li>
+              ))}
+            </ul>
+          </div>
 
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">{t("compare")}</h3>
+
+            <ul className="space-y-2">
               <CompetitorLinks competitors={competitors} />
             </ul>
           </div>
@@ -207,6 +189,12 @@ export function FooterContent({ competitors = [] }: FooterProps) {
             <h3 className="font-semibold text-foreground">{t("legal")}</h3>
 
             <ul className="space-y-2">
+              <li>
+                <XLink className="text-subdued" href="/help-and-feedback">
+                  {t("helpAndFeedback")}
+                </XLink>
+              </li>
+
               <li>
                 <XLink className="text-subdued" href="/imprint">
                   {t("imprint")}

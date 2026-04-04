@@ -1,7 +1,7 @@
 import { frontmatterSchema } from "fumadocs-mdx/config";
 import { z } from "zod";
 
-import { ctaSchema } from "./common";
+import { ctaSchema, heroSchema } from "./common";
 
 export const comparisonFeatureSchema = z.object({
   name: z.string(),
@@ -15,17 +15,6 @@ export const comparisonItemSchema = z.object({
   features: z.array(comparisonFeatureSchema),
 });
 export type ComparisonItem = z.infer<typeof comparisonItemSchema>;
-
-const heroSchema = z.object({
-  buttonLeftHref: z.string(),
-  buttonLeftText: z.string(),
-  buttonRightHref: z.string(),
-  buttonRightText: z.string(),
-  description: z.string(),
-  hint: z.string(),
-  title: z.string(),
-});
-export type Hero = z.infer<typeof heroSchema>;
 
 export const comparisonTableSchema = z.object({
   competitorName: z.string(),

@@ -1,14 +1,20 @@
 "use client";
 
-import type { Hero } from "@/core/fumadocs/schemas/compare";
-
 import { Button } from "@heroui/button";
 
 import { XLink } from "@/components/x-link";
 
-type Props = Hero;
+type Props = {
+  buttonLeftHref: string;
+  buttonLeftText: string;
+  buttonRightHref: string;
+  buttonRightText: string;
+  description: string;
+  hint: string;
+  title: string;
+};
 
-export function ComparisonHero({
+export function PageHero({
   title,
   description,
   buttonLeftHref,
@@ -19,9 +25,9 @@ export function ComparisonHero({
 }: Props) {
   return (
     <>
-      <h1 className="text-x-4xl px-4 max-w-4xl text-center">{title}</h1>
+      <h1 className="text-x-4xl px-4 max-w-4xl text-center mx-auto">{title}</h1>
 
-      <h2 className="text-x-lg pt-4 md:pt-6 px-4 max-w-4xl text-center text-subdued">{description}</h2>
+      <h2 className="text-x-lg pt-4 md:pt-6 px-4 max-w-4xl text-center text-subdued mx-auto">{description}</h2>
 
       <div className="flex flex-col items-center my-8 md:my-10 px-4">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 w-full sm:w-auto">

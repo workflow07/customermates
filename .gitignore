@@ -49,3 +49,9 @@ generated/
 
 # generated openapi docs
 content/api/**/*.mdx
+
+.mcp.json
+
+# SEO keyword data (business intelligence)
+.claude/seo/seo-keywords-overview.json
+.claude/seo/seo-keywords-overview.csv

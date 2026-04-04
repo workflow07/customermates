@@ -869,6 +869,7 @@
   },
   "Footer": {
     "blog": "Blog",
+    "compare": "Compare",
     "copyright": "@ Customermates",
     "copyrightText": "© {year} Customermates. All rights reserved.",
     "features": "Features",
@@ -878,9 +879,8 @@
     "privacy": "Privacy",
     "product": "Product",
     "resources": "Resources",
-    "terms": "Terms",
-    "vsHubSpot": "vs HubSpot",
-    "vsPipedrive": "vs Pipedrive"
+    "solutions": "Solutions",
+    "terms": "Terms"
   },
   "ForgotPasswordCard": {
     "backToSignIn": "Remember your password? <backToSignInLink>Sign in</backToSignInLink>",

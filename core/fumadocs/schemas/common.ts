@@ -6,6 +6,17 @@ export const metaSchema = z.object({
 });
 export type Meta = z.infer<typeof metaSchema>;
 
+export const heroSchema = z.object({
+  buttonLeftHref: z.string(),
+  buttonLeftText: z.string(),
+  buttonRightHref: z.string(),
+  buttonRightText: z.string(),
+  description: z.string(),
+  hint: z.string(),
+  title: z.string(),
+});
+export type Hero = z.infer<typeof heroSchema>;
+
 export const ctaSchema = z.object({
   action: z.string(),
   buttonLeftHref: z.string(),
