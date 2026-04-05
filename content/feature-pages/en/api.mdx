@@ -1,0 +1,105 @@
+---
+title: CRM API - REST API, Webhooks, SDKs & Developer Tools
+description: Build on top of your CRM with a comprehensive REST API, webhooks, OpenAPI spec, and automation endpoints. Developer-friendly documentation, API keys, full CRUD access, and n8n integration.
+featureName: CRM API
+
+hero:
+  title: A CRM API Built for Developers Who Ship Fast
+  description: Access every piece of CRM data through a clean REST API. Build custom integrations, sync data across systems, and automate workflows with webhooks, API keys, OpenAPI spec, and n8n. All included at EUR 10 per user per month.
+  buttonLeftText: Start for free
+  buttonLeftHref: /auth/signup
+  buttonRightText: Watch live demo
+  buttonRightHref: https://demo.customermates.com
+  hint: "✓ No credit card required ✓ First 3 days free"
+
+cta:
+  action: Ready to get started?
+  description: Get started with Customermates today and switch to an agentic Open-Source CRM built for flexible workflows.
+  buttonLeftText: Start for free
+  buttonLeftHref: /auth/signup
+  buttonRightText: Watch live demo
+  buttonRightHref: https://demo.customermates.com
+  hint: "✓ No credit card required ✓ First 3 days free"
+---
+
+## What Is a CRM API?
+
+A CRM API (Application Programming Interface) is a set of endpoints that allow external software to access, create, update, and delete data in your CRM programmatically. Instead of interacting with your CRM exclusively through the user interface, an API enables developers to build custom integrations, automated workflows, and applications that interact with CRM data directly.
+
+APIs are essential for businesses that need their CRM to work as part of a larger technology stack. Whether you are building a custom dashboard, syncing data with an ERP or accounting system, automating processes that go beyond the standard UI, or embedding CRM functionality into another application, the API is the gateway that makes it possible.
+
+A good CRM API is well-documented, versioned, predictable, and gives you access to the same data and operations available in the user interface. It should feel like a first-class product feature, not an afterthought bolted on for enterprise customers.
+
+## How the CRM API Works in Customermates
+
+Customermates provides a comprehensive REST API that gives developers full programmatic access to all CRM data and operations. API access is included at EUR 10 per user per month with no separate developer tier.
+
+**REST architecture with predictable endpoints.** The API follows standard REST conventions with predictable URL structures, standard HTTP methods (GET, POST, PUT, PATCH, DELETE), and JSON request and response bodies. If you have worked with any modern REST API, working with the Customermates API will feel familiar immediately. Endpoints follow a consistent pattern: `/api/v1/{resource}` for collections and `/api/v1/{resource}/{id}` for individual records.
+
+**Full CRUD operations across all entities.** Create, read, update, and delete records for every CRM entity: contacts, organizations, deals, tasks, notes, activities, pipelines, and custom objects. Every operation available in the user interface is available through the API, ensuring feature parity.
+
+**OpenAPI specification.** The API is documented with a complete OpenAPI (Swagger) specification. Import the spec into Postman, Insomnia, or any API client to explore endpoints interactively. Use the spec to auto-generate client libraries in any programming language.
+
+**Filtering, sorting, and pagination.** Query records with flexible filtering parameters. Filter by any standard or custom field, combine multiple conditions with AND/OR logic, sort results by any field, and paginate through large result sets efficiently. The API supports cursor-based pagination for consistent performance on large datasets.
+
+**Authentication via API keys.** Authenticate API requests using secure API keys generated from your account settings. Keys can be created and revoked at any time. Each key inherits the permissions of the user who created it, ensuring that API access respects your existing role-based access control.
+
+**Webhooks for real-time event streaming.** Configure webhooks to receive real-time HTTP POST notifications when events occur in your CRM. Contact created, deal stage changed, task completed, note added, and dozens of other events can trigger webhook deliveries to any URL you specify. Webhooks include retry logic with exponential backoff for failed deliveries.
+
+**Custom field access.** All custom fields are fully accessible through the API with the same field types, validation rules, and options as the user interface. Read and write custom field data on any record type, enabling integrations that work with your specific data model without workarounds.
+
+**Batch operations.** Perform bulk create, update, or delete operations in a single API call. Process hundreds of records at once for data migrations, bulk enrichment, or mass updates. Batch endpoints reduce the number of API calls and improve throughput for large-scale operations.
+
+**Rate limiting with clear headers.** The API implements fair rate limits to ensure consistent performance. Rate limit headers on every response tell you exactly how many requests remain in your current window, so your applications can throttle gracefully rather than hitting errors.
+
+**Versioned API with backward compatibility.** API versions follow semantic versioning. Breaking changes are introduced only in new major versions, and previous versions are supported with documented deprecation timelines. Your integrations will not break without advance notice.
+
+## Key Benefits
+
+**Build anything on top of your CRM.** The API removes the limitations of the standard interface. Custom dashboards, mobile apps, partner portals, customer-facing tools, and internal automation scripts are all possible when every CRM operation is available programmatically.
+
+**Automate beyond the UI with code or n8n.** While the built-in n8n engine handles many automation scenarios visually, the API enables custom automation logic for scenarios that require code. Use n8n for no-code workflows and the API for custom scripts. Both approaches work together seamlessly.
+
+**Sync data across your entire tech stack.** Keep your CRM data consistent with ERP systems, accounting software, marketing platforms, support desks, and data warehouses. The API and webhooks together enable both push and pull synchronization patterns for real-time or scheduled data flows.
+
+**Embed CRM data in custom applications.** Build internal tools, customer portals, or partner dashboards that pull CRM data in real time. The API enables any application to become CRM-aware without requiring users to switch contexts.
+
+**Developer-friendly from day one.** Standard REST conventions, JSON throughout, OpenAPI spec, predictable error handling, and clear rate limit headers mean your developers can start building immediately. No proprietary query languages, no complex authentication flows, no steep learning curve.
+
+**Open-source transparency.** Because Customermates is open source, the API implementation is fully inspectable. Developers can read the source code behind any endpoint, understand exactly how it works, and even contribute improvements upstream.
+
+## Common CRM API Use Cases
+
+**Custom dashboard and reporting.** Build internal dashboards that combine CRM data with data from other systems. Pull pipeline metrics, activity counts, revenue figures, and conversion rates through the API and display them in a custom interface tailored to your management team.
+
+**Website and form integration.** When a visitor submits a form on your website, use the API to create a contact and deal in Customermates automatically. Map form fields to CRM fields, apply lead scoring rules, and route the new lead to the appropriate pipeline and owner.
+
+**Data migration from other CRMs.** Use the API to migrate data from HubSpot, Salesforce, Pipedrive, or spreadsheets into Customermates. Build migration scripts that create contacts, organizations, deals, and activities programmatically with full control over field mapping, deduplication, and data transformation.
+
+**ERP and accounting system sync.** Sync deal data with your ERP or accounting software. When a deal is won, push invoice data to your billing system. When a payment is received, update the deal status in the CRM. Two-way sync keeps both systems accurate.
+
+**Webhook-driven workflow orchestration.** Use webhooks to trigger external processes when CRM events occur. When a deal is won, trigger provisioning in your product. When a contact is updated, sync changes to your email marketing platform. When a task is overdue, send a Slack notification.
+
+**Mobile and desktop applications.** Build custom mobile or desktop applications that access CRM data through the API. Sales teams in the field can access and update records through purpose-built interfaces optimized for their specific workflow.
+
+**Data enrichment pipelines.** Enrich CRM contacts with data from third-party providers. Use the API to read contacts, call enrichment services, and write the enhanced data back. Automate the pipeline to run on a schedule or trigger it via webhooks when new contacts are created.
+
+**Testing and development with sandbox data.** Use the API to seed test environments with realistic CRM data. Build automated test suites that create, modify, and verify CRM records to ensure your integrations work correctly before deploying to production.
+
+## Why Choose Customermates for API Access
+
+**Open source and fully transparent.** The API is part of the open-source Customermates codebase. Inspect the implementation, understand the data model, and contribute improvements. No black-box API behavior.
+
+**EU-hosted and GDPR-compliant.** All API traffic is routed through European infrastructure with full GDPR and DSGVO compliance. Programmatic data access is subject to the same data protection standards as the user interface.
+
+**Simple, fair pricing.** API access is included in the flat EUR 10 per user per month price. No separate API tier, no per-request charges, no premium developer plans. Every paying user gets full API access.
+
+**Self-hostable for full control.** When you self-host Customermates, the API runs on your infrastructure. API traffic, authentication, rate limits, and data access are entirely under your control. Ideal for organizations with strict security or compliance requirements.
+
+**Webhook reliability with retry logic.** Webhook deliveries include automatic retries with exponential backoff for failed deliveries. Delivery logs let you inspect the payload and response for every webhook event, making debugging straightforward.
+
+**n8n integration for hybrid workflows.** Combine API-level control with visual n8n automation. Use n8n for standard workflows and the API for complex custom logic. Both are included at no extra cost.
+
+## Get Started with the CRM API Today
+
+Start building with the Customermates API in minutes. Generate your API key in account settings, explore the OpenAPI spec, and make your first request. Whether you are building a simple form integration or a complex multi-system data pipeline, the API gives you everything you need. All API features are included at EUR 10 per user per month.
