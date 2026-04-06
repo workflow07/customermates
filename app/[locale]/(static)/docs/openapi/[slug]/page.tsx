@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { cn } from "@heroui/theme";
@@ -9,19 +7,9 @@ import { getDocMethod, getDocMethodColor, toLocaleRelativeHref } from "../../doc
 import { Footer } from "@/app/components/footer";
 import { apiDocsSource } from "@/core/fumadocs/source";
 import { getMDXComponents } from "@/core/fumadocs/mdx-components";
-import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
 import { XLink } from "@/components/x-link";
 import { XChip } from "@/components/x-chip/x-chip";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>;
-}): Promise<Metadata> {
-  const { locale, slug } = await params;
-  return generateMetadataFromMeta({ locale, route: "/docs/openapi/:slug", params: { slug } });
-}
 
 export default async function OpenApiDocPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

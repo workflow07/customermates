@@ -2,7 +2,6 @@ import type { PUBLIC_ROUTES_SEO } from "@/i18n/routing";
 
 import {
   affiliateSource,
-  apiDocsSource,
   apiOverviewSource,
   authSource,
   automationSource,
@@ -18,12 +17,10 @@ import {
   legalSource,
   pricingSource,
   skillsOverviewSource,
-  skillsSource,
 } from "./source";
 
 type Loader =
   | typeof affiliateSource
-  | typeof apiDocsSource
   | typeof apiOverviewSource
   | typeof authSource
   | typeof automationSource
@@ -38,8 +35,7 @@ type Loader =
   | typeof homepageSource
   | typeof legalSource
   | typeof pricingSource
-  | typeof skillsOverviewSource
-  | typeof skillsSource;
+  | typeof skillsOverviewSource;
 
 export const ROUTE_SOURCE_MAP: Record<
   (typeof PUBLIC_ROUTES_SEO)[number],
@@ -132,17 +128,9 @@ export const ROUTE_SOURCE_MAP: Record<
     source: apiOverviewSource,
     path: ["openapi"],
   },
-  "/docs/openapi/:slug": {
-    source: apiDocsSource,
-    path: [":slug"],
-  },
   "/docs/skills": {
     source: skillsOverviewSource,
     path: ["skills"],
-  },
-  "/docs/skills/:slug": {
-    source: skillsSource,
-    path: [":slug"],
   },
 };
 

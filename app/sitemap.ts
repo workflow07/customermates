@@ -15,9 +15,6 @@ function generateRoutes() {
 
   for (const locale of ROUTING_LOCALES) {
     for (const route of PUBLIC_ROUTES_SEO) {
-      // OpenAPI slug pages are SEO-canonicalized to EN to avoid duplicate locale entries.
-      if (route === "/docs/openapi/:slug" && locale !== ROUTING_DEFAULT_LOCALE) continue;
-
       const routeMapping = ROUTE_SOURCE_MAP[route];
 
       if (route.includes(":")) {

@@ -23,11 +23,7 @@ export function generateMetadataFromMeta({
   if (!routeMapping) return {};
 
   const { source, path } = routeMapping;
-  // OpenAPI operation docs are generated from EN-only summaries/descriptions.
-  // Keep locale routes for UX, but consolidate SEO metadata to the default locale.
-  const isOpenApiSlugRoute = route === "/docs/openapi/:slug";
-  const metadataLocale = isOpenApiSlugRoute ? ROUTING_DEFAULT_LOCALE : locale;
-  const page = source.getPage(path, metadataLocale);
+  const page = source.getPage(path, locale);
 
   if (!page) return {};
 
@@ -38,9 +34,8 @@ export function generateMetadataFromMeta({
 
   const routePath = buildRoutePath(route, params);
   const alternates: Record<string, string> = {};
-  const localesForAlternates = isOpenApiSlugRoute ? [ROUTING_DEFAULT_LOCALE] : ROUTING_LOCALES;
 
-  for (const loc of localesForAlternates) {
+  for (const loc of ROUTING_LOCALES) {
     const localeRoute = routePath === "/" ? `/${loc}` : `/${loc}${routePath}`;
     alternates[loc] = `${BASE_URL}${localeRoute}`;
   }
@@ -49,7 +44,7 @@ export function generateMetadataFromMeta({
     routePath === "/" ? `/${ROUTING_DEFAULT_LOCALE}` : `/${ROUTING_DEFAULT_LOCALE}${routePath}`;
   alternates["x-default"] = `${BASE_URL}${xDefaultLocaleRoute}`;
 
-  const canonicalRoute = routePath === "/" ? `/${metadataLocale}` : `/${metadataLocale}${routePath}`;
+  const canonicalRoute = routePath === "/" ? `/${locale}` : `/${locale}${routePath}`;
   const canonical = `${BASE_URL}${canonicalRoute}`;
   const ogImageParams = new URLSearchParams({ title });
 
@@ -86,13 +81,6 @@ export function generateMetadataFromMeta({
   };
 
   if (description) metadata.description = description;
-
-  if (isOpenApiSlugRoute && locale !== ROUTING_DEFAULT_LOCALE) {
-    metadata.robots = {
-      follow: true,
-      index: false,
-    };
-  }
 
   return metadata;
 }

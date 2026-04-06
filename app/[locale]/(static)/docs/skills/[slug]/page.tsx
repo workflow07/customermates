@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { cn } from "@heroui/theme";
@@ -12,19 +10,9 @@ import { SourceBadge } from "../source-badge";
 import { BASE_URL } from "@/constants/env";
 import { Footer } from "@/app/components/footer";
 import { getMDXComponents } from "@/core/fumadocs/mdx-components";
-import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { skillsSource } from "@/core/fumadocs/source";
 import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
 import { XLink } from "@/components/x-link";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>;
-}): Promise<Metadata> {
-  const { locale, slug } = await params;
-  return generateMetadataFromMeta({ locale, route: "/docs/skills/:slug", params: { slug } });
-}
 
 export default async function DocsSkillPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
