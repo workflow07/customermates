@@ -55,7 +55,7 @@ export function XTestimonialSection({ testimonialsSection }: Props) {
           {testimonialsSection.testimonials.map((testimonial, index) => (
             <XCard key={index} className="break-inside-avoid mb-4 relative">
               <XImage
-                alt=""
+                alt="Verified review"
                 className="absolute top-5 right-5"
                 height={48}
                 loading="lazy"

@@ -7,7 +7,7 @@ export function AutomationDemo() {
   return (
     <ShowcaseFrame>
       <XImage
-        alt="Automation Hero"
+        alt="Customermates CRM automation workflow with n8n integration"
         className="w-full h-auto rounded-none"
         height={1080}
         loading="eager"
