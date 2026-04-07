@@ -6,6 +6,7 @@ import { getLocale } from "next-intl/server";
 import { PricingSection } from "./components/pricing-section";
 import { PricingComparisonTable } from "./components/pricing-comparison-table";
 
+import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { Footer } from "@/app/components/footer";
 import { XFAQSection } from "@/components/x-faq-section";
 import { XCTASection } from "@/components/x-cta-section";
@@ -28,6 +29,8 @@ export default async function PricingPage() {
       <section className="py-16 md:py-24 w-full">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-12 text-center max-w-3xl mx-auto">
+            <GitHubStarButton />
+
             <h1 className="text-x-4xl tracking-tight pb-4 text-transparent bg-clip-text bg-linear-to-b from-neutral-900 via-neutral-700 to-neutral-500 dark:from-white dark:via-gray-200 dark:to-gray-400">
               {page.data.title}
             </h1>

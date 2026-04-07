@@ -2,6 +2,7 @@
 
 import { Button } from "@heroui/button";
 
+import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { XLink } from "@/components/x-link";
 
 type Props = {
@@ -25,6 +26,8 @@ export function PageHero({
 }: Props) {
   return (
     <>
+      <GitHubStarButton />
+
       <h1 className="text-x-4xl px-4 max-w-4xl text-center mx-auto">{title}</h1>
 
       <h2 className="text-x-lg pt-4 md:pt-6 px-4 max-w-4xl text-center text-subdued mx-auto">{description}</h2>

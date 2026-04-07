@@ -4,6 +4,7 @@ import type { Hero } from "@/core/fumadocs/schemas/features";
 
 import { Button } from "@heroui/button";
 
+import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { XLink } from "@/components/x-link";
 
 type Props = Hero;
@@ -20,6 +21,8 @@ export function FeaturesHero({
     <section className="py-16 md:py-24 w-full">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center max-w-4xl mx-auto">
+          <GitHubStarButton />
+
           <h1 className="text-x-4xl mb-6">{title}</h1>
 
           <p className="text-x-lg text-subdued mb-8">{description}</p>
