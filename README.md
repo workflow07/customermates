@@ -17,7 +17,7 @@
 
 
 <p align="center">
-  <img src="intro.gif" alt="Customermates CRM intro" width="1200" />
+  <video src="https://customermates.com/videos/intro.mp4" width="1200" autoplay loop muted playsinline></video>
 </p>
 
 Customermates is a CRM for modern teams that want a clear system for contacts, organizations, deals, services, and tasks without the usual enterprise-heavy setup. It combines practical CRM workflows with API access, webhooks, n8n automation, MCP-based tooling, and AI-agent workflows.
