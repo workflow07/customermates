@@ -48,9 +48,9 @@ const ChangeServicesDealsSchema = z.object({
     .max(10),
 });
 
-export const createServicesTool = {
-  name: "create_services",
-  description: "Create services. Run get_services_configuration first. Required: name, amount. Returns IDs.",
+export const batchCreateServicesTool = {
+  name: "batch_create_services",
+  description: "Create services. Run get_entity_configuration first. Required: name, amount. Returns IDs.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyServicesSchema,
   execute: async (params: z.infer<typeof McpCreateManyServicesSchema>) => {
@@ -60,9 +60,9 @@ export const createServicesTool = {
   },
 };
 
-export const updateServiceNameAmountTool = {
+export const batchUpdateServiceNameAmountTool = {
   name: "batch_update_service_name_amount",
-  description: "Batch update: update service name/amount only. Only updates provided fields.",
+  description: "Update service name/amount. Only updates provided fields.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateServicesNameAmountSchema,
   execute: async (params: z.infer<typeof UpdateServicesNameAmountSchema>) => {
@@ -72,9 +72,9 @@ export const updateServiceNameAmountTool = {
   },
 };
 
-export const changeServiceUsersTool = {
+export const batchSetServiceUsersTool = {
   name: "batch_set_service_users",
-  description: "Batch update: sets (replaces) all users assigned to a service. Pass empty array to unassign all.",
+  description: "Set (replace) all users assigned to a service. Pass empty array to unassign all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeServicesUsersSchema,
   execute: async (params: z.infer<typeof ChangeServicesUsersSchema>) => {
@@ -84,9 +84,9 @@ export const changeServiceUsersTool = {
   },
 };
 
-export const changeServiceDealsTool = {
+export const batchSetServiceDealsTool = {
   name: "batch_set_service_deals",
-  description: "Batch update: sets (replaces) all deals linked to a service. Pass empty array to unlink all.",
+  description: "Set (replace) all deals linked to a service. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeServicesDealsSchema,
   execute: async (params: z.infer<typeof ChangeServicesDealsSchema>) => {

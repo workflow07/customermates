@@ -76,9 +76,9 @@ const ChangeDealsServicesSchema = z.object({
     .max(10),
 });
 
-export const createDealsTool = {
-  name: "create_deals",
-  description: "Create deals. Run get_deals_configuration first. Required: name. Returns IDs.",
+export const batchCreateDealsTool = {
+  name: "batch_create_deals",
+  description: "Create deals. Run get_entity_configuration first. Required: name. Returns IDs.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyDealsSchema,
   execute: async (params: z.infer<typeof McpCreateManyDealsSchema>) => {
@@ -88,9 +88,9 @@ export const createDealsTool = {
   },
 };
 
-export const updateDealNameTool = {
+export const batchUpdateDealNameTool = {
   name: "batch_update_deal_name",
-  description: "Batch update: update deal name only. Only updates provided fields.",
+  description: "Update deal name. Only updates provided fields.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateDealsNameSchema,
   execute: async (params: z.infer<typeof UpdateDealsNameSchema>) => {
@@ -100,9 +100,9 @@ export const updateDealNameTool = {
   },
 };
 
-export const changeDealOrganizationsTool = {
+export const batchSetDealOrganizationsTool = {
   name: "batch_set_deal_organizations",
-  description: "Batch update: sets (replaces) all organizations linked to a deal. Pass empty array to unlink all.",
+  description: "Set (replace) all organizations linked to a deal. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsOrganizationsSchema,
   execute: async (params: z.infer<typeof ChangeDealsOrganizationsSchema>) => {
@@ -112,9 +112,9 @@ export const changeDealOrganizationsTool = {
   },
 };
 
-export const changeDealUsersTool = {
+export const batchSetDealUsersTool = {
   name: "batch_set_deal_users",
-  description: "Batch update: sets (replaces) all users assigned to a deal. Pass empty array to unassign all.",
+  description: "Set (replace) all users assigned to a deal. Pass empty array to unassign all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsUsersSchema,
   execute: async (params: z.infer<typeof ChangeDealsUsersSchema>) => {
@@ -124,9 +124,9 @@ export const changeDealUsersTool = {
   },
 };
 
-export const changeDealContactsTool = {
+export const batchSetDealContactsTool = {
   name: "batch_set_deal_contacts",
-  description: "Batch update: sets (replaces) all contacts linked to a deal. Pass empty array to unlink all.",
+  description: "Set (replace) all contacts linked to a deal. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsContactsSchema,
   execute: async (params: z.infer<typeof ChangeDealsContactsSchema>) => {
@@ -136,10 +136,9 @@ export const changeDealContactsTool = {
   },
 };
 
-export const changeDealServicesTool = {
+export const batchSetDealServicesTool = {
   name: "batch_set_deal_services",
-  description:
-    "Batch update: sets (replaces) all services linked to a deal with quantities. Pass empty array to unlink all.",
+  description: "Set (replace) all services linked to a deal with quantities. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsServicesSchema,
   execute: async (params: z.infer<typeof ChangeDealsServicesSchema>) => {

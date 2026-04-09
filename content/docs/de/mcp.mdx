@@ -41,7 +41,7 @@ Erstelle zuerst einen API-Key in deinen Profileinstellungen und konfiguriere dan
 {
   "mcpServers": {
     "customermates": {
-      "transport": "streamable-http",
+      "type": "http",
       "url": "https://customermates.com/api/v1/mcp",
       "headers": {
         "x-api-key": "YOUR_CUSTOMERMATES_API_KEY"
@@ -90,10 +90,10 @@ Der folgende Block orientiert sich eng an der Customermates-Skill, die in OpenCl
    - `get_entity_configuration`
    - `filter_entity`
    - `count_entity`
-   - `get_entity_details`
+   - `batch_get_entity_details`
    - `batch_update_entity_custom_field`
-   - `set_entity_notes`
-   - `delete_entity`
+   - `batch_set_entity_notes`
+   - `batch_delete_entity`
 2. Für Zählfragen zuerst `count_entity` verwenden.
 3. Für Such- und Listenfragen zuerst `filter_entity` verwenden.
 4. Für CRM-Datenantworten im selben Turn mindestens einen relevanten MCP-Aufruf ausführen.

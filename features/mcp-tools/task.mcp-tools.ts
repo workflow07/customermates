@@ -35,9 +35,9 @@ const ChangeTasksUsersSchema = z.object({
     .max(10),
 });
 
-export const createTasksTool = {
-  name: "create_tasks",
-  description: "Create tasks. Run get_tasks_configuration first. Required: name. Returns IDs.",
+export const batchCreateTasksTool = {
+  name: "batch_create_tasks",
+  description: "Create tasks. Run get_entity_configuration first. Required: name. Returns IDs.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyTasksSchema,
   execute: async (params: z.infer<typeof McpCreateManyTasksSchema>) => {
@@ -47,9 +47,9 @@ export const createTasksTool = {
   },
 };
 
-export const updateTaskNameTool = {
+export const batchUpdateTaskNameTool = {
   name: "batch_update_task_name",
-  description: "Batch update: update task name only. Only updates provided fields.",
+  description: "Update task name. Only updates provided fields.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateTasksNameSchema,
   execute: async (params: z.infer<typeof UpdateTasksNameSchema>) => {
@@ -59,9 +59,9 @@ export const updateTaskNameTool = {
   },
 };
 
-export const changeTaskUsersTool = {
+export const batchSetTaskUsersTool = {
   name: "batch_set_task_users",
-  description: "Batch update: sets (replaces) all users assigned to a task. Pass empty array to unassign all.",
+  description: "Set (replace) all users assigned to a task. Pass empty array to unassign all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeTasksUsersSchema,
   execute: async (params: z.infer<typeof ChangeTasksUsersSchema>) => {

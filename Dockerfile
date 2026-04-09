@@ -8,7 +8,7 @@ FROM base AS deps
 COPY package.json yarn.lock ./
 COPY prisma.config.ts ./prisma.config.ts
 COPY prisma ./prisma
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --network-timeout 600000
 
 FROM base AS builder
 ENV NEXT_TELEMETRY_DISABLED=1

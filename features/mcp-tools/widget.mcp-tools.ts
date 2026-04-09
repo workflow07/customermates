@@ -85,9 +85,9 @@ export const getWidgetsTool = {
   },
 };
 
-export const getWidgetDetailsTool = {
-  name: "get_widget_details",
-  description: "Get complete details of a specific widget by ID.",
+export const batchGetWidgetDetailsTool = {
+  name: "batch_get_widget_details",
+  description: "Get complete details of widgets by IDs.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: GetWidgetDetailsSchema,
   execute: async (params: z.infer<typeof GetWidgetDetailsSchema>) => {

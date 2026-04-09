@@ -59,9 +59,9 @@ const ChangeOrganizationsDealsSchema = z.object({
     .max(10),
 });
 
-export const createOrganizationsTool = {
-  name: "create_organizations",
-  description: "Create organizations. Run get_organizations_configuration first. Required: name. Returns IDs.",
+export const batchCreateOrganizationsTool = {
+  name: "batch_create_organizations",
+  description: "Create organizations. Run get_entity_configuration first. Required: name. Returns IDs.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyOrganizationsSchema,
   execute: async (params: z.infer<typeof McpCreateManyOrganizationsSchema>) => {
@@ -71,9 +71,9 @@ export const createOrganizationsTool = {
   },
 };
 
-export const updateOrganizationNameTool = {
+export const batchUpdateOrganizationNameTool = {
   name: "batch_update_organization_name",
-  description: "Batch update: update organization name only. Only updates provided fields.",
+  description: "Update organization name. Only updates provided fields.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateOrganizationsNameSchema,
   execute: async (params: z.infer<typeof UpdateOrganizationsNameSchema>) => {
@@ -83,9 +83,9 @@ export const updateOrganizationNameTool = {
   },
 };
 
-export const changeOrganizationContactsTool = {
+export const batchSetOrganizationContactsTool = {
   name: "batch_set_organization_contacts",
-  description: "Batch update: sets (replaces) all contacts linked to an organization. Pass empty array to unlink all.",
+  description: "Set (replace) all contacts linked to an organization. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsContactsSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsContactsSchema>) => {
@@ -95,9 +95,9 @@ export const changeOrganizationContactsTool = {
   },
 };
 
-export const changeOrganizationUsersTool = {
+export const batchSetOrganizationUsersTool = {
   name: "batch_set_organization_users",
-  description: "Batch update: sets (replaces) all users assigned to an organization. Pass empty array to unassign all.",
+  description: "Set (replace) all users assigned to an organization. Pass empty array to unassign all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsUsersSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsUsersSchema>) => {
@@ -107,9 +107,9 @@ export const changeOrganizationUsersTool = {
   },
 };
 
-export const changeOrganizationDealsTool = {
+export const batchSetOrganizationDealsTool = {
   name: "batch_set_organization_deals",
-  description: "Batch update: sets (replaces) all deals linked to an organization. Pass empty array to unlink all.",
+  description: "Set (replace) all deals linked to an organization. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsDealsSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsDealsSchema>) => {

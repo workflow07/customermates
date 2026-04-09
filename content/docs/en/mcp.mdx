@@ -39,7 +39,7 @@ Create an API key in your profile settings, then configure your MCP client to co
 {
   "mcpServers": {
     "customermates": {
-      "transport": "streamable-http",
+      "type": "http",
       "url": "https://customermates.com/api/v1/mcp",
       "headers": {
         "x-api-key": "YOUR_CUSTOMERMATES_API_KEY"
@@ -88,10 +88,10 @@ The following example mirrors the style of the Customermates skill used in OpenC
    - `get_entity_configuration`
    - `filter_entity`
    - `count_entity`
-   - `get_entity_details`
+   - `batch_get_entity_details`
    - `batch_update_entity_custom_field`
-   - `set_entity_notes`
-   - `delete_entity`
+   - `batch_set_entity_notes`
+   - `batch_delete_entity`
 2. For count questions, call `count_entity` first.
 3. For search and list questions, call `filter_entity` first.
 4. For CRM data answers, run at least one relevant MCP call in the same turn.

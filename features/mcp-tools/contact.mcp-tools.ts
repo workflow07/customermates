@@ -60,9 +60,9 @@ const ChangeContactsDealsSchema = z.object({
     .max(10),
 });
 
-export const createContactsTool = {
-  name: "create_contacts",
-  description: "Create contacts. Run get_contacts_configuration first. Required: firstName, lastName. Returns IDs.",
+export const batchCreateContactsTool = {
+  name: "batch_create_contacts",
+  description: "Create contacts. Run get_entity_configuration first. Required: firstName, lastName. Returns IDs.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyContactsSchema,
   execute: async (params: z.infer<typeof McpCreateManyContactsSchema>) => {
@@ -72,9 +72,9 @@ export const createContactsTool = {
   },
 };
 
-export const updateContactNameTool = {
+export const batchUpdateContactNameTool = {
   name: "batch_update_contact_name",
-  description: "Batch update: update contact firstName/lastName. Only updates provided fields.",
+  description: "Update contact firstName/lastName. Only updates provided fields.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateContactsNameSchema,
   execute: async (params: z.infer<typeof UpdateContactsNameSchema>) => {
@@ -84,9 +84,9 @@ export const updateContactNameTool = {
   },
 };
 
-export const setContactOrganizationsTool = {
+export const batchSetContactOrganizationsTool = {
   name: "batch_set_contact_organizations",
-  description: "Batch update: sets (replaces) all organizations linked to a contact. Pass empty array to unlink all.",
+  description: "Set (replace) all organizations linked to a contact. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsOrganizationsSchema,
   execute: async (params: z.infer<typeof ChangeContactsOrganizationsSchema>) => {
@@ -96,9 +96,9 @@ export const setContactOrganizationsTool = {
   },
 };
 
-export const setContactUsersTool = {
+export const batchSetContactUsersTool = {
   name: "batch_set_contact_users",
-  description: "Batch update: sets (replaces) all users assigned to a contact. Pass empty array to unassign all.",
+  description: "Set (replace) all users assigned to a contact. Pass empty array to unassign all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsUsersSchema,
   execute: async (params: z.infer<typeof ChangeContactsUsersSchema>) => {
@@ -108,9 +108,9 @@ export const setContactUsersTool = {
   },
 };
 
-export const setContactDealsTool = {
+export const batchSetContactDealsTool = {
   name: "batch_set_contact_deals",
-  description: "Batch update: sets (replaces) all deals linked to a contact. Pass empty array to unlink all.",
+  description: "Set (replace) all deals linked to a contact. Pass empty array to unlink all.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsDealsSchema,
   execute: async (params: z.infer<typeof ChangeContactsDealsSchema>) => {

@@ -218,9 +218,9 @@ export const countEntityTool = {
   },
 };
 
-export const getEntityDetailsTool = {
-  name: "get_entity_details",
-  description: "Get details by ID for selected entity types. Supports mixed entity types in a single call.",
+export const batchGetEntityDetailsTool = {
+  name: "batch_get_entity_details",
+  description: "Get details by IDs for selected entity types. Supports mixed entity types in a single call.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: DetailsEntitySchema,
   execute: async ({ items }: z.infer<typeof DetailsEntitySchema>) => {
@@ -247,9 +247,9 @@ export const getEntityDetailsTool = {
   },
 };
 
-export const setEntityNotesTool = {
+export const batchSetEntityNotesTool = {
   name: "batch_set_entity_notes",
-  description: "Batch update: sets markdown notes for a selected entity type. Pass empty string to clear notes.",
+  description: "Set markdown notes for a selected entity type. Pass empty string to clear notes.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: NotesEntitySchema,
   execute: async ({ entity, items }: z.infer<typeof NotesEntitySchema>) => {
@@ -285,8 +285,8 @@ export const setEntityNotesTool = {
   },
 };
 
-export const deleteEntityTool = {
-  name: "delete_entity",
+export const batchDeleteEntityTool = {
+  name: "batch_delete_entity",
   description: "Delete records by IDs for a selected entity type. Irreversible.",
   annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
   inputSchema: DeleteEntitySchema,
@@ -297,9 +297,9 @@ export const deleteEntityTool = {
   },
 };
 
-export const updateEntityCustomFieldTool = {
+export const batchUpdateEntityCustomFieldTool = {
   name: "batch_update_entity_custom_field",
-  description: "Batch update custom fields for selected records of one entity type.",
+  description: "Update custom fields for selected records of one entity type.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateCustomFieldEntitySchema,
   execute: async ({ entity, items }: z.infer<typeof UpdateCustomFieldEntitySchema>) => {

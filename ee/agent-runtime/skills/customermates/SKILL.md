@@ -31,10 +31,10 @@ always: true
    - `get_entity_configuration`
    - `filter_entity`
    - `count_entity`
-   - `get_entity_details`
+   - `batch_get_entity_details`
    - `batch_update_entity_custom_field`
-   - `set_entity_notes`
-   - `delete_entity`
+   - `batch_set_entity_notes`
+   - `batch_delete_entity`
 
 2. For count questions ("how many", "count", "number of"), call `count_entity` first.
 
