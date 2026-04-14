@@ -28,8 +28,8 @@ export function PricingSection({
       yearlyMonthlyEquivalentPerUser: 10,
     },
     pro: {
-      monthlyPerUser: 22,
-      yearlyMonthlyEquivalentPerUser: 20,
+      monthlyPerUser: 29,
+      yearlyMonthlyEquivalentPerUser: 24,
     },
   } as const;
   const yearlyDiscountPercent = Math.round(
