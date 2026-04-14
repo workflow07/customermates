@@ -88,13 +88,14 @@ export class AgentMachineService extends UserAccessor {
         headers: { Authorization: `Bearer ${FLY_API_TOKEN}` },
       });
 
-      if (!res.ok) return false;
+      if (res.status === 404) return false;
+      if (!res.ok) return true;
 
       const machine = await res.json();
 
       return machine.state !== "destroyed";
     } catch {
-      return false;
+      return true;
     }
   }
 
