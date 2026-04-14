@@ -73,16 +73,6 @@ export class AgentMachineService extends UserAccessor {
                 { port: 443, handlers: ["tls", "http"] },
                 { port: 80, handlers: ["http"] },
               ],
-              checks: [
-                {
-                  type: "http",
-                  port: 3000,
-                  method: "GET",
-                  path: "/readyz",
-                  interval: "10s",
-                  timeout: "5s",
-                },
-              ],
             },
           ],
         },
