@@ -1,7 +1,7 @@
-import React from "react";
+import type React from "react";
+
 import { Resend } from "resend";
 
-import { TenantAgnostic } from "@/core/decorators/tenant-agnostic.decorator";
 import { IS_DEVELOPMENT, RESEND_FROM_EMAIL } from "@/constants/env";
 
 type SendArgs = {
@@ -13,7 +13,6 @@ type SendArgs = {
 
 const defaultSender = `Customermates <${RESEND_FROM_EMAIL}>`;
 
-@TenantAgnostic
 export class EmailService {
   async send(args: SendArgs): Promise<void> {
     if (IS_DEVELOPMENT) {

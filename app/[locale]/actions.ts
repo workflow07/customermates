@@ -1,19 +1,16 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
 import { Status } from "@/generated/prisma";
 
-import { di } from "@/core/dependency-injection/container";
-import { SignOutInteractor } from "@/features/auth/sign-out.interactor";
-import { UserService } from "@/features/user/user.service";
+import { getSignOutInteractor, getUserService } from "@/core/di";
 
 export async function signOutAction() {
-  return di.get(SignOutInteractor).invoke();
+  return getSignOutInteractor().invoke();
 }
 
 export async function checkPendingStatusAndRedirect() {
-  const user = await di.get(UserService).getUser();
+  const user = await getUserService().getUser();
 
   if (user?.status !== Status.pendingAuthorization) redirect("/");
 }

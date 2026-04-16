@@ -1,8 +1,9 @@
+import type { AuthService } from "@/features/auth/auth.service";
+
 import { Action, Resource } from "@/generated/prisma";
 
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { AuthService } from "@/features/auth/auth.service";
 
 export interface ApiKey {
   id: string;

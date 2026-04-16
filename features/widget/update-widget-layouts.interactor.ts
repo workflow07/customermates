@@ -1,6 +1,7 @@
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
 
-import { Data } from "@/core/validation/validation.utils";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 

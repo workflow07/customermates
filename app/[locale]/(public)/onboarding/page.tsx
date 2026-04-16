@@ -3,16 +3,14 @@ import { redirect } from "next/navigation";
 import { OnboardingCard } from "./components/onboarding-card";
 
 import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
-import { di } from "@/core/dependency-injection/container";
-import { AuthService } from "@/features/auth/auth.service";
-import { UserService } from "@/features/user/user.service";
+import { getAuthService, getUserService } from "@/core/di";
 
 export default async function OnboardingPage() {
-  const isRegistered = await di.get(UserService).isRegistered();
+  const isRegistered = await getUserService().isRegistered();
 
   if (isRegistered) redirect("/");
 
-  const session = await di.get(AuthService).getSessionOrRedirect();
+  const session = await getAuthService().getSessionOrRedirect();
 
   const name = session.user?.name ?? "";
   const isEmail = name.includes("@");

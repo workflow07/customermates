@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { CreateManyDealsInteractor } from "@/features/deals/upsert/create-many-deals.interactor";
-import { UpdateManyDealsInteractor } from "@/features/deals/upsert/update-many-deals.interactor";
+import { getCreateManyDealsInteractor, getUpdateManyDealsInteractor } from "@/core/di";
 import { BaseCreateDealSchema } from "@/features/deals/upsert/create-deal-base.schema";
 
 const McpCreateManyDealsSchema = z.object({
@@ -82,7 +80,7 @@ export const batchCreateDealsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyDealsSchema,
   execute: async (params: z.infer<typeof McpCreateManyDealsSchema>) => {
-    const result = await di.get(CreateManyDealsInteractor).invoke(params);
+    const result = await getCreateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(result.data.map((item) => item.id));
   },
@@ -94,7 +92,7 @@ export const batchUpdateDealNameTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateDealsNameSchema,
   execute: async (params: z.infer<typeof UpdateDealsNameSchema>) => {
-    const result = await di.get(UpdateManyDealsInteractor).invoke(params);
+    const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;
   },
@@ -106,7 +104,7 @@ export const batchSetDealOrganizationsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsOrganizationsSchema,
   execute: async (params: z.infer<typeof ChangeDealsOrganizationsSchema>) => {
-    const result = await di.get(UpdateManyDealsInteractor).invoke(params);
+    const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;
   },
@@ -118,7 +116,7 @@ export const batchSetDealUsersTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsUsersSchema,
   execute: async (params: z.infer<typeof ChangeDealsUsersSchema>) => {
-    const result = await di.get(UpdateManyDealsInteractor).invoke(params);
+    const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;
   },
@@ -130,7 +128,7 @@ export const batchSetDealContactsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsContactsSchema,
   execute: async (params: z.infer<typeof ChangeDealsContactsSchema>) => {
-    const result = await di.get(UpdateManyDealsInteractor).invoke(params);
+    const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;
   },
@@ -142,7 +140,7 @@ export const batchSetDealServicesTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeDealsServicesSchema,
   execute: async (params: z.infer<typeof ChangeDealsServicesSchema>) => {
-    const result = await di.get(UpdateManyDealsInteractor).invoke(params);
+    const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;
   },

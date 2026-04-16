@@ -1,23 +1,20 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWebhooksRepo } from "./get-webhooks.interactor";
+import type { UpsertWebhookRepo } from "./upsert-webhook.interactor";
+import type { DeleteWebhookRepo } from "./delete-webhook.interactor";
+import type { GetWebhookSecretRepo } from "./process-webhook-deliveries.interactor";
+import type { WebhookDto } from "./webhook.schema";
+import type { GetWebhooksForEventRepo } from "@/features/event/event.service";
 
-import { Prisma } from "@/generated/prisma";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetWebhooksRepo } from "./get-webhooks.interactor";
-import { UpsertWebhookRepo } from "./upsert-webhook.interactor";
-import { DeleteWebhookRepo } from "./delete-webhook.interactor";
-import { GetWebhookSecretRepo } from "./process-webhook-deliveries.interactor";
-import { WebhookDto } from "./webhook.schema";
-
-import { GetWebhooksForEventRepo } from "@/features/event/event.service";
 import { BaseRepository } from "@/core/base/base-repository";
 import { transactionStorage } from "@/core/decorators/transaction-context";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
 
-@Repository
 export class PrismaWebhookRepo
   extends BaseRepository<Prisma.WebhookWhereInput>
   implements GetWebhooksRepo, UpsertWebhookRepo, DeleteWebhookRepo, GetWebhooksForEventRepo, GetWebhookSecretRepo

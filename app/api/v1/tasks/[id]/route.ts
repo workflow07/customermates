@@ -3,16 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { DeleteTaskInteractor } from "@/features/tasks/delete/delete-task.interactor";
-import { GetTaskByIdInteractor } from "@/features/tasks/get/get-task-by-id.interactor";
-import { UpdateTaskInteractor } from "@/features/tasks/upsert/update-task.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getDeleteTaskInteractor, getGetTaskByIdInteractor, getUpdateTaskInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(DeleteTaskInteractor).invoke({ id });
+    const result = await getDeleteTaskInteractor().invoke({ id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -25,7 +22,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(GetTaskByIdInteractor).invoke({ id });
+    const result = await getGetTaskByIdInteractor().invoke({ id });
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -37,7 +34,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params;
     const data = await request.json();
-    const result = await di.get(UpdateTaskInteractor).invoke({ ...data, id });
+    const result = await getUpdateTaskInteractor().invoke({ ...data, id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

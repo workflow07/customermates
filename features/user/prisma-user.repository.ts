@@ -1,42 +1,39 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { FindUserRepo } from "./user.service";
+import type { RegisterUserRepo } from "@/features/user/register/register-user.interactor";
+import type { UpdateUserDetailsRepo } from "@/features/user/upsert/update-user-details.interactor";
+import type { UpdateUserSettingsRepo } from "@/features/user/upsert/update-user-settings.interactor";
+import type { AdminUpdateUserDetailsRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
+import type { GetUserByIdRepo } from "@/features/user/get/get-user-by-id.interactor";
+import type { CheckAgentHealthRepo } from "@/ee/agent/check-agent-health.interactor";
+import type { DeleteApiKeyRepo } from "@/features/api-key/delete-api-key.interactor";
+import type { GetApiKeysRepo } from "@/features/api-key/get-api-keys.interactor";
+import type { GetAgentControlUrlRepo } from "@/ee/agent/get-agent-control-url.interactor";
+import type { GetAgentProvisionedRepo } from "@/ee/agent/get-agent-provisioned.interactor";
+import type { ProvisionAgentRepo } from "@/ee/agent/provision-agent.interactor";
+import type { ResetAgentRepo } from "@/ee/agent/reset-agent.interactor";
+import type { VerifyAgentMachineRepo } from "@/ee/agent/verify-agent-machine.interactor";
+import type { SendWelcomeAndDemoActionRepo } from "@/ee/lifecycle/send-welcome-and-demo.interactor";
+import type { SendTrialExtensionOfferActionRepo } from "@/ee/lifecycle/send-trial-extension-offer.interactor";
+import type { SendTrialInactivationReminderActionRepo } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
+import type { DeactivateTrialUsersAndSendNoticeRepo } from "@/ee/lifecycle/deactivate-trial-users-and-send-notice.interactor";
+import type { DeactivateUsersAfterSubscriptionGracePeriodRepo } from "@/ee/lifecycle/deactivate-users-after-subscription-grace-period.interactor";
+import type { CleanupInactiveUsersResourcesActionRepo } from "@/ee/lifecycle/cleanup-inactive-users-resources.interactor";
+import type { CleanupNonProCompaniesResourcesRepo } from "@/ee/lifecycle/cleanup-non-pro-companies-resources.interactor";
 
 import { randomUUID } from "crypto";
 
 import { getTranslations } from "next-intl/server";
-
 import { CustomColumnType, EntityType, Status, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
 
-import { FindUserRepo } from "./user.service";
 import { type UserDto } from "./user.schema";
 
 import { CHIP_COLORS } from "@/constants/chip-colors";
-import { RegisterUserRepo } from "@/features/user/register/register-user.interactor";
-import { UpdateUserDetailsRepo } from "@/features/user/upsert/update-user-details.interactor";
-import { UpdateUserSettingsRepo } from "@/features/user/upsert/update-user-settings.interactor";
-import { AdminUpdateUserDetailsRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
-import { GetUserByIdRepo } from "@/features/user/get/get-user-by-id.interactor";
-import { CheckAgentHealthRepo } from "@/ee/agent/check-agent-health.interactor";
-import { DeleteApiKeyRepo } from "@/features/api-key/delete-api-key.interactor";
-import { GetApiKeysRepo } from "@/features/api-key/get-api-keys.interactor";
-import { GetAgentControlUrlRepo } from "@/ee/agent/get-agent-control-url.interactor";
-import { GetAgentProvisionedRepo } from "@/ee/agent/get-agent-provisioned.interactor";
-import { ProvisionAgentRepo } from "@/ee/agent/provision-agent.interactor";
-import { ResetAgentRepo } from "@/ee/agent/reset-agent.interactor";
-import { VerifyAgentMachineRepo } from "@/ee/agent/verify-agent-machine.interactor";
-import { SendWelcomeAndDemoActionRepo } from "@/ee/lifecycle/send-welcome-and-demo.interactor";
-import { SendTrialExtensionOfferActionRepo } from "@/ee/lifecycle/send-trial-extension-offer.interactor";
-import { SendTrialInactivationReminderActionRepo } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
-import { DeactivateTrialUsersAndSendNoticeRepo } from "@/ee/lifecycle/deactivate-trial-users-and-send-notice.interactor";
-import { DeactivateUsersAfterSubscriptionGracePeriodRepo } from "@/ee/lifecycle/deactivate-users-after-subscription-grace-period.interactor";
-import { CleanupInactiveUsersResourcesActionRepo } from "@/ee/lifecycle/cleanup-inactive-users-resources.interactor";
-import { CleanupNonProCompaniesResourcesRepo } from "@/ee/lifecycle/cleanup-non-pro-companies-resources.interactor";
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { BypassTenantGuard } from "@/core/decorators/bypass-tenant.decorator";
 import { IS_CLOUD_HOSTED } from "@/constants/env";
 
-@Repository
 export class PrismaUserRepo
   extends BaseRepository
   implements

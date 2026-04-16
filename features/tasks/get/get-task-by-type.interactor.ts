@@ -1,12 +1,11 @@
 import type { TaskDto } from "../task.schema";
+import type { Data } from "@/core/validation/validation.utils";
 
 import { z } from "zod";
-
 import { Resource, Action, TaskType } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 
 const Schema = z.object({

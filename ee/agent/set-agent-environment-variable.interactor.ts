@@ -1,12 +1,12 @@
+import type { AgentMachineService } from "./agent-machine.service";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
-
 import { Action, Resource } from "@/generated/prisma";
-
-import { AgentMachineService } from "./agent-machine.service";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 
 const Schema = z.object({
   key: z

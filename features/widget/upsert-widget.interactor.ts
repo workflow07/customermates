@@ -1,13 +1,13 @@
+import type { ExtendedWidget } from "./widget.types";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
-
 import { EntityType, WidgetGroupByType, AggregationType } from "@/generated/prisma";
-
-import { ExtendedWidget } from "./widget.types";
 
 import { ChartColor, DisplayType } from "@/features/widget/widget.types";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { CustomErrorCode } from "@/core/validation/validation.types";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { FilterSchema } from "@/core/base/base-get.schema";
 

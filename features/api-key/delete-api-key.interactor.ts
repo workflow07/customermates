@@ -1,11 +1,12 @@
-import { z } from "zod";
+import type { Data } from "@/core/validation/validation.utils";
+import type { AuthService } from "@/features/auth/auth.service";
 
+import { z } from "zod";
 import { Resource, Action } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
-import { AuthService } from "@/features/auth/auth.service";
+import { type Validated } from "@/core/validation/validation.utils";
 
 const Schema = z.object({
   id: z.string(),

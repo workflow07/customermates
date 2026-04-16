@@ -1,16 +1,14 @@
 import type { RepoArgs } from "@/core/utils/types";
 import type { Filter, SortDescriptor, PaginationRequest } from "@/core/base/base-get.schema";
 import type { ViewMode } from "@/core/base/base-query-builder";
+import type { UpsertP13nRepo } from "./upsert-p13n.interactor";
+import type { UpsertFilterPresetRepo } from "./upsert-filter-preset.interactor";
+import type { DeleteFilterPresetRepo } from "./delete-filter-preset.interactor";
+import type { P13nRepo } from "@/core/base/base-get.interactor";
 
 import { Prisma } from "@/generated/prisma";
 
-import { UpsertP13nRepo } from "./upsert-p13n.interactor";
-import { UpsertFilterPresetRepo } from "./upsert-filter-preset.interactor";
-import { DeleteFilterPresetRepo } from "./delete-filter-preset.interactor";
-
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
-import { P13nRepo } from "@/core/base/base-get.interactor";
 
 export type SavedFilterPreset = {
   id: string;
@@ -32,7 +30,6 @@ export interface P13nEntry {
   groupingColumnId?: string;
 }
 
-@Repository
 export class PrismaP13nRepo
   extends BaseRepository
   implements P13nRepo, UpsertP13nRepo, UpsertFilterPresetRepo, DeleteFilterPresetRepo

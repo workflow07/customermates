@@ -1,7 +1,4 @@
-import "reflect-metadata";
-
 import createNextIntlPlugin from "next-intl/plugin";
-import { withSentryConfig } from "@sentry/nextjs";
 import { createMDX } from "fumadocs-mdx/next";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
@@ -22,19 +19,6 @@ const nextConfig = {
     position: "top-left",
   },
 
-  images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-    ],
-  },
-
   compress: true,
 
   experimental: {
@@ -47,7 +31,6 @@ const nextConfig = {
       "mobx-react-lite",
       "zod",
       "framer-motion",
-      "@sentry/nextjs",
       "fumadocs-ui",
       "lodash",
     ],
@@ -68,12 +51,4 @@ const nextConfig = {
   },
 };
 
-const config = withMDX(withNextIntl(nextConfig));
-
-export default withSentryConfig(config, {
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  tunnelRoute: "/error-monitoring",
-  disableLogger: true,
-  telemetry: false,
-});
+export default withMDX(withNextIntl(nextConfig));

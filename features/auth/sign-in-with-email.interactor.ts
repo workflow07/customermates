@@ -1,10 +1,9 @@
 import type { Data, Validated } from "@/core/validation/validation.utils";
+import type { AuthService } from "./auth.service";
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-
-import { AuthService } from "./auth.service";
 
 import { Validate } from "@/core/decorators/validate.decorator";
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";

@@ -1,6 +1,7 @@
-import type { ExtendedUser } from "@/features/user/user.service";
+import type { ExtendedUser } from "@/features/user/user.types";
 
 import { Resource, Action } from "@/generated/prisma";
+
 import type { Prisma } from "@/generated/prisma";
 
 import { getTransactionClient } from "../decorators/transaction-context";

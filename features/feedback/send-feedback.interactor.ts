@@ -1,12 +1,14 @@
+import type { FeedbackType } from "./send-feedback.schema";
+import type { EmailService } from "@/features/email/email.service";
+
 import React from "react";
 
-import { FeedbackType, SendFeedbackSchema, type SendFeedbackData } from "./send-feedback.schema";
+import { SendFeedbackSchema, type SendFeedbackData } from "./send-feedback.schema";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { UserAccessor } from "@/core/base/user-accessor";
-import { EmailService } from "@/features/email/email.service";
 import XFeedback from "@/components/x-emails/x-feedback";
 
 const SUBJECT_MAP: Record<FeedbackType, string> = {

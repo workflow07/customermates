@@ -1,15 +1,14 @@
 import type { GetResult } from "@/core/base/base-get.interactor";
 import type { GetQueryParamsApi } from "@/core/base/base-get.schema";
 import type { Validated } from "@/core/validation/validation.utils";
+import type { GetOrganizationsRepo } from "./get-organizations.interactor";
+import type { P13nRepo } from "@/core/base/base-get.interactor";
 
 import { EntityType, Resource, Action } from "@/generated/prisma";
 
 import { type OrganizationDto } from "../organization.schema";
 
-import { GetOrganizationsRepo } from "./get-organizations.interactor";
-
-import { ValidateQueryParamsValidator } from "@/core/base/validate-query-params.validator";
-import { P13nRepo } from "@/core/base/base-get.interactor";
+import { getOrganizationRepo, getValidateQueryParams } from "@/core/di";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { BaseGetInteractor } from "@/core/base/base-get.interactor";
 import { Validate } from "@/core/decorators/validate.decorator";
@@ -17,8 +16,7 @@ import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator"
 import { GetQueryParamsApiSchema } from "@/core/base/base-get.schema";
 
 const GetOrganizationsQueryParamsApiSchema = GetQueryParamsApiSchema.superRefine(async (data, ctx) => {
-  const { di } = await import("@/core/dependency-injection/container");
-  await di.get(ValidateQueryParamsValidator).invoke(di.get(GetOrganizationsRepo), EntityType.organization, data, ctx);
+  await getValidateQueryParams().invoke(getOrganizationRepo(), EntityType.organization, data, ctx);
 });
 
 @AllowInDemoMode

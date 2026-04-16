@@ -6,33 +6,34 @@ import type { UpdateContactData } from "@/features/contacts/upsert/update-contac
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 import type { DeleteContactData } from "@/features/contacts/delete/delete-contact.interactor";
 
-import { DeleteContactInteractor } from "@/features/contacts/delete/delete-contact.interactor";
-import { GetContactsInteractor } from "@/features/contacts/get/get-contacts.interactor";
-import { GetContactByIdInteractor } from "@/features/contacts/get/get-contact-by-id.interactor";
-import { CreateContactInteractor } from "@/features/contacts/upsert/create-contact.interactor";
-import { UpdateContactInteractor } from "@/features/contacts/upsert/update-contact.interactor";
-import { di } from "@/core/dependency-injection/container";
+import {
+  getGetContactsInteractor,
+  getGetContactByIdInteractor,
+  getCreateContactInteractor,
+  getUpdateContactInteractor,
+  getDeleteContactInteractor,
+} from "@/core/di";
 import { serializeResult } from "@/core/utils/action-result";
 
 export async function getContactsAction(params?: GetQueryParams) {
-  const result = await di.get(GetContactsInteractor).invoke(params);
+  const result = await getGetContactsInteractor().invoke(params);
   return result.ok ? result.data : { items: [] };
 }
 
 export async function createContactAction(data: CreateContactData) {
-  return serializeResult(di.get(CreateContactInteractor).invoke(data));
+  return serializeResult(getCreateContactInteractor().invoke(data));
 }
 
 export async function updateContactAction(data: UpdateContactData) {
-  return serializeResult(di.get(UpdateContactInteractor).invoke(data));
+  return serializeResult(getUpdateContactInteractor().invoke(data));
 }
 
 export async function deleteContactAction(data: DeleteContactData) {
-  return di.get(DeleteContactInteractor).invoke(data);
+  return getDeleteContactInteractor().invoke(data);
 }
 
 export async function getContactByIdAction(data: GetContactByIdData) {
-  const result = await di.get(GetContactByIdInteractor).invoke(data);
+  const result = await getGetContactByIdInteractor().invoke(data);
   return result.ok
     ? { entity: result.data.contact, customColumns: result.data.customColumns }
     : { entity: null, customColumns: [] };

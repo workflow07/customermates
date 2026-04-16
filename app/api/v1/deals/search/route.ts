@@ -3,14 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { GetDealsApiInteractor } from "@/features/deals/get/get-deals-api.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getGetDealsApiInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(GetDealsApiInteractor).invoke(data);
+    const result = await getGetDealsApiInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

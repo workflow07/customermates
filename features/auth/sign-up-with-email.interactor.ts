@@ -1,8 +1,8 @@
+import type { AuthService } from "./auth.service";
+
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-
-import { AuthService } from "./auth.service";
 
 import { createZodError, passwordSchema, type Data, type Validated } from "@/core/validation/validation.utils";
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";

@@ -1,6 +1,6 @@
-import { TaskType } from "@/generated/prisma";
+import type { TaskService } from "../task.service";
 
-import { TaskService } from "../task.service";
+import { TaskType } from "@/generated/prisma";
 
 import { DomainEvent } from "@/features/event/domain-events";
 import { BaseTaskListener } from "@/features/tasks/listener/base-task.listener";

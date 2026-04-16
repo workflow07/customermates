@@ -1,11 +1,9 @@
-import { multiInject } from "inversify";
-
-import { DomainEvent, DomainEventMap } from "./domain-events";
+import type { DomainEvent, DomainEventMap } from "./domain-events";
+import type { BaseTaskListener } from "@/features/tasks/listener/base-task.listener";
+import type { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
 
 import { UserAccessor } from "@/core/base/user-accessor";
 import { TenantScoped } from "@/core/decorators/tenant-scoped.decorator";
-import { BaseTaskListener } from "@/features/tasks/listener/base-task.listener";
-import { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
 import { WebhookEventSchema } from "@/features/webhook/webhook.schema";
 
 export abstract class GetWebhooksForEventRepo {
@@ -21,7 +19,7 @@ type ScopedEventData<E extends DomainEvent> = Omit<DomainEventMap[E], "userId" |
 @TenantScoped
 export class EventService extends UserAccessor {
   constructor(
-    @multiInject(BaseTaskListener) private readonly taskListeners: BaseTaskListener[],
+    private readonly taskListeners: BaseTaskListener[],
     private webhookRepo: GetWebhooksForEventRepo,
     private webhookDeliveryRepo: CreateWebhookDeliveryRepo,
     private auditLogRepo: CreateAuditLogRepo,

@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { GetCompanyDetailsInteractor } from "@/features/company/get-company-details.interactor";
-import { GetRolesInteractor } from "@/features/role/get-roles.interactor";
+import { getGetCompanyDetailsInteractor, getGetRolesInteractor } from "@/core/di";
 
 export const getCompanyDetailsTool = {
   name: "get_company_details",
@@ -12,7 +10,7 @@ export const getCompanyDetailsTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: z.object({}),
   execute: async () => {
-    const company = await di.get(GetCompanyDetailsInteractor).invoke();
+    const company = await getGetCompanyDetailsInteractor().invoke();
     return encodeToToon({
       id: company.id,
       name: company.name,
@@ -33,7 +31,7 @@ export const getRolesTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: z.object({}),
   execute: async () => {
-    const result = await di.get(GetRolesInteractor).invoke({
+    const result = await getGetRolesInteractor().invoke({
       pagination: { page: 1, pageSize: 100 },
     });
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;

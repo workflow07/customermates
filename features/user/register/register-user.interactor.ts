@@ -1,13 +1,12 @@
 import type { Data, Validated } from "@/core/validation/validation.utils";
 import type { ExtendedUser } from "../../user/user.service";
+import type { AuthService } from "../../auth/auth.service";
+import type { EventService } from "../../event/event.service";
 
 import { z } from "zod";
-
 import { CountryCode } from "@/generated/prisma";
 
-import { AuthService } from "../../auth/auth.service";
 import { DomainEvent } from "../../event/domain-events";
-import { EventService } from "../../event/event.service";
 
 import { runWithTenant } from "@/core/decorators/tenant-context";
 import { Validate } from "@/core/decorators/validate.decorator";

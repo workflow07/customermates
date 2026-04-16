@@ -1,10 +1,11 @@
+import type { EmailService } from "@/features/email/email.service";
+
 import { getTranslations } from "next-intl/server";
 
-import { User } from "@/generated/prisma";
+import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
 import XTrialExpiredOffer from "@/components/x-emails/x-trial-expired-offer";
-import { EmailService } from "@/features/email/email.service";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 
 export abstract class SendTrialExtensionOfferActionRepo {

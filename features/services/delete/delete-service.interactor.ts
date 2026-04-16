@@ -1,30 +1,30 @@
-import { z } from "zod";
+import type { DeleteServiceRepo } from "./delete-service.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action } from "@/generated/prisma";
 
-import { FindServicesByIdsRepo, validateServiceIds } from "../../../core/validation/validate-service-ids";
-
-import { DeleteServiceRepo } from "./delete-service.repo";
+import { validateServiceIds } from "../../../core/validation/validate-service-ids";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getServiceRepo } from "@/core/di";
 
 export const DeleteServiceSchema = z
   .object({
     id: z.uuid(),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
     const serviceSet = new Set([data.id]);
-    const validIdsSet = await preserveTenantContext(() => di.get(FindServicesByIdsRepo).findIds(serviceSet));
+    const validIdsSet = await preserveTenantContext(() => getServiceRepo().findIds(serviceSet));
     validateServiceIds(data.id, validIdsSet, ctx, ["id"]);
   });
 export type DeleteServiceData = Data<typeof DeleteServiceSchema>;

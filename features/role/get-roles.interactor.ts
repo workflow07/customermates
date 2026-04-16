@@ -1,24 +1,15 @@
+import type { UserRoleDto } from "./role.types";
+import type { P13nRepo } from "@/core/base/base-get.interactor";
+
 import { Resource, Action } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { BaseGetRepo, BaseGetInteractor, P13nRepo } from "@/core/base/base-get.interactor";
+import { BaseGetRepo, BaseGetInteractor } from "@/core/base/base-get.interactor";
 import { GetQueryParamsSchema, type GetQueryParams } from "@/core/base/base-get.schema";
 
-export type UserRoleDto = {
-  id: string;
-  name: string;
-  description: string | null;
-  isSystemRole: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  permissions: {
-    id: string;
-    resource: Resource;
-    action: Action;
-  }[];
-};
+export type { UserRoleDto } from "./role.types";
 
 export abstract class GetRolesRepo extends BaseGetRepo<UserRoleDto> {}
 

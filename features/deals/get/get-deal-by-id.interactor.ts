@@ -1,5 +1,6 @@
-import { z } from "zod";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action, EntityType } from "@/generated/prisma";
 
 import { type DealDto } from "../deal.schema";
@@ -7,7 +8,7 @@ import { type DealDto } from "../deal.schema";
 import { type CustomColumnDto } from "@/features/custom-column/custom-column.schema";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 
 export const GetDealByIdSchema = z.object({

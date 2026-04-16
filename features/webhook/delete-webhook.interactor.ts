@@ -1,13 +1,13 @@
-import { z } from "zod";
+import type { WebhookDto } from "./webhook.schema";
+import type { EventService } from "@/features/event/event.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action } from "@/generated/prisma";
 
-import { WebhookDto } from "./webhook.schema";
-
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 
 export const DeleteWebhookSchema = z.object({

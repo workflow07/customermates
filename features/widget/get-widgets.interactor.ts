@@ -1,4 +1,4 @@
-import { ExtendedWidget } from "./widget.types";
+import type { ExtendedWidget } from "./widget.types";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";

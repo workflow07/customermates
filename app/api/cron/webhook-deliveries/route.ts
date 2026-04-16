@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { di } from "@/core/dependency-injection/container";
-import { ProcessWebhookDeliveriesInteractor } from "@/features/webhook/process-webhook-deliveries.interactor";
+import { getProcessWebhookDeliveriesInteractor } from "@/core/di";
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");
@@ -10,7 +9,7 @@ export async function GET(request: Request) {
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  await di.get(ProcessWebhookDeliveriesInteractor).invoke();
+  await getProcessWebhookDeliveriesInteractor().invoke();
 
   return new NextResponse("ok");
 }

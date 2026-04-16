@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { GetDealsConfigurationInteractor } from "@/features/deals/get/get-deals-configuration.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getGetDealsConfigurationInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function GET() {
   try {
-    const result = await di.get(GetDealsConfigurationInteractor).invoke();
+    const result = await getGetDealsConfigurationInteractor().invoke();
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

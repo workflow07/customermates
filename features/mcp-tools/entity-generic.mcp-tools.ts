@@ -4,33 +4,34 @@ import { encodeToToon, FILTER_SYNTAX, formatDatesInResponse } from "./utils";
 
 import { FilterSchema, SortDescriptorSchema } from "@/core/base/base-get.schema";
 import { CustomFieldValueSchema } from "@/core/base/base-entity.schema";
-import { di } from "@/core/dependency-injection/container";
 import { serializeJSONToMarkdown } from "@/components/x-editor/x-editor.utils";
-import { GetContactsApiInteractor } from "@/features/contacts/get/get-contacts-api.interactor";
-import { GetContactByIdInteractor } from "@/features/contacts/get/get-contact-by-id.interactor";
-import { DeleteManyContactsInteractor } from "@/features/contacts/delete/delete-many-contacts.interactor";
-import { GetContactsConfigurationInteractor } from "@/features/contacts/get/get-contacts-configuration.interactor";
-import { UpdateManyContactsInteractor } from "@/features/contacts/upsert/update-many-contacts.interactor";
-import { GetOrganizationsApiInteractor } from "@/features/organizations/get/get-organizations-api.interactor";
-import { GetOrganizationByIdInteractor } from "@/features/organizations/get/get-organization-by-id.interactor";
-import { DeleteManyOrganizationsInteractor } from "@/features/organizations/delete/delete-many-organizations.interactor";
-import { GetOrganizationsConfigurationInteractor } from "@/features/organizations/get/get-organizations-configuration.interactor";
-import { UpdateManyOrganizationsInteractor } from "@/features/organizations/upsert/update-many-organizations.interactor";
-import { GetDealsApiInteractor } from "@/features/deals/get/get-deals-api.interactor";
-import { GetDealByIdInteractor } from "@/features/deals/get/get-deal-by-id.interactor";
-import { DeleteManyDealsInteractor } from "@/features/deals/delete/delete-many-deals.interactor";
-import { GetDealsConfigurationInteractor } from "@/features/deals/get/get-deals-configuration.interactor";
-import { UpdateManyDealsInteractor } from "@/features/deals/upsert/update-many-deals.interactor";
-import { GetServicesApiInteractor } from "@/features/services/get/get-services-api.interactor";
-import { GetServiceByIdInteractor } from "@/features/services/get/get-service-by-id.interactor";
-import { DeleteManyServicesInteractor } from "@/features/services/delete/delete-many-services.interactor";
-import { GetServicesConfigurationInteractor } from "@/features/services/get/get-services-configuration.interactor";
-import { UpdateManyServicesInteractor } from "@/features/services/upsert/update-many-services.interactor";
-import { GetTasksApiInteractor } from "@/features/tasks/get/get-tasks-api.interactor";
-import { GetTaskByIdInteractor } from "@/features/tasks/get/get-task-by-id.interactor";
-import { DeleteManyTasksInteractor } from "@/features/tasks/delete/delete-many-tasks.interactor";
-import { GetTasksConfigurationInteractor } from "@/features/tasks/get/get-tasks-configuration.interactor";
-import { UpdateManyTasksInteractor } from "@/features/tasks/upsert/update-many-tasks.interactor";
+import {
+  getGetContactsApiInteractor,
+  getGetContactByIdInteractor,
+  getDeleteManyContactsInteractor,
+  getGetContactsConfigurationInteractor,
+  getUpdateManyContactsInteractor,
+  getGetOrganizationsApiInteractor,
+  getGetOrganizationByIdInteractor,
+  getDeleteManyOrganizationsInteractor,
+  getGetOrganizationsConfigurationInteractor,
+  getUpdateManyOrganizationsInteractor,
+  getGetDealsApiInteractor,
+  getGetDealByIdInteractor,
+  getDeleteManyDealsInteractor,
+  getGetDealsConfigurationInteractor,
+  getUpdateManyDealsInteractor,
+  getGetServicesApiInteractor,
+  getGetServiceByIdInteractor,
+  getDeleteManyServicesInteractor,
+  getGetServicesConfigurationInteractor,
+  getUpdateManyServicesInteractor,
+  getGetTasksApiInteractor,
+  getGetTaskByIdInteractor,
+  getDeleteManyTasksInteractor,
+  getGetTasksConfigurationInteractor,
+  getUpdateManyTasksInteractor,
+} from "@/core/di";
 
 const EntitySchema = z.enum(["contact", "organization", "deal", "service", "task"]);
 
@@ -113,44 +114,44 @@ const singularLabels: Record<Entity, string> = {
 
 const configurationExecutors: Record<Entity, () => Promise<unknown>> = {
   contact: async () => {
-    return di.get(GetContactsConfigurationInteractor).invoke();
+    return getGetContactsConfigurationInteractor().invoke();
   },
   organization: async () => {
-    return di.get(GetOrganizationsConfigurationInteractor).invoke();
+    return getGetOrganizationsConfigurationInteractor().invoke();
   },
   deal: async () => {
-    return di.get(GetDealsConfigurationInteractor).invoke();
+    return getGetDealsConfigurationInteractor().invoke();
   },
   service: async () => {
-    return di.get(GetServicesConfigurationInteractor).invoke();
+    return getGetServicesConfigurationInteractor().invoke();
   },
   task: async () => {
-    return di.get(GetTasksConfigurationInteractor).invoke();
+    return getGetTasksConfigurationInteractor().invoke();
   },
 };
 
 const listExecutors: Record<Entity, (params: ListQueryParams) => Promise<any>> = {
-  contact: async (params) => di.get(GetContactsApiInteractor).invoke(params),
-  organization: async (params) => di.get(GetOrganizationsApiInteractor).invoke(params),
-  deal: async (params) => di.get(GetDealsApiInteractor).invoke(params),
-  service: async (params) => di.get(GetServicesApiInteractor).invoke(params),
-  task: async (params) => di.get(GetTasksApiInteractor).invoke(params),
+  contact: async (params) => getGetContactsApiInteractor().invoke(params),
+  organization: async (params) => getGetOrganizationsApiInteractor().invoke(params),
+  deal: async (params) => getGetDealsApiInteractor().invoke(params),
+  service: async (params) => getGetServicesApiInteractor().invoke(params),
+  task: async (params) => getGetTasksApiInteractor().invoke(params),
 };
 
 const detailsExecutors: Record<Entity, (id: string) => Promise<any>> = {
-  contact: async (id) => di.get(GetContactByIdInteractor).invoke({ id }),
-  organization: async (id) => di.get(GetOrganizationByIdInteractor).invoke({ id }),
-  deal: async (id) => di.get(GetDealByIdInteractor).invoke({ id }),
-  service: async (id) => di.get(GetServiceByIdInteractor).invoke({ id }),
-  task: async (id) => di.get(GetTaskByIdInteractor).invoke({ id }),
+  contact: async (id) => getGetContactByIdInteractor().invoke({ id }),
+  organization: async (id) => getGetOrganizationByIdInteractor().invoke({ id }),
+  deal: async (id) => getGetDealByIdInteractor().invoke({ id }),
+  service: async (id) => getGetServiceByIdInteractor().invoke({ id }),
+  task: async (id) => getGetTaskByIdInteractor().invoke({ id }),
 };
 
 const deleteExecutors: Record<Entity, (ids: string[]) => Promise<any>> = {
-  contact: async (ids) => di.get(DeleteManyContactsInteractor).invoke({ ids }),
-  organization: async (ids) => di.get(DeleteManyOrganizationsInteractor).invoke({ ids }),
-  deal: async (ids) => di.get(DeleteManyDealsInteractor).invoke({ ids }),
-  service: async (ids) => di.get(DeleteManyServicesInteractor).invoke({ ids }),
-  task: async (ids) => di.get(DeleteManyTasksInteractor).invoke({ ids }),
+  contact: async (ids) => getDeleteManyContactsInteractor().invoke({ ids }),
+  organization: async (ids) => getDeleteManyOrganizationsInteractor().invoke({ ids }),
+  deal: async (ids) => getDeleteManyDealsInteractor().invoke({ ids }),
+  service: async (ids) => getDeleteManyServicesInteractor().invoke({ ids }),
+  task: async (ids) => getDeleteManyTasksInteractor().invoke({ ids }),
 };
 
 const nameExtractors: Record<Entity, (item: any) => string> = {
@@ -259,27 +260,27 @@ export const batchSetEntityNotesTool = {
     }));
 
     if (entity === "contact") {
-      const result = await di.get(UpdateManyContactsInteractor).invoke({ contacts: normalized });
+      const result = await getUpdateManyContactsInteractor().invoke({ contacts: normalized });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
     }
     if (entity === "organization") {
-      const result = await di.get(UpdateManyOrganizationsInteractor).invoke({ organizations: normalized });
+      const result = await getUpdateManyOrganizationsInteractor().invoke({ organizations: normalized });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
     }
     if (entity === "deal") {
-      const result = await di.get(UpdateManyDealsInteractor).invoke({ deals: normalized });
+      const result = await getUpdateManyDealsInteractor().invoke({ deals: normalized });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
     }
     if (entity === "service") {
-      const result = await di.get(UpdateManyServicesInteractor).invoke({ services: normalized });
+      const result = await getUpdateManyServicesInteractor().invoke({ services: normalized });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
     }
 
-    const result = await di.get(UpdateManyTasksInteractor).invoke({ tasks: normalized });
+    const result = await getUpdateManyTasksInteractor().invoke({ tasks: normalized });
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated notes for ${normalized.length} ${singularLabels.task}(s)`;
   },
@@ -304,30 +305,30 @@ export const batchUpdateEntityCustomFieldTool = {
   inputSchema: UpdateCustomFieldEntitySchema,
   execute: async ({ entity, items }: z.infer<typeof UpdateCustomFieldEntitySchema>) => {
     if (entity === "contact") {
-      const result = await di.get(UpdateManyContactsInteractor).invoke({ contacts: items });
+      const result = await getUpdateManyContactsInteractor().invoke({ contacts: items });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
     }
 
     if (entity === "organization") {
-      const result = await di.get(UpdateManyOrganizationsInteractor).invoke({ organizations: items });
+      const result = await getUpdateManyOrganizationsInteractor().invoke({ organizations: items });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
     }
 
     if (entity === "deal") {
-      const result = await di.get(UpdateManyDealsInteractor).invoke({ deals: items });
+      const result = await getUpdateManyDealsInteractor().invoke({ deals: items });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
     }
 
     if (entity === "service") {
-      const result = await di.get(UpdateManyServicesInteractor).invoke({ services: items });
+      const result = await getUpdateManyServicesInteractor().invoke({ services: items });
       if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
       return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
     }
 
-    const result = await di.get(UpdateManyTasksInteractor).invoke({ tasks: items });
+    const result = await getUpdateManyTasksInteractor().invoke({ tasks: items });
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} ${singularLabels.task}(s)`;
   },

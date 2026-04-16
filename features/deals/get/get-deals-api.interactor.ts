@@ -1,15 +1,14 @@
 import type { GetResult } from "@/core/base/base-get.interactor";
 import type { GetQueryParamsApi } from "@/core/base/base-get.schema";
 import type { Validated } from "@/core/validation/validation.utils";
+import type { GetDealsRepo } from "./get-deals.interactor";
+import type { P13nRepo } from "@/core/base/base-get.interactor";
 
 import { EntityType, Resource, Action } from "@/generated/prisma";
 
 import { type DealDto } from "../deal.schema";
 
-import { GetDealsRepo } from "./get-deals.interactor";
-
-import { ValidateQueryParamsValidator } from "@/core/base/validate-query-params.validator";
-import { P13nRepo } from "@/core/base/base-get.interactor";
+import { getDealRepo, getValidateQueryParams } from "@/core/di";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { BaseGetInteractor } from "@/core/base/base-get.interactor";
 import { Validate } from "@/core/decorators/validate.decorator";
@@ -17,8 +16,7 @@ import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator"
 import { GetQueryParamsApiSchema } from "@/core/base/base-get.schema";
 
 const GetDealsQueryParamsApiSchema = GetQueryParamsApiSchema.superRefine(async (data, ctx) => {
-  const { di } = await import("@/core/dependency-injection/container");
-  await di.get(ValidateQueryParamsValidator).invoke(di.get(GetDealsRepo), EntityType.deal, data, ctx);
+  await getValidateQueryParams().invoke(getDealRepo(), EntityType.deal, data, ctx);
 });
 
 @AllowInDemoMode

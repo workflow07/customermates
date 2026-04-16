@@ -1,7 +1,8 @@
-import { User } from "@/generated/prisma";
+import type { AgentMachineService } from "@/ee/agent/agent-machine.service";
+
+import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import { AgentMachineService } from "@/ee/agent/agent-machine.service";
 
 export abstract class CleanupNonProCompaniesResourcesRepo {
   abstract findUsersWithResourcesOutsideProPlan(): Promise<User[]>;

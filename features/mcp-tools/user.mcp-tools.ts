@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { GetUserDetailsInteractor } from "@/features/user/get/get-user-details.interactor";
-import { GetUsersInteractor } from "@/features/user/get/get-users.interactor";
+import { getGetUserDetailsInteractor, getGetUsersInteractor } from "@/core/di";
 
 export const getUserDetailsTool = {
   name: "get_user_details",
@@ -12,7 +10,7 @@ export const getUserDetailsTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: z.object({}),
   execute: async () => {
-    const result = await di.get(GetUserDetailsInteractor).invoke();
+    const result = await getGetUserDetailsInteractor().invoke();
     return encodeToToon(result);
   },
 };
@@ -23,7 +21,7 @@ export const getUsersTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: z.object({}),
   execute: async () => {
-    const result = await di.get(GetUsersInteractor).invoke();
+    const result = await getGetUsersInteractor().invoke();
     if (!result.ok) return encodeToToon({ items: [] });
     return encodeToToon({
       items: result.data.items.map((item) => ({

@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { CreateManyServicesInteractor } from "@/features/services/upsert/create-many-services.interactor";
-import { UpdateManyServicesInteractor } from "@/features/services/upsert/update-many-services.interactor";
+import { getCreateManyServicesInteractor, getUpdateManyServicesInteractor } from "@/core/di";
 import { BaseCreateServiceSchema } from "@/features/services/upsert/create-service-base.schema";
 
 const McpCreateManyServicesSchema = z.object({
@@ -54,7 +52,7 @@ export const batchCreateServicesTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyServicesSchema,
   execute: async (params: z.infer<typeof McpCreateManyServicesSchema>) => {
-    const result = await di.get(CreateManyServicesInteractor).invoke(params);
+    const result = await getCreateManyServicesInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(result.data.map((item) => item.id));
   },
@@ -66,7 +64,7 @@ export const batchUpdateServiceNameAmountTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateServicesNameAmountSchema,
   execute: async (params: z.infer<typeof UpdateServicesNameAmountSchema>) => {
-    const result = await di.get(UpdateManyServicesInteractor).invoke(params);
+    const result = await getUpdateManyServicesInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} service(s)`;
   },
@@ -78,7 +76,7 @@ export const batchSetServiceUsersTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeServicesUsersSchema,
   execute: async (params: z.infer<typeof ChangeServicesUsersSchema>) => {
-    const result = await di.get(UpdateManyServicesInteractor).invoke(params);
+    const result = await getUpdateManyServicesInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} service(s)`;
   },
@@ -90,7 +88,7 @@ export const batchSetServiceDealsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeServicesDealsSchema,
   execute: async (params: z.infer<typeof ChangeServicesDealsSchema>) => {
-    const result = await di.get(UpdateManyServicesInteractor).invoke(params);
+    const result = await getUpdateManyServicesInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} service(s)`;
   },

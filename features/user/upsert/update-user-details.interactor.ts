@@ -1,11 +1,12 @@
-import { z } from "zod";
+import type { Data } from "@/core/validation/validation.utils";
+import type { EventService } from "@/features/event/event.service";
 
+import { z } from "zod";
 import { CountryCode } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, secureUrlSchema, type Validated } from "@/core/validation/validation.utils";
+import { secureUrlSchema, type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { EventService } from "@/features/event/event.service";
 import { DomainEvent } from "@/features/event/domain-events";
 import { UserAccessor } from "@/core/base/user-accessor";
 

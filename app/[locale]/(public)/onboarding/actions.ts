@@ -4,12 +4,11 @@ import type { RegisterUserData } from "@/features/user/register/register-user.in
 
 import { redirect } from "next/navigation";
 
-import { RegisterUserInteractor } from "@/features/user/register/register-user.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getRegisterUserInteractor } from "@/core/di";
 import { serializeResult } from "@/core/utils/action-result";
 
 export async function onboardingAction(data: RegisterUserData) {
-  const result = await serializeResult(di.get(RegisterUserInteractor).invoke(data));
+  const result = await serializeResult(getRegisterUserInteractor().invoke(data));
   if (result.ok) redirect("/");
   return result;
 }

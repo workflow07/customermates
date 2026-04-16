@@ -1,24 +1,22 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWidgetsRepo } from "./get-widgets.interactor";
+import type { UpsertWidgetRepo } from "./upsert-widget.interactor";
+import type { DeleteWidgetRepo } from "./delete-widget.interactor";
+import type { GetCompanyWidgetsRepo } from "./get-company-widgets.interactor";
+import type { GetWidgetByIdRepo } from "./get-widget-by-id.interactor";
+import type { UpdateWidgetLayoutsRepo } from "./update-widget-layouts.interactor";
+import type { RecalculateUserWidgetsRepo } from "./widget.service";
+import type { ExtendedWidget, WidgetLayout } from "./widget.types";
 
 import { Prisma } from "@/generated/prisma";
 
-import { GetWidgetsRepo } from "./get-widgets.interactor";
-import { UpsertWidgetRepo } from "./upsert-widget.interactor";
-import { DeleteWidgetRepo } from "./delete-widget.interactor";
-import { GetCompanyWidgetsRepo } from "./get-company-widgets.interactor";
-import { GetWidgetByIdRepo } from "./get-widget-by-id.interactor";
-import { UpdateWidgetLayoutsRepo, type UpdateWidgetLayoutsData } from "./update-widget-layouts.interactor";
-import { RecalculateUserWidgetsRepo } from "./widget.service";
-import { ExtendedWidget, WidgetLayout } from "./widget.types";
-import { PrismaWidgetCalculatorRepo } from "./calculator/prisma-widget-calculator.repository";
+import { type UpdateWidgetLayoutsData } from "./update-widget-layouts.interactor";
 
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { BREAKPOINTS } from "@/constants/breakpoints";
-import { di } from "@/core/dependency-injection/container";
+import { getWidgetCalculatorRepo } from "@/core/di";
 
-@Repository
 export class PrismaWidgetRepo
   extends BaseRepository
   implements
@@ -30,10 +28,6 @@ export class PrismaWidgetRepo
     UpdateWidgetLayoutsRepo,
     RecalculateUserWidgetsRepo
 {
-  private get calculatorRepo() {
-    return di.get(PrismaWidgetCalculatorRepo);
-  }
-
   async getWidgets() {
     const { id: userId, companyId } = this.user;
 
@@ -72,7 +66,7 @@ export class PrismaWidgetRepo
       update: widgetDataForDb,
     })) as unknown as ExtendedWidget;
 
-    const calculatedData = await this.calculatorRepo.calculateWidgetData(widget);
+    const calculatedData = await getWidgetCalculatorRepo().calculateWidgetData(widget);
 
     await this.prisma.widget.update({
       where: { id: widget.id, companyId },
@@ -173,7 +167,7 @@ export class PrismaWidgetRepo
 
     await Promise.all(
       widgets.map(async (widget) => {
-        const data = await this.calculatorRepo.calculateWidgetData(widget);
+        const data = await getWidgetCalculatorRepo().calculateWidgetData(widget);
 
         await this.prisma.widget.updateMany({
           where: { id: widget.id, companyId },

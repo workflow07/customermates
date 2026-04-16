@@ -1,24 +1,11 @@
+import type { ExtendedWidget, DiagramDataPoint } from "../widget.types";
+
 import { AggregationType, EntityType, WidgetGroupByType } from "@/generated/prisma";
 
-import { ExtendedWidget, DiagramDataPoint } from "../widget.types";
-
-import { WidgetGroupingService } from "./widget-grouping.service";
-import { WidgetDataFetcher } from "./widget-data-fetcher.service";
-
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
-import { di } from "@/core/dependency-injection/container";
+import { getWidgetGroupingService, getWidgetDataFetcher } from "@/core/di";
 
-@Repository
 export class PrismaWidgetCalculatorRepo extends BaseRepository {
-  private get groupingService() {
-    return di.get(WidgetGroupingService);
-  }
-
-  private get dataFetcher(): WidgetDataFetcher {
-    return di.get(WidgetDataFetcher);
-  }
-
   async calculateWidgetData(widget: ExtendedWidget): Promise<DiagramDataPoint[]> {
     const { aggregationType } = widget;
 
@@ -47,20 +34,20 @@ export class PrismaWidgetCalculatorRepo extends BaseRepository {
     const { entityType, entityFilters, groupByType, groupByCustomColumnId } = widget;
 
     if (groupByType === WidgetGroupByType.none)
-      return [{ label: "Total", value: await this.dataFetcher.getEntityCount(entityType, entityFilters) }];
+      return [{ label: "Total", value: await getWidgetDataFetcher().getEntityCount(entityType, entityFilters) }];
 
-    const entities = await this.dataFetcher.getEntitiesForGrouping(entityType, entityFilters);
+    const entities = await getWidgetDataFetcher().getEntitiesForGrouping(entityType, entityFilters);
 
     if (groupByType === WidgetGroupByType.customColumn && groupByCustomColumnId)
-      return this.groupingService.groupEntitiesByCustomColumn(entityType, entities, groupByCustomColumnId);
+      return getWidgetGroupingService().groupEntitiesByCustomColumn(entityType, entities, groupByCustomColumnId);
 
-    return this.groupingService.groupEntitiesByEntityType(entities, entityType);
+    return getWidgetGroupingService().groupEntitiesByEntityType(entities, entityType);
   }
 
   private async calculateDealValue(widget: ExtendedWidget): Promise<DiagramDataPoint[]> {
     const { entityType, groupByType, groupByCustomColumnId } = widget;
 
-    const deals = await this.dataFetcher.getDealsForEntityType(widget);
+    const deals = await getWidgetDataFetcher().getDealsForEntityType(widget);
 
     if (groupByType === WidgetGroupByType.none) {
       const totalValue =
@@ -78,9 +65,9 @@ export class PrismaWidgetCalculatorRepo extends BaseRepository {
     }
 
     if (groupByType === WidgetGroupByType.customColumn && groupByCustomColumnId)
-      return await this.groupingService.groupDealsByCustomColumn(widget, deals);
+      return await getWidgetGroupingService().groupDealsByCustomColumn(widget, deals);
 
-    return this.groupingService.groupDealsByEntityType(widget, deals);
+    return getWidgetGroupingService().groupDealsByEntityType(widget, deals);
   }
 
   private async calculateDealQuantity(widget: ExtendedWidget): Promise<DiagramDataPoint[]> {
@@ -88,15 +75,16 @@ export class PrismaWidgetCalculatorRepo extends BaseRepository {
 
     if (entityType !== EntityType.service) return [];
 
-    const deals = await this.dataFetcher.getDealsForEntityType(widget);
+    const deals = await getWidgetDataFetcher().getDealsForEntityType(widget);
 
     if (groupByType === WidgetGroupByType.none)
       return [{ label: "Total", value: deals.reduce((sum, deal) => sum + deal.totalQuantity, 0) }];
 
-    if (groupByType === WidgetGroupByType.service) return this.groupingService.groupDealsByEntityType(widget, deals);
+    if (groupByType === WidgetGroupByType.service)
+      return getWidgetGroupingService().groupDealsByEntityType(widget, deals);
 
     if (groupByType === WidgetGroupByType.customColumn && groupByCustomColumnId)
-      return await this.groupingService.groupDealsByCustomColumn(widget, deals);
+      return await getWidgetGroupingService().groupDealsByCustomColumn(widget, deals);
 
     return [];
   }

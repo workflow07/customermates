@@ -3,14 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { CreateOrganizationInteractor } from "@/features/organizations/upsert/create-organization.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getCreateOrganizationInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(CreateOrganizationInteractor).invoke(data);
+    const result = await getCreateOrganizationInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

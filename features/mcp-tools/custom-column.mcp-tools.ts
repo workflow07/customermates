@@ -1,11 +1,9 @@
 import { z } from "zod";
-
 import { CustomColumnType, EntityType, Currency } from "@/generated/prisma";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { UpsertCustomColumnInteractor } from "@/features/custom-column/upsert-custom-column.interactor";
+import { getUpsertCustomColumnInteractor } from "@/core/di";
 import { CHIP_COLORS } from "@/constants/chip-colors";
 import { DATE_DISPLAY_FORMATS } from "@/constants/date-format";
 
@@ -77,7 +75,7 @@ export const addPlainCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddPlainCustomColumnSchema,
   execute: async (params: z.infer<typeof AddPlainCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.plain,
       entityType: params.entityType,
@@ -97,7 +95,7 @@ export const addDateCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddDateCustomColumnSchema,
   execute: async (params: z.infer<typeof AddDateCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.date,
       entityType: params.entityType,
@@ -118,7 +116,7 @@ export const addDateTimeCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddDateTimeCustomColumnSchema,
   execute: async (params: z.infer<typeof AddDateTimeCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.dateTime,
       entityType: params.entityType,
@@ -139,7 +137,7 @@ export const addCurrencyCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddCurrencyCustomColumnSchema,
   execute: async (params: z.infer<typeof AddCurrencyCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.currency,
       entityType: params.entityType,
@@ -165,7 +163,7 @@ export const addSingleSelectCustomColumnTool = {
       value: crypto.randomUUID(),
     }));
 
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.singleSelect,
       entityType: params.entityType,
@@ -186,7 +184,7 @@ export const addLinkCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddLinkCustomColumnSchema,
   execute: async (params: z.infer<typeof AddLinkCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.link,
       entityType: params.entityType,
@@ -207,7 +205,7 @@ export const addEmailCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddEmailCustomColumnSchema,
   execute: async (params: z.infer<typeof AddEmailCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.email,
       entityType: params.entityType,
@@ -228,7 +226,7 @@ export const addPhoneCustomColumnTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: AddPhoneCustomColumnSchema,
   execute: async (params: z.infer<typeof AddPhoneCustomColumnSchema>) => {
-    const result = await di.get(UpsertCustomColumnInteractor).invoke({
+    const result = await getUpsertCustomColumnInteractor().invoke({
       label: params.label,
       type: CustomColumnType.phone,
       entityType: params.entityType,

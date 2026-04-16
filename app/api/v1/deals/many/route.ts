@@ -3,16 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { CreateManyDealsInteractor } from "@/features/deals/upsert/create-many-deals.interactor";
-import { UpdateManyDealsInteractor } from "@/features/deals/upsert/update-many-deals.interactor";
-import { DeleteManyDealsInteractor } from "@/features/deals/delete/delete-many-deals.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getCreateManyDealsInteractor, getUpdateManyDealsInteractor, getDeleteManyDealsInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(CreateManyDealsInteractor).invoke(data);
+    const result = await getCreateManyDealsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -25,7 +22,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(UpdateManyDealsInteractor).invoke(data);
+    const result = await getUpdateManyDealsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -38,7 +35,7 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(DeleteManyDealsInteractor).invoke(data);
+    const result = await getDeleteManyDealsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

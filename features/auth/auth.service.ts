@@ -1,3 +1,5 @@
+import type { EmailService } from "@/features/email/email.service";
+
 import React from "react";
 import { APIError } from "better-auth";
 import { headers } from "next/headers";
@@ -8,15 +10,12 @@ import XResetPassword from "@/components/x-emails/x-reset-password";
 import XVerifyEmail from "@/components/x-emails/x-verify-email";
 import XNewUserNotification from "@/components/x-emails/x-new-user-notification";
 import { auth } from "@/core/auth/better-auth";
-import { TenantAgnostic } from "@/core/decorators/tenant-agnostic.decorator";
-import { EmailService } from "@/features/email/email.service";
 import { CustomErrorCode } from "@/core/validation/validation.types";
 import { BASE_URL, RESEND_FROM_EMAIL } from "@/constants/env";
 
 type AuthUser = { id: string; email: string; name: string; emailVerified: boolean };
 export type AuthResult = { ok: true; user: AuthUser } | { ok: false; error: CustomErrorCode };
 
-@TenantAgnostic
 export class AuthService {
   constructor(private emailService: EmailService) {}
 

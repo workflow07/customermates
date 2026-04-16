@@ -1,53 +1,27 @@
-import { EntityType, Prisma } from "@/generated/prisma";
+import type { ExtendedWidget } from "../widget.types";
+import type { EntityForGrouping, DealRecord } from "./widget-calculator.types";
+import type { GetQueryParams, Filter } from "@/core/base/base-get.schema";
 
-import { ExtendedWidget } from "../widget.types";
+import { EntityType } from "@/generated/prisma";
 
-import { EntityForGrouping, DealRecord } from "./widget-calculator.types";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetQueryParams, Filter } from "@/core/base/base-get.schema";
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
-import { PrismaContactRepo } from "@/features/contacts/prisma-contact.repository";
-import { PrismaOrganizationRepo } from "@/features/organizations/prisma-organization.repository";
-import { PrismaDealRepo } from "@/features/deals/prisma-deal.repository";
-import { PrismaServiceRepo } from "@/features/services/prisma-service.repository";
-import { PrismaTaskRepo } from "@/features/tasks/prisma-task.repository";
-import { di } from "@/core/dependency-injection/container";
+import { getContactRepo, getOrganizationRepo, getDealRepo, getServiceRepo, getTaskRepo } from "@/core/di";
 
-@Repository
 export class WidgetDataFetcher extends BaseRepository {
-  private get contactRepo() {
-    return di.get(PrismaContactRepo);
-  }
-
-  private get organizationRepo() {
-    return di.get(PrismaOrganizationRepo);
-  }
-
-  private get dealRepo() {
-    return di.get(PrismaDealRepo);
-  }
-
-  private get serviceRepo() {
-    return di.get(PrismaServiceRepo);
-  }
-
-  private get taskRepo() {
-    return di.get(PrismaTaskRepo);
-  }
-
   async getEntityCount(entityType: EntityType, filters: Filter[] | undefined): Promise<number> {
     switch (entityType) {
       case EntityType.contact:
-        return await this.contactRepo.getCount({ filters });
+        return await getContactRepo().getCount({ filters });
       case EntityType.organization:
-        return await this.organizationRepo.getCount({ filters });
+        return await getOrganizationRepo().getCount({ filters });
       case EntityType.deal:
-        return await this.dealRepo.getCount({ filters });
+        return await getDealRepo().getCount({ filters });
       case EntityType.service:
-        return await this.serviceRepo.getCount({ filters });
+        return await getServiceRepo().getCount({ filters });
       case EntityType.task:
-        return await this.taskRepo.getCount({ filters });
+        return await getTaskRepo().getCount({ filters });
     }
   }
 
@@ -83,7 +57,7 @@ export class WidgetDataFetcher extends BaseRepository {
     const where: Prisma.DealWhereInput = { ...baseWhere };
 
     if (dealFilters && dealFilters.length > 0) {
-      const dealFilterArgs = await this.dealRepo.buildQueryArgs({ filters: dealFilters }, baseWhere);
+      const dealFilterArgs = await getDealRepo().buildQueryArgs({ filters: dealFilters }, baseWhere);
       Object.assign(where, dealFilterArgs.where);
     }
 
@@ -218,7 +192,7 @@ export class WidgetDataFetcher extends BaseRepository {
 
   async getContacts(filters: Filter[] | undefined) {
     const params: GetQueryParams = { filters };
-    const args = await this.contactRepo.buildQueryArgs(params, this.accessWhere("contact"));
+    const args = await getContactRepo().buildQueryArgs(params, this.accessWhere("contact"));
     return await this.prisma.contact.findMany({
       ...args,
       select: {
@@ -231,7 +205,7 @@ export class WidgetDataFetcher extends BaseRepository {
 
   async getOrganizations(filters: Filter[] | undefined) {
     const params: GetQueryParams = { filters };
-    const args = await this.organizationRepo.buildQueryArgs(params, this.accessWhere("organization"));
+    const args = await getOrganizationRepo().buildQueryArgs(params, this.accessWhere("organization"));
     return await this.prisma.organization.findMany({
       ...args,
       select: {
@@ -243,7 +217,7 @@ export class WidgetDataFetcher extends BaseRepository {
 
   async getDealsList(filters: Filter[] | undefined) {
     const params: GetQueryParams = { filters };
-    const args = await this.dealRepo.buildQueryArgs(params, this.accessWhere("deal"));
+    const args = await getDealRepo().buildQueryArgs(params, this.accessWhere("deal"));
     return await this.prisma.deal.findMany({
       ...args,
       select: {
@@ -255,7 +229,7 @@ export class WidgetDataFetcher extends BaseRepository {
 
   async getServices(filters: Filter[] | undefined) {
     const params: GetQueryParams = { filters };
-    const args = await this.serviceRepo.buildQueryArgs(params, this.accessWhere("service"));
+    const args = await getServiceRepo().buildQueryArgs(params, this.accessWhere("service"));
     return await this.prisma.service.findMany({
       ...args,
       select: {
@@ -267,7 +241,7 @@ export class WidgetDataFetcher extends BaseRepository {
 
   async getTasks(filters: Filter[] | undefined) {
     const params: GetQueryParams = { filters };
-    const args = await this.taskRepo.buildQueryArgs(params, this.accessWhere("task"));
+    const args = await getTaskRepo().buildQueryArgs(params, this.accessWhere("task"));
     return await this.prisma.task.findMany({
       ...args,
       select: {

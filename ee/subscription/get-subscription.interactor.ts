@@ -1,7 +1,8 @@
-import { Subscription, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
+import type { SubscriptionService } from "./subscription.service";
+
 import { Resource, Action } from "@/generated/prisma";
 
-import { SubscriptionService } from "./subscription.service";
+import type { Subscription, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";

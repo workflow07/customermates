@@ -1,25 +1,27 @@
-import { Prisma, WebhookDeliveryStatus } from "@/generated/prisma";
-
-import { GetWebhookDeliveriesRepo, type WebhookDeliveryDto } from "./get-webhook-deliveries.interactor";
-import { GetWebhookDeliveryByIdRepo } from "./resend-webhook-delivery.interactor";
-import {
+import type { GetWebhookDeliveriesRepo } from "./get-webhook-deliveries.interactor";
+import type { GetWebhookDeliveryByIdRepo } from "./resend-webhook-delivery.interactor";
+import type {
   ClaimPendingDeliveriesRepo,
   UpdateDeliveryOutcomeRepo,
   PendingDeliveryRow,
 } from "./process-webhook-deliveries.interactor";
+import type { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
+import type { DomainEvent } from "@/features/event/domain-events";
+import type { RepoArgs } from "@/core/utils/types";
 
-import { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
+import { WebhookDeliveryStatus } from "@/generated/prisma";
+
+import type { Prisma } from "@/generated/prisma";
+
+import { type WebhookDeliveryDto } from "./get-webhook-deliveries.interactor";
+
 import { transactionStorage } from "@/core/decorators/transaction-context";
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { DomainEvent } from "@/features/event/domain-events";
-import { RepoArgs } from "@/core/utils/types";
 import { prisma } from "@/prisma/db";
 
-@Repository
 export class PrismaWebhookDeliveryRepo
   extends BaseRepository<Prisma.WebhookDeliveryWhereInput>
   implements

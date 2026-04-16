@@ -1,18 +1,17 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { UpsertRoleRepo } from "./upsert-role.interactor";
+import type { GetRolesRepo } from "./get-roles.interactor";
+import type { DeleteRoleRepo } from "./delete-role.interactor";
+import type { UpdateUserRoleRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
 
-import { Resource, Action } from "@/generated/prisma";
+import { Action } from "@/generated/prisma";
 
-import { UpsertRoleRepo } from "./upsert-role.interactor";
-import { GetRolesRepo } from "./get-roles.interactor";
-import { DeleteRoleRepo } from "./delete-role.interactor";
+import type { Resource } from "@/generated/prisma";
 
-import { UpdateUserRoleRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 
-@Repository
 export class PrismaRoleRepo
   extends BaseRepository
   implements UpsertRoleRepo, GetRolesRepo, DeleteRoleRepo, UpdateUserRoleRepo

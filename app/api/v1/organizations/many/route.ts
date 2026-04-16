@@ -3,16 +3,17 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { CreateManyOrganizationsInteractor } from "@/features/organizations/upsert/create-many-organizations.interactor";
-import { UpdateManyOrganizationsInteractor } from "@/features/organizations/upsert/update-many-organizations.interactor";
-import { DeleteManyOrganizationsInteractor } from "@/features/organizations/delete/delete-many-organizations.interactor";
-import { di } from "@/core/dependency-injection/container";
+import {
+  getCreateManyOrganizationsInteractor,
+  getUpdateManyOrganizationsInteractor,
+  getDeleteManyOrganizationsInteractor,
+} from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(CreateManyOrganizationsInteractor).invoke(data);
+    const result = await getCreateManyOrganizationsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(UpdateManyOrganizationsInteractor).invoke(data);
+    const result = await getUpdateManyOrganizationsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -38,7 +39,7 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(DeleteManyOrganizationsInteractor).invoke(data);
+    const result = await getDeleteManyOrganizationsInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

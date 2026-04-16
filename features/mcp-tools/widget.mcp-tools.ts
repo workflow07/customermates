@@ -1,13 +1,10 @@
 import { z } from "zod";
-
 import { EntityType, WidgetGroupByType, AggregationType } from "@/generated/prisma";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { UpsertWidgetInteractor, type UpsertWidgetData } from "@/features/widget/upsert-widget.interactor";
-import { GetWidgetsInteractor } from "@/features/widget/get-widgets.interactor";
-import { GetWidgetByIdInteractor } from "@/features/widget/get-widget-by-id.interactor";
+import { getUpsertWidgetInteractor, getGetWidgetsInteractor, getGetWidgetByIdInteractor } from "@/core/di";
+import { type UpsertWidgetData } from "@/features/widget/upsert-widget.interactor";
 import { ChartColor, DisplayType } from "@/features/widget/widget.types";
 import { FilterSchema } from "@/core/base/base-get.schema";
 
@@ -77,7 +74,7 @@ export const getWidgetsTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: GetWidgetsSchema,
   execute: async () => {
-    const widgets = await di.get(GetWidgetsInteractor).invoke();
+    const widgets = await getGetWidgetsInteractor().invoke();
     return encodeToToon({
       items: widgets.map((widget) => ({ id: widget.id, name: widget.name })),
       total: widgets.length,
@@ -91,7 +88,7 @@ export const batchGetWidgetDetailsTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: GetWidgetDetailsSchema,
   execute: async (params: z.infer<typeof GetWidgetDetailsSchema>) => {
-    const widget = await di.get(GetWidgetByIdInteractor).invoke({ id: params.id });
+    const widget = await getGetWidgetByIdInteractor().invoke({ id: params.id });
     if (!widget) return `Validation error: Widget with ID ${params.id} not found`;
 
     return encodeToToon({
@@ -174,7 +171,7 @@ export const updateWidgetDisplayOptionsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateWidgetDisplayOptionsSchema,
   execute: async (params: z.infer<typeof UpdateWidgetDisplayOptionsSchema>) => {
-    const widget = await di.get(GetWidgetByIdInteractor).invoke({ id: params.id });
+    const widget = await getGetWidgetByIdInteractor().invoke({ id: params.id });
     if (!widget) return `Validation error: Widget with ID ${params.id} not found`;
 
     return updateWidget(
@@ -198,7 +195,7 @@ export const createWidgetTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: CreateWidgetSchema,
   execute: async (params: z.infer<typeof CreateWidgetSchema>) => {
-    const result = await di.get(UpsertWidgetInteractor).invoke({
+    const result = await getUpsertWidgetInteractor().invoke({
       name: params.name,
       entityType: params.entityType,
       groupByType: params.groupByType,
@@ -230,10 +227,10 @@ async function updateWidget(
   updates: Partial<Omit<UpsertWidgetData, "id">>,
   successMessage: string,
 ): Promise<string> {
-  const widget = await di.get(GetWidgetByIdInteractor).invoke({ id });
+  const widget = await getGetWidgetByIdInteractor().invoke({ id });
   if (!widget) return `Validation error: Widget with ID ${id} not found`;
 
-  const result = await di.get(UpsertWidgetInteractor).invoke({
+  const result = await getUpsertWidgetInteractor().invoke({
     id,
     name: widget.name,
     entityType: widget.entityType,

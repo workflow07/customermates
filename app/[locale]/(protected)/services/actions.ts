@@ -6,33 +6,34 @@ import type { CreateServiceData } from "@/features/services/upsert/create-servic
 import type { UpdateServiceData } from "@/features/services/upsert/update-service.interactor";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 
-import { DeleteServiceInteractor } from "@/features/services/delete/delete-service.interactor";
-import { GetServicesInteractor } from "@/features/services/get/get-services.interactor";
-import { GetServiceByIdInteractor } from "@/features/services/get/get-service-by-id.interactor";
-import { CreateServiceInteractor } from "@/features/services/upsert/create-service.interactor";
-import { UpdateServiceInteractor } from "@/features/services/upsert/update-service.interactor";
-import { di } from "@/core/dependency-injection/container";
+import {
+  getGetServicesInteractor,
+  getGetServiceByIdInteractor,
+  getCreateServiceInteractor,
+  getUpdateServiceInteractor,
+  getDeleteServiceInteractor,
+} from "@/core/di";
 import { serializeResult } from "@/core/utils/action-result";
 
 export async function getServicesAction(params?: GetQueryParams) {
-  const result = await di.get(GetServicesInteractor).invoke(params);
+  const result = await getGetServicesInteractor().invoke(params);
   return result.ok ? result.data : { items: [] };
 }
 
 export async function createServiceAction(data: CreateServiceData) {
-  return serializeResult(di.get(CreateServiceInteractor).invoke(data));
+  return serializeResult(getCreateServiceInteractor().invoke(data));
 }
 
 export async function updateServiceAction(data: UpdateServiceData) {
-  return serializeResult(di.get(UpdateServiceInteractor).invoke(data));
+  return serializeResult(getUpdateServiceInteractor().invoke(data));
 }
 
 export async function deleteServiceAction(data: DeleteServiceData) {
-  return di.get(DeleteServiceInteractor).invoke(data);
+  return getDeleteServiceInteractor().invoke(data);
 }
 
 export async function getServiceByIdAction(data: GetServiceByIdData) {
-  const result = await di.get(GetServiceByIdInteractor).invoke(data);
+  const result = await getGetServiceByIdInteractor().invoke(data);
   return result.ok
     ? { entity: result.data.service, customColumns: result.data.customColumns }
     : { entity: null, customColumns: [] };

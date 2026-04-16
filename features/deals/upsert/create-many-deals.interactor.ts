@@ -1,44 +1,39 @@
-import { z } from "zod";
+import type { CreateDealRepo } from "./create-deal.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
+import type { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
+import type { GetUnscopedServiceRepo } from "@/features/services/get-unscoped-service.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action, EntityType } from "@/generated/prisma";
 
-import { FindCustomColumnRepo } from "../../custom-column/find-custom-column.repo";
 import { validateCustomFieldValues } from "../../../core/validation/validate-custom-field-values";
 import { validateNotes } from "../../../core/validation/validate-notes";
-import { FindOrganizationsByIdsRepo } from "../../organizations/find-organizations-by-ids.repo";
 import { validateOrganizationIds } from "../../../core/validation/validate-organization-ids";
-import { FindUsersByIdsRepo } from "../../user/find-users-by-ids.repo";
 import { validateUserIds } from "../../../core/validation/validate-user-ids";
-import { FindContactsByIdsRepo } from "../../contacts/find-contacts-by-ids.repo";
 import { validateContactIds } from "../../contacts/validate-contact-ids";
-import { FindServicesByIdsRepo } from "../../services/find-services-by-ids.repo";
 import { validateServiceIds } from "../../../core/validation/validate-service-ids";
 import { type DealDto } from "../deal.schema";
 
 import { BaseCreateDealSchema } from "./create-deal-base.schema";
-import { CreateDealRepo } from "./create-deal.repo";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
-import { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
-import { GetUnscopedServiceRepo } from "@/features/services/get-unscoped-service.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getCompanyRepo, getContactRepo, getCustomColumnRepo, getOrganizationRepo, getServiceRepo } from "@/core/di";
 
 export const CreateManyDealsSchema = z
   .object({
     deals: z.array(BaseCreateDealSchema).min(1).max(10),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
-
     const organizationSet = new Set<string>();
     const userSet = new Set<string>();
     const contactSet = new Set<string>();
@@ -54,11 +49,11 @@ export const CreateManyDealsSchema = z
     const [validOrgIdsSet, validUserIdsSet, validContactIdsSet, validServiceIdsSet, allColumns] =
       await preserveTenantContext(async () => {
         return await Promise.all([
-          di.get(FindOrganizationsByIdsRepo).findIds(organizationSet),
-          di.get(FindUsersByIdsRepo).findIds(userSet),
-          di.get(FindContactsByIdsRepo).findIds(contactSet),
-          di.get(FindServicesByIdsRepo).findIds(serviceSet),
-          di.get(FindCustomColumnRepo).findByEntityType(EntityType.deal),
+          getOrganizationRepo().findIds(organizationSet),
+          getCompanyRepo().findIds(userSet),
+          getContactRepo().findIds(contactSet),
+          getServiceRepo().findIds(serviceSet),
+          getCustomColumnRepo().findByEntityType(EntityType.deal),
         ]);
       });
 

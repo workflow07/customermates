@@ -1,17 +1,15 @@
-import { Prisma } from "@/generated/prisma";
-import { Resource } from "@/generated/prisma";
-
-import {
+import type {
   GlobalSearchRepo,
   GlobalSearchData,
   GlobalSearchResult,
   GlobalSearchResultItem,
 } from "./global-search.interactor";
 
-import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
+import { Prisma } from "@/generated/prisma";
+import { Resource } from "@/generated/prisma";
 
-@Repository
+import { BaseRepository } from "@/core/base/base-repository";
+
 export class PrismaGlobalSearchRepo extends BaseRepository implements GlobalSearchRepo {
   async search(data: GlobalSearchData): Promise<GlobalSearchResult> {
     const searchTerm = data.searchTerm.trim().toLowerCase();

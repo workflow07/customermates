@@ -1,31 +1,29 @@
-import { CustomColumnType, EntityType, Prisma, TaskType, Resource, Action } from "@/generated/prisma";
+import type { GetWidgetFilterableFieldsTaskRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { TaskRepo as TaskWorkerRepo } from "./task.service";
+import type { GetTasksRepo } from "@/features/tasks/get/get-tasks.interactor";
+import type { GetTasksConfigurationRepo } from "@/features/tasks/get/get-tasks-configuration.interactor";
+import type { CountTasksRepo } from "@/features/tasks/count-user-tasks.interactor";
+import type { CountSystemTasksRepo } from "@/features/tasks/count-system-tasks.interactor";
+import type { CreateTaskRepo } from "@/features/tasks/upsert/create-task.repo";
+import type { UpdateTaskRepo } from "@/features/tasks/upsert/update-task.repo";
+import type { DeleteTaskRepo } from "@/features/tasks/delete/delete-task.repo";
+import type { GetTaskByIdRepo } from "@/features/tasks/get/get-task-by-id.interactor";
+import type { GetTaskByTypeRepo } from "@/features/tasks/get/get-task-by-type.interactor";
+import type { FindTasksByIdsRepo } from "@/features/tasks/find-tasks-by-ids.repo";
 
-import { PrismaCustomColumnRepo } from "../custom-column/prisma-custom-column.repository";
-import { GetWidgetFilterableFieldsTaskRepo } from "../widget/get-widget-filterable-fields.interactor";
+import { CustomColumnType, EntityType, TaskType, Resource, Action } from "@/generated/prisma";
 
-import { TaskRepo as TaskWorkerRepo } from "./task.service";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetTasksRepo } from "@/features/tasks/get/get-tasks.interactor";
-import { GetTasksConfigurationRepo } from "@/features/tasks/get/get-tasks-configuration.interactor";
-import { CountTasksRepo } from "@/features/tasks/count-user-tasks.interactor";
-import { CountSystemTasksRepo } from "@/features/tasks/count-system-tasks.interactor";
-import { CreateTaskRepo } from "@/features/tasks/upsert/create-task.repo";
-import { UpdateTaskRepo } from "@/features/tasks/upsert/update-task.repo";
-import { DeleteTaskRepo } from "@/features/tasks/delete/delete-task.repo";
-import { GetTaskByIdRepo } from "@/features/tasks/get/get-task-by-id.interactor";
-import { GetTaskByTypeRepo } from "@/features/tasks/get/get-task-by-type.interactor";
-import { FindTasksByIdsRepo } from "@/features/tasks/find-tasks-by-ids.repo";
 import { type TaskDto } from "@/features/tasks/task.schema";
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { di } from "@/core/dependency-injection/container";
+import { getCustomColumnRepo } from "@/core/di";
 import { type RepoArgs } from "@/core/utils/types";
 
-@Repository
 export class PrismaTaskRepo
   extends BaseRepository
   implements
@@ -42,10 +40,6 @@ export class PrismaTaskRepo
     GetWidgetFilterableFieldsTaskRepo,
     FindTasksByIdsRepo
 {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   private get userScopedSelect() {
     return {
       id: true,
@@ -86,13 +80,13 @@ export class PrismaTaskRepo
   }
 
   async getCustomColumns() {
-    return this.customColumnRepo.findByEntityType(EntityType.task);
+    return getCustomColumnRepo().findByEntityType(EntityType.task);
   }
 
   async getFilterableFields() {
     if (!this.canAccess(Resource.tasks)) return [];
 
-    const customFields = await this.customColumnRepo.getFilterableCustomFields(EntityType.task);
+    const customFields = await getCustomColumnRepo().getFilterableCustomFields(EntityType.task);
 
     return [
       ...customFields,
@@ -203,7 +197,7 @@ export class PrismaTaskRepo
       );
     }
 
-    const customColumns = await this.customColumnRepo.findByEntityType(EntityType.task);
+    const customColumns = await getCustomColumnRepo().findByEntityType(EntityType.task);
     const defaultCustomFieldValues = customColumns
       .filter(
         (column): column is Extract<typeof column, { type: typeof CustomColumnType.singleSelect }> =>
@@ -221,7 +215,7 @@ export class PrismaTaskRepo
       .filter((cfv): cfv is { columnId: string; value: string } => cfv !== null);
 
     if (defaultCustomFieldValues.length > 0)
-      promises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.task, task.id, defaultCustomFieldValues));
+      promises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.task, task.id, defaultCustomFieldValues));
 
     await Promise.all(promises);
 
@@ -287,7 +281,7 @@ export class PrismaTaskRepo
     }
 
     if (customFieldValues.length > 0)
-      promises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.task, task.id, customFieldValues));
+      promises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.task, task.id, customFieldValues));
 
     await Promise.all(promises);
 
@@ -352,8 +346,8 @@ export class PrismaTaskRepo
 
     if (customFieldValues !== undefined) {
       if (customFieldValues === null)
-        createPromises.push(this.customColumnRepo.deleteValuesForEntity(EntityType.task, id));
-      else createPromises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.task, id, customFieldValues));
+        createPromises.push(getCustomColumnRepo().deleteValuesForEntity(EntityType.task, id));
+      else createPromises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.task, id, customFieldValues));
     }
 
     await Promise.all(deletePromises);

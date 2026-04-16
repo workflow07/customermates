@@ -1,7 +1,7 @@
+import type { AuthService } from "./auth.service";
+
 import { z } from "zod";
 import { redirect } from "next/navigation";
-
-import { AuthService } from "./auth.service";
 
 import { passwordSchema, type Data, type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";

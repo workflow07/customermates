@@ -1,11 +1,10 @@
-import { injectable } from "inversify";
-
 import type { Resource, Action } from "@/generated/prisma";
 
 import { isAllowedInDemoMode } from "./allow-in-demo-mode.decorator";
 
 import { runWithTenant } from "@/core/decorators/tenant-context";
 import { IS_DEMO_MODE } from "@/constants/env";
+import { DemoModeError, ForbiddenError } from "@/core/errors/app-errors";
 
 interface Permission {
   resource: Resource;
@@ -20,8 +19,6 @@ export function TentantInteractor<T extends { new (...args: any[]): object }>(
   permissionRequirement?: PermissionRuleSet | Permission,
 ) {
   return function (constructor: T) {
-    injectable()(constructor);
-
     if (typeof constructor.prototype.invoke !== "function")
       throw new Error(`Class ${constructor.name} must implement an "invoke" method.`);
 
@@ -40,12 +37,10 @@ export function TentantInteractor<T extends { new (...args: any[]): object }>(
     const originalInvoke = constructor.prototype.invoke;
 
     constructor.prototype.invoke = async function (...args: any[]) {
-      if (IS_DEMO_MODE && !isAllowedInDemoMode(constructor))
-        throw new Error("This action is not available in demo mode. Please sign in to access all features.");
+      if (IS_DEMO_MODE && !isAllowedInDemoMode(constructor)) throw new DemoModeError();
 
-      const { di } = await import("@/core/dependency-injection/container");
-      const { UserService } = await import("@/features/user/user.service");
-      const user = await di.get(UserService).getActiveUserOrThrow();
+      const { getUserService } = await import("@/core/di");
+      const user = await getUserService().getActiveUserOrThrow();
 
       if (normalizedRequirement) {
         if (user.role?.isSystemRole) return runWithTenant(user, () => originalInvoke.apply(this, args));
@@ -66,7 +61,7 @@ export function TentantInteractor<T extends { new (...args: any[]): object }>(
         if (!hasRequiredPermissions) {
           const permissionStrings = permissions.map((p) => `${p.action} on ${p.resource}`).join(` ${condition} `);
 
-          throw new Error(`Access denied. Required permissions: ${permissionStrings}`);
+          throw new ForbiddenError(`Access denied. Required permissions: ${permissionStrings}`);
         }
       }
 

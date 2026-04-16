@@ -1,8 +1,9 @@
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
 
-import { InviteToken } from "@/generated/prisma";
+import type { InviteToken } from "@/generated/prisma";
 
-import { Data } from "@/core/validation/validation.utils";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
 

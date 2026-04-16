@@ -3,7 +3,6 @@
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 import { Button } from "@heroui/button";
-
 import { WebhookDeliveryStatus } from "@/generated/prisma";
 
 import { WEBHOOK_DELIVERY_QUEUE_STATUS_CHIP_COLOR } from "@/features/webhook/webhook-delivery-chip-colors";

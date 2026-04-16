@@ -1,10 +1,11 @@
-import { z } from "zod";
+import type { P13nEntry, SavedFilterPreset } from "./prisma-p13n.repository";
+import type { Data } from "@/core/validation/validation.utils";
 
-import { P13nEntry, SavedFilterPreset } from "./prisma-p13n.repository";
+import { z } from "zod";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 
 const Schema = z.object({

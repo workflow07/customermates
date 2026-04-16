@@ -8,7 +8,6 @@ import { parseDateTime } from "@internationalized/date";
 import { z } from "zod";
 import { useTranslations } from "next-intl";
 import { addToast } from "@heroui/toast";
-
 import { CustomColumnType } from "@/generated/prisma";
 
 import { XFavicon } from "../../x-favicon";

@@ -3,14 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { GetTasksApiInteractor } from "@/features/tasks/get/get-tasks-api.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getGetTasksApiInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const result = await di.get(GetTasksApiInteractor).invoke(data);
+    const result = await getGetTasksApiInteractor().invoke(data);
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

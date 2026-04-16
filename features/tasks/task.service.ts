@@ -1,4 +1,4 @@
-import { Task, TaskType } from "@/generated/prisma";
+import type { Task, TaskType } from "@/generated/prisma";
 
 import { TenantScoped } from "@/core/decorators/tenant-scoped.decorator";
 

@@ -1,12 +1,11 @@
+import type { FindUserRepo } from "../user/user.service";
+import type { AuthService } from "./auth.service";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { FindUserRepo } from "../user/user.service";
-
-import { AuthService } from "./auth.service";
-
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 
 const Schema = z.object({

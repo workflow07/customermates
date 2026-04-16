@@ -1,29 +1,27 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWidgetFilterableFieldsDealRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { GetUnscopedDealRepo } from "./get-unscoped-deal.repo";
+import type { CreateDealRepo } from "./upsert/create-deal.repo";
+import type { UpdateDealRepo } from "./upsert/update-deal.repo";
+import type { GetDealsRepo } from "./get/get-deals.interactor";
+import type { GetDealsConfigurationRepo } from "./get/get-deals-configuration.interactor";
+import type { GetDealByIdRepo } from "./get/get-deal-by-id.interactor";
+import type { DeleteDealRepo } from "./delete/delete-deal.repo";
+import type { FindDealsByIdsRepo } from "./find-deals-by-ids.repo";
 
-import { EntityType, Prisma, Resource } from "@/generated/prisma";
+import { EntityType, Resource } from "@/generated/prisma";
 
-import { PrismaCustomColumnRepo } from "../custom-column/prisma-custom-column.repository";
-import { GetWidgetFilterableFieldsDealRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetUnscopedDealRepo } from "./get-unscoped-deal.repo";
-import { CreateDealRepo } from "./upsert/create-deal.repo";
-import { UpdateDealRepo } from "./upsert/update-deal.repo";
-import { GetDealsRepo } from "./get/get-deals.interactor";
-import { GetDealsConfigurationRepo } from "./get/get-deals-configuration.interactor";
-import { GetDealByIdRepo } from "./get/get-deal-by-id.interactor";
-import { DeleteDealRepo } from "./delete/delete-deal.repo";
-import { FindDealsByIdsRepo } from "./find-deals-by-ids.repo";
 import { type DealDto } from "./deal.schema";
 
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { di } from "@/core/dependency-injection/container";
+import { getCustomColumnRepo } from "@/core/di";
 
-@Repository
 export class PrismaDealRepo
   extends BaseRepository
   implements
@@ -37,10 +35,6 @@ export class PrismaDealRepo
     FindDealsByIdsRepo,
     GetUnscopedDealRepo
 {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   private get userScopedSelect() {
     return {
       id: true,
@@ -106,7 +100,7 @@ export class PrismaDealRepo
   async getFilterableFields() {
     if (!this.canAccess(Resource.deals)) return [];
 
-    const customFields = await this.customColumnRepo.getFilterableCustomFields(EntityType.deal);
+    const customFields = await getCustomColumnRepo().getFilterableCustomFields(EntityType.deal);
 
     const filterFields = [];
 
@@ -296,7 +290,7 @@ export class PrismaDealRepo
     }
 
     if (customFieldValues.length > 0)
-      promises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.deal, deal.id, customFieldValues));
+      promises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.deal, deal.id, customFieldValues));
 
     await Promise.all(promises);
 
@@ -419,8 +413,8 @@ export class PrismaDealRepo
 
     if (customFieldValues !== undefined) {
       if (customFieldValues === null)
-        createPromises.push(this.customColumnRepo.deleteValuesForEntity(EntityType.deal, id));
-      else createPromises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.deal, id, customFieldValues));
+        createPromises.push(getCustomColumnRepo().deleteValuesForEntity(EntityType.deal, id));
+      else createPromises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.deal, id, customFieldValues));
     }
 
     await Promise.all(deletePromises);
@@ -445,7 +439,7 @@ export class PrismaDealRepo
   }
 
   async getCustomColumns() {
-    return this.customColumnRepo.findByEntityType(EntityType.deal);
+    return getCustomColumnRepo().findByEntityType(EntityType.deal);
   }
 
   async findIds(ids: Set<string>): Promise<Set<string>> {

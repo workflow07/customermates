@@ -1,33 +1,31 @@
-import { z } from "zod";
+import type { DeleteDealRepo } from "./delete-deal.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
+import type { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
+import type { GetUnscopedServiceRepo } from "@/features/services/get-unscoped-service.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
 import { Resource, Action } from "@/generated/prisma";
+import { z } from "zod";
 
-import { FindDealsByIdsRepo } from "../find-deals-by-ids.repo";
-
-import { DeleteDealRepo } from "./delete-deal.repo";
-
-import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
-import { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
-import { GetUnscopedServiceRepo } from "@/features/services/get-unscoped-service.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { DomainEvent } from "@/features/event/domain-events";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { validateDealIds } from "@/core/validation/validate-deal-ids";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getDealRepo } from "@/core/di";
 
 export const DeleteDealSchema = z
   .object({
     id: z.uuid(),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
     const dealSet = new Set([data.id]);
-    const validIdsSet = await preserveTenantContext(() => di.get(FindDealsByIdsRepo).findIds(dealSet));
+    const validIdsSet = await preserveTenantContext(() => getDealRepo().findIds(dealSet));
     validateDealIds(data.id, validIdsSet, ctx, ["id"]);
   });
 export type DeleteDealData = Data<typeof DeleteDealSchema>;

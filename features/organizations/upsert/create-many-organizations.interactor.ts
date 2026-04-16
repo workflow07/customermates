@@ -1,41 +1,37 @@
-import { z } from "zod";
+import type { CreateOrganizationRepo } from "./create-organization.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
+import type { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action, EntityType } from "@/generated/prisma";
 
-import { FindCustomColumnRepo } from "../../custom-column/find-custom-column.repo";
 import { validateCustomFieldValues } from "../../../core/validation/validate-custom-field-values";
 import { validateNotes } from "../../../core/validation/validate-notes";
-import { FindContactsByIdsRepo } from "../../contacts/find-contacts-by-ids.repo";
 import { validateContactIds } from "../../contacts/validate-contact-ids";
-import { FindUsersByIdsRepo } from "../../user/find-users-by-ids.repo";
 import { validateUserIds } from "../../../core/validation/validate-user-ids";
-import { FindDealsByIdsRepo } from "../../deals/find-deals-by-ids.repo";
 import { validateDealIds } from "../../../core/validation/validate-deal-ids";
 import { type OrganizationDto } from "../organization.schema";
 
 import { BaseCreateOrganizationSchema } from "./create-organization-base.schema";
-import { CreateOrganizationRepo } from "./create-organization.repo";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
-import { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getCompanyRepo, getContactRepo, getCustomColumnRepo, getDealRepo } from "@/core/di";
 
 export const CreateManyOrganizationsSchema = z
   .object({
     organizations: z.array(BaseCreateOrganizationSchema).min(1).max(10),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
-
     const contactSet = new Set<string>();
     const userSet = new Set<string>();
     const dealSet = new Set<string>();
@@ -48,10 +44,10 @@ export const CreateManyOrganizationsSchema = z
 
     const [validContactIdsSet, validUserIdsSet, validDealIdsSet, allColumns] = await preserveTenantContext(async () => {
       return await Promise.all([
-        di.get(FindContactsByIdsRepo).findIds(contactSet),
-        di.get(FindUsersByIdsRepo).findIds(userSet),
-        di.get(FindDealsByIdsRepo).findIds(dealSet),
-        di.get(FindCustomColumnRepo).findByEntityType(EntityType.organization),
+        getContactRepo().findIds(contactSet),
+        getCompanyRepo().findIds(userSet),
+        getDealRepo().findIds(dealSet),
+        getCustomColumnRepo().findByEntityType(EntityType.organization),
       ]);
     });
 

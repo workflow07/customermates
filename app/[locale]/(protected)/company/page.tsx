@@ -5,56 +5,57 @@ import { CompanyDetailsCard } from "./components/company-details/company-details
 import { SubscriptionCard } from "./components/subscription/subscription-card";
 import { CompanyManagementTabs } from "./components/company-management-tabs";
 
-import { GetUsersInteractor } from "@/features/user/get/get-users.interactor";
-import { GetTaskByTypeInteractor } from "@/features/tasks/get/get-task-by-type.interactor";
-import { GetCompanyDetailsInteractor } from "@/features/company/get-company-details.interactor";
-import { GetRolesInteractor } from "@/features/role/get-roles.interactor";
-import { GetSubscriptionInteractor } from "@/ee/subscription/get-subscription.interactor";
-import { GetWebhookDeliveriesInteractor } from "@/features/webhook/get-webhook-deliveries.interactor";
-import { GetWebhooksInteractor } from "@/features/webhook/get-webhooks.interactor";
+import {
+  getGetUsersInteractor,
+  getUserService,
+  getGetTaskByTypeInteractor,
+  getGetCompanyDetailsInteractor,
+  getGetRolesInteractor,
+  getGetSubscriptionInteractor,
+  getGetWebhookDeliveriesInteractor,
+  getGetWebhooksInteractor,
+  getRouteGuardService,
+  getGetAuditLogsInteractor,
+} from "@/core/di";
 import { XPageRowContent } from "@/components/x-layout-primitives/x-page-row-content";
 import { XPageRow } from "@/components/x-layout-primitives/x-page-row";
-import { di } from "@/core/dependency-injection/container";
 import { decodeGetParams } from "@/core/utils/get-params";
-import { RouteGuardService } from "@/features/auth/route-guard.service";
 import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
-import { GetAuditLogsInteractor } from "@/ee/audit-log/get/get-audit-logs.interactor";
-import { UserService } from "@/features/user/user.service";
 import { IS_CLOUD_HOSTED } from "@/constants/env";
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export default async function CompanyPage({ searchParams }: Props) {
-  await di.get(RouteGuardService).ensureAccessOrRedirect({ resource: Resource.company });
+  await getRouteGuardService().ensureAccessOrRedirect({ resource: Resource.company });
 
   const params = await searchParams;
   const userParams = decodeGetParams(params);
 
-  const userService = di.get(UserService);
+  const userSvc = getUserService();
   const [canAccessAuditLogsPermission, canAccessApiReadAll, canAccessApiReadOwn] = await Promise.all([
-    userService.hasPermission(Resource.auditLog, Action.readAll),
-    userService.hasPermission(Resource.api, Action.readAll),
-    userService.hasPermission(Resource.api, Action.readOwn),
+    userSvc.hasPermission(Resource.auditLog, Action.readAll),
+    userSvc.hasPermission(Resource.api, Action.readAll),
+    userSvc.hasPermission(Resource.api, Action.readOwn),
   ]);
   const canAccessAuditLogs = IS_CLOUD_HOSTED && canAccessAuditLogsPermission;
   const canAccessApi = canAccessApiReadAll || canAccessApiReadOwn;
 
   const [company, users, roles, task, auditLogs, webhooks, webhookDeliveries, subscription] = await Promise.all([
-    di.get(GetCompanyDetailsInteractor).invoke(),
-    di.get(GetUsersInteractor).invoke({ ...userParams, p13nId: "users-card-store" }),
-    di.get(GetRolesInteractor).invoke({ p13nId: "roles-card-store" }),
-    di.get(GetTaskByTypeInteractor).invoke({ type: TaskType.companyOnboarding }),
+    getGetCompanyDetailsInteractor().invoke(),
+    getGetUsersInteractor().invoke({ ...userParams, p13nId: "users-card-store" }),
+    getGetRolesInteractor().invoke({ p13nId: "roles-card-store" }),
+    getGetTaskByTypeInteractor().invoke({ type: TaskType.companyOnboarding }),
     canAccessAuditLogs
-      ? di.get(GetAuditLogsInteractor).invoke({ p13nId: "audit-logs-card-store" })
+      ? getGetAuditLogsInteractor().invoke({ p13nId: "audit-logs-card-store" })
       : Promise.resolve({ ok: true, data: { items: [] } }),
     canAccessApi
-      ? di.get(GetWebhooksInteractor).invoke({ ...userParams, p13nId: "webhooks-card-store" })
+      ? getGetWebhooksInteractor().invoke({ ...userParams, p13nId: "webhooks-card-store" })
       : Promise.resolve({ ok: true, data: { items: [] } }),
     canAccessApi
-      ? di.get(GetWebhookDeliveriesInteractor).invoke({ p13nId: "webhook-deliveries-card-store" })
+      ? getGetWebhookDeliveriesInteractor().invoke({ p13nId: "webhook-deliveries-card-store" })
       : Promise.resolve({ ok: true, data: { items: [] } }),
-    di.get(GetSubscriptionInteractor).invoke(),
+    getGetSubscriptionInteractor().invoke(),
   ]);
 
   const isCompanyOnboarding = Boolean(task);

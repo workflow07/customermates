@@ -1,32 +1,31 @@
-import { z } from "zod";
+import type { DeleteContactRepo } from "./delete-contact.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
+import type { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
 import { Resource, Action } from "@/generated/prisma";
+import { z } from "zod";
 
-import { FindContactsByIdsRepo } from "../find-contacts-by-ids.repo";
 import { validateContactIds } from "../validate-contact-ids";
 
-import { DeleteContactRepo } from "./delete-contact.repo";
-
-import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
-import { GetUnscopedOrganizationRepo } from "@/features/organizations/get-unscoped-organization.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { DomainEvent } from "@/features/event/domain-events";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getContactRepo } from "@/core/di";
 
 export const DeleteContactSchema = z
   .object({
     id: z.uuid(),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
     const contactSet = new Set([data.id]);
-    const validIdsSet = await preserveTenantContext(() => di.get(FindContactsByIdsRepo).findIds(contactSet));
+    const validIdsSet = await preserveTenantContext(() => getContactRepo().findIds(contactSet));
     validateContactIds(data.id, validIdsSet, ctx, ["id"]);
   });
 export type DeleteContactData = Data<typeof DeleteContactSchema>;

@@ -7,21 +7,22 @@ import { getLocale, getMessages } from "next-intl/server";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
-
 import { Locale, Status } from "@/generated/prisma";
+
 import type { Company } from "@/generated/prisma";
 
 import { Providers } from "./providers";
 import { NavigationSwitch } from "./components/navigation/navigation-switch";
 
-import { di } from "@/core/dependency-injection/container";
-import { GetCompanyDetailsInteractor } from "@/features/company/get-company-details.interactor";
-import { UserService } from "@/features/user/user.service";
+import {
+  getUserService,
+  getGetCompanyDetailsInteractor,
+  getCountSystemTasksInteractor,
+  getGetSubscriptionInteractor,
+} from "@/core/di";
 import { BASE_URL, IS_CLOUD_HOSTED, IS_DEMO_MODE } from "@/constants/env";
 import { homepageSource } from "@/core/fumadocs/source";
 import { ROUTING_DEFAULT_LOCALE, ROUTING_LOCALES } from "@/i18n/routing";
-import { CountSystemTasksInteractor } from "@/features/tasks/count-system-tasks.interactor";
-import { GetSubscriptionInteractor } from "@/ee/subscription/get-subscription.interactor";
 
 const latin = Inter({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap" });
 
@@ -102,7 +103,7 @@ export default async function RootLayout({ children }: Props) {
   const [messages, displayLanguage, user, cookiesStore] = await Promise.all([
     getMessages(),
     getLocale(),
-    di.get(UserService).getUser(),
+    getUserService().getUser(),
     cookies(),
   ]);
 
@@ -122,9 +123,9 @@ export default async function RootLayout({ children }: Props) {
 
     if (isAuthenticated) {
       const [companyResult, systemTaskCountResult, subscriptionResult] = await Promise.all([
-        di.get(GetCompanyDetailsInteractor).invoke(),
-        di.get(CountSystemTasksInteractor).invoke(),
-        di.get(GetSubscriptionInteractor).invoke(),
+        getGetCompanyDetailsInteractor().invoke(),
+        getCountSystemTasksInteractor().invoke(),
+        getGetSubscriptionInteractor().invoke(),
       ]);
       company = companyResult;
       systemTaskCount = systemTaskCountResult;

@@ -7,43 +7,44 @@ import type { ResetPasswordData } from "@/features/auth/reset-password.interacto
 
 import { redirect } from "next/navigation";
 
-import { di } from "@/core/dependency-injection/container";
-import { SignInWithEmailInteractor } from "@/features/auth/sign-in-with-email.interactor";
-import { SignUpWithEmailInteractor } from "@/features/auth/sign-up-with-email.interactor";
-import { RequestPasswordResetInteractor } from "@/features/auth/request-password-reset.interactor";
-import { ContinueWithSocialsInteractor } from "@/features/auth/continue-with-socials.interactor";
-import { ResetPasswordInteractor } from "@/features/auth/reset-password.interactor";
-import { AuthService } from "@/features/auth/auth.service";
+import {
+  getSignInWithEmailInteractor,
+  getSignUpWithEmailInteractor,
+  getRequestPasswordResetInteractor,
+  getContinueWithSocialsInteractor,
+  getResetPasswordInteractor,
+  getAuthService,
+} from "@/core/di";
 import { serializeResult } from "@/core/utils/action-result";
 
 export async function signInWithEmailAction(data: EmailSignInData) {
-  return serializeResult(di.get(SignInWithEmailInteractor).invoke(data));
+  return serializeResult(getSignInWithEmailInteractor().invoke(data));
 }
 
 export async function continueWithGoogleAction(callbackURL?: string) {
-  return di.get(ContinueWithSocialsInteractor).invoke({ provider: "google", callbackURL });
+  return getContinueWithSocialsInteractor().invoke({ provider: "google", callbackURL });
 }
 
 export async function continueWithMicrosoftAction(callbackURL?: string) {
-  return di.get(ContinueWithSocialsInteractor).invoke({ provider: "microsoft", callbackURL });
+  return getContinueWithSocialsInteractor().invoke({ provider: "microsoft", callbackURL });
 }
 
 export async function signUpWithEmailAction(data: EmailSignUpData) {
-  return serializeResult(di.get(SignUpWithEmailInteractor).invoke(data));
+  return serializeResult(getSignUpWithEmailInteractor().invoke(data));
 }
 
 export async function requestPasswordResetAction(data: RequestPasswordResetData) {
-  return serializeResult(di.get(RequestPasswordResetInteractor).invoke(data));
+  return serializeResult(getRequestPasswordResetInteractor().invoke(data));
 }
 
 export async function resetPasswordAction(data: ResetPasswordData) {
-  return serializeResult(di.get(ResetPasswordInteractor).invoke(data));
+  return serializeResult(getResetPasswordInteractor().invoke(data));
 }
 
 export async function resendVerificationEmailAction(email: string) {
-  const session = await di.get(AuthService).getSession();
+  const session = await getAuthService().getSession();
 
   if (!session) redirect("/auth/signin");
 
-  await di.get(AuthService).resendVerificationEmail(email);
+  await getAuthService().resendVerificationEmail(email);
 }

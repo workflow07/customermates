@@ -1,29 +1,27 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWidgetFilterableFieldsContactRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { GetUnscopedContactRepo } from "./get-unscoped-contact.repo";
+import type { GetContactsRepo } from "./get/get-contacts.interactor";
+import type { GetContactsConfigurationRepo } from "./get/get-contacts-configuration.interactor";
+import type { GetContactByIdRepo } from "./get/get-contact-by-id.interactor";
+import type { CreateContactRepo } from "./upsert/create-contact.repo";
+import type { UpdateContactRepo } from "./upsert/update-contact.repo";
+import type { DeleteContactRepo } from "./delete/delete-contact.repo";
+import type { FindContactsByIdsRepo } from "./find-contacts-by-ids.repo";
 
-import { EntityType, Prisma, Resource } from "@/generated/prisma";
+import { EntityType, Resource } from "@/generated/prisma";
 
-import { PrismaCustomColumnRepo } from "../custom-column/prisma-custom-column.repository";
-import { GetWidgetFilterableFieldsContactRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetUnscopedContactRepo } from "./get-unscoped-contact.repo";
-import { GetContactsRepo } from "./get/get-contacts.interactor";
-import { GetContactsConfigurationRepo } from "./get/get-contacts-configuration.interactor";
-import { GetContactByIdRepo } from "./get/get-contact-by-id.interactor";
-import { CreateContactRepo } from "./upsert/create-contact.repo";
-import { UpdateContactRepo } from "./upsert/update-contact.repo";
-import { DeleteContactRepo } from "./delete/delete-contact.repo";
-import { FindContactsByIdsRepo } from "./find-contacts-by-ids.repo";
 import { type ContactDto } from "./contact.schema";
 
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { di } from "@/core/dependency-injection/container";
+import { getCustomColumnRepo } from "@/core/di";
 
-@Repository
 export class PrismaContactRepo
   extends BaseRepository<Prisma.ContactWhereInput>
   implements
@@ -37,10 +35,6 @@ export class PrismaContactRepo
     FindContactsByIdsRepo,
     GetUnscopedContactRepo
 {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   private get userScopedSelect() {
     return {
       id: true,
@@ -94,7 +88,7 @@ export class PrismaContactRepo
   async getFilterableFields() {
     if (!this.canAccess(Resource.contacts)) return [];
 
-    const customFields = await this.customColumnRepo.getFilterableCustomFields(EntityType.contact);
+    const customFields = await getCustomColumnRepo().getFilterableCustomFields(EntityType.contact);
 
     const filterFields = [];
 
@@ -125,7 +119,7 @@ export class PrismaContactRepo
   }
 
   async getCustomColumns() {
-    return await this.customColumnRepo.findByEntityType(EntityType.contact);
+    return await getCustomColumnRepo().findByEntityType(EntityType.contact);
   }
 
   async getContactById(id: string) {
@@ -263,7 +257,7 @@ export class PrismaContactRepo
     }
 
     if (customFieldValues.length > 0)
-      promises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.contact, contact.id, customFieldValues));
+      promises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.contact, contact.id, customFieldValues));
 
     await Promise.all(promises);
 
@@ -363,8 +357,8 @@ export class PrismaContactRepo
 
     if (customFieldValues !== undefined) {
       if (customFieldValues === null)
-        createPromises.push(this.customColumnRepo.deleteValuesForEntity(EntityType.contact, id));
-      else createPromises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.contact, id, customFieldValues));
+        createPromises.push(getCustomColumnRepo().deleteValuesForEntity(EntityType.contact, id));
+      else createPromises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.contact, id, customFieldValues));
     }
 
     await Promise.all(deletePromises);

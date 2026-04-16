@@ -49,11 +49,8 @@ export const auth = betterAuth({
 
           if (!inviteToken) return { data };
 
-          const { di } = await import("@/core/dependency-injection/container");
-          const { InviteTokenValidationInteractor } = await import(
-            "@/features/company/invite-token-validation.interactor"
-          );
-          const res = await di.get(InviteTokenValidationInteractor).invoke({ token: inviteToken });
+          const { getInviteTokenValidationInteractor } = await import("@/core/di");
+          const res = await getInviteTokenValidationInteractor().invoke({ token: inviteToken });
 
           if (!res.valid && res.errorMessage === "inviteLinkExpired") redirect("/auth/error?type=inviteLinkExpired");
 
@@ -112,9 +109,8 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
     sendResetPassword: async ({ user, url }) => {
-      const { di } = await import("@/core/dependency-injection/container");
-      const { AuthService } = await import("@/features/auth/auth.service");
-      await di.get(AuthService).sendResetPasswordEmail({ to: user.email, url });
+      const { getAuthService } = await import("@/core/di");
+      await getAuthService().sendResetPasswordEmail({ to: user.email, url });
     },
   },
 
@@ -125,9 +121,8 @@ export const auth = betterAuth({
       const verificationUrl = new URL(url);
       verificationUrl.searchParams.set("callbackURL", "/onboarding");
 
-      const { di } = await import("@/core/dependency-injection/container");
-      const { AuthService } = await import("@/features/auth/auth.service");
-      await di.get(AuthService).sendVerificationEmail({ to: user.email, url: verificationUrl.toString() });
+      const { getAuthService } = await import("@/core/di");
+      await getAuthService().sendVerificationEmail({ to: user.email, url: verificationUrl.toString() });
     },
   },
 

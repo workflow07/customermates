@@ -1,34 +1,31 @@
-import { z } from "zod";
+import type { DeleteOrganizationRepo } from "./delete-organization.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
+import type { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
 import { Resource, Action } from "@/generated/prisma";
+import { z } from "zod";
 
-import {
-  FindOrganizationsByIdsRepo,
-  validateOrganizationIds,
-} from "../../../core/validation/validate-organization-ids";
+import { validateOrganizationIds } from "../../../core/validation/validate-organization-ids";
 
-import { DeleteOrganizationRepo } from "./delete-organization.repo";
-
-import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedContactRepo } from "@/features/contacts/get-unscoped-contact.repo";
-import { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { DomainEvent } from "@/features/event/domain-events";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { unique } from "@/core/utils/unique";
+import { getOrganizationRepo } from "@/core/di";
 
 export const DeleteOrganizationSchema = z
   .object({
     id: z.uuid(),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
     const organizationSet = new Set([data.id]);
-    const validIdsSet = await preserveTenantContext(() => di.get(FindOrganizationsByIdsRepo).findIds(organizationSet));
+    const validIdsSet = await preserveTenantContext(() => getOrganizationRepo().findIds(organizationSet));
     validateOrganizationIds(data.id, validIdsSet, ctx, ["id"]);
   });
 export type DeleteOrganizationData = Data<typeof DeleteOrganizationSchema>;

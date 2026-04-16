@@ -1,4 +1,6 @@
-import { CountryCode, Resource, Action } from "@/generated/prisma";
+import { Resource, Action } from "@/generated/prisma";
+
+import type { CountryCode } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";

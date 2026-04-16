@@ -1,17 +1,16 @@
+import type { UserService } from "../user/user.service";
+import type { WidgetService } from "../widget/widget.service";
+import type { EventService } from "@/features/event/event.service";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
-
 import { Action, EntityType, Resource } from "@/generated/prisma";
-
-import { UserService } from "../user/user.service";
-import { WidgetService } from "../widget/widget.service";
 
 import { type CustomColumnDto } from "./custom-column.schema";
 
-import { EventService } from "@/features/event/event.service";
 import { DomainEvent } from "@/features/event/domain-events";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { UserAccessor } from "@/core/base/user-accessor";
 

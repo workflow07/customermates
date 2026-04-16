@@ -2,12 +2,11 @@ import { redirect } from "next/navigation";
 
 import { VerifyEmailCard } from "./verify-email-card";
 
-import { di } from "@/core/dependency-injection/container";
-import { AuthService } from "@/features/auth/auth.service";
+import { getAuthService } from "@/core/di";
 import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
 
 export default async function VerifyEmailPage() {
-  const session = await di.get(AuthService).getSession();
+  const session = await getAuthService().getSession();
 
   if (!session) redirect("/auth/signin");
 

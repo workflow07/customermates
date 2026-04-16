@@ -1,8 +1,9 @@
+import type { SubscriptionService } from "./subscription.service";
+
 import { redirect } from "next/navigation";
+import { Resource, Action } from "@/generated/prisma";
 
-import { Company, Resource, Action } from "@/generated/prisma";
-
-import { SubscriptionService } from "./subscription.service";
+import type { Company } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { UserAccessor } from "@/core/base/user-accessor";

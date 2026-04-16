@@ -2,11 +2,8 @@ import { z } from "zod";
 
 import { encodeToToon, formatDatesInResponse } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
 import { WebhookEventSchema } from "@/features/webhook/webhook.schema";
-import { GetWebhooksInteractor } from "@/features/webhook/get-webhooks.interactor";
-import { UpsertWebhookInteractor } from "@/features/webhook/upsert-webhook.interactor";
-import { DeleteWebhookInteractor } from "@/features/webhook/delete-webhook.interactor";
+import { getGetWebhooksInteractor, getUpsertWebhookInteractor, getDeleteWebhookInteractor } from "@/core/di";
 
 const ListWebhooksSchema = z.object({
   searchTerm: z.string().optional(),
@@ -39,7 +36,7 @@ export const listWebhooksTool = {
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: ListWebhooksSchema,
   execute: async (params: z.infer<typeof ListWebhooksSchema>) => {
-    const result = await di.get(GetWebhooksInteractor).invoke({
+    const result = await getGetWebhooksInteractor().invoke({
       searchTerm: params.searchTerm,
       pagination: { page: 1, pageSize: 100 },
     });
@@ -55,7 +52,7 @@ export const createWebhookTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: CreateWebhookSchema,
   execute: async (params: z.infer<typeof CreateWebhookSchema>) => {
-    const result = await di.get(UpsertWebhookInteractor).invoke(params);
+    const result = await getUpsertWebhookInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon({
       id: result.data.id,
@@ -72,7 +69,7 @@ export const updateWebhookTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateWebhookSchema,
   execute: async (params: z.infer<typeof UpdateWebhookSchema>) => {
-    const result = await di.get(UpsertWebhookInteractor).invoke(params);
+    const result = await getUpsertWebhookInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon({
       id: result.data.id,
@@ -89,7 +86,7 @@ export const deleteWebhookTool = {
   annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
   inputSchema: DeleteWebhookSchema,
   execute: async (params: z.infer<typeof DeleteWebhookSchema>) => {
-    const result = await di.get(DeleteWebhookInteractor).invoke(params);
+    const result = await getDeleteWebhookInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Deleted webhook ${result.data}`;
   },

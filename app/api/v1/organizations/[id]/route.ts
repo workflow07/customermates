@@ -3,16 +3,17 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { DeleteOrganizationInteractor } from "@/features/organizations/delete/delete-organization.interactor";
-import { GetOrganizationByIdInteractor } from "@/features/organizations/get/get-organization-by-id.interactor";
-import { UpdateOrganizationInteractor } from "@/features/organizations/upsert/update-organization.interactor";
-import { di } from "@/core/dependency-injection/container";
+import {
+  getDeleteOrganizationInteractor,
+  getGetOrganizationByIdInteractor,
+  getUpdateOrganizationInteractor,
+} from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(DeleteOrganizationInteractor).invoke({ id });
+    const result = await getDeleteOrganizationInteractor().invoke({ id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -25,7 +26,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(GetOrganizationByIdInteractor).invoke({ id });
+    const result = await getGetOrganizationByIdInteractor().invoke({ id });
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -37,7 +38,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params;
     const data = await request.json();
-    const result = await di.get(UpdateOrganizationInteractor).invoke({ ...data, id });
+    const result = await getUpdateOrganizationInteractor().invoke({ ...data, id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

@@ -1,40 +1,36 @@
-import { z } from "zod";
+import type { UpdateServiceRepo } from "./update-service.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action, EntityType } from "@/generated/prisma";
 
-import { FindCustomColumnRepo } from "../../custom-column/find-custom-column.repo";
 import { validateCustomFieldValues } from "../../../core/validation/validate-custom-field-values";
 import { validateNotes } from "../../../core/validation/validate-notes";
-import { FindUsersByIdsRepo } from "../../user/find-users-by-ids.repo";
 import { validateUserIds } from "../../../core/validation/validate-user-ids";
-import { FindDealsByIdsRepo } from "../../deals/find-deals-by-ids.repo";
 import { validateDealIds } from "../../../core/validation/validate-deal-ids";
-import { FindServicesByIdsRepo } from "../find-services-by-ids.repo";
 import { validateServiceIds } from "../../../core/validation/validate-service-ids";
 import { type ServiceDto } from "../service.schema";
 
 import { BaseUpdateServiceSchema } from "./update-service-base.schema";
-import { UpdateServiceRepo } from "./update-service.repo";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { GetUnscopedDealRepo } from "@/features/deals/get-unscoped-deal.repo";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { buildRelationChangePublishes, calculateChanges } from "@/core/utils/calculate-changes";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
 import { unique } from "@/core/utils/unique";
+import { getCompanyRepo, getCustomColumnRepo, getDealRepo, getServiceRepo } from "@/core/di";
 
 export const UpdateManyServicesSchema = z
   .object({
     services: z.array(BaseUpdateServiceSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
-
     const userSet = new Set<string>();
     const dealSet = new Set<string>();
     const serviceSet = new Set<string>();
@@ -47,10 +43,10 @@ export const UpdateManyServicesSchema = z
 
     const [validUserIdsSet, validDealIdsSet, validServiceIdsSet, allColumns] = await preserveTenantContext(async () => {
       return await Promise.all([
-        di.get(FindUsersByIdsRepo).findIds(userSet),
-        di.get(FindDealsByIdsRepo).findIds(dealSet),
-        di.get(FindServicesByIdsRepo).findIds(serviceSet),
-        di.get(FindCustomColumnRepo).findByEntityType(EntityType.service),
+        getCompanyRepo().findIds(userSet),
+        getDealRepo().findIds(dealSet),
+        getServiceRepo().findIds(serviceSet),
+        getCustomColumnRepo().findByEntityType(EntityType.service),
       ]);
     });
 

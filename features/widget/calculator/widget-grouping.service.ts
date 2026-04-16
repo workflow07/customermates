@@ -1,20 +1,12 @@
+import type { ExtendedWidget, DiagramDataPoint } from "../widget.types";
+import type { DealRecord, GroupAccumulator, EntityForGrouping } from "./widget-calculator.types";
+
 import { AggregationType, EntityType, WidgetGroupByType } from "@/generated/prisma";
 
-import { ExtendedWidget, DiagramDataPoint } from "../widget.types";
-
-import { DealRecord, GroupAccumulator, EntityForGrouping } from "./widget-calculator.types";
-
-import { PrismaCustomColumnRepo } from "@/features/custom-column/prisma-custom-column.repository";
+import { getCustomColumnRepo } from "@/core/di";
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
-import { di } from "@/core/dependency-injection/container";
 
-@Repository
 export class WidgetGroupingService extends BaseRepository {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   groupDealsByEntityType(widget: ExtendedWidget, deals: DealRecord[]): DiagramDataPoint[] {
     const { groupByType, aggregationType } = widget;
     const acc: GroupAccumulator = new Map();
@@ -111,7 +103,7 @@ export class WidgetGroupingService extends BaseRepository {
 
     if (!groupByCustomColumnId) return [];
 
-    const customColumn = await this.customColumnRepo.find(groupByCustomColumnId);
+    const customColumn = await getCustomColumnRepo().find(groupByCustomColumnId);
     if (!customColumn || customColumn.type !== "singleSelect") return [];
 
     const optionsMap = new Map<string, string>();
@@ -128,7 +120,7 @@ export class WidgetGroupingService extends BaseRepository {
           (deal.contacts ?? []).forEach((contact) => contactIds.add(contact.contact.id));
         });
 
-        const valueByContactId = await this.customColumnRepo.findCustomFieldValuesMap(
+        const valueByContactId = await getCustomColumnRepo().findCustomFieldValuesMap(
           groupByCustomColumnId,
           EntityType.contact,
           Array.from(contactIds),
@@ -150,7 +142,7 @@ export class WidgetGroupingService extends BaseRepository {
           (deal.organizations ?? []).forEach((organization) => organizationIds.add(organization.organization.id));
         });
 
-        const valueByOrganizationId = await this.customColumnRepo.findCustomFieldValuesMap(
+        const valueByOrganizationId = await getCustomColumnRepo().findCustomFieldValuesMap(
           groupByCustomColumnId,
           EntityType.organization,
           Array.from(organizationIds),
@@ -169,7 +161,7 @@ export class WidgetGroupingService extends BaseRepository {
       case EntityType.deal: {
         const dealIds = deals.map((deal) => deal.id);
 
-        const valueByDealId = await this.customColumnRepo.findCustomFieldValuesMap(
+        const valueByDealId = await getCustomColumnRepo().findCustomFieldValuesMap(
           groupByCustomColumnId,
           EntityType.deal,
           dealIds,
@@ -193,7 +185,7 @@ export class WidgetGroupingService extends BaseRepository {
           });
         });
 
-        const valueByServiceId = await this.customColumnRepo.findCustomFieldValuesMap(
+        const valueByServiceId = await getCustomColumnRepo().findCustomFieldValuesMap(
           groupByCustomColumnId,
           EntityType.service,
           Array.from(serviceIds),
@@ -236,7 +228,7 @@ export class WidgetGroupingService extends BaseRepository {
     entities: EntityForGrouping[],
     customColumnId: string,
   ): Promise<DiagramDataPoint[]> {
-    const customColumn = await this.customColumnRepo.find(customColumnId);
+    const customColumn = await getCustomColumnRepo().find(customColumnId);
 
     if (!customColumn || customColumn.type !== "singleSelect") return [];
 
@@ -247,7 +239,7 @@ export class WidgetGroupingService extends BaseRepository {
     });
 
     const entityIds = entities.map((e) => e.id);
-    const valueByEntityId = await this.customColumnRepo.findCustomFieldValuesMap(customColumnId, entityType, entityIds);
+    const valueByEntityId = await getCustomColumnRepo().findCustomFieldValuesMap(customColumnId, entityType, entityIds);
 
     const acc: GroupAccumulator = new Map();
 

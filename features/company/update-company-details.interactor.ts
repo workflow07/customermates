@@ -1,12 +1,13 @@
-import { z } from "zod";
+import type { EventService } from "../event/event.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { CountryCode, Currency, Resource, Action } from "@/generated/prisma";
 
 import { DomainEvent } from "../event/domain-events";
-import { EventService } from "../event/event.service";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { UserAccessor } from "@/core/base/user-accessor";
 

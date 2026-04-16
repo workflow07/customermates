@@ -1,13 +1,12 @@
 import type { DomainEvent, DomainEventMap } from "@/features/event/domain-events";
+import type { Data } from "@/core/validation/validation.utils";
+import type { UserReferenceSchema } from "@/core/base/base-entity.schema";
 
 import { z } from "zod";
-
 import { Action, Resource } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { UserReferenceSchema } from "@/core/base/base-entity.schema";
 
 export type AuditLogDto = {
   id: string;

@@ -1,10 +1,12 @@
+import type { P13nRepo } from "@/core/base/base-get.interactor";
+
 import { Resource, Action, Status } from "@/generated/prisma";
 
 import { type UserDto } from "../user.schema";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
-import { BaseGetInteractor, BaseGetRepo, P13nRepo } from "@/core/base/base-get.interactor";
+import { BaseGetInteractor, BaseGetRepo } from "@/core/base/base-get.interactor";
 import { GetQueryParamsSchema, type GetQueryParams } from "@/core/base/base-get.schema";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { FilterOperatorKey } from "@/core/base/base-query-builder";

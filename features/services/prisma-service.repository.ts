@@ -1,29 +1,27 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWidgetFilterableFieldsServiceRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { GetUnscopedServiceRepo } from "./get-unscoped-service.repo";
+import type { GetServicesRepo } from "./get/get-services.interactor";
+import type { GetServicesConfigurationRepo } from "./get/get-services-configuration.interactor";
+import type { GetServiceByIdRepo } from "./get/get-service-by-id.interactor";
+import type { CreateServiceRepo } from "./upsert/create-service.repo";
+import type { UpdateServiceRepo } from "./upsert/update-service.repo";
+import type { DeleteServiceRepo } from "./delete/delete-service.repo";
+import type { FindServicesByIdsRepo } from "./find-services-by-ids.repo";
 
-import { EntityType, Prisma, Resource } from "@/generated/prisma";
+import { EntityType, Resource } from "@/generated/prisma";
 
-import { PrismaCustomColumnRepo } from "../custom-column/prisma-custom-column.repository";
-import { GetWidgetFilterableFieldsServiceRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetUnscopedServiceRepo } from "./get-unscoped-service.repo";
-import { GetServicesRepo } from "./get/get-services.interactor";
-import { GetServicesConfigurationRepo } from "./get/get-services-configuration.interactor";
-import { GetServiceByIdRepo } from "./get/get-service-by-id.interactor";
-import { CreateServiceRepo } from "./upsert/create-service.repo";
-import { UpdateServiceRepo } from "./upsert/update-service.repo";
-import { DeleteServiceRepo } from "./delete/delete-service.repo";
-import { FindServicesByIdsRepo } from "./find-services-by-ids.repo";
 import { type ServiceDto } from "./service.schema";
 
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
-import { di } from "@/core/dependency-injection/container";
+import { getCustomColumnRepo } from "@/core/di";
 
-@Repository
 export class PrismaServiceRepo
   extends BaseRepository
   implements
@@ -37,10 +35,6 @@ export class PrismaServiceRepo
     FindServicesByIdsRepo,
     GetUnscopedServiceRepo
 {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   private get userScopedSelect() {
     return {
       id: true,
@@ -90,7 +84,7 @@ export class PrismaServiceRepo
   async getFilterableFields() {
     if (!this.canAccess(Resource.services)) return [];
 
-    const customFields = await this.customColumnRepo.getFilterableCustomFields(EntityType.service);
+    const customFields = await getCustomColumnRepo().getFilterableCustomFields(EntityType.service);
 
     const filterFields = [];
 
@@ -189,7 +183,7 @@ export class PrismaServiceRepo
   }
 
   async getCustomColumns() {
-    return this.customColumnRepo.findByEntityType(EntityType.service);
+    return getCustomColumnRepo().findByEntityType(EntityType.service);
   }
 
   @Transaction
@@ -239,7 +233,7 @@ export class PrismaServiceRepo
     }
 
     if (customFieldValues.length > 0)
-      promises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.service, service.id, customFieldValues));
+      promises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.service, service.id, customFieldValues));
 
     await Promise.all(promises);
 
@@ -326,8 +320,8 @@ export class PrismaServiceRepo
 
     if (customFieldValues !== undefined) {
       if (customFieldValues === null)
-        createPromises.push(this.customColumnRepo.deleteValuesForEntity(EntityType.service, id));
-      else createPromises.push(this.customColumnRepo.replaceValuesForEntity(EntityType.service, id, customFieldValues));
+        createPromises.push(getCustomColumnRepo().deleteValuesForEntity(EntityType.service, id));
+      else createPromises.push(getCustomColumnRepo().replaceValuesForEntity(EntityType.service, id, customFieldValues));
     }
 
     await Promise.all(deletePromises);

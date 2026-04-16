@@ -1,10 +1,11 @@
-import { z } from "zod";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Locale, Theme } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 
 const Schema = z.object({
   theme: z.enum(Theme),

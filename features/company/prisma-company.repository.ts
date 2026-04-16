@@ -1,28 +1,27 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetCompanyDetailsRepo } from "./get-company-details.interactor";
+import type { UpdateCompanyDetailsRepo } from "./update-company-details.interactor";
+import type { GetOrCreateInviteTokenRepo } from "./get-or-create-invite-token.interactor";
+import type { GetUsersRepo } from "@/features/user/get/get-users.interactor";
+import type { InviteTokenRepo } from "@/features/company/invite-token-validation.interactor";
+import type { FindUsersByIdsRepo } from "@/features/user/find-users-by-ids.repo";
+import type { SubscriptionRepo } from "@/ee/subscription/subscription.service";
+import type { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.interactor";
+import type { RefreshSubscriptionRepo } from "@/ee/subscription/refresh-subscription.interactor";
+import type { AdminUpdateUserSubscriptionRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
+import type { CreateCheckoutCompanyRepo } from "@/ee/subscription/create-checkout-session.interactor";
 
-import { Status, Subscription, SubscriptionStatus } from "@/generated/prisma";
+import { Status, SubscriptionStatus } from "@/generated/prisma";
 
-import { GetCompanyDetailsRepo } from "./get-company-details.interactor";
-import { UpdateCompanyDetailsRepo } from "./update-company-details.interactor";
-import { GetOrCreateInviteTokenRepo } from "./get-or-create-invite-token.interactor";
+import type { Subscription } from "@/generated/prisma";
 
-import { GetUsersRepo } from "@/features/user/get/get-users.interactor";
-import { BaseRepository } from "@/core/base/base-repository";
-import { InviteTokenRepo } from "@/features/company/invite-token-validation.interactor";
-import { Transaction } from "@/core/decorators/transaction.decorator";
-import { type GetQueryParams } from "@/core/base/base-get.schema";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { BypassTenantGuard } from "@/core/decorators/bypass-tenant.decorator";
-import { FindUsersByIdsRepo } from "@/features/user/find-users-by-ids.repo";
-import { SubscriptionRepo } from "@/ee/subscription/subscription.service";
-import { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.interactor";
-import { RefreshSubscriptionRepo } from "@/ee/subscription/refresh-subscription.interactor";
-import { AdminUpdateUserSubscriptionRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
-import { CreateCheckoutCompanyRepo } from "@/ee/subscription/create-checkout-session.interactor";
+import { type GetQueryParams } from "@/core/base/base-get.schema";
+import { Transaction } from "@/core/decorators/transaction.decorator";
+import { BaseRepository } from "@/core/base/base-repository";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
 
-@Repository
 export class PrismaCompanyRepo
   extends BaseRepository
   implements

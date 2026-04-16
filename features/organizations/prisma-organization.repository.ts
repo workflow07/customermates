@@ -1,29 +1,27 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { GetWidgetFilterableFieldsOrganizationRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { GetUnscopedOrganizationRepo } from "./get-unscoped-organization.repo";
+import type { GetOrganizationsRepo } from "./get/get-organizations.interactor";
+import type { GetOrganizationsConfigurationRepo } from "./get/get-organizations-configuration.interactor";
+import type { GetOrganizationByIdRepo } from "./get/get-organization-by-id.interactor";
+import type { CreateOrganizationRepo } from "./upsert/create-organization.repo";
+import type { UpdateOrganizationRepo } from "./upsert/update-organization.repo";
+import type { DeleteOrganizationRepo } from "./delete/delete-organization.repo";
+import type { FindOrganizationsByIdsRepo } from "./find-organizations-by-ids.repo";
 
-import { EntityType, Prisma, Resource } from "@/generated/prisma";
+import { EntityType, Resource } from "@/generated/prisma";
 
-import { PrismaCustomColumnRepo } from "../custom-column/prisma-custom-column.repository";
-import { GetWidgetFilterableFieldsOrganizationRepo } from "../widget/get-widget-filterable-fields.interactor";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetUnscopedOrganizationRepo } from "./get-unscoped-organization.repo";
-import { GetOrganizationsRepo } from "./get/get-organizations.interactor";
-import { GetOrganizationsConfigurationRepo } from "./get/get-organizations-configuration.interactor";
-import { GetOrganizationByIdRepo } from "./get/get-organization-by-id.interactor";
-import { CreateOrganizationRepo } from "./upsert/create-organization.repo";
-import { UpdateOrganizationRepo } from "./upsert/update-organization.repo";
-import { DeleteOrganizationRepo } from "./delete/delete-organization.repo";
-import { FindOrganizationsByIdsRepo } from "./find-organizations-by-ids.repo";
 import { type OrganizationDto } from "./organization.schema";
 
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { di } from "@/core/dependency-injection/container";
+import { getCustomColumnRepo } from "@/core/di";
 
-@Repository
 export class PrismaOrganizationRepo
   extends BaseRepository
   implements
@@ -37,10 +35,6 @@ export class PrismaOrganizationRepo
     FindOrganizationsByIdsRepo,
     GetUnscopedOrganizationRepo
 {
-  private get customColumnRepo() {
-    return di.get(PrismaCustomColumnRepo);
-  }
-
   private get userScopedSelect() {
     return {
       id: true,
@@ -93,7 +87,7 @@ export class PrismaOrganizationRepo
   async getFilterableFields() {
     if (!this.canAccess(Resource.organizations)) return [];
 
-    const customFields = await this.customColumnRepo.getFilterableCustomFields(EntityType.organization);
+    const customFields = await getCustomColumnRepo().getFilterableCustomFields(EntityType.organization);
 
     const filterFields = [];
 
@@ -203,7 +197,7 @@ export class PrismaOrganizationRepo
   }
 
   async getCustomColumns() {
-    return this.customColumnRepo.findByEntityType(EntityType.organization);
+    return getCustomColumnRepo().findByEntityType(EntityType.organization);
   }
 
   async findIds(ids: Set<string>): Promise<Set<string>> {
@@ -278,7 +272,7 @@ export class PrismaOrganizationRepo
 
     if (customFieldValues.length > 0) {
       promises.push(
-        this.customColumnRepo.replaceValuesForEntity(EntityType.organization, organization.id, customFieldValues),
+        getCustomColumnRepo().replaceValuesForEntity(EntityType.organization, organization.id, customFieldValues),
       );
     }
 
@@ -379,10 +373,10 @@ export class PrismaOrganizationRepo
 
     if (customFieldValues !== undefined) {
       if (customFieldValues === null)
-        createPromises.push(this.customColumnRepo.deleteValuesForEntity(EntityType.organization, id));
+        createPromises.push(getCustomColumnRepo().deleteValuesForEntity(EntityType.organization, id));
       else {
         createPromises.push(
-          this.customColumnRepo.replaceValuesForEntity(EntityType.organization, id, customFieldValues),
+          getCustomColumnRepo().replaceValuesForEntity(EntityType.organization, id, customFieldValues),
         );
       }
     }

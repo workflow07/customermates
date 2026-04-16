@@ -1,6 +1,6 @@
 "use client";
 
-import type { ExtendedUser } from "@/features/user/user.service";
+import type { ExtendedUser } from "@/features/user/user.types";
 import type { UpdateUserSettingsData } from "@/features/user/upsert/update-user-settings.interactor";
 import type { Key } from "react";
 
@@ -27,8 +27,8 @@ import { User } from "@heroui/user";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownSection } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
 import { cn } from "@heroui/theme";
-
 import { Resource } from "@/generated/prisma";
+
 import type { Company, Theme } from "@/generated/prisma";
 
 import { SidebarFrame } from "./navigation/sidebar-frame";

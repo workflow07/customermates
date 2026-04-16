@@ -1,8 +1,10 @@
+import type { P13nRepo } from "@/core/base/base-get.interactor";
+
 import { Resource, Action } from "@/generated/prisma";
 
 import { type WebhookDto } from "./webhook.schema";
 
-import { BaseGetRepo, P13nRepo } from "@/core/base/base-get.interactor";
+import { BaseGetRepo } from "@/core/base/base-get.interactor";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { BaseGetInteractor } from "@/core/base/base-get.interactor";
 import { GetQueryParamsSchema, type GetQueryParams } from "@/core/base/base-get.schema";

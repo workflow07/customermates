@@ -1,10 +1,9 @@
-import { z } from "zod";
+import type { WebhookDeliveryDto } from "./get-webhook-deliveries.interactor";
+import type { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
 
+import { z } from "zod";
 import { Resource, Action } from "@/generated/prisma";
 
-import { WebhookDeliveryDto } from "./get-webhook-deliveries.interactor";
-
-import { CreateWebhookDeliveryRepo } from "@/features/webhook/create-webhook-delivery.repo";
 import { UserAccessor } from "@/core/base/user-accessor";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";

@@ -1,4 +1,4 @@
-import type { ExtendedUser } from "@/features/user/user.service";
+import type { ExtendedUser } from "@/features/user/user.types";
 
 import { AsyncLocalStorage } from "node:async_hooks";
 
@@ -40,9 +40,8 @@ export async function preserveTenantContext<T>(fn: () => Promise<T>): Promise<T>
   if (store && store.user) return await fn();
 
   if (!store || !store.user) {
-    const { di } = await import("@/core/dependency-injection/container");
-    const { UserService } = await import("@/features/user/user.service");
-    const user = await di.get(UserService).getActiveUserOrThrow();
+    const { getUserService } = await import("@/core/di");
+    const user = await getUserService().getActiveUserOrThrow();
 
     return await tenantStorage.run({ user, bypass: false }, fn);
   }

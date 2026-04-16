@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { CreateManyTasksInteractor } from "@/features/tasks/upsert/create-many-tasks.interactor";
-import { UpdateManyTasksInteractor } from "@/features/tasks/upsert/update-many-tasks.interactor";
+import { getCreateManyTasksInteractor, getUpdateManyTasksInteractor } from "@/core/di";
 import { BaseCreateTaskSchema } from "@/features/tasks/upsert/create-task-base.schema";
 
 const McpCreateManyTasksSchema = z.object({
@@ -41,7 +39,7 @@ export const batchCreateTasksTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyTasksSchema,
   execute: async (params: z.infer<typeof McpCreateManyTasksSchema>) => {
-    const result = await di.get(CreateManyTasksInteractor).invoke(params);
+    const result = await getCreateManyTasksInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(result.data.map((item) => item.id));
   },
@@ -53,7 +51,7 @@ export const batchUpdateTaskNameTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateTasksNameSchema,
   execute: async (params: z.infer<typeof UpdateTasksNameSchema>) => {
-    const result = await di.get(UpdateManyTasksInteractor).invoke(params);
+    const result = await getUpdateManyTasksInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} task(s)`;
   },
@@ -65,7 +63,7 @@ export const batchSetTaskUsersTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeTasksUsersSchema,
   execute: async (params: z.infer<typeof ChangeTasksUsersSchema>) => {
-    const result = await di.get(UpdateManyTasksInteractor).invoke(params);
+    const result = await getUpdateManyTasksInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} task(s)`;
   },

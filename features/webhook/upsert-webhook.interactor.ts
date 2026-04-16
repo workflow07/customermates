@@ -1,14 +1,16 @@
-import z from "zod";
+import type { WebhookDto } from "./webhook.schema";
+import type { EventService } from "@/features/event/event.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import z from "zod";
 import { Resource, Action } from "@/generated/prisma";
 
-import { WebhookDto, WebhookEventSchema } from "./webhook.schema";
+import { WebhookEventSchema } from "./webhook.schema";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, secureUrlSchema, type Validated } from "@/core/validation/validation.utils";
+import { secureUrlSchema, type Validated } from "@/core/validation/validation.utils";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 

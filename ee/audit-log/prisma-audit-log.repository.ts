@@ -1,21 +1,20 @@
 import type { DomainEventMap } from "@/features/event/domain-events";
+import type { GetAuditLogsByEntityIdRepo } from "./get/get-audit-logs-by-entity-id.interactor";
+import type { GetAuditLogsRepo } from "./get/get-audit-logs.interactor";
+import type { CreateAuditLogRepo } from "@/features/event/event.service";
+import type { DomainEvent } from "@/features/event/domain-events";
+import type { RepoArgs } from "@/core/utils/types";
 
-import { Prisma } from "@/generated/prisma";
+import type { Prisma } from "@/generated/prisma";
 
-import { GetAuditLogsByEntityIdRepo, type AuditLogDto } from "./get/get-audit-logs-by-entity-id.interactor";
-import { GetAuditLogsRepo } from "./get/get-audit-logs.interactor";
+import { type AuditLogDto } from "./get/get-audit-logs-by-entity-id.interactor";
 
-import { CreateAuditLogRepo } from "@/features/event/event.service";
 import { transactionStorage } from "@/core/decorators/transaction-context";
 import { BaseRepository } from "@/core/base/base-repository";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { type GetQueryParams } from "@/core/base/base-get.schema";
 import { FilterFieldKey } from "@/core/types/filter-field-key";
 import { FILTER_FIELD_DEFAULT_OPERATORS } from "@/core/types/filter-field-operators";
-import { DomainEvent } from "@/features/event/domain-events";
-import { RepoArgs } from "@/core/utils/types";
 
-@Repository
 export class PrismaAuditLogRepo
   extends BaseRepository<Prisma.AuditLogWhereInput>
   implements GetAuditLogsByEntityIdRepo, GetAuditLogsRepo, CreateAuditLogRepo

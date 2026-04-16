@@ -1,11 +1,12 @@
+import type { P13nEntry, SavedFilterPreset } from "./prisma-p13n.repository";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { randomUUID } from "crypto";
 
 import { z } from "zod";
 
-import { P13nEntry, SavedFilterPreset } from "./prisma-p13n.repository";
-
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { FilterSchema } from "@/core/base/base-get.schema";
 import { Validate } from "@/core/decorators/validate.decorator";
 import { Transaction } from "@/core/decorators/transaction.decorator";

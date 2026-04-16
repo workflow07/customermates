@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { GetContactsConfigurationInteractor } from "@/features/contacts/get/get-contacts-configuration.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getGetContactsConfigurationInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function GET() {
   try {
-    const result = await di.get(GetContactsConfigurationInteractor).invoke();
+    const result = await getGetContactsConfigurationInteractor().invoke();
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

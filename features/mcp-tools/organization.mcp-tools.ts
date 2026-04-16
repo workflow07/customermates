@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { CreateManyOrganizationsInteractor } from "@/features/organizations/upsert/create-many-organizations.interactor";
-import { UpdateManyOrganizationsInteractor } from "@/features/organizations/upsert/update-many-organizations.interactor";
+import { getCreateManyOrganizationsInteractor, getUpdateManyOrganizationsInteractor } from "@/core/di";
 import { BaseCreateOrganizationSchema } from "@/features/organizations/upsert/create-organization-base.schema";
 
 const McpCreateManyOrganizationsSchema = z.object({
@@ -65,7 +63,7 @@ export const batchCreateOrganizationsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyOrganizationsSchema,
   execute: async (params: z.infer<typeof McpCreateManyOrganizationsSchema>) => {
-    const result = await di.get(CreateManyOrganizationsInteractor).invoke(params);
+    const result = await getCreateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(result.data.map((item) => item.id));
   },
@@ -77,7 +75,7 @@ export const batchUpdateOrganizationNameTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateOrganizationsNameSchema,
   execute: async (params: z.infer<typeof UpdateOrganizationsNameSchema>) => {
-    const result = await di.get(UpdateManyOrganizationsInteractor).invoke(params);
+    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} organization(s)`;
   },
@@ -89,7 +87,7 @@ export const batchSetOrganizationContactsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsContactsSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsContactsSchema>) => {
-    const result = await di.get(UpdateManyOrganizationsInteractor).invoke(params);
+    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} organization(s)`;
   },
@@ -101,7 +99,7 @@ export const batchSetOrganizationUsersTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsUsersSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsUsersSchema>) => {
-    const result = await di.get(UpdateManyOrganizationsInteractor).invoke(params);
+    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} organization(s)`;
   },
@@ -113,7 +111,7 @@ export const batchSetOrganizationDealsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeOrganizationsDealsSchema,
   execute: async (params: z.infer<typeof ChangeOrganizationsDealsSchema>) => {
-    const result = await di.get(UpdateManyOrganizationsInteractor).invoke(params);
+    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} organization(s)`;
   },

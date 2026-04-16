@@ -1,9 +1,9 @@
+import type { ExtendedWidget } from "./widget.types";
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
 
-import { ExtendedWidget } from "./widget.types";
-
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 

@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { encodeToToon } from "./utils";
 
-import { di } from "@/core/dependency-injection/container";
-import { CreateManyContactsInteractor } from "@/features/contacts/upsert/create-many-contacts.interactor";
-import { UpdateManyContactsInteractor } from "@/features/contacts/upsert/update-many-contacts.interactor";
+import { getCreateManyContactsInteractor, getUpdateManyContactsInteractor } from "@/core/di";
 import { BaseCreateContactSchema } from "@/features/contacts/upsert/create-contact-base.schema";
 
 const McpCreateManyContactsSchema = z.object({
@@ -66,7 +64,7 @@ export const batchCreateContactsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: McpCreateManyContactsSchema,
   execute: async (params: z.infer<typeof McpCreateManyContactsSchema>) => {
-    const result = await di.get(CreateManyContactsInteractor).invoke(params);
+    const result = await getCreateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return encodeToToon(result.data.map((item) => item.id));
   },
@@ -78,7 +76,7 @@ export const batchUpdateContactNameTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateContactsNameSchema,
   execute: async (params: z.infer<typeof UpdateContactsNameSchema>) => {
-    const result = await di.get(UpdateManyContactsInteractor).invoke(params);
+    const result = await getUpdateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} contact(s)`;
   },
@@ -90,7 +88,7 @@ export const batchSetContactOrganizationsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsOrganizationsSchema,
   execute: async (params: z.infer<typeof ChangeContactsOrganizationsSchema>) => {
-    const result = await di.get(UpdateManyContactsInteractor).invoke(params);
+    const result = await getUpdateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} contact(s)`;
   },
@@ -102,7 +100,7 @@ export const batchSetContactUsersTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsUsersSchema,
   execute: async (params: z.infer<typeof ChangeContactsUsersSchema>) => {
-    const result = await di.get(UpdateManyContactsInteractor).invoke(params);
+    const result = await getUpdateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} contact(s)`;
   },
@@ -114,7 +112,7 @@ export const batchSetContactDealsTool = {
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: ChangeContactsDealsSchema,
   execute: async (params: z.infer<typeof ChangeContactsDealsSchema>) => {
-    const result = await di.get(UpdateManyContactsInteractor).invoke(params);
+    const result = await getUpdateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} contact(s)`;
   },

@@ -1,4 +1,4 @@
-import type { ExtendedUser } from "@/features/user/user.service";
+import type { ExtendedUser } from "@/features/user/user.types";
 
 import { isTenantGuardBypassed, getTenantUser } from "../decorators/tenant-context";
 

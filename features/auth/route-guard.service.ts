@@ -1,14 +1,13 @@
+import type { UserService } from "../user/user.service";
+import type { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.interactor";
+
 import { redirect } from "next/navigation";
+import { Action, Resource, Status, SubscriptionStatus } from "@/generated/prisma";
 
-import { Action, Resource, Status, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
+import type { SubscriptionPlan } from "@/generated/prisma";
 
-import { UserService } from "../user/user.service";
-
-import { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.interactor";
-import { TenantAgnostic } from "@/core/decorators/tenant-agnostic.decorator";
 import { IS_DEMO_MODE } from "@/constants/env";
 
-@TenantAgnostic
 export class RouteGuardService {
   constructor(
     private userService: UserService,

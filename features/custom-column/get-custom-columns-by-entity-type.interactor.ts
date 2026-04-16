@@ -1,5 +1,6 @@
-import { z } from "zod";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { EntityType } from "@/generated/prisma";
 
 import { type CustomColumnDto } from "./custom-column.schema";
@@ -7,7 +8,6 @@ import { type CustomColumnDto } from "./custom-column.schema";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data } from "@/core/validation/validation.utils";
 
 const Schema = z.object({
   entityType: z.enum(EntityType),

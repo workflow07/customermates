@@ -1,25 +1,25 @@
 import type { RepoArgs } from "@/core/utils/types";
+import type { UpsertCustomColumnRepo } from "./upsert-custom-column.interactor";
+import type { GetCustomColumnsRepo } from "./get-custom-columns.interactor";
+import type { GetCustomColumnsByEntityTypeRepo } from "./get-custom-columns-by-entity-type.interactor";
+import type { FindCustomColumnRepo } from "./find-custom-column.repo";
+import type { DeleteCustomColumnRepo } from "@/features/custom-column/delete-custom-column.interactor";
+import type { ContactCustomColumnRepo } from "@/features/contacts/get/get-contact-by-id.interactor";
+import type { OrganizationCustomColumnRepo } from "@/features/organizations/get/get-organization-by-id.interactor";
+import type { DealCustomColumnRepo } from "@/features/deals/get/get-deal-by-id.interactor";
+import type { ServiceCustomColumnRepo } from "@/features/services/get/get-service-by-id.interactor";
+import type { TaskCustomColumnRepo } from "@/features/tasks/get/get-task-by-id.interactor";
 
-import { CustomColumnType, Prisma, EntityType } from "@/generated/prisma";
+import { CustomColumnType, EntityType } from "@/generated/prisma";
 
-import { UpsertCustomColumnRepo } from "./upsert-custom-column.interactor";
-import { GetCustomColumnsRepo } from "./get-custom-columns.interactor";
-import { GetCustomColumnsByEntityTypeRepo } from "./get-custom-columns-by-entity-type.interactor";
-import { FindCustomColumnRepo } from "./find-custom-column.repo";
+import type { Prisma } from "@/generated/prisma";
+
 import { type CustomColumnDto } from "./custom-column.schema";
 
-import { DeleteCustomColumnRepo } from "@/features/custom-column/delete-custom-column.interactor";
-import { ContactCustomColumnRepo } from "@/features/contacts/get/get-contact-by-id.interactor";
-import { OrganizationCustomColumnRepo } from "@/features/organizations/get/get-organization-by-id.interactor";
-import { DealCustomColumnRepo } from "@/features/deals/get/get-deal-by-id.interactor";
-import { ServiceCustomColumnRepo } from "@/features/services/get/get-service-by-id.interactor";
-import { TaskCustomColumnRepo } from "@/features/tasks/get/get-task-by-id.interactor";
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
-import { Repository } from "@/core/decorators/repository.decorator";
 import { FilterOperatorKey } from "@/core/base/base-query-builder";
 
-@Repository
 export class PrismaCustomColumnRepo
   extends BaseRepository
   implements

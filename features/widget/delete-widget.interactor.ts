@@ -1,7 +1,8 @@
+import type { Data } from "@/core/validation/validation.utils";
+
 import { z } from "zod";
 
 import { Enforce } from "@/core/decorators/enforce.decorator";
-import { Data } from "@/core/validation/validation.utils";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 
 const Schema = z.object({

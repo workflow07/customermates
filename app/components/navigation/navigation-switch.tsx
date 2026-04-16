@@ -1,6 +1,6 @@
 "use client";
 
-import type { ExtendedUser } from "@/features/user/user.service";
+import type { ExtendedUser } from "@/features/user/user.types";
 
 import { useLayoutEffect } from "react";
 

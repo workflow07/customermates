@@ -7,10 +7,9 @@ import {
   listSubscriptionItems,
   updateSubscriptionItem,
 } from "@lemonsqueezy/lemonsqueezy.js";
+import { SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
 
-import { CountryCode, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
-
-import { TenantAgnostic } from "@/core/decorators/tenant-agnostic.decorator";
+import type { CountryCode } from "@/generated/prisma";
 
 export abstract class SubscriptionRepo {
   abstract upsertSubscription(data: {
@@ -25,7 +24,6 @@ export abstract class SubscriptionRepo {
   }): Promise<void>;
 }
 
-@TenantAgnostic
 export class SubscriptionService {
   private isConfigured = false;
 

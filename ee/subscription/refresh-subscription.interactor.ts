@@ -1,6 +1,6 @@
-import { Resource, Action } from "@/generated/prisma";
+import type { SubscriptionService } from "./subscription.service";
 
-import { SubscriptionService } from "./subscription.service";
+import { Resource, Action } from "@/generated/prisma";
 
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { UserAccessor } from "@/core/base/user-accessor";

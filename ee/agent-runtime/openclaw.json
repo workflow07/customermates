@@ -32,6 +32,16 @@
     "path": "/hooks",
     "token": "${OPENCLAW_HOOKS_TOKEN}"
   },
+  "models": {
+    "providers": {
+      "anthropic": {
+        "apiKey": { "id": "ANTHROPIC_API_KEY", "provider": "default", "source": "env" }
+      },
+      "openai": {
+        "apiKey": { "id": "OPENAI_API_KEY", "provider": "default", "source": "env" }
+      }
+    }
+  },
   "plugins": {
     "allow": [
       "anthropic",

@@ -3,16 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { DeleteDealInteractor } from "@/features/deals/delete/delete-deal.interactor";
-import { GetDealByIdInteractor } from "@/features/deals/get/get-deal-by-id.interactor";
-import { UpdateDealInteractor } from "@/features/deals/upsert/update-deal.interactor";
-import { di } from "@/core/dependency-injection/container";
+import { getDeleteDealInteractor, getGetDealByIdInteractor, getUpdateDealInteractor } from "@/core/di";
 import { handleError } from "@/core/api/interactor-handler";
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(DeleteDealInteractor).invoke({ id });
+    const result = await getDeleteDealInteractor().invoke({ id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 
@@ -25,7 +22,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const result = await di.get(GetDealByIdInteractor).invoke({ id });
+    const result = await getGetDealByIdInteractor().invoke({ id });
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -37,7 +34,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params;
     const data = await request.json();
-    const result = await di.get(UpdateDealInteractor).invoke({ ...data, id });
+    const result = await getUpdateDealInteractor().invoke({ ...data, id });
 
     if (!result.ok) return NextResponse.json(z.prettifyError(result.error), { status: 400 });
 

@@ -1,36 +1,33 @@
-import { z } from "zod";
+import type { UpdateTaskRepo } from "./update-task.repo";
+import type { EventService } from "@/features/event/event.service";
+import type { WidgetService } from "@/features/widget/widget.service";
+import type { Data } from "@/core/validation/validation.utils";
 
+import { z } from "zod";
 import { Resource, Action, EntityType } from "@/generated/prisma";
 
-import { FindCustomColumnRepo } from "../../custom-column/find-custom-column.repo";
 import { validateCustomFieldValues } from "../../../core/validation/validate-custom-field-values";
 import { validateNotes } from "../../../core/validation/validate-notes";
-import { FindUsersByIdsRepo } from "../../user/find-users-by-ids.repo";
 import { validateUserIds } from "../../../core/validation/validate-user-ids";
-import { FindTasksByIdsRepo } from "../find-tasks-by-ids.repo";
 import { validateTaskIds } from "../../../core/validation/validate-task-ids";
 import { type TaskDto } from "../task.schema";
 
 import { BaseUpdateTaskSchema } from "./update-task-base.schema";
-import { UpdateTaskRepo } from "./update-task.repo";
 
 import { DomainEvent } from "@/features/event/domain-events";
-import { EventService } from "@/features/event/event.service";
-import { WidgetService } from "@/features/widget/widget.service";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
+import { type Validated } from "@/core/validation/validation.utils";
 import { calculateChanges } from "@/core/utils/calculate-changes";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { preserveTenantContext } from "@/core/decorators/tenant-context";
+import { getCompanyRepo, getCustomColumnRepo, getTaskRepo } from "@/core/di";
 
 export const UpdateManyTasksSchema = z
   .object({
     tasks: z.array(BaseUpdateTaskSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
-    const { di } = await import("@/core/dependency-injection/container");
-
     const userSet = new Set<string>();
     const taskSet = new Set<string>();
 
@@ -41,9 +38,9 @@ export const UpdateManyTasksSchema = z
 
     const [validUserIdsSet, validTaskIdsSet, allColumns] = await preserveTenantContext(async () => {
       return await Promise.all([
-        di.get(FindUsersByIdsRepo).findIds(userSet),
-        di.get(FindTasksByIdsRepo).findIds(taskSet),
-        di.get(FindCustomColumnRepo).findByEntityType(EntityType.task),
+        getCompanyRepo().findIds(userSet),
+        getTaskRepo().findIds(taskSet),
+        getCustomColumnRepo().findByEntityType(EntityType.task),
       ]);
     });
 

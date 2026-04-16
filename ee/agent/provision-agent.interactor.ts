@@ -1,16 +1,16 @@
+import type { AgentMachineService } from "./agent-machine.service";
+import type { Data } from "@/core/validation/validation.utils";
+import type { AuthService } from "@/features/auth/auth.service";
+
 import { randomBytes } from "crypto";
 
 import { z } from "zod";
-
 import { Action, Resource } from "@/generated/prisma";
-
-import { AgentMachineService } from "./agent-machine.service";
 
 import { validateLlmApiKey } from "@/core/validation/validate-llm-api-key";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
 import { Validate } from "@/core/decorators/validate.decorator";
-import { Data, type Validated } from "@/core/validation/validation.utils";
-import { AuthService } from "@/features/auth/auth.service";
+import { type Validated } from "@/core/validation/validation.utils";
 
 const Schema = z
   .object({

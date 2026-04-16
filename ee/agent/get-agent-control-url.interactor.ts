@@ -1,6 +1,6 @@
-import { Action, Resource } from "@/generated/prisma";
+import type { AgentMachineService } from "./agent-machine.service";
 
-import { AgentMachineService } from "./agent-machine.service";
+import { Action, Resource } from "@/generated/prisma";
 
 import { AGENT_BASE_URL } from "@/constants/env";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";

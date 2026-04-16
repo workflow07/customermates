@@ -1,20 +1,18 @@
 import type { Filter, FilterableField, SortDescriptor } from "./base-get.schema";
+import type { SortableField } from "./base-query-builder";
 
 import { z } from "zod";
-
 import { CustomColumnType } from "@/generated/prisma";
-import type { EntityType } from "@/generated/prisma";
 
-import { SortableField } from "./base-query-builder";
+import type { EntityType } from "@/generated/prisma";
 
 import { CustomErrorCode } from "@/core/validation/validation.types";
 import { TenantScoped } from "@/core/decorators/tenant-scoped.decorator";
-import { validateOrganizationIds, FindOrganizationsByIdsRepo } from "@/core/validation/validate-organization-ids";
-import { validateUserIds, FindUsersByIdsRepo } from "@/core/validation/validate-user-ids";
-import { validateDealIds, FindDealsByIdsRepo } from "@/core/validation/validate-deal-ids";
-import { validateServiceIds, FindServicesByIdsRepo } from "@/core/validation/validate-service-ids";
-import { validateContactIds, FindContactsByIdsRepo } from "@/features/contacts/validate-contact-ids";
-import { FindCustomColumnRepo } from "@/features/custom-column/find-custom-column.repo";
+import { validateOrganizationIds } from "@/core/validation/validate-organization-ids";
+import { validateUserIds } from "@/core/validation/validate-user-ids";
+import { validateDealIds } from "@/core/validation/validate-deal-ids";
+import { validateServiceIds } from "@/core/validation/validate-service-ids";
+import { validateContactIds } from "@/features/contacts/validate-contact-ids";
 import { validateCustomFieldEmail } from "@/core/validation/validate-custom-field-email";
 import { validateCustomFieldPhone } from "@/core/validation/validate-custom-field-phone";
 import { validateCustomFieldCurrency } from "@/core/validation/validate-custom-field-currency";
@@ -24,6 +22,14 @@ import { validateCustomFieldDate } from "@/core/validation/validate-custom-field
 import { validateCustomColumnExists } from "@/core/validation/validate-custom-column-exists";
 import { validateDate } from "@/core/validation/validate-date";
 import { validateEvent } from "@/core/validation/validate-event";
+import {
+  getOrganizationRepo,
+  getDealRepo,
+  getCompanyRepo,
+  getServiceRepo,
+  getContactRepo,
+  getCustomColumnRepo,
+} from "@/core/di";
 
 @TenantScoped
 export class ValidateQueryParamsValidator {
@@ -78,30 +84,28 @@ export class ValidateQueryParamsValidator {
 
     const fieldPath = ["filters", filterIndex, "value"];
 
-    const { di } = await import("@/core/dependency-injection/container");
-
     const values = Array.isArray(filter.value) ? filter.value : [filter.value];
     const valueSet = new Set(values);
 
     if (filter.field === "organizationIds" && valueSet.size > 0) {
-      const validIdsSet = await di.get(FindOrganizationsByIdsRepo).findIds(valueSet);
+      const validIdsSet = await getOrganizationRepo().findIds(valueSet);
       validateOrganizationIds(filter.value, validIdsSet, ctx, fieldPath);
     } else if (filter.field === "dealIds" && valueSet.size > 0) {
-      const validIdsSet = await di.get(FindDealsByIdsRepo).findIds(valueSet);
+      const validIdsSet = await getDealRepo().findIds(valueSet);
       validateDealIds(filter.value, validIdsSet, ctx, fieldPath);
     } else if (filter.field === "userIds" && valueSet.size > 0) {
-      const validIdsSet = await di.get(FindUsersByIdsRepo).findIds(valueSet);
+      const validIdsSet = await getCompanyRepo().findIds(valueSet);
       validateUserIds(filter.value, validIdsSet, ctx, fieldPath);
     } else if (filter.field === "serviceIds" && valueSet.size > 0) {
-      const validIdsSet = await di.get(FindServicesByIdsRepo).findIds(valueSet);
+      const validIdsSet = await getServiceRepo().findIds(valueSet);
       validateServiceIds(filter.value, validIdsSet, ctx, fieldPath);
     } else if (filter.field === "contactIds" && valueSet.size > 0) {
-      const validIdsSet = await di.get(FindContactsByIdsRepo).findIds(valueSet);
+      const validIdsSet = await getContactRepo().findIds(valueSet);
       validateContactIds(filter.value, validIdsSet, ctx, fieldPath);
     } else if (filter.field === "event") validateEvent(filter.value, ctx, fieldPath);
     else if (filter.field === "updatedAt" || filter.field === "createdAt") validateDate(filter.value, ctx, fieldPath);
     else if (this.isCustomField(filter.field)) {
-      const allColumns = await di.get(FindCustomColumnRepo).findByEntityType(entityType);
+      const allColumns = await getCustomColumnRepo().findByEntityType(entityType);
       const fieldPathForField = ["filters", filterIndex, "field"];
 
       const column = validateCustomColumnExists(filter.field, allColumns, ctx, fieldPathForField);

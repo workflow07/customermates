@@ -1,30 +1,19 @@
-import { Action, Resource, Status, type User } from "@/generated/prisma";
+import type { ExtendedUser } from "./user.types";
+import type { AuthService } from "@/features/auth/auth.service";
 
-import { UserRoleDto } from "../role/get-roles.interactor";
+import { Status } from "@/generated/prisma";
 
-import { AuthService } from "@/features/auth/auth.service";
-import { TenantAgnostic } from "@/core/decorators/tenant-agnostic.decorator";
+import type { Action, Resource } from "@/generated/prisma";
 
-type SensitiveUserFields =
-  | "crmApiKeyId"
-  | "crmApiKey"
-  | "agentGatewayToken"
-  | "agentHooksToken"
-  | "welcomeEmailSentAt"
-  | "trialExpiredOfferSentAt"
-  | "trialInactivationReminderSentAt"
-  | "trialInactivationNoticeSentAt";
+import { AuthError, ForbiddenError } from "@/core/errors/app-errors";
 
-export type ExtendedUser = Omit<User, SensitiveUserFields> & {
-  role: UserRoleDto | null;
-};
+export type { ExtendedUser } from "./user.types";
 
 export abstract class FindUserRepo {
   abstract findCurrentUser(email: string): Promise<ExtendedUser | null>;
   abstract findCurrentUserOrThrow(email: string): Promise<ExtendedUser>;
 }
 
-@TenantAgnostic
 export class UserService {
   constructor(
     private authService: AuthService,
@@ -46,7 +35,7 @@ export class UserService {
 
     const email = session?.user?.email;
 
-    if (!email) throw new Error("User not found");
+    if (!email) throw new AuthError();
 
     return await this.repo.findCurrentUserOrThrow(email);
   }
@@ -82,6 +71,6 @@ export class UserService {
   async hasPermissionOrThrow(resource: Resource, action: Action): Promise<void> {
     const hasPermission = await this.hasPermission(resource, action);
 
-    if (!hasPermission) throw new Error("User has insufficient permissions");
+    if (!hasPermission) throw new ForbiddenError("User has insufficient permissions");
   }
 }
