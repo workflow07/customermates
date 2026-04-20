@@ -4,7 +4,7 @@ import { OrganizationsCard } from "./components/organizations-card";
 
 import { getGetOrganizationsInteractor, getRouteGuardService } from "@/core/di";
 import { decodeGetParams } from "@/core/utils/get-params";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
+import { PageContainer } from "@/components/shared/page-container";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -22,8 +22,8 @@ export default async function OrganizationsPage({ searchParams }: Props) {
   });
 
   return (
-    <XPageContainer>
+    <PageContainer padded={false}>
       <OrganizationsCard organizations={organizations.ok ? organizations.data : { items: [] }} />
-    </XPageContainer>
+    </PageContainer>
   );
 }

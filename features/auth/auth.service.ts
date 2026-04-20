@@ -6,9 +6,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import XResetPassword from "@/components/x-emails/x-reset-password";
-import XVerifyEmail from "@/components/x-emails/x-verify-email";
-import XNewUserNotification from "@/components/x-emails/x-new-user-notification";
+import ResetPassword from "@/components/emails/reset-password";
+import VerifyEmail from "@/components/emails/verify-email";
+import NewUserNotification from "@/components/emails/new-user-notification";
 import { auth } from "@/core/auth/better-auth";
 import { CustomErrorCode } from "@/core/validation/validation.types";
 import { BASE_URL, RESEND_FROM_EMAIL } from "@/constants/env";
@@ -101,7 +101,7 @@ export class AuthService {
     await this.emailService.send({
       to: args.to,
       subject: t("subject"),
-      react: React.createElement(XVerifyEmail, {
+      react: React.createElement(VerifyEmail, {
         url: args.url,
         subject: t("subject"),
         intro: t("intro"),
@@ -117,7 +117,7 @@ export class AuthService {
     await this.emailService.send({
       to: args.to,
       subject: t("subject"),
-      react: React.createElement(XResetPassword, {
+      react: React.createElement(ResetPassword, {
         url: args.url,
         subject: t("subject"),
         intro: t("intro"),
@@ -144,7 +144,7 @@ export class AuthService {
     await this.emailService.send({
       to: RESEND_FROM_EMAIL,
       subject: "New User Registration",
-      react: React.createElement(XNewUserNotification, {
+      react: React.createElement(NewUserNotification, {
         email: args.email,
         name: args.name,
         provider: args.provider,

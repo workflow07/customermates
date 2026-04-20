@@ -15,29 +15,23 @@ The best option depends on your operational model, privacy requirements, and how
 
 ## Comparison table
 
-<table>
-  <thead>
-    <tr>
-      <th>Criterion</th>
-      <th>Cloud</th>
-      <th>Self-Hosted</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>Pricing</td><td>€10</td><td>Infrastructure and ops costs vary</td></tr>
-    <tr><td>Setup Time</td><td>2 minutes</td><td>60 - 120 minutes</td></tr>
-    <tr><td>Maintenance Required</td><td>None</td><td>Regular updates</td></tr>
-    <tr><td>Privacy friendly</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>API and integrations</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Unlimited Users</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Unlimited Records</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>n8n and automation workflows</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Audit Logging</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Single Sign-On</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Managed AI Agent</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Whitelabeling</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-  </tbody>
-</table>
+<ComparisonTable
+  columns={["Criterion", "Cloud", "Self-Hosted"]}
+  rows={[
+    { label: "Pricing", cells: ["€10", "Infrastructure and ops costs vary"] },
+    { label: "Setup Time", cells: ["2 minutes", "60 - 120 minutes"] },
+    { label: "Maintenance Required", cells: ["None", "Regular updates"] },
+    { label: "Privacy friendly", cells: ["available", "available"] },
+    { label: "API and integrations", cells: ["available", "available"] },
+    { label: "Unlimited Users", cells: ["available", "available"] },
+    { label: "Unlimited Records", cells: ["available", "available"] },
+    { label: "n8n and automation workflows", cells: ["available", "available"] },
+    { label: "Audit Logging", cells: ["available", "unavailable"] },
+    { label: "Single Sign-On", cells: ["available", "unavailable"] },
+    { label: "Managed AI Agent", cells: ["available", "unavailable"] },
+    { label: "Whitelabeling", cells: ["available", "unavailable"] },
+  ]}
+/>
 
 ## How to decide
 

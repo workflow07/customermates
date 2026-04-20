@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import XTrialInactivationReminder from "@/components/x-emails/x-trial-inactivation-reminder";
+import TrialInactivationReminder from "@/components/emails/trial-inactivation-reminder";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 
 export abstract class SendTrialInactivationReminderActionRepo {
@@ -35,7 +35,7 @@ export class SendTrialInactivationReminderInteractor {
       await this.emailService.send({
         to: user.email,
         subject: t("subject"),
-        react: XTrialInactivationReminder({
+        react: TrialInactivationReminder({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
           dismiss: t("dismiss"),

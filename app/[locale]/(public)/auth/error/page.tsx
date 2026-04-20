@@ -2,12 +2,10 @@
 
 import { ErrorCard } from "./error-card";
 
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
-
 export default function ErrorPage() {
   return (
-    <XPageCenter>
+    <div className="size-full flex flex-1 items-center justify-center p-4">
       <ErrorCard />
-    </XPageCenter>
+    </div>
   );
 }

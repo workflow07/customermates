@@ -6,19 +6,23 @@ import type { ExtendedWidget } from "@/features/widget/widget.types";
 import type { CustomColumnDto } from "@/features/custom-column/custom-column.schema";
 import type { FilterableField } from "@/core/base/base-get.schema";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+import { Plus } from "lucide-react";
 
 import type { EntityType } from "@/generated/prisma";
 
 import "@/styles/react-grid-layout.css";
 
 import { WidgetCard } from "./widget-card";
-import { WidgetAddCard } from "./widget-add-card";
 import { WidgetModal } from "./widget-modal";
 import { GRID_COLS, GRID_BREAKPOINTS } from "./grid.constants";
 
+import { useSetTopBarActions } from "@/app/components/topbar-actions-context";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
 import { useIsTouchDevice } from "@/core/utils/use-is-touch-device";
 
@@ -38,6 +42,7 @@ type Props = {
 };
 
 export const WidgetsGrid = observer(({ widgets, customColumns, filterableFields }: Props) => {
+  const t = useTranslations("");
   const { widgetsStore, widgetModalStore } = useRootStore();
   const { items, layouts } = widgetsStore;
   const isTouchDevice = useIsTouchDevice();
@@ -61,6 +66,19 @@ export const WidgetsGrid = observer(({ widgets, customColumns, filterableFields 
   const handlePointerDown = useCallback((id: string, e: React.PointerEvent) => {
     pointerStart.current = { id, x: e.clientX, y: e.clientY };
   }, []);
+
+  const addButton = useMemo(
+    () => (
+      <Button size="sm" variant="outline" onClick={() => void widgetModalStore.add()}>
+        <Icon icon={Plus} />
+
+        <span className="hidden sm:inline">{t("Dashboard.addCard")}</span>
+      </Button>
+    ),
+    [t, widgetModalStore],
+  );
+
+  useSetTopBarActions(addButton);
 
   return (
     <>
@@ -86,8 +104,6 @@ export const WidgetsGrid = observer(({ widgets, customColumns, filterableFields 
           ))}
         </ResponsiveGridLayout>
       )}
-
-      <WidgetAddCard />
 
       <WidgetModal customColumns={customColumns} filterableFields={filterableFields} />
     </>

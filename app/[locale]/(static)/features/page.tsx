@@ -8,7 +8,7 @@ import { FeaturesHero } from "./components/features-hero";
 import { WhyFeaturesSection } from "./components/why-features-section";
 
 import { Footer } from "@/app/components/footer";
-import { XCTASection } from "@/components/x-cta-section";
+import { CTASection } from "@/components/marketing/cta-section";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { featuresSource } from "@/core/fumadocs/source";
 
@@ -38,7 +38,7 @@ export default async function FeaturesPage() {
 
       <WhyFeaturesSection {...why} />
 
-      <XCTASection {...cta} />
+      <CTASection {...cta} />
 
       <Footer />
     </div>

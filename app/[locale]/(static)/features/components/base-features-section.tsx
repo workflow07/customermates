@@ -1,13 +1,11 @@
 "use client";
 
-import type { FC, SVGProps } from "react";
 import type { Feature } from "@/core/fumadocs/schemas/features";
 
-import * as HeroiconsOutline from "@heroicons/react/24/outline";
-
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XIcon } from "@/components/x-icon";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { Icon } from "@/components/shared/icon";
+import { ICONS } from "@/components/shared/icons";
 
 type Props = Feature;
 
@@ -18,10 +16,8 @@ export function BaseFeaturesSection({
   subtitle,
   title,
 }: Props) {
-  const cardShadow = hasSecondaryBackground ? "md" : "sm";
-
   return (
-    <section className={`py-12 md:py-16 w-full ${hasSecondaryBackground ? "bg-content1" : ""}`}>
+    <section className={`py-12 md:py-16 w-full ${hasSecondaryBackground ? "bg-card" : ""}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-12">
           <h2 className="text-x-3xl mb-4">{title}</h2>
@@ -31,22 +27,22 @@ export function BaseFeaturesSection({
 
         <div className={`grid ${gridCols || "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"} gap-4`}>
           {features.map((feature, index) => {
-            const Icon = (HeroiconsOutline as Record<string, FC<SVGProps<SVGSVGElement>>>)[feature.icon];
+            const IconComponent = ICONS[feature.icon];
 
             return (
-              <XCard key={index} shadow={cardShadow}>
-                <XCardBody>
+              <AppCard key={index} className={hasSecondaryBackground ? "bg-muted" : ""}>
+                <AppCardBody>
                   <h3 className="font-semibold flex items-center gap-2">
                     <div className="text-subdued">
-                      <XIcon icon={Icon} />
+                      <Icon icon={IconComponent} />
                     </div>
 
                     {feature.title}
                   </h3>
 
                   <p className="text-x-sm text-subdued leading-relaxed">{feature.description}</p>
-                </XCardBody>
-              </XCard>
+                </AppCardBody>
+              </AppCard>
             );
           })}
         </div>

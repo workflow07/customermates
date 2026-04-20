@@ -2,12 +2,14 @@ import "@/styles/globals.css";
 
 import type { Metadata, Viewport } from "next";
 
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
-import { Locale, Status } from "@/generated/prisma";
+import { Status } from "@/generated/prisma";
+
+import type { SubscriptionStatus } from "@/generated/prisma";
 
 import type { Company } from "@/generated/prisma";
 
@@ -24,7 +26,19 @@ import { BASE_URL, IS_CLOUD_HOSTED, IS_DEMO_MODE } from "@/constants/env";
 import { homepageSource } from "@/core/fumadocs/source";
 import { ROUTING_DEFAULT_LOCALE, ROUTING_LOCALES } from "@/i18n/routing";
 
-const latin = Inter({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap" });
+const latin = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -84,17 +98,6 @@ export const viewport: Viewport = {
   themeColor: "white",
 };
 
-function localeEnumToString(locale: Locale | undefined | null, systemLocale: string): string {
-  switch (locale) {
-    case Locale.de:
-      return "de-DE";
-    case Locale.en:
-      return "en-US";
-    default:
-      return systemLocale === "de" ? "de-DE" : systemLocale === "en" ? "en-US" : "en-US";
-  }
-}
-
 type Props = {
   children: React.ReactNode;
 };
@@ -116,6 +119,7 @@ export default async function RootLayout({ children }: Props) {
   let systemTaskCount = 0;
   let company: Company | null = null;
   let subscriptionPlan: "basic" | "pro" | null = null;
+  let subscriptionStatus: SubscriptionStatus | null = null;
   let isAuthenticated = false;
 
   if (isRegistered) {
@@ -130,18 +134,22 @@ export default async function RootLayout({ children }: Props) {
       company = companyResult.data;
       systemTaskCount = systemTaskCountResult.data;
       subscriptionPlan = subscriptionResult.data?.plan ?? null;
+      subscriptionStatus = subscriptionResult.data?.status ?? null;
     }
   }
 
   return (
-    <html suppressHydrationWarning className={latin.className} lang={displayLanguage}>
+    <html
+      suppressHydrationWarning
+      className={`${latin.variable} ${mono.variable} ${latin.className}`}
+      lang={displayLanguage}
+    >
       <head />
 
       <body className="h-screen flex flex-col font-sans antialiased">
         <Providers
           defaultTheme={themeCookie}
           displayLanguage={displayLanguage}
-          formattingLocale={localeEnumToString(user?.formattingLocale, displayLanguage)}
           initialNavbarVisible={!isAuthenticated}
           initialSidebarOpen={initialSidebarOpen}
           isCloudHosted={IS_CLOUD_HOSTED}
@@ -150,8 +158,10 @@ export default async function RootLayout({ children }: Props) {
         >
           <NavigationSwitch
             company={company}
+            defaultSidebarOpen={initialSidebarOpen}
             isAuthenticated={isAuthenticated}
             subscriptionPlan={subscriptionPlan}
+            subscriptionStatus={subscriptionStatus}
             systemTaskCount={systemTaskCount}
             user={user}
           >

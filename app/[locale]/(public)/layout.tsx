@@ -1,23 +1,23 @@
 "use client";
 
-import { ToastProvider } from "@heroui/toast";
+import { Toaster } from "@/components/ui/sonner";
 
-import { XLoadingOverlay } from "@/components/x-loading-overlay";
-import { XUnexpectedErrorToaster } from "@/components/x-unexpected-error-toaster";
-import { XTranslationSync } from "@/components/x-translation-sync";
+import { LoadingOverlay } from "@/components/shared/loading-overlay";
+import { UnexpectedErrorToaster } from "@/components/shared/unexpected-error-toaster";
+import { TranslationSync } from "@/components/shared/translation-sync";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
 
-      <ToastProvider />
+      <Toaster />
 
-      <XLoadingOverlay />
+      <LoadingOverlay />
 
-      <XUnexpectedErrorToaster />
+      <UnexpectedErrorToaster />
 
-      <XTranslationSync />
+      <TranslationSync />
     </>
   );
 }

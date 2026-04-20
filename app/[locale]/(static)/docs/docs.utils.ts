@@ -29,14 +29,14 @@ export function getDocMethodColor(method: string | undefined) {
     case "GET":
       return "success";
     case "POST":
-      return "primary";
+      return "default";
     case "PUT":
     case "PATCH":
       return "warning";
     case "DELETE":
-      return "danger";
+      return "destructive";
     default:
-      return "default";
+      return "secondary";
   }
 }
 

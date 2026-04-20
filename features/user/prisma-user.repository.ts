@@ -28,7 +28,6 @@ import { CustomColumnType, EntityType, Status, SubscriptionPlan, SubscriptionSta
 
 import { type UserDto } from "./user.schema";
 
-import { CHIP_COLORS } from "@/constants/chip-colors";
 import { BaseRepository } from "@/core/base/base-repository";
 import { Transaction } from "@/core/decorators/transaction.decorator";
 import { BypassTenantGuard } from "@/core/decorators/bypass-tenant.decorator";
@@ -345,42 +344,42 @@ export class PrismaUserRepo
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.open"),
-              color: CHIP_COLORS[0],
+              color: "secondary",
               isDefault: true,
               index: 0,
             },
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.inProgress"),
-              color: CHIP_COLORS[4],
+              color: "warning",
               isDefault: false,
               index: 1,
             },
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.blocked"),
-              color: CHIP_COLORS[5],
+              color: "destructive",
               isDefault: false,
               index: 2,
             },
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.onHold"),
-              color: CHIP_COLORS[2],
+              color: "secondary",
               isDefault: false,
               index: 3,
             },
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.done"),
-              color: CHIP_COLORS[3],
+              color: "success",
               isDefault: false,
               index: 4,
             },
             {
               value: randomUUID(),
               label: t("defaultData.todo.states.archived"),
-              color: CHIP_COLORS[0],
+              color: "secondary",
               isDefault: false,
               index: 5,
             },

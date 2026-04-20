@@ -1,24 +1,29 @@
 "use client";
 
 import type { ExtendedUser } from "@/features/user/user.types";
+import type { Company, SubscriptionStatus } from "@/generated/prisma";
 
 import { useLayoutEffect } from "react";
 
-import type { Company } from "@/generated/prisma";
-
 import { AppSidebar } from "../app-sidebar";
+import { AppTopBar } from "../app-topbar";
 import { PublicNavbar } from "../public-navbar";
+import { TopBarActionsProvider } from "../topbar-actions-context";
 
 import { usePathname } from "@/i18n/navigation";
 import { DocsSidebar } from "@/app/[locale]/(static)/docs/components/docs-sidebar";
+import { DocsTopBar } from "@/app/[locale]/(static)/docs/components/docs-topbar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useRootStore } from "@/core/stores/root-store.provider";
 
 type Props = {
   isAuthenticated: boolean;
   company: Company | null;
   subscriptionPlan: "basic" | "pro" | null;
+  subscriptionStatus: SubscriptionStatus | null;
   systemTaskCount: number;
   user: ExtendedUser | null;
+  defaultSidebarOpen?: boolean;
   children: React.ReactNode;
 };
 
@@ -26,8 +31,10 @@ export function NavigationSwitch({
   isAuthenticated,
   company,
   subscriptionPlan,
+  subscriptionStatus,
   systemTaskCount,
   user,
+  defaultSidebarOpen = true,
   children,
 }: Props) {
   const pathname = usePathname();
@@ -39,32 +46,51 @@ export function NavigationSwitch({
     layoutStore.setIsNavbarVisible(shouldShowNavbar);
   }, [shouldShowNavbar]);
 
-  return (
-    <div className="h-screen flex">
-      {isDocsRoute ? (
+  if (isDocsRoute) {
+    return (
+      <SidebarProvider defaultOpen={defaultSidebarOpen}>
         <DocsSidebar />
-      ) : (
-        isAuthenticated && (
-          <AppSidebar
-            company={company}
-            subscriptionPlan={subscriptionPlan}
-            systemTaskCount={systemTaskCount}
-            user={user}
-          />
-        )
-      )}
 
-      <main className="flex flex-col relative flex-1 overflow-auto bg-background">
-        {!isAuthenticated && !isDocsRoute && (
-          <header className="sticky top-0 z-30 border-b border-divider bg-background flex flex-col">
+        <SidebarInset className="min-w-0 overflow-y-auto overflow-x-clip">
+          <DocsTopBar />
+
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="h-screen flex">
+        <main className="flex flex-col relative flex-1 overflow-y-auto bg-background min-w-0">
+          <header className="sticky top-0 z-30 bg-background/80 backdrop-blur flex flex-col">
             <PublicNavbar />
           </header>
-        )}
 
-        <div className="pointer-events-none absolute inset-0 -top-32 md:-top-48 bg-size-[40px_40px] bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#171717_1px,transparent_1px),linear-gradient(to_bottom,#171717_1px,transparent_1px)] mask-[linear-gradient(to_bottom,black,transparent_80%),linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] mask-intersect" />
+          <div className="flex flex-col flex-1 overflow-x-clip">{children}</div>
+        </main>
+      </div>
+    );
+  }
 
-        {children}
-      </main>
-    </div>
+  return (
+    <SidebarProvider defaultOpen={defaultSidebarOpen}>
+      <AppSidebar
+        company={company}
+        subscriptionPlan={subscriptionPlan}
+        subscriptionStatus={subscriptionStatus}
+        systemTaskCount={systemTaskCount}
+        user={user}
+      />
+
+      <SidebarInset className="min-w-0 overflow-x-clip">
+        <TopBarActionsProvider>
+          <AppTopBar />
+
+          {children}
+        </TopBarActionsProvider>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

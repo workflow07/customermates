@@ -1,68 +1,92 @@
 "use client";
 
 import type { WebhookDto } from "@/features/webhook/webhook.schema";
+import type { GetResult } from "@/core/base/base-get.interactor";
+import type { ColumnDef } from "@tanstack/react-table";
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
+import { useEffect, useMemo } from "react";
 
-import { XDataViewContainer } from "@/components/x-data-view/x-data-view-container";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
+import { DataViewContainer } from "@/components/data-view";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XChipStack } from "@/components/x-chip/x-chip-stack";
-import { XChip } from "@/components/x-chip/x-chip";
-export const WebhooksCard = observer(() => {
+import { AppChipStack } from "@/components/chip/app-chip-stack";
+import { AppChip } from "@/components/chip/app-chip";
+
+type Props = {
+  initialWebhooks: GetResult<WebhookDto>;
+};
+
+export const WebhooksCard = observer(({ initialWebhooks }: Props) => {
   const t = useTranslations("");
   const { webhookModalStore, webhooksStore, intlStore } = useRootStore();
 
-  function renderCell(item: WebhookDto, columnKey: React.Key): string | number | JSX.Element {
-    switch (columnKey) {
-      case "name":
-        return <XDataViewCell className="text-x-sm">{item.url}</XDataViewCell>;
+  useEffect(() => webhooksStore.setItems(initialWebhooks), [initialWebhooks]);
 
-      case "description":
-        return <XDataViewCell className="text-x-sm">{item.description ?? ""}</XDataViewCell>;
-
-      case "events":
-        return (
-          <XChipStack
-            items={item.events.map((event) => {
+  const columns = useMemo<ColumnDef<WebhookDto>[]>(() => {
+    return [
+      {
+        id: "name",
+        header: t("Common.table.columns.url"),
+        cell: ({ row }) => <span className="text-sm truncate">{row.original.url}</span>,
+      },
+      {
+        id: "description",
+        header: t("Common.table.columns.description"),
+        cell: ({ row }) => <span className="text-sm truncate">{row.original.description ?? ""}</span>,
+      },
+      {
+        id: "events",
+        header: t("Common.table.columns.events"),
+        cell: ({ row }) => (
+          <AppChipStack
+            items={row.original.events.map((event) => {
               const [entity, action] = event.split(".");
               return { id: event, label: t(`Common.events.${entity}.${action}`) };
             })}
             size="sm"
-            variant="flat"
           />
-        );
-
-      case "status":
-        return item.enabled ? (
-          <XChip color="success" size="sm">
-            {t("WebhookModal.enabled")}
-          </XChip>
-        ) : (
-          <XChip color="danger" size="sm">
-            {t("WebhookModal.disabled")}
-          </XChip>
-        );
-
-      case "createdAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.createdAt)}</XDataViewCell>;
-
-      case "updatedAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.updatedAt)}</XDataViewCell>;
-
-      default:
-        return "";
-    }
-  }
+        ),
+      },
+      {
+        id: "status",
+        header: t("Common.table.columns.status"),
+        cell: ({ row }) =>
+          row.original.enabled ? (
+            <AppChip size="sm" variant="success">
+              {t("WebhookModal.enabled")}
+            </AppChip>
+          ) : (
+            <AppChip size="sm" variant="destructive">
+              {t("WebhookModal.disabled")}
+            </AppChip>
+          ),
+      },
+      {
+        id: "createdAt",
+        accessorKey: "createdAt",
+        header: t("Common.table.columns.createdAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.createdAt)}</span>
+        ),
+      },
+      {
+        id: "updatedAt",
+        accessorKey: "updatedAt",
+        header: t("Common.table.columns.updatedAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.updatedAt)}</span>
+        ),
+      },
+    ];
+  }, [t, intlStore]);
 
   return (
-    <XDataViewContainer
-      renderCell={renderCell}
+    <DataViewContainer
+      columns={columns}
       store={webhooksStore}
-      title={t("WebhooksCard.title")}
       onAdd={() => void webhookModalStore.add()}
-      onRowAction={(item) => void webhookModalStore.edit(item)}
+      onRowClick={(item) => void webhookModalStore.edit(item)}
     />
   );
 });

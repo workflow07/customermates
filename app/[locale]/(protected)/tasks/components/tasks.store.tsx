@@ -1,7 +1,7 @@
 import type { TaskDto } from "@/features/tasks/task.schema";
 import type { RootStore } from "@/core/stores/root.store";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 
 import { EntityType, Resource } from "@/generated/prisma";
 
@@ -15,7 +15,7 @@ export class TasksStore extends BaseDataViewStore<TaskDto> {
   }
 
   get columnsDefinition() {
-    const columns: (XTableColumn | false)[] = [
+    const columns: (TableColumn | false)[] = [
       { uid: "name", sortable: true },
       ...this.customColumns.map((column) => ({ uid: column.id, label: column.label })),
       { uid: "users" },
@@ -23,7 +23,7 @@ export class TasksStore extends BaseDataViewStore<TaskDto> {
       { uid: "createdAt", sortable: true },
     ];
 
-    return columns.filter((col): col is XTableColumn => Boolean(col));
+    return columns.filter((col): col is TableColumn => Boolean(col));
   }
 
   protected async refreshAction(params?: GetQueryParams) {

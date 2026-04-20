@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { VerifyEmailCard } from "./verify-email-card";
 
 import { getAuthService } from "@/core/di";
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
 
 export default async function VerifyEmailPage() {
   const session = await getAuthService().getSession();
@@ -13,8 +12,8 @@ export default async function VerifyEmailPage() {
   if (session?.user?.emailVerified) redirect("/");
 
   return (
-    <XPageCenter>
+    <div className="size-full flex flex-1 items-center justify-center p-4">
       <VerifyEmailCard email={session?.user?.email} />
-    </XPageCenter>
+    </div>
   );
 }

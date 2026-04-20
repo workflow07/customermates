@@ -10,10 +10,10 @@ import { HomepageDemo } from "./components/homepage-demo";
 import { HomepageBenefits } from "./components/homepage-benefits";
 import { HomepagePricing } from "./components/homepage-pricing";
 
-import { XCTASection } from "@/components/x-cta-section";
-import { XFAQSection } from "@/components/x-faq-section";
-import { XFeatureSection } from "@/components/x-feature-section";
-import { XTestimonialSection } from "@/components/x-testimonial-section";
+import { AIModelsSection } from "@/components/marketing/ai-models-section";
+import { CTASection } from "@/components/marketing/cta-section";
+import { FAQSection } from "@/components/marketing/faq-section";
+import { FeatureSection } from "@/components/marketing/feature-section";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { homepageSource, pricingSource } from "@/core/fumadocs/source";
 
@@ -29,7 +29,7 @@ export default async function HomePage() {
 
   if (!homepagePage) notFound();
 
-  const { hero, benefits, features, testimonials, pricingTitle, faq, cta } = homepagePage.data;
+  const { hero, benefits, features, pricingTitle, faq, cta } = homepagePage.data;
   const pricingData = pricingPage?.data.pricing;
 
   return (
@@ -38,17 +38,17 @@ export default async function HomePage() {
 
       <HomepageDemo />
 
+      <AIModelsSection title="Power up with best-in-class AI models" />
+
       <HomepageBenefits benefitsSection={benefits} />
 
-      <XFeatureSection {...features} />
-
-      <XTestimonialSection testimonialsSection={testimonials} />
+      <FeatureSection {...features} />
 
       {pricingData && <HomepagePricing pricingSection={pricingData} pricingSectionTitle={pricingTitle} />}
 
-      <XFAQSection {...faq} />
+      <FAQSection {...faq} />
 
-      <XCTASection {...cta} />
+      <CTASection {...cta} />
 
       <Footer />
     </div>

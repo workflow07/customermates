@@ -1,0 +1,75 @@
+"use client";
+
+import { observer } from "mobx-react-lite";
+import { EntityType, Resource } from "@/generated/prisma";
+
+import { createOrganizationByNameAction, getOrganizationsAction } from "../../organizations/actions";
+import { getUsersAction } from "../../company/actions";
+import { createContactByNameAction, getContactsAction } from "../../contacts/actions";
+
+import { DealServicesSelection } from "./deal-services-selection";
+
+import { EntityDetailBody } from "@/components/modal/entity-detail-body";
+import { FormInput } from "@/components/forms/form-input";
+import { FormAutocomplete } from "@/components/forms/form-autocomplete";
+import { FormAutocompleteAvatar } from "@/components/forms/form-autocomplete-avatar";
+import { FormAutocompleteItem } from "@/components/forms/form-autocomplete-item";
+import { useRootStore } from "@/core/stores/root-store.provider";
+import { useOpenEntity } from "@/components/modal/hooks/use-entity-drawer-stack";
+import { AppChip } from "@/components/chip/app-chip";
+import { CustomFieldValueInput } from "@/components/data-view/custom-columns/custom-field-value-input";
+
+type Props = {
+  layout?: "drawer" | "page";
+};
+
+export const DealDetailView = observer(function DealDetailView({ layout = "drawer" }: Props) {
+  const { dealDetailStore, userModalStore, userStore } = useRootStore();
+  const openEntity = useOpenEntity();
+  const { isEditingCustomField, customColumns, fetchedEntity } = dealDetailStore;
+
+  return (
+    <EntityDetailBody entityType={EntityType.deal} layout={layout} store={dealDetailStore} titleKey="DealModal.title">
+      <FormInput autoFocus required id="name" />
+
+      {userStore.canAccess(Resource.contacts) && (
+        <FormAutocompleteAvatar
+          getItems={getContactsAction}
+          id="contactIds"
+          items={fetchedEntity?.contacts ?? []}
+          selectionMode="multiple"
+          onChipClick={(id) => openEntity(EntityType.contact, id)}
+          onCreate={(name) => createContactByNameAction(name, userStore.user?.id)}
+        />
+      )}
+
+      {userStore.canAccess(Resource.organizations) && (
+        <FormAutocomplete
+          getItems={getOrganizationsAction}
+          id="organizationIds"
+          items={fetchedEntity?.organizations ?? []}
+          renderValue={(items) => items.map((item) => <AppChip key={item.key}>{item.data?.name}</AppChip>)}
+          selectionMode="multiple"
+          onChipClick={(id) => openEntity(EntityType.organization, id)}
+          onCreate={(name) => createOrganizationByNameAction(name, userStore.user?.id)}
+        >
+          {(org) => FormAutocompleteItem({ children: org.name })}
+        </FormAutocomplete>
+      )}
+
+      {customColumns.map((column, index) => (
+        <CustomFieldValueInput key={column.id} column={column} index={index} isEditing={isEditingCustomField} />
+      ))}
+
+      <FormAutocompleteAvatar
+        getItems={getUsersAction}
+        id="userIds"
+        items={fetchedEntity?.users ?? []}
+        selectionMode="multiple"
+        onChipClick={(id) => void userModalStore.loadById(id)}
+      />
+
+      <DealServicesSelection />
+    </EntityDetailBody>
+  );
+});

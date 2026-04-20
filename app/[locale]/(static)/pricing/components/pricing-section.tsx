@@ -3,8 +3,8 @@
 import type { Pricing } from "@/core/fumadocs/schemas/pricing";
 
 import { useState } from "react";
-import { Slider } from "@heroui/slider";
-import { Tab, Tabs } from "@heroui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { PricingCardComponent } from "./pricing-card";
 
@@ -50,36 +50,35 @@ export function PricingSection({
           <div>
             <h3 className="text-x-lg mb-2">{users}</h3>
 
-            <div className="text-x-3xl text-primary-600 dark:text-primary-400">{userCount}</div>
+            <div className="text-x-3xl text-primary dark:text-primary">{userCount}</div>
           </div>
 
           <Tabs
             aria-label={ariaLabelTabs}
-            color="primary"
-            selectedKey={isAnnual ? "yearly" : "monthly"}
-            size="sm"
-            onSelectionChange={(key) => setIsAnnual(key === "yearly")}
+            value={isAnnual ? "yearly" : "monthly"}
+            onValueChange={(key) => setIsAnnual(key === "yearly")}
           >
-            <Tab key="monthly" title={monthly} />
+            <TabsList>
+              <TabsTrigger value="monthly">{monthly}</TabsTrigger>
 
-            <Tab key="yearly" title={yearlyTitle} />
+              <TabsTrigger value="yearly">{yearlyTitle}</TabsTrigger>
+            </TabsList>
           </Tabs>
         </div>
 
         <Slider
           aria-label={ariaLabelSlider}
           className="w-full mb-3"
-          color="primary"
-          maxValue={maxUsers}
-          minValue={1}
+          max={maxUsers}
+          min={1}
           step={1}
-          value={userCount}
-          onChange={(value) => setUserCount(Array.isArray(value) ? value[0] : value)}
+          value={[userCount]}
+          onValueChange={(values) => setUserCount(values[0] ?? 1)}
         />
 
-        <div className="flex justify-between text-x-xs text-default-500">
+        <div className="flex justify-between text-x-xs text-muted-foreground">
           {[1, 5, 10, 15, 20, maxUsers].map((value) => (
-            <span key={value} className={userCount >= value ? "font-semibold text-primary-400" : ""}>
+            <span key={value} className={userCount >= value ? "font-semibold text-primary" : ""}>
               {value}
             </span>
           ))}

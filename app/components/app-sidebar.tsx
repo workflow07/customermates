@@ -1,91 +1,102 @@
 "use client";
 
 import type { ExtendedUser } from "@/features/user/user.types";
-import type { UpdateUserSettingsData } from "@/features/user/upsert/update-user-settings.interactor";
 import type { Key } from "react";
+import type { Company, SubscriptionStatus } from "@/generated/prisma";
+import type { UpdateUserSettingsData } from "@/features/user/upsert/update-user-settings.interactor";
+import type { NavGroup } from "./navigation/nav-main";
+import type { NavSecondaryItem } from "./navigation/nav-secondary";
 
 import { useEffect, useMemo, useState } from "react";
-import { Kbd } from "@heroui/kbd";
 import { usePathname } from "next/navigation";
+import { usePathname as useIntlPathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { observer } from "mobx-react-lite";
-import { Button } from "@heroui/button";
+import { useTheme } from "next-themes";
 import {
-  BriefcaseIcon,
-  BuildingOfficeIcon,
-  ChatBubbleLeftRightIcon,
-  CheckCircleIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  Squares2X2Icon,
-  StarIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
-import { User } from "@heroui/user";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownSection } from "@heroui/dropdown";
-import { Avatar } from "@heroui/avatar";
-import { cn } from "@heroui/theme";
-import { Resource } from "@/generated/prisma";
-
-import type { Company, Theme } from "@/generated/prisma";
-
-import { SidebarFrame } from "./navigation/sidebar-frame";
+  Building,
+  Building2,
+  MessagesSquare,
+  CheckCircle2,
+  MessageCircle,
+  FileText,
+  Package,
+  Plus,
+  LayoutGrid,
+  TrendingUp,
+  UserCircle,
+  Users,
+} from "lucide-react";
+import { Resource, Theme as ThemeEnum } from "@/generated/prisma";
+import { updateThemeAction } from "@/app/[locale]/(protected)/dashboard/actions";
 
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XLink } from "@/components/x-link";
-import { XIcon } from "@/components/x-icon";
-import { XBadge } from "@/components/x-badge";
-import { XDropdownItem } from "@/components/x-inputs/x-dropdown-item";
+import { useOpenEntity } from "@/components/modal/hooks/use-entity-drawer-stack";
+import { Sidebar, SidebarContent, SidebarFooter, useSidebar } from "@/components/ui/sidebar";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Icon } from "@/components/shared/icon";
 import { signOutAction } from "@/app/[locale]/actions";
-import { XImage } from "@/components/x-image";
-import { XThemeSwitcher } from "@/components/x-theme-switcher";
-import { updateThemeAction } from "@/app/[locale]/(protected)/dashboard/actions";
 import { FeedbackType } from "@/features/feedback/send-feedback.schema";
 import { AiAgentProvisionModal } from "@/app/components/ai-agent-provision-modal";
 import { AiAgentEnvironmentVariableModal } from "@/app/components/ai-agent-environment-variable-modal";
+import { EntityType, Action } from "@/generated/prisma";
 
-type AuthItem = {
-  key: string;
-  title: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  visible: boolean;
-};
+import { NavHeader } from "./navigation/nav-header";
+import { NavMain } from "./navigation/nav-main";
+import { NavSecondary } from "./navigation/nav-secondary";
+import { NavUser } from "./navigation/nav-user";
 
 type Props = {
   systemTaskCount: number;
   user: ExtendedUser | null;
   company: Company | null;
   subscriptionPlan: "basic" | "pro" | null;
+  subscriptionStatus: SubscriptionStatus | null;
 };
 
-export const AppSidebar = observer(({ user, systemTaskCount, company, subscriptionPlan }: Props) => {
+export const AppSidebar = observer(function AppSidebar({
+  user,
+  systemTaskCount,
+  company,
+  subscriptionPlan,
+  subscriptionStatus,
+}: Props) {
   const t = useTranslations("");
   const pathname = usePathname();
+  const intlPathname = useIntlPathname();
   const rootStore = useRootStore();
   const {
     userStore,
     companyStore,
-    layoutStore,
     globalSearchModalStore,
-    contactModalStore,
-    organizationModalStore,
-    dealModalStore,
-    serviceModalStore,
-    taskModalStore,
     feedbackModalStore,
     deleteConfirmationModalStore,
+    appSidebarStore,
   } = rootStore;
 
+  const { setOpenMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
+  const openEntity = useOpenEntity();
   const isDocsRoute = pathname.split("/")[2] === "docs";
   const [selectedKey, setSelectedKey] = useState<string | null>(pathname.split("/")[2]);
-  const { appSidebarStore } = rootStore;
+  const [isAddPickerOpen, setIsAddPickerOpen] = useState(false);
 
-  const { isSidebarOpen } = layoutStore;
-  const { firstName, lastName, avatarUrl, email } = user ?? {};
-  const name = `${firstName ?? ""} ${lastName ?? ""}`.trim();
-  const avatarSrc = avatarUrl ?? undefined;
+  async function handleThemeChange() {
+    const next = theme === "dark" ? ThemeEnum.light : ThemeEnum.dark;
+    setTheme(next);
+
+    const currentUser = userStore.user;
+    if (!currentUser) return;
+
+    const settings: UpdateUserSettingsData = {
+      theme: next,
+      displayLanguage: currentUser.displayLanguage,
+      formattingLocale: currentUser.formattingLocale,
+      marketingEmails: currentUser.marketingEmails,
+    };
+    const res = await updateThemeAction(settings);
+    if (res.ok) userStore.updateUserSettings(res.data);
+  }
 
   useEffect(() => setSelectedKey(pathname.split("/")[2] ?? null), [pathname]);
 
@@ -99,84 +110,223 @@ export const AppSidebar = observer(({ user, systemTaskCount, company, subscripti
       void appSidebarStore.refreshAgentStatus();
   }, [subscriptionPlan, userStore.user, rootStore.isCloudHosted, rootStore.isDemoMode]);
 
-  function getButtonClassName(additionalClasses?: string) {
-    return cn(
-      isSidebarOpen ? "justify-start mx-3 px-3 font-normal shrink-0" : "justify-center mx-2 shrink-0",
-      additionalClasses,
-    );
-  }
-
-  function getNavItemClassName(isSelected: boolean, additionalClasses?: string) {
-    return cn(
-      getButtonClassName("h-9 rounded-lg transition-colors"),
-      isSelected
-        ? "bg-default-300/80 dark:bg-default-200/30 text-foreground font-medium"
-        : "text-default-900 dark:text-default-800 hover:text-foreground hover:bg-default-100 dark:hover:bg-default-100/10",
-      additionalClasses,
-    );
-  }
-
-  const authItems = useMemo(
-    (): AuthItem[] =>
-      [
-        {
-          key: "ai-agent",
-          title: t("NavigationBar.aiAgent"),
-          icon: ChatBubbleLeftRightIcon,
-          visible: rootStore.isCloudHosted && subscriptionPlan === "pro" && userStore.canManage(Resource.aiAgent),
-        },
-        {
-          key: "dashboard",
-          title: t("NavigationBar.dashboard"),
-          icon: Squares2X2Icon,
-          visible: true,
-        },
-        {
-          key: "contacts",
-          title: t("NavigationBar.contacts"),
-          icon: UserGroupIcon,
-          visible: userStore.canAccess(Resource.contacts),
-        },
-        {
-          key: "organizations",
-          title: t("NavigationBar.organizations"),
-          icon: BuildingOfficeIcon,
-          visible: userStore.canAccess(Resource.organizations),
-        },
-        {
-          key: "deals",
-          title: t("NavigationBar.deals"),
-          icon: BriefcaseIcon,
-          visible: userStore.canAccess(Resource.deals),
-        },
-        {
-          key: "services",
-          title: t("NavigationBar.services"),
-          icon: StarIcon,
-          visible: userStore.canAccess(Resource.services),
-        },
-        {
-          key: "tasks",
-          title: t("NavigationBar.tasks"),
-          icon: CheckCircleIcon,
-          visible: userStore.canAccess(Resource.tasks),
-        },
-      ].filter((i) => i.visible),
-    [subscriptionPlan, userStore.user, rootStore.isCloudHosted, t],
-  );
-
   useEffect(() => {
     userStore.setUser(user);
     if (company) companyStore.setCompany(company);
   }, [user, company]);
 
-  function handleSidebarPress(callback?: () => void) {
-    if (window.innerWidth < 768) layoutStore.setIsSidebarOpen(false);
-    callback?.();
+  function closeMobileSidebar(cb?: () => void) {
+    if (typeof window !== "undefined" && window.innerWidth < 768) setOpenMobile(false);
+    cb?.();
   }
 
+  const navGroups: NavGroup[] = useMemo(
+    () =>
+      [
+        {
+          key: "overview",
+          label: t("NavigationBar.overview"),
+          items: [
+            {
+              key: "dashboard",
+              title: t("NavigationBar.dashboard"),
+              href: "/dashboard",
+              icon: LayoutGrid,
+              visible: true,
+            },
+            {
+              key: "ai-agent",
+              title: t("NavigationBar.aiAgent"),
+              href: "/ai-agent",
+              icon: MessagesSquare,
+              visible: rootStore.isCloudHosted && subscriptionPlan === "pro" && userStore.canManage(Resource.aiAgent),
+            },
+            {
+              key: "tasks",
+              title: t("NavigationBar.tasks"),
+              href: "/tasks",
+              icon: CheckCircle2,
+              visible: userStore.canAccess(Resource.tasks),
+              badge: systemTaskCount,
+            },
+          ].filter((i) => i.visible),
+        },
+        {
+          key: "crm",
+          label: t("NavigationBar.crm"),
+          items: [
+            {
+              key: "contacts",
+              title: t("NavigationBar.contacts"),
+              href: "/contacts",
+              icon: Users,
+              visible: userStore.canAccess(Resource.contacts),
+            },
+            {
+              key: "organizations",
+              title: t("NavigationBar.organizations"),
+              href: "/organizations",
+              icon: Building2,
+              visible: userStore.canAccess(Resource.organizations),
+            },
+            {
+              key: "deals",
+              title: t("NavigationBar.deals"),
+              href: "/deals",
+              icon: TrendingUp,
+              visible: userStore.canAccess(Resource.deals),
+            },
+            {
+              key: "services",
+              title: t("NavigationBar.services"),
+              href: "/services",
+              icon: Package,
+              visible: userStore.canAccess(Resource.services),
+            },
+          ].filter((i) => i.visible),
+        },
+        {
+          key: "workspace",
+          label: t("NavigationBar.workspace"),
+          items: [
+            {
+              key: "profile",
+              title: t("UserAvatar.profile"),
+              href: "/profile/details",
+              icon: UserCircle,
+              visible: true,
+              items: [
+                {
+                  key: "profile-details",
+                  title: t("NavigationBar.details"),
+                  href: "/profile/details",
+                  icon: UserCircle,
+                  visible: true,
+                },
+                {
+                  key: "profile-settings",
+                  title: t("NavigationBar.settings"),
+                  href: "/profile/settings",
+                  icon: UserCircle,
+                  visible: true,
+                },
+                {
+                  key: "profile-api-keys",
+                  title: t("ApiKeysCard.title"),
+                  href: "/profile/api-keys",
+                  icon: UserCircle,
+                  visible: userStore.can(Resource.api, Action.readAll),
+                },
+              ].filter((i) => i.visible),
+            },
+            {
+              key: "company",
+              title: t("UserAvatar.company"),
+              href: "/company/details",
+              icon: Building,
+              visible:
+                userStore.canAccess(Resource.company) ||
+                userStore.canAccess(Resource.users) ||
+                (rootStore.isCloudHosted && userStore.can(Resource.auditLog, Action.readAll)) ||
+                userStore.can(Resource.api, Action.readAll),
+              items: [
+                {
+                  key: "company-details",
+                  title: t("NavigationBar.general"),
+                  href: "/company/details",
+                  icon: Building,
+                  visible: userStore.canAccess(Resource.company),
+                },
+                {
+                  key: "company-members",
+                  title: t("NavigationBar.members"),
+                  href: "/company/members",
+                  icon: Building,
+                  visible: userStore.canAccess(Resource.users),
+                },
+                {
+                  key: "company-roles",
+                  title: t("RolesCard.title"),
+                  href: "/company/roles",
+                  icon: Building,
+                  visible: userStore.canAccess(Resource.users),
+                },
+                {
+                  key: "company-audit-logs",
+                  title: t("AuditLogsCard.title"),
+                  href: "/company/audit-logs",
+                  icon: Building,
+                  visible: rootStore.isCloudHosted && userStore.can(Resource.auditLog, Action.readAll),
+                },
+                {
+                  key: "company-webhooks",
+                  title: t("WebhooksCard.title"),
+                  href: "/company/webhooks",
+                  icon: Building,
+                  visible: userStore.can(Resource.api, Action.readAll),
+                },
+                {
+                  key: "company-webhook-deliveries",
+                  title: t("WebhookDeliveriesCard.title"),
+                  href: "/company/webhook-deliveries",
+                  icon: Building,
+                  visible: userStore.can(Resource.api, Action.readAll),
+                },
+              ].filter((i) => i.visible),
+            },
+          ].filter((i) => i.visible),
+        },
+      ].filter((g) => g.items.length > 0),
+    [t, rootStore.isCloudHosted, subscriptionPlan, userStore.user, systemTaskCount],
+  );
+
+  const secondaryItems: NavSecondaryItem[] = useMemo(
+    () => [
+      {
+        key: "documentation",
+        title: t("UserAvatar.documentation"),
+        icon: FileText,
+        href: "/docs",
+      },
+      {
+        key: "feedback",
+        title: t("Common.inputs.feedback"),
+        icon: MessageCircle,
+        onSelect: () =>
+          closeMobileSidebar(() => {
+            feedbackModalStore.onInitOrRefresh({ type: FeedbackType.general, feedback: "" });
+            feedbackModalStore.open();
+          }),
+      },
+    ],
+    [t],
+  );
+
+  const addItems = [
+    {
+      resource: Resource.contacts,
+      key: "add_contact",
+      label: t("NavigationBar.addContact"),
+      entity: EntityType.contact,
+    },
+    {
+      resource: Resource.organizations,
+      key: "add_organization",
+      label: t("NavigationBar.addOrganization"),
+      entity: EntityType.organization,
+    },
+    { resource: Resource.deals, key: "add_deal", label: t("NavigationBar.addDeal"), entity: EntityType.deal },
+    {
+      resource: Resource.services,
+      key: "add_service",
+      label: t("NavigationBar.addService"),
+      entity: EntityType.service,
+    },
+    { resource: Resource.tasks, key: "add_task", label: t("NavigationBar.addTask"), entity: EntityType.task },
+  ];
+
   function onAiAgentAction(actionKey: Key) {
-    handleSidebarPress();
+    closeMobileSidebar();
 
     if (actionKey === "openControlUi") {
       void appSidebarStore.openControlUi();
@@ -198,436 +348,140 @@ export const AppSidebar = observer(({ user, systemTaskCount, company, subscripti
     }
   }
 
-  async function handleThemeChange(theme: Theme) {
-    if (!user) return;
+  if (isDocsRoute) return null;
 
-    const settings: UpdateUserSettingsData = {
-      theme,
-      displayLanguage: user.displayLanguage,
-      formattingLocale: user.formattingLocale,
-      marketingEmails: user.marketingEmails,
-    };
+  const planLabel = buildPlanLabel(subscriptionPlan, subscriptionStatus, t);
 
-    const res = await updateThemeAction(settings);
+  return (
+    <>
+      <Sidebar collapsible="icon" side="left" variant="inset">
+        <NavHeader
+          addLabel={t("Common.actions.add")}
+          brandName="Customermates"
+          brandSubtitle={planLabel}
+          homeHref={rootStore.isDemoMode ? "https://customermates.com" : "/"}
+          logoAlt={t("Common.imageAlt.logo")}
+          searchLabel={t("NavigationBar.search")}
+          onAdd={() => closeMobileSidebar(() => setIsAddPickerOpen(true))}
+          onSearch={() => closeMobileSidebar(() => globalSearchModalStore.open())}
+        />
 
-    if (res.ok) userStore.updateUserSettings(res.data);
-  }
-
-  const addItemDropdownItems = [
-    {
-      resource: Resource.contacts,
-      key: "add_contact",
-      translationKey: "NavigationBar.addContact",
-      onPress: () => handleSidebarPress(() => void contactModalStore.add()),
-    },
-    {
-      resource: Resource.organizations,
-      key: "add_organization",
-      translationKey: "NavigationBar.addOrganization",
-      onPress: () => handleSidebarPress(() => void organizationModalStore.add()),
-    },
-    {
-      resource: Resource.deals,
-      key: "add_deal",
-      translationKey: "NavigationBar.addDeal",
-      onPress: () => handleSidebarPress(() => void dealModalStore.add()),
-    },
-    {
-      resource: Resource.services,
-      key: "add_service",
-      translationKey: "NavigationBar.addService",
-      onPress: () => handleSidebarPress(() => void serviceModalStore.add()),
-    },
-    {
-      resource: Resource.tasks,
-      key: "add_task",
-      translationKey: "NavigationBar.addTask",
-      onPress: () => handleSidebarPress(() => void taskModalStore.add()),
-    },
-  ];
-
-  const overviewItemOrder = ["dashboard", "ai-agent", "tasks"] as const;
-  const crmItemOrder = ["contacts", "organizations", "deals", "services"] as const;
-  const overviewItems = overviewItemOrder
-    .map((key) => authItems.find((item) => item.key === key))
-    .filter((item): item is AuthItem => Boolean(item));
-  const crmItems = crmItemOrder
-    .map((key) => authItems.find((item) => item.key === key))
-    .filter((item): item is AuthItem => Boolean(item));
-
-  function renderAuthItem(item: AuthItem) {
-    const isSelected = selectedKey === item.key;
-    const iconContent = (
-      <XIcon
-        className={cn(isSelected ? "text-foreground" : "text-default-900 dark:text-default-800")}
-        icon={item.icon}
-      />
-    );
-
-    if (item.key === "ai-agent") {
-      const showProvision = appSidebarStore.agentProvisioned !== true;
-      const showManageActions = appSidebarStore.agentProvisioned === true;
-      const aiAgentDropdownItems = [];
-      if (showManageActions) {
-        aiAgentDropdownItems.push(
-          XDropdownItem({
-            key: "openControlUi",
-            children: t("AiAgent.openControlUi"),
-          }),
-        );
-        aiAgentDropdownItems.push(
-          XDropdownItem({
-            key: "addEnvironmentVariable",
-            children: t("AiAgent.addEnvironmentVariable"),
-          }),
-        );
-        aiAgentDropdownItems.push(
-          XDropdownItem({
-            key: "reset",
-            color: "danger",
-            className: "text-danger border-danger",
-            children: t("AiAgent.reset"),
-          }),
-        );
-      }
-
-      if (showProvision) {
-        return (
-          <Button
-            key={item.key}
-            className={getNavItemClassName(isSelected)}
-            isDisabled={appSidebarStore.agentBooting}
-            isIconOnly={!isSidebarOpen}
-            isLoading={appSidebarStore.agentBooting}
-            startContent={isSidebarOpen && !appSidebarStore.agentBooting ? iconContent : null}
-            variant="light"
-            onPress={() =>
-              handleSidebarPress(() => {
+        <SidebarContent>
+          <NavMain
+            aiAgentTitles={{
+              openControlUi: t("AiAgent.openControlUi"),
+              addEnvironmentVariable: t("AiAgent.addEnvironmentVariable"),
+              reset: t("AiAgent.reset"),
+            }}
+            appSidebarStore={appSidebarStore}
+            groups={navGroups}
+            pathname={intlPathname}
+            selectedKey={selectedKey}
+            onAiAgentAction={onAiAgentAction}
+            onNavigate={(key) => closeMobileSidebar(() => setSelectedKey(key))}
+            onProvisionAgent={() =>
+              closeMobileSidebar(() => {
                 rootStore.aiAgentProvisionModalStore.onInitOrRefresh({ openaiApiKey: "", anthropicApiKey: "" });
                 rootStore.aiAgentProvisionModalStore.open();
               })
             }
-          >
-            {isSidebarOpen ? (
-              <span
-                className={cn(
-                  "tracking-normal text-sm font-normal",
-                  isSelected ? "text-foreground" : "text-default-900 dark:text-default-800",
-                )}
-              >
-                {item.title}
-              </span>
-            ) : !appSidebarStore.agentBooting ? (
-              iconContent
-            ) : null}
-          </Button>
-        );
-      }
+          />
 
-      return (
-        <Dropdown key={item.key}>
-          <DropdownTrigger>
-            <Button
-              className={getNavItemClassName(isSelected)}
-              isDisabled={appSidebarStore.agentBooting}
-              isIconOnly={!isSidebarOpen}
-              isLoading={appSidebarStore.agentBooting}
-              startContent={isSidebarOpen && !appSidebarStore.agentBooting ? iconContent : null}
-              variant="light"
-            >
-              {isSidebarOpen ? (
-                <span
-                  className={cn(
-                    "tracking-normal text-sm font-normal",
-                    isSelected ? "text-foreground" : "text-default-900 dark:text-default-800",
-                  )}
-                >
-                  {item.title}
-                </span>
-              ) : !appSidebarStore.agentBooting ? (
-                iconContent
-              ) : null}
-            </Button>
-          </DropdownTrigger>
+          <NavSecondary className="mt-auto" items={secondaryItems} />
+        </SidebarContent>
 
-          <DropdownMenu aria-label={t("NavigationBar.aiAgent")} onAction={onAiAgentAction}>
-            {aiAgentDropdownItems}
-          </DropdownMenu>
-        </Dropdown>
-      );
-    }
-
-    return (
-      <Button
-        key={item.key}
-        as={XLink}
-        className={getNavItemClassName(isSelected)}
-        href={`/${item.key}`}
-        isIconOnly={!isSidebarOpen}
-        startContent={isSidebarOpen ? iconContent : null}
-        variant="light"
-        onPress={() =>
-          handleSidebarPress(() => {
-            setSelectedKey(item.key);
-          })
-        }
-      >
-        {isSidebarOpen ? (
-          <span
-            className={cn(
-              "tracking-normal text-sm font-normal",
-              isSelected ? "text-foreground" : "text-default-900 dark:text-default-800",
-            )}
-          >
-            {item.title}
-          </span>
-        ) : (
-          iconContent
-        )}
-      </Button>
-    );
-  }
-
-  const sidebarContent = (
-    <>
-      <Button
-        as={XLink}
-        className={cn("mb-4 font-normal", isSidebarOpen ? "justify-start mx-3 px-3" : "mx-2")}
-        href={rootStore.isDemoMode ? "https://customermates.com" : "/"}
-        isIconOnly={!isSidebarOpen}
-        variant="light"
-        onPress={() => handleSidebarPress()}
-      >
-        <XImage
-          alt={t("Common.imageAlt.logo")}
-          className="object-contain select-none"
-          height={24}
-          loading="eager"
-          src={isSidebarOpen ? "customermates.svg" : "customermates-square.svg"}
-          width={isSidebarOpen ? 140 : 24}
-        />
-      </Button>
-
-      <nav className="min-h-0 flex flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden">
-        <Button
-          className={
-            isSidebarOpen ? getButtonClassName("h-9 rounded-lg border border-divider") : getButtonClassName("h-9")
-          }
-          isIconOnly={!isSidebarOpen}
-          startContent={
-            isSidebarOpen ? (
-              <XIcon className="text-default-900 dark:text-default-800" icon={MagnifyingGlassIcon} />
-            ) : null
-          }
-          variant="light"
-          onPress={() => handleSidebarPress(() => globalSearchModalStore.open())}
-        >
-          {isSidebarOpen ? (
-            <div className="flex items-center justify-between w-full">
-              <span className="tracking-normal text-sm font-medium text-default-900 dark:text-default-800">
-                {t("NavigationBar.search")}
-              </span>
-
-              <Kbd className="text-sm text-subdued shadow-none" keys={["command"]}>
-                K
-              </Kbd>
-            </div>
-          ) : (
-            <XIcon icon={MagnifyingGlassIcon} />
-          )}
-        </Button>
-
-        <Dropdown>
-          <DropdownTrigger>
-            <Button
-              className={getButtonClassName("h-9 rounded-lg")}
-              isIconOnly={!isSidebarOpen}
-              startContent={isSidebarOpen ? <XIcon icon={PlusIcon} /> : null}
-              variant="light"
-            >
-              {isSidebarOpen ? (
-                <span className="tracking-normal text-sm font-normal text-default-900 dark:text-default-800">
-                  {t("Common.actions.add")}
-                </span>
-              ) : (
-                <XIcon icon={PlusIcon} />
-              )}
-            </Button>
-          </DropdownTrigger>
-
-          <DropdownMenu>
-            {addItemDropdownItems.map((item) =>
-              userStore.canManage(item.resource)
-                ? XDropdownItem({
-                    key: item.key,
-                    children: t(item.translationKey),
-                    onPress: item.onPress,
-                  })
-                : null,
-            )}
-          </DropdownMenu>
-        </Dropdown>
-
-        {overviewItems.length > 0 && isSidebarOpen && (
-          <div className="mx-3 mt-2 px-3 pb-1 pt-2 text-xs font-medium uppercase tracking-wide text-subdued">
-            Overview
-          </div>
-        )}
-
-        {overviewItems.map(renderAuthItem)}
-
-        {crmItems.length > 0 && isSidebarOpen && (
-          <div className="mx-3 mt-2 px-3 pb-1 pt-2 text-xs font-medium uppercase tracking-wide text-subdued">CRM</div>
-        )}
-
-        {crmItems.map(renderAuthItem)}
-      </nav>
-
-      <div
-        className={cn("mt-auto flex gap-2 w-full", isSidebarOpen ? "justify-between px-3" : "px-2 flex-col-reverse")}
-      >
-        <Dropdown>
-          <XBadge
-            borderColor="content1"
-            color="warning"
-            content={systemTaskCount}
-            isInvisible={systemTaskCount === 0}
-            size="md"
-          >
-            <DropdownTrigger>
-              <Button
-                className={isSidebarOpen ? "px-3" : ""}
-                isIconOnly={!isSidebarOpen}
-                radius="lg"
-                size={isSidebarOpen ? "lg" : "md"}
-                variant={["profile", "company"].includes(selectedKey ?? "") ? "flat" : "light"}
-              >
-                {isSidebarOpen ? (
-                  <User
-                    avatarProps={{
-                      isBordered: true,
-                      size: "sm",
-                      src: avatarSrc,
-                      name: name,
-                      color: ["profile", "company"].includes(selectedKey ?? "") ? "primary" : "default",
-                      alt: t("Common.imageAlt.avatar", { name }),
-                    }}
-                    classNames={{
-                      description: "truncate max-w-26 text-subdued text-xs",
-                      name: "truncate max-w-26 text-xs text-default-800 dark:text-default-700",
-                    }}
-                    description={email ?? ""}
-                    name={name}
-                  />
-                ) : (
-                  <Avatar
-                    isBordered
-                    alt={t("Common.imageAlt.avatar", { name })}
-                    color={["profile", "company"].includes(selectedKey ?? "") ? "primary" : "default"}
-                    name={name}
-                    radius="lg"
-                    size="sm"
-                    src={avatarSrc}
-                  />
-                )}
-              </Button>
-            </DropdownTrigger>
-          </XBadge>
-
-          <DropdownMenu>
-            <DropdownSection showDivider>
-              {XDropdownItem({
-                key: "theme_switcher",
-                className: "px-2 py-1.5",
-                children: t("UserAvatar.theme"),
-                endContent: <XThemeSwitcher onThemeChange={handleThemeChange} />,
-              })}
-
-              {XDropdownItem({
-                key: "profile",
-                as: XLink,
-                className: cn("text-inherit", selectedKey === "profile" && "bg-default/40"),
-                href: "/profile",
-                children: t("UserAvatar.profile"),
-                onPress: () => handleSidebarPress(),
-              })}
-
-              {userStore.canAccess(Resource.company)
-                ? XDropdownItem({
-                    key: "company",
-                    as: XLink,
-                    className: cn("text-inherit", selectedKey === "company" && "bg-default/40"),
-                    href: "/company",
-                    children: (
-                      <div className="flex items-center gap-2">
-                        <span>{t("UserAvatar.company")}</span>
-
-                        {systemTaskCount > 0 && <span className="rounded-full bg-warning/60 w-2 h-2 " />}
-                      </div>
-                    ),
-                    onPress: () => handleSidebarPress(),
-                  })
-                : null}
-
-              {XDropdownItem({
-                key: "docs",
-                as: XLink,
-                className: "text-inherit",
-                href: "/docs",
-                children: t("UserAvatar.documentation"),
-                onPress: () => handleSidebarPress(),
-              })}
-
-              {XDropdownItem({
-                key: "feedback",
-                startContent: <XIcon icon={ChatBubbleLeftRightIcon} />,
-                children: t("Common.inputs.feedback"),
-                onPress: () =>
-                  handleSidebarPress(() => {
-                    feedbackModalStore.onInitOrRefresh({ type: FeedbackType.general, feedback: "" });
-                    feedbackModalStore.open();
-                  }),
-              })}
-            </DropdownSection>
-
-            <DropdownSection>
-              {XDropdownItem({
-                key: "logout",
-                className: "text-danger border-danger",
-                color: "danger",
-                onPress: () => handleSidebarPress(() => void signOutAction()),
-                children: t("UserAvatar.signOut"),
-              })}
-            </DropdownSection>
-          </DropdownMenu>
-        </Dropdown>
-
-        <Button
-          isIconOnly
-          size={isSidebarOpen ? "lg" : "md"}
-          variant="light"
-          onPress={() => layoutStore.setIsSidebarOpen(!isSidebarOpen)}
-        >
-          <XIcon icon={isSidebarOpen ? ChevronLeftIcon : ChevronRightIcon} />
-        </Button>
-      </div>
+        <SidebarFooter>
+          <NavUser
+            labels={{
+              signOut: t("UserAvatar.signOut"),
+              lightMode: t("UserAvatar.lightMode"),
+              darkMode: t("UserAvatar.darkMode"),
+            }}
+            theme={theme}
+            user={user}
+            onSignOut={() => closeMobileSidebar(() => void signOutAction())}
+            onThemeChange={() => void handleThemeChange()}
+          />
+        </SidebarFooter>
+      </Sidebar>
 
       {rootStore.isCloudHosted && <AiAgentProvisionModal />}
 
       {rootStore.isCloudHosted && <AiAgentEnvironmentVariableModal />}
+
+      <AddPickerDrawer
+        items={addItems.filter((item) => userStore.canManage(item.resource))}
+        open={isAddPickerOpen}
+        onOpenChange={setIsAddPickerOpen}
+        onPick={(entity) => {
+          setIsAddPickerOpen(false);
+          openEntity(entity, "new");
+        }}
+      />
     </>
   );
-
-  if (isDocsRoute) return null;
-
-  return (
-    <SidebarFrame
-      desktopWidthClassName={layoutStore.isSidebarOpen ? "md:w-64" : "md:w-14"}
-      isMobileOpen={layoutStore.isSidebarOpen}
-      onMobileClose={() => layoutStore.setIsSidebarOpen(false)}
-      onMobileOpen={() => layoutStore.setIsSidebarOpen(true)}
-    >
-      {sidebarContent}
-    </SidebarFrame>
-  );
 });
+
+type AddPickerItem = {
+  key: string;
+  label: string;
+  entity: EntityType;
+};
+
+function AddPickerDrawer({
+  items,
+  open,
+  onOpenChange,
+  onPick,
+}: {
+  items: AddPickerItem[];
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+  onPick: (entity: EntityType) => void;
+}) {
+  const t = useTranslations("");
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="sm:max-w-[420px]" side="right">
+        <SheetHeader className="px-6 pt-6">
+          <SheetTitle>{t("NavigationBar.addPickerTitle")}</SheetTitle>
+
+          <SheetDescription>{t("NavigationBar.addPickerDescription")}</SheetDescription>
+        </SheetHeader>
+
+        <div className="flex flex-col gap-1 p-4">
+          {items.map((item) => (
+            <button
+              key={item.key}
+              className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+              type="button"
+              onClick={() => onPick(item.entity)}
+            >
+              <span>{item.label}</span>
+
+              <Icon className="size-3.5 opacity-50" icon={Plus} />
+            </button>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function buildPlanLabel(
+  plan: "basic" | "pro" | null,
+  status: SubscriptionStatus | null,
+  t: (key: string) => string,
+): string | undefined {
+  if (!plan) return undefined;
+
+  const base = plan === "pro" ? "Pro" : "Basic";
+
+  if (status === "trial") return `${base} · ${t("subscription.status.trial")}`;
+  if (status === "cancelled") return `${base} · ${t("subscription.status.cancelled")}`;
+  if (status === "pastDue") return `${base} · ${t("subscription.status.pastDue")}`;
+  if (status === "unPaid") return `${base} · ${t("subscription.status.unPaid")}`;
+  if (status === "expired") return `${base} · ${t("subscription.status.expired")}`;
+
+  return base;
+}

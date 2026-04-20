@@ -1,36 +1,35 @@
 "use client";
 
-import { Button } from "@heroui/button";
-import { cn } from "@heroui/theme";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-import { XImage } from "@/components/x-image";
+import { AppImage } from "@/components/shared/app-image";
 
 type Props = {
   className?: string;
   providerId: string;
   label: string;
   isLoading?: boolean;
-  onPress?: () => void;
+  onClick?: () => void;
 };
 
-export default function SignInProviderButton({ className, providerId, label, isLoading, onPress }: Props) {
+export default function SignInProviderButton({ className, providerId, label, isLoading, onClick }: Props) {
   return (
     <Button
       key={providerId}
       className={cn("w-full min-w-0", className)}
-      isLoading={isLoading}
-      startContent={
-        <XImage
-          alt={label}
-          className="mr-1 shrink-0 brightness-0 dark:invert"
-          height={18}
-          src={`${providerId}-icon.svg`}
-          width={18}
-        />
-      }
-      variant="bordered"
-      onPress={onPress}
+      disabled={isLoading}
+      variant="outline"
+      onClick={onClick}
     >
+      <AppImage
+        alt={label}
+        className="mr-1 shrink-0 brightness-0 dark:invert"
+        height={18}
+        src={`${providerId}-icon.svg`}
+        width={18}
+      />
+
       <span className="truncate min-w-0">{label}</span>
     </Button>
   );

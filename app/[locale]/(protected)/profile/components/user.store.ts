@@ -46,13 +46,13 @@ export class UserStore {
     else this.permissions.clear();
 
     if (user) {
-      this.rootStore.userDetailsCardStore.onInitOrRefresh({
+      this.rootStore.userDetailsStore.onInitOrRefresh({
         firstName: user.firstName,
         lastName: user.lastName,
         country: user.country ?? CountryCode.de,
         avatarUrl: user.avatarUrl,
       });
-      this.rootStore.userSettingsCardStore.onInitOrRefresh({
+      this.rootStore.userSettingsStore.onInitOrRefresh({
         marketingEmails: user.marketingEmails,
         displayLanguage: user.displayLanguage,
         formattingLocale: user.formattingLocale,

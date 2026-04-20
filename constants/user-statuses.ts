@@ -4,7 +4,7 @@ import { type ChipColor } from "./chip-colors";
 
 export const USER_STATUS_COLORS_MAP: Record<Status, ChipColor> = {
   active: "success",
-  inactive: "danger",
+  inactive: "destructive",
   pendingAuthorization: "warning",
 };
 

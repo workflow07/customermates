@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 import { AggregationType } from "@/generated/prisma";
 
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XChartTooltip } from "@/components/x-chart/chart-tooltip";
+import { ChartTooltip } from "@/components/chart/chart-tooltip";
 
 type Props = {
   aggregationType?: AggregationType;
@@ -43,7 +43,7 @@ export const HorizontalBarChartWithLabels = observer(
 
           <YAxis hide dataKey="label" reversed={Boolean(reverseYAxis)} type="category" />
 
-          <XChartTooltip aggregationType={aggregationType} />
+          <ChartTooltip aggregationType={aggregationType} />
 
           <Bar dataKey="value" radius={4}>
             {chartData.map((entry, index) => (

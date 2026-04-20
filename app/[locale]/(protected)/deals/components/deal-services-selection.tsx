@@ -1,23 +1,23 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
+import { Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { Resource } from "@/generated/prisma";
 
 import { createServiceByNameAction, getServicesAction } from "../../services/actions";
 
-import { XInputNumber } from "@/components/x-inputs/x-input-number";
-import { XIcon } from "@/components/x-icon";
-import { XAutocompleteItem } from "@/components/x-inputs/x-autocomplete/x-autocomplete-item";
+import { FormNumberInput } from "@/components/forms/form-number-input";
+import { FormAutocomplete } from "@/components/forms/form-autocomplete";
+import { FormAutocompleteItem } from "@/components/forms/form-autocomplete-item";
+import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XAutocomplete } from "@/components/x-inputs/x-autocomplete/x-autocomplete";
-import { XChip } from "@/components/x-chip/x-chip";
+import { AppChip } from "@/components/chip/app-chip";
 
 export const DealServicesSelection = observer(() => {
-  const { dealModalStore, intlStore, userStore } = useRootStore();
-  const { form, fetchedEntity, canManage, addService, deleteService } = dealModalStore;
+  const { dealDetailStore, intlStore, userStore } = useRootStore();
+  const { form, fetchedEntity, canManage, addService, deleteService } = dealDetailStore;
   const t = useTranslations("");
 
   if (!userStore.canAccess(Resource.services)) return null;
@@ -43,8 +43,8 @@ export const DealServicesSelection = observer(() => {
         <label className="text-x-md">{t("DealModal.quantityLabel")}</label>
 
         {canManage && (
-          <Button color="primary" isIconOnly={true} variant="flat" onPress={addService}>
-            <XIcon icon={PlusIcon} />
+          <Button size="icon" type="button" variant="secondary" onClick={addService}>
+            <Icon icon={Plus} />
           </Button>
         )}
       </div>
@@ -56,50 +56,38 @@ export const DealServicesSelection = observer(() => {
 
         return (
           <div key={index} className="w-full grid grid-cols-[minmax(120px,400px)_68px_40px] gap-2 items-start">
-            <XAutocomplete
-              isRequired
+            <FormAutocomplete
+              required
               filterFunction={(availableService) => !selectedServiceIds.includes(availableService.id)}
               getItems={getServiceOptions}
               id={`services[${index}].serviceId`}
               items={fetchedEntity?.services.filter((it) => !selectedServiceIds.includes(it.id)) ?? []}
               label={null}
               renderValue={(items) =>
-                items.map((item, idx) => (
-                  <span key={item?.data?.id ?? item?.key ?? idx} className="truncate">
-                    {item?.data?.name}
-                  </span>
-                ))
+                items.map((item, idx) => <AppChip key={item?.data?.id ?? item?.key ?? idx}>{item?.data?.name}</AppChip>)
               }
               onCreate={createServiceOption}
             >
               {(service) =>
-                XAutocompleteItem({
-                  key: service.id,
+                FormAutocompleteItem({
                   textValue: service.name,
-                  value: service.id,
+
                   children: (
                     <div className="flex w-full flex-col space-y-2 items-start">
                       <span className="text-small">{service.name}</span>
 
-                      <XChip>{intlStore.formatCurrency(service.amount)}</XChip>
+                      <AppChip>{intlStore.formatCurrency(service.amount)}</AppChip>
                     </div>
                   ),
                 })
               }
-            </XAutocomplete>
+            </FormAutocomplete>
 
-            <XInputNumber
-              hideStepper
-              isRequired
-              classNames={{ inputWrapper: "h-[42px] rounded-medium" }}
-              id={`services[${index}].quantity`}
-              label={null}
-              size="sm"
-            />
+            <FormNumberInput hideStepper required id={`services[${index}].quantity`} label={null} size="sm" />
 
             {canManage && (
-              <Button color="danger" isIconOnly={true} variant="flat" onPress={() => deleteService(index)}>
-                <XIcon icon={TrashIcon} />
+              <Button size="icon" type="button" variant="destructive" onClick={() => deleteService(index)}>
+                <Icon icon={Trash2} />
               </Button>
             )}
           </div>

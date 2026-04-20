@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowTopRightOnSquareIcon, CheckIcon, ChevronDownIcon, ClipboardIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
-import { addToast } from "@heroui/toast";
+import { ExternalLink, Check, ChevronDown, Clipboard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
-import { XIcon } from "@/components/x-icon";
+import { Icon } from "@/components/shared/icon";
 
 const markdownCache = new Map<string, string>();
 
@@ -49,44 +49,42 @@ export function DocsPageActions({ markdownUrl }: DocsPageActionsProps) {
       await navigator.clipboard.writeText(markdown);
       setIsCopied(true);
       window.setTimeout(() => setIsCopied(false), 2000);
-      addToast({ color: "success", description: t("markdownCopied") });
+      toast.success(t("markdownCopied"));
     } catch {
-      addToast({ color: "danger", description: t("markdownCopyFailed") });
+      toast.error(t("markdownCopyFailed"));
     }
   }
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button
-        color="default"
-        endContent={<XIcon icon={isCopied ? CheckIcon : ClipboardIcon} size="sm" />}
-        size="sm"
-        variant="flat"
-        onPress={() => void handleCopy()}
-      >
+      <Button size="sm" variant="secondary" onClick={() => void handleCopy()}>
         {t("copyMarkdown")}
+
+        <Icon icon={isCopied ? Check : Clipboard} size="sm" />
       </Button>
 
-      <Popover placement="bottom-start">
-        <PopoverTrigger>
-          <Button color="default" endContent={<XIcon icon={ChevronDownIcon} size="sm" />} size="sm" variant="flat">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button size="sm" variant="secondary">
             {t("open")}
+
+            <Icon icon={ChevronDown} size="sm" />
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="p-1">
+        <PopoverContent align="start" className="p-1">
           <div className="flex min-w-56 flex-col">
             {items.map((item) => (
               <a
                 key={item.href}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-default-100"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-muted"
                 href={item.href}
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 <span>{item.title}</span>
 
-                <XIcon className="ml-auto shrink-0 text-subdued" icon={ArrowTopRightOnSquareIcon} size="sm" />
+                <Icon className="ml-auto shrink-0 text-subdued" icon={ExternalLink} size="sm" />
               </a>
             ))}
           </div>

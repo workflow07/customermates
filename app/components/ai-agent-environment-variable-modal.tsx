@@ -2,15 +2,14 @@
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { Button } from "@heroui/button";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardFooter } from "@/components/x-card/x-card-footer";
-import { XInput } from "@/components/x-inputs/x-input";
-import { XForm } from "@/components/x-inputs/x-form";
+import { Button } from "@/components/ui/button";
+import { AppModal, ModalFooter } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { FormInput } from "@/components/forms/form-input";
+import { AppForm } from "@/components/forms/form-context";
 import { useRootStore } from "@/core/stores/root-store.provider";
 
 export const AiAgentEnvironmentVariableModal = observer(() => {
@@ -18,42 +17,42 @@ export const AiAgentEnvironmentVariableModal = observer(() => {
   const { aiAgentEnvironmentVariableModalStore: store } = useRootStore();
 
   return (
-    <XModal store={store}>
-      <XForm store={store}>
-        <XCard>
-          <XCardHeader>
+    <AppModal store={store} title={t("AiAgent.environmentVariable.title")}>
+      <AppForm store={store}>
+        <AppCard>
+          <AppCardHeader>
             <h2 className="text-x-lg">{t("AiAgent.environmentVariable.title")}</h2>
-          </XCardHeader>
+          </AppCardHeader>
 
-          <XCardBody>
+          <AppCardBody>
             <p className="text-x-sm">{t("AiAgent.environmentVariable.restartHint")}</p>
 
-            <XInput
+            <FormInput
               autoFocus
-              isRequired
+              required
               id="key"
               label={t("AiAgent.environmentVariable.key")}
               placeholder="MY_ENV_KEY"
             />
 
-            <XInput
+            <FormInput
               id="value"
               label={t("AiAgent.environmentVariable.value")}
               placeholder={t("AiAgent.environmentVariable.valuePlaceholder")}
             />
-          </XCardBody>
+          </AppCardBody>
 
-          <XCardFooter>
-            <Button isDisabled={store.isLoading} variant="flat" onPress={store.close}>
+          <ModalFooter>
+            <Button disabled={store.isLoading} variant="secondary" onClick={store.close}>
               {t("Common.actions.close")}
             </Button>
 
-            <Button color="primary" isLoading={store.isLoading} type="submit">
+            <Button disabled={store.isLoading} type="submit">
               {t("Common.actions.save")}
             </Button>
-          </XCardFooter>
-        </XCard>
-      </XForm>
-    </XModal>
+          </ModalFooter>
+        </AppCard>
+      </AppForm>
+    </AppModal>
   );
 });

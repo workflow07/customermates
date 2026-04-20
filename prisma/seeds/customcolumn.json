@@ -7,7 +7,7 @@
     "label": "Phones",
     "options": {
       "allowMultiple": true,
-      "color": "default"
+      "color": "secondary"
     },
     "type": "phone",
     "updatedAt": "2026-03-24T08:59:40.562Z"
@@ -21,14 +21,14 @@
     "options": {
       "options": [
         {
-          "color": "default",
+          "color": "secondary",
           "index": 0,
           "isDefault": true,
           "label": "Service",
           "value": "c64bf802-6600-4f19-b93d-a6be0460a716"
         },
         {
-          "color": "default",
+          "color": "secondary",
           "index": 1,
           "isDefault": false,
           "label": "Hardware",
@@ -48,7 +48,7 @@
     "options": {
       "options": [
         {
-          "color": "primary",
+          "color": "default",
           "index": 0,
           "isDefault": false,
           "label": "Direct customer",
@@ -74,7 +74,7 @@
     "label": "Website",
     "options": {
       "allowMultiple": false,
-      "color": "default"
+      "color": "secondary"
     },
     "type": "link",
     "updatedAt": "2026-03-24T09:01:44.562Z"
@@ -88,21 +88,21 @@
     "options": {
       "options": [
         {
-          "color": "default",
+          "color": "secondary",
           "index": 0,
           "isDefault": true,
           "label": "Low",
           "value": "313e964c-1a31-4d18-a1e3-f92dd5bbcf31"
         },
         {
-          "color": "default",
+          "color": "secondary",
           "index": 1,
           "isDefault": false,
           "label": "Medium",
           "value": "6197e771-8f02-43b0-a695-9342a2d31d8e"
         },
         {
-          "color": "danger",
+          "color": "destructive",
           "index": 2,
           "isDefault": false,
           "label": "High",
@@ -136,14 +136,14 @@
           "value": "63e85eb5-ec10-47c9-b788-30640ec5369b"
         },
         {
-          "color": "danger",
+          "color": "destructive",
           "index": 2,
           "isDefault": false,
           "label": "Lost",
           "value": "b3a225d6-58ad-41d9-a425-e507b65d54a6"
         },
         {
-          "color": "default",
+          "color": "secondary",
           "index": 3,
           "isDefault": false,
           "label": "Abandoned",
@@ -162,7 +162,7 @@
     "label": "Emails",
     "options": {
       "allowMultiple": true,
-      "color": "default"
+      "color": "secondary"
     },
     "type": "email",
     "updatedAt": "2026-03-24T08:59:23.058Z"
@@ -188,7 +188,7 @@
     "options": {
       "options": [
         {
-          "color": "default",
+          "color": "secondary",
           "index": 0,
           "isDefault": true,
           "label": "Open",
@@ -202,7 +202,7 @@
           "value": "2fc38818-cd8a-4e15-bdc2-fc17f050c4e7"
         },
         {
-          "color": "danger",
+          "color": "destructive",
           "index": 2,
           "isDefault": false,
           "label": "Blocked",
@@ -223,7 +223,7 @@
           "value": "e6058b3a-2f0e-4b80-a878-b63c255e07cc"
         },
         {
-          "color": "default",
+          "color": "secondary",
           "index": 5,
           "isDefault": false,
           "label": "Archived",
@@ -255,14 +255,14 @@
     "options": {
       "options": [
         {
-          "color": "default",
+          "color": "secondary",
           "index": 0,
           "isDefault": true,
           "label": "New",
           "value": "eea27d41-f9ea-461f-b994-8f57cfe9891e"
         },
         {
-          "color": "primary",
+          "color": "default",
           "index": 1,
           "isDefault": false,
           "label": "Contact",
@@ -290,7 +290,7 @@
           "value": "5a74caf7-3dc0-4c1c-b3d5-38e9c426b682"
         },
         {
-          "color": "danger",
+          "color": "destructive",
           "index": 5,
           "isDefault": false,
           "label": "Lost",
@@ -310,7 +310,7 @@
     "options": {
       "options": [
         {
-          "color": "primary",
+          "color": "default",
           "index": 0,
           "isDefault": true,
           "label": "Fixed",

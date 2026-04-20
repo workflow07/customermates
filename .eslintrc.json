@@ -29,6 +29,7 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
       "files": ["**/*.ts", "**/*.tsx"],
+      "plugins": ["better-tailwindcss"],
       "rules": {
         "@typescript-eslint/consistent-type-imports": "error",
         "@typescript-eslint/no-explicit-any": "off",
@@ -44,7 +45,17 @@
             "argsIgnorePattern": "^_.*?$",
             "ignoreRestSiblings": false
           }
-        ]
+        ],
+        "better-tailwindcss/enforce-shorthand-classes": "warn",
+        "better-tailwindcss/no-conflicting-classes": "warn",
+        "better-tailwindcss/no-duplicate-classes": "warn",
+        "better-tailwindcss/no-unnecessary-whitespace": "warn",
+        "better-tailwindcss/no-unregistered-classes": "off"
+      },
+      "settings": {
+        "better-tailwindcss": {
+          "entryPoint": "styles/globals.css"
+        }
       }
     },
     {
@@ -84,17 +95,6 @@
     "jsx-a11y/no-autofocus": "off",
     "no-console": "off",
     "no-implicit-coercion": ["error", { "boolean": true }],
-    "no-restricted-imports": [
-      "error",
-      {
-        "paths": [
-          {
-            "message": "Import from specific @heroui subfolders instead (e.g., @heroui/tabs, @heroui/toast)",
-            "name": "@heroui/react"
-          }
-        ]
-      }
-    ],
     "no-unused-vars": "off",
     "prettier/prettier": [
       "warn",

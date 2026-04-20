@@ -1,6 +1,6 @@
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 import type { RootStore } from "@/core/stores/root.store";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 import type { DealDto } from "@/features/deals/deal.schema";
 
 import { EntityType, Resource } from "@/generated/prisma";
@@ -27,7 +27,7 @@ export class DealsStore extends BaseDataViewStore<DealDto> {
   }
 
   get columnsDefinition() {
-    const columns: (XTableColumn | false)[] = [
+    const columns: (TableColumn | false)[] = [
       { uid: "name", sortable: true },
       { uid: "totalValue", sortable: true },
       { uid: "totalQuantity", sortable: true },
@@ -40,7 +40,7 @@ export class DealsStore extends BaseDataViewStore<DealDto> {
       { uid: "createdAt", sortable: true },
     ];
 
-    return columns.filter((col): col is XTableColumn => Boolean(col));
+    return columns.filter((col): col is TableColumn => Boolean(col));
   }
 
   protected async refreshAction(params?: GetQueryParams) {

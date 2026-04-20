@@ -1,7 +1,7 @@
 import { frontmatterSchema } from "fumadocs-mdx/config";
 import { z } from "zod";
 
-import { ctaSchema, faqSchema, featuresSchema, testimonialsSchema } from "./common";
+import { ctaSchema, faqSchema, featuresSchema } from "./common";
 import { pricingDataSchema } from "./pricing";
 
 const automationExplanationSchema = z.string();
@@ -20,8 +20,6 @@ export const benefitsSchema = z.object({
 });
 export type Benefits = z.infer<typeof benefitsSchema>;
 
-export type Testimonials = z.infer<typeof testimonialsSchema>;
-
 export const heroSchema = z.object({
   buttonLeftHref: z.string(),
   buttonLeftText: z.string(),
@@ -30,6 +28,7 @@ export const heroSchema = z.object({
   startFree: z.string(),
   subtitle: z.string(),
   title: z.string(),
+  titleAccent: z.string().optional(),
 });
 export type Hero = z.infer<typeof heroSchema>;
 
@@ -58,6 +57,5 @@ export const homepageSchema = frontmatterSchema.extend({
   pricing: pricingDataSchema.optional(),
   pricingTitle: pricingTitleSchema.optional(),
   rootMetadata: rootMetadataSchema,
-  testimonials: testimonialsSchema,
   title: z.string(),
 });

@@ -6,9 +6,9 @@ import { getLocale } from "next-intl/server";
 import { AffiliateHero } from "./components/affiliate-hero";
 
 import { Footer } from "@/app/components/footer";
-import { XComparisonTable } from "@/components/x-comparison-table/x-comparison-table";
-import { XFAQSection } from "@/components/x-faq-section";
-import { XCTASection } from "@/components/x-cta-section";
+import { ComparisonTable } from "@/components/marketing/comparison-table";
+import { FAQSection } from "@/components/marketing/faq-section";
+import { CTASection } from "@/components/marketing/cta-section";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { affiliateSource } from "@/core/fumadocs/source";
 
@@ -27,7 +27,7 @@ export default async function AffiliatePage() {
     <div className="flex flex-col items-center justify-center">
       <AffiliateHero heroSection={page.data.hero} />
 
-      <XComparisonTable
+      <ComparisonTable
         competitorName={page.data.comparison.competitorName}
         sections={page.data.comparison.sections.map((section) => ({
           title: section.title,
@@ -40,9 +40,9 @@ export default async function AffiliatePage() {
         title={page.data.comparison.title}
       />
 
-      <XFAQSection {...page.data.faq} />
+      <FAQSection {...page.data.faq} />
 
-      <XCTASection {...page.data.cta} />
+      <CTASection {...page.data.cta} />
 
       <Footer />
     </div>

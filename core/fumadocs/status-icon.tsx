@@ -1,8 +1,8 @@
 "use client";
 
-import { CheckIcon, MinusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Check, Minus, X } from "lucide-react";
 
-import { XIcon } from "@/components/x-icon";
+import { Icon } from "@/components/shared/icon";
 
 type Props = {
   label: string;
@@ -11,12 +11,15 @@ type Props = {
 
 export function StatusIcon({ label, status }: Props) {
   if (status === "available")
-    return <XIcon aria-label={label} className="inline-block align-middle text-success" icon={CheckIcon} size="sm" />;
+    return <Icon aria-label={label} className="inline-block align-middle text-primary" icon={Check} size="sm" />;
 
-  if (status === "partial")
-    return <XIcon aria-label={label} className="inline-block align-middle text-default" icon={MinusIcon} size="sm" />;
+  if (status === "partial") {
+    return (
+      <Icon aria-label={label} className="inline-block align-middle text-muted-foreground" icon={Minus} size="sm" />
+    );
+  }
 
-  return <XIcon aria-label={label} className="inline-block align-middle text-danger" icon={XMarkIcon} size="sm" />;
+  return <Icon aria-label={label} className="inline-block align-middle text-muted-foreground" icon={X} size="sm" />;
 }
 
 export function StatusAvailable() {

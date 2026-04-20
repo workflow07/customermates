@@ -7,6 +7,7 @@ import { Action, Resource } from "@/generated/prisma";
 
 import { BaseInteractor } from "@/core/base/base-interactor";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
+import { CloudOnly } from "@/core/decorators/cloud-only.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { ValidateOutput } from "@/core/decorators/validate-output.decorator";
 
@@ -29,6 +30,7 @@ export abstract class GetAuditLogsByEntityIdRepo {
   abstract getAuditLogsByEntityId(entityId: string): Promise<AuditLogDto[]>;
 }
 
+@CloudOnly
 @TentantInteractor({ resource: Resource.auditLog, action: Action.readAll })
 export class GetAuditLogsByEntityIdInteractor extends BaseInteractor<GetAuditLogsByEntityIdData, AuditLogDto[]> {
   constructor(private repo: GetAuditLogsByEntityIdRepo) {

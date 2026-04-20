@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-import { ForgotPasswordCard } from "./forgot-password-card";
+import { ForgotPasswordForm } from "./forgot-password-form";
 
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -12,8 +11,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default function ForgotPasswordPage() {
   return (
-    <XPageCenter>
-      <ForgotPasswordCard />
-    </XPageCenter>
+    <div className="size-full flex flex-1 items-center justify-center p-4">
+      <ForgotPasswordForm />
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { HeroUIProvider } from "@heroui/system";
 import { NextIntlClientProvider } from "next-intl";
 import { RootProvider } from "fumadocs-ui/provider/next";
 
@@ -13,7 +12,6 @@ type Props = {
   children: React.ReactNode;
   defaultTheme?: string;
   displayLanguage: string | undefined;
-  formattingLocale: string | undefined;
   initialNavbarVisible?: boolean;
   initialSidebarOpen?: boolean;
   isDemoMode?: boolean;
@@ -25,7 +23,6 @@ export function Providers({
   children,
   defaultTheme,
   displayLanguage,
-  formattingLocale,
   initialNavbarVisible,
   initialSidebarOpen,
   isDemoMode,
@@ -40,16 +37,14 @@ export function Providers({
     >
       <ServerThemeProvider serverTheme={defaultTheme}>
         <NextIntlClientProvider locale={displayLanguage} messages={messages} timeZone="UTC">
-          <HeroUIProvider locale={formattingLocale}>
-            <RootStoreProvider
-              initialNavbarVisible={initialNavbarVisible}
-              initialSidebarOpen={initialSidebarOpen}
-              isCloudHosted={isCloudHosted}
-              isDemoMode={isDemoMode}
-            >
-              {children}
-            </RootStoreProvider>
-          </HeroUIProvider>
+          <RootStoreProvider
+            initialNavbarVisible={initialNavbarVisible}
+            initialSidebarOpen={initialSidebarOpen}
+            isCloudHosted={isCloudHosted}
+            isDemoMode={isDemoMode}
+          >
+            {children}
+          </RootStoreProvider>
         </NextIntlClientProvider>
       </ServerThemeProvider>
     </RootProvider>

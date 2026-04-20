@@ -172,7 +172,7 @@ describe("validateCustomFieldSingleSelect", () => {
     options: {
       options: [
         { value: "opt-1", label: "Active", color: "success", isDefault: true, index: 0 },
-        { value: "opt-2", label: "Inactive", color: "danger", isDefault: false, index: 1 },
+        { value: "opt-2", label: "Inactive", color: "destructive", isDefault: false, index: 1 },
       ],
     },
   };
@@ -220,14 +220,14 @@ describe("validateCustomColumnExists", () => {
       label: "Email",
       entityType: EntityType.contact,
       type: CustomColumnType.email,
-      options: { color: "primary", allowMultiple: false },
+      options: { color: "default", allowMultiple: false },
     },
     {
       id: "col-2",
       label: "Phone",
       entityType: EntityType.contact,
       type: CustomColumnType.phone,
-      options: { color: "default", allowMultiple: true },
+      options: { color: "secondary", allowMultiple: true },
     },
   ];
 

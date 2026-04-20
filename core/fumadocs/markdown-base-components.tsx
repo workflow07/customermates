@@ -1,15 +1,32 @@
 import type { MDXComponents } from "mdx/types";
-import type { LinkProps } from "@heroui/link";
+import type { ComponentProps } from "react";
 
-import { cn } from "@heroui/theme";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
-import { XAlert } from "@/components/x-alert";
-import { XLink } from "@/components/x-link";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AppLink } from "@/components/shared/app-link";
+import { cn } from "@/lib/utils";
 
 export const markdownBaseComponents: Pick<
   MDXComponents,
-  "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "li" | "a" | "blockquote" | "code" | "pre"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "p"
+  | "li"
+  | "a"
+  | "blockquote"
+  | "code"
+  | "pre"
+  | "table"
+  | "thead"
+  | "tbody"
+  | "tr"
+  | "th"
+  | "td"
 > = {
   h1: ({ className, children, ...props }) => (
     <h1 className={cn("text-x-3xl", className)} {...props}>
@@ -52,17 +69,18 @@ export const markdownBaseComponents: Pick<
     </li>
   ),
   a: ({ className, children, ...props }) => (
-    <XLink inheritSize className={cn("underline decoration-current", className)} {...(props as LinkProps)}>
-      {children}
-    </XLink>
-  ),
-  blockquote: ({ className, children }) => (
-    <XAlert
-      className={cn("text-primary-600 [&_li]:text-primary-600! [&_p]:text-primary-600!", className)}
-      color="primary"
+    <AppLink
+      inheritSize
+      className={cn("underline decoration-current", className)}
+      {...(props as ComponentProps<typeof AppLink>)}
     >
       {children}
-    </XAlert>
+    </AppLink>
+  ),
+  blockquote: ({ className, children }) => (
+    <Alert className={cn("text-primary-600 [&_li]:text-primary-600! [&_p]:text-primary-600!", className)}>
+      <AlertDescription>{children}</AlertDescription>
+    </Alert>
   ),
   code: ({ className, children, ...props }) => (
     <code
@@ -73,4 +91,43 @@ export const markdownBaseComponents: Pick<
     </code>
   ),
   pre: defaultMdxComponents.pre,
+  table: ({ className, children, ...props }) => (
+    <div className="not-prose my-6 overflow-x-auto rounded-xl bg-card">
+      <table
+        className={cn(
+          "w-full border-separate border-spacing-0 text-sm",
+          "[&_td]:!border-0 [&_th]:!border-0 [&_tr]:!border-0 [&_tbody]:!border-0 [&_thead]:!border-0",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ className, children, ...props }) => (
+    <thead className={cn("bg-muted/40", className)} {...props}>
+      {children}
+    </thead>
+  ),
+  tbody: ({ className, children, ...props }) => (
+    <tbody className={className} {...props}>
+      {children}
+    </tbody>
+  ),
+  tr: ({ className, children, ...props }) => (
+    <tr className={cn("transition-colors hover:bg-muted/30", className)} {...props}>
+      {children}
+    </tr>
+  ),
+  th: ({ className, children, ...props }) => (
+    <th className={cn("px-4 py-3 text-left text-x-sm font-semibold text-foreground align-top", className)} {...props}>
+      {children}
+    </th>
+  ),
+  td: ({ className, children, ...props }) => (
+    <td className={cn("px-4 py-3 text-x-sm text-foreground align-top", className)} {...props}>
+      {children}
+    </td>
+  ),
 };

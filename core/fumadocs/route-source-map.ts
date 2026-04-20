@@ -1,5 +1,5 @@
 import type { PUBLIC_ROUTES_SEO } from "@/i18n/routing";
-import type { apiOverviewSource, skillsOverviewSource } from "./source";
+import type { apiOverviewSource } from "./source";
 
 import {
   affiliateSource,
@@ -33,8 +33,7 @@ type Loader =
   | typeof helpAndFeedbackSource
   | typeof homepageSource
   | typeof legalSource
-  | typeof pricingSource
-  | typeof skillsOverviewSource;
+  | typeof pricingSource;
 
 export const ROUTE_SOURCE_MAP: Record<
   (typeof PUBLIC_ROUTES_SEO)[number],

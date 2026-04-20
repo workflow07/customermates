@@ -1,20 +1,106 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
-@plugin './hero.ts';
-@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
 @custom-variant dark (&:is(.dark *));
 
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-openapi/css/preset.css';
 
-/* Values hardcoded from styles/heroui.config.ts */
-@theme {
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --breakpoint-xs: 480px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --color-fd-background: #ffffff;
+  --font-family-sans: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-mono: var(--font-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --animate-collapsible-down: collapsible-down 200ms ease-out;
+  --animate-collapsible-up: collapsible-up 200ms ease-out;
+  --animate-accordion-down: collapsible-down 200ms ease-out;
+  --animate-accordion-up: collapsible-up 200ms ease-out;
+}
+
+@keyframes collapsible-down {
+  from { height: 0; }
+  to { height: var(--radix-collapsible-content-height); }
+}
+
+@keyframes collapsible-up {
+  from { height: var(--radix-collapsible-content-height); }
+  to { height: 0; }
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: #fafafa;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #5e4ae3;
+  --primary-foreground: #ffffff;
+  --secondary: #eeeef0;
+  --secondary-foreground: #000000;
+  --muted: #eeeef0;
+  --muted-foreground: #656567;
+  --accent: #eeeef0;
+  --accent-foreground: #000000;
+  --destructive: #ff3b30;
+  --destructive-foreground: #ffffff;
+  --success: #34c759;
+  --success-foreground: #ffffff;
+  --warning: #ff9500;
+  --warning-foreground: #ffffff;
+  --border: #e7e7e7;
+  --input: #e7e7e7;
+  --input-background: #fcfcfc;
+  --ring: #5e4ae3;
+  --chart-1: #5e4ae3;
+  --chart-2: #129490;
+  --chart-3: #34c759;
+  --chart-4: #ff9500;
+  --chart-5: #ff3b30;
+
+  --color-fd-background: #fafafa;
   --color-fd-foreground: #000000;
   --color-fd-muted: #f4f4f5;
   --color-fd-muted-foreground: #656567;
@@ -30,10 +116,42 @@
   --color-fd-accent: color-mix(in srgb, #e3e3e6 50%, transparent);
   --color-fd-accent-foreground: #000000;
   --color-fd-ring: #d4d4d8;
-  --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0a0a0b;
+  --sidebar-primary: #5e4ae3;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ececee;
+  --sidebar-accent-foreground: #0a0a0b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #5e4ae3;
 }
 
 .dark {
+  --background: #000000;
+  --foreground: #fafafa;
+  --card: #0c0c0e;
+  --card-foreground: #fafafa;
+  --popover: #111113;
+  --popover-foreground: #fafafa;
+  --primary: #7c6df2;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1d;
+  --secondary-foreground: #fafafa;
+  --muted: #141417;
+  --muted-foreground: #a1a1a8;
+  --accent: #1a1a1d;
+  --accent-foreground: #fafafa;
+  --destructive: #f87171;
+  --destructive-foreground: #ffffff;
+  --success: #34d399;
+  --success-foreground: #042f2e;
+  --warning: #fbbf24;
+  --warning-foreground: #451a03;
+  --border: #1f1f23;
+  --input: #1f1f23;
+  --input-background: #1a1a1d;
+  --ring: #7c6df2;
+
   --color-fd-background: #0e0e10;
   --color-fd-foreground: #ffffff;
   --color-fd-muted: #141416;
@@ -50,6 +168,14 @@
   --color-fd-accent: color-mix(in srgb, #26262a 30%, transparent);
   --color-fd-accent-foreground: #ffffff;
   --color-fd-ring: #65656b;
+  --sidebar: #0c0c0e;
+  --sidebar-foreground: #e4e4e7;
+  --sidebar-primary: #7c6df2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c1c20;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #1f1f23;
+  --sidebar-ring: #7c6df2;
 }
 
 @layer base {
@@ -58,6 +184,7 @@
   }
 
   * {
+    @apply border-border;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 
@@ -86,6 +213,15 @@
     --scrollbar-track: #12121400;
   }
 
+  body {
+    @apply bg-background text-foreground text-sm;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
   .prose {
     font-family: var(--font-family-sans);
   }
@@ -95,14 +231,9 @@
     font-weight: 700;
   }
 
-  .prose :where(strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  .prose :where(strong, b):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     font-weight: 700;
   }
-
-  .prose :where(b):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    font-weight: 700;
-  }
-
 }
 
 g:focus,
@@ -120,13 +251,9 @@ path:focus {
   box-shadow: none !important;
 }
 
-[data-slot="helper-wrapper"] {
-  padding: 0;
-}
-
 @layer utilities {
   .text-x-4xl {
-    @apply relative text-4xl md:text-5xl lg:text-7xl px-4 tracking-tight font-bold text-neutral-900 dark:text-transparent dark:bg-clip-text dark:bg-linear-to-b dark:from-white dark:via-gray-100 dark:to-gray-400;
+    @apply relative text-4xl md:text-5xl lg:text-7xl px-4 tracking-tight font-bold text-transparent bg-clip-text bg-linear-to-b from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-gray-100 dark:to-gray-400;
   }
 
   .text-x-3xl {
@@ -158,7 +285,7 @@ path:focus {
   }
 
   .text-subdued {
-    @apply relative text-default-800 dark:text-default-600;
+    @apply relative text-muted-foreground;
   }
 
   .prose
@@ -173,5 +300,16 @@ path:focus {
       :where([class~="not-prose"], [class~="not-prose"] *)
     ) {
     padding-inline-end: 1em !important;
+  }
+
+  /* Kill prose-injected table borders inside our custom .not-prose wrapper. */
+  .not-prose table,
+  .not-prose thead,
+  .not-prose tbody,
+  .not-prose tfoot,
+  .not-prose tr,
+  .not-prose th,
+  .not-prose td {
+    border-width: 0 !important;
   }
 }

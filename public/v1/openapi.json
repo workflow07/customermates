@@ -1187,11 +1187,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -1318,11 +1317,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -1391,11 +1389,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -1451,11 +1448,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2301,11 +2297,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2432,11 +2427,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -2505,11 +2499,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2565,11 +2558,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3071,11 +3063,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3202,11 +3193,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -3275,11 +3265,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3335,11 +3324,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -5005,11 +4993,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -5136,11 +5123,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -5209,11 +5195,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -5269,11 +5254,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6119,11 +6103,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6250,11 +6233,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -6323,11 +6305,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6383,11 +6364,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6889,11 +6869,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -7020,11 +6999,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -7093,11 +7071,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -7153,11 +7130,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -8933,11 +8909,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -9064,11 +9039,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -9137,11 +9111,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -9197,11 +9170,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10085,11 +10057,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10216,11 +10187,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -10289,11 +10259,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10349,11 +10318,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10893,11 +10861,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -11024,11 +10991,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -11097,11 +11063,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -11157,11 +11122,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -12823,11 +12787,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -12954,11 +12917,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -13027,11 +12989,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -13087,11 +13048,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -13915,11 +13875,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14046,11 +14005,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -14119,11 +14077,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14179,11 +14136,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14663,11 +14619,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14794,11 +14749,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -14867,11 +14821,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14927,11 +14880,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16443,11 +16395,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16574,11 +16525,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -16647,11 +16597,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16707,11 +16656,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17518,11 +17466,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17649,11 +17596,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -17722,11 +17668,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17782,11 +17727,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18249,11 +18193,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18380,11 +18323,10 @@
                                           "type": "string",
                                           "enum": [
                                             "default",
-                                            "primary",
                                             "secondary",
+                                            "destructive",
                                             "success",
-                                            "warning",
-                                            "danger"
+                                            "warning"
                                           ]
                                         },
                                         "isDefault": {
@@ -18453,11 +18395,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18513,11 +18454,10 @@
                                     "type": "string",
                                     "enum": [
                                       "default",
-                                      "primary",
                                       "secondary",
+                                      "destructive",
                                       "success",
-                                      "warning",
-                                      "danger"
+                                      "warning"
                                     ]
                                   },
                                   "allowMultiple": {

@@ -1,6 +1,6 @@
 import type { ApiKey } from "@/features/api-key/get-api-keys.interactor";
 import type { RootStore } from "@/core/stores/root.store";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 
 import { action, makeObservable } from "mobx";
@@ -19,7 +19,7 @@ export class ApiKeysStore extends BaseDataViewStore<ApiKey> {
     });
   }
 
-  get columnsDefinition(): XTableColumn[] {
+  get columnsDefinition(): TableColumn[] {
     return [];
   }
 

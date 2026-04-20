@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import XTrialInactivationNotice from "@/components/x-emails/x-trial-inactivation-notice";
+import TrialInactivationNotice from "@/components/emails/trial-inactivation-notice";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 
 export abstract class DeactivateUsersAfterSubscriptionGracePeriodRepo {
@@ -34,7 +34,7 @@ export class DeactivateUsersAfterSubscriptionGracePeriodInteractor {
       await this.emailService.send({
         to: user.email,
         subject: t("subject"),
-        react: XTrialInactivationNotice({
+        react: TrialInactivationNotice({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
           dismiss: t("dismiss"),

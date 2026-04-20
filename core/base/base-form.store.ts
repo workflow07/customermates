@@ -6,6 +6,7 @@ import { makeObservable, observable, computed, action } from "mobx";
 import { JSONPath } from "jsonpath-plus";
 import equal from "fast-deep-equal/es6";
 import { cloneDeep } from "lodash";
+import { toast } from "sonner";
 import { Action } from "@/generated/prisma";
 
 import type { Resource } from "@/generated/prisma";
@@ -67,7 +68,53 @@ export abstract class BaseFormStore<T extends object = object> {
 
   setError = (error: $ZodErrorTree<T> | undefined) => {
     this.error = error;
+    if (error) {
+      const messages = this.flattenErrorTree(error);
+      if (messages.length > 0) this.announceErrors(messages);
+    }
   };
+
+  protected flattenErrorTree(tree: unknown, prefix: string = ""): Array<{ path: string; message: string }> {
+    const out: Array<{ path: string; message: string }> = [];
+    if (!tree || typeof tree !== "object") return out;
+    const node = tree as { errors?: string[]; properties?: Record<string, unknown>; items?: unknown[] };
+    if (Array.isArray(node.errors)) for (const msg of node.errors) out.push({ path: prefix, message: msg });
+
+    if (node.properties && typeof node.properties === "object") {
+      for (const [key, child] of Object.entries(node.properties)) {
+        const childPrefix = prefix ? `${prefix}.${key}` : key;
+        out.push(...this.flattenErrorTree(child, childPrefix));
+      }
+    }
+    if (Array.isArray(node.items)) {
+      node.items.forEach((child, i) => {
+        const childPrefix = prefix ? `${prefix}[${i}]` : `[${i}]`;
+        out.push(...this.flattenErrorTree(child, childPrefix));
+      });
+    }
+    return out;
+  }
+
+  protected getFieldLabel(path: string): string {
+    if (!path) return "";
+    const leaf =
+      path
+        .split(".")
+        .pop()
+        ?.replace(/\[\d+\]$/, "") ?? path;
+    return leaf
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (c) => c.toUpperCase())
+      .trim();
+  }
+
+  protected announceErrors(errors: Array<{ path: string; message: string }>) {
+    const lines = errors.map((e) => {
+      const label = this.getFieldLabel(e.path);
+      return label ? `${label}: ${e.message}` : e.message;
+    });
+    toast.error(lines.join("\n"));
+  }
 
   resetForm = () => {
     this.form = cloneDeep(this.savedState);
@@ -106,7 +153,8 @@ export abstract class BaseFormStore<T extends object = object> {
 
     if (!this.resource) return false;
 
-    void this.rootStore.userStore.user;
+    if (!this.rootStore.userStore.user) return false;
+
     return !this.rootStore.userStore.canManage(this.resource);
   }
 

@@ -35,10 +35,8 @@ export const PUBLIC_ROUTES = [
   "/auth/error",
   "/auth/verify-email",
   "/invitation/:token",
-  "/docs/skills/:slug",
   "/docs/openapi/:slug",
   "/docs/openapi",
-  "/docs/skills",
 ] as const;
 
 export const routing = defineRouting({

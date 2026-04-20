@@ -8,16 +8,22 @@ import type { WidgetGroupByType, Widget } from "@/generated/prisma";
 export enum ChartColor {
   default1 = "default1",
   default2 = "default2",
+  default3 = "default3",
   primary1 = "primary1",
   primary2 = "primary2",
+  primary3 = "primary3",
   secondary1 = "secondary1",
   secondary2 = "secondary2",
+  secondary3 = "secondary3",
   success1 = "success1",
   success2 = "success2",
+  success3 = "success3",
   warning1 = "warning1",
   warning2 = "warning2",
+  warning3 = "warning3",
   danger1 = "danger1",
   danger2 = "danger2",
+  danger3 = "danger3",
 }
 
 export enum DisplayType {

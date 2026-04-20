@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { OnboardingCard } from "./components/onboarding-card";
+import { OnboardingForm } from "./components/onboarding-form";
 
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
 import { getAuthService, getUserService } from "@/core/di";
 
 export default async function OnboardingPage() {
@@ -20,13 +19,13 @@ export default async function OnboardingPage() {
   const avatarUrl = session.user?.image?.startsWith("https:") ? session.user.image : "";
 
   return (
-    <XPageCenter>
-      <OnboardingCard
+    <div className="size-full flex flex-1 items-center justify-center p-4">
+      <OnboardingForm
         avatarUrl={avatarUrl}
         email={session.user?.email ?? ""}
         firstName={firstName}
         lastName={lastName}
       />
-    </XPageCenter>
+    </div>
   );
 }

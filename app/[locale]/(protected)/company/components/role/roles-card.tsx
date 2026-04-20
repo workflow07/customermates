@@ -1,50 +1,68 @@
 "use client";
 
+import type { UserRoleDto } from "@/features/role/get-roles.interactor";
+import type { GetResult } from "@/core/base/base-get.interactor";
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
+import { useEffect, useMemo } from "react";
 
 import { RoleModal } from "./role-modal";
 
-import { type UserRoleDto } from "@/features/role/get-roles.interactor";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XDataViewContainer } from "@/components/x-data-view/x-data-view-container";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
+import { AppChip } from "@/components/chip/app-chip";
+import { DataViewContainer } from "@/components/data-view";
 
-export const RolesCard = observer(() => {
+type Props = {
+  initialRoles: GetResult<UserRoleDto>;
+};
+
+export const RolesCard = observer(({ initialRoles }: Props) => {
   const { rolesStore, roleModalStore } = useRootStore();
   const t = useTranslations("");
 
-  function renderCell(item: UserRoleDto, columnKey: React.Key) {
-    switch (columnKey) {
-      case "name":
-        return (
-          <XDataViewCell className="text-x-sm">
-            {item.isSystemRole ? t("RoleModal.systemName") : (item?.name ?? "")}
-          </XDataViewCell>
-        );
-      case "description":
-        return (
-          <XDataViewCell>
-            {item.isSystemRole ? t("RoleModal.systemDescription") : (item?.description ?? "")}
-          </XDataViewCell>
-        );
-      case "type":
-        return <XChip>{item.isSystemRole ? t("RolesCard.system") : t("RolesCard.custom")}</XChip>;
-      default:
-        return "";
-    }
-  }
+  useEffect(() => rolesStore.setItems(initialRoles), [initialRoles]);
+
+  const columns = useMemo<ColumnDef<UserRoleDto>[]>(() => {
+    return [
+      {
+        id: "name",
+        accessorKey: "name",
+        header: t("Common.table.columns.name"),
+        cell: ({ row }) => (
+          <span className="text-sm truncate">
+            {row.original.isSystemRole ? t("RoleModal.systemName") : (row.original?.name ?? "")}
+          </span>
+        ),
+      },
+      {
+        id: "type",
+        header: t("Common.table.columns.type"),
+        cell: ({ row }) => (
+          <AppChip>{row.original.isSystemRole ? t("RolesCard.system") : t("RolesCard.custom")}</AppChip>
+        ),
+      },
+      {
+        id: "description",
+        header: t("Common.table.columns.description"),
+        cell: ({ row }) => (
+          <span className="text-sm truncate">
+            {row.original.isSystemRole ? t("RoleModal.systemDescription") : (row.original?.description ?? "")}
+          </span>
+        ),
+      },
+    ];
+  }, [t]);
 
   return (
     <>
-      <XDataViewContainer
+      <DataViewContainer
+        columns={columns}
         isSearchable={false}
-        renderCell={renderCell}
         store={rolesStore}
-        title={t("RolesCard.title")}
         onAdd={roleModalStore.add}
-        onRowAction={(item) => {
+        onRowClick={(item) => {
           roleModalStore.setRole(item);
           roleModalStore.open();
         }}

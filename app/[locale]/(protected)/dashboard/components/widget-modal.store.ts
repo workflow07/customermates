@@ -14,7 +14,7 @@ import { upsertWidgetAction, deleteWidgetAction, getWidgetByIdAction, getCompany
 
 import { ChartColor, DisplayType } from "@/features/widget/widget.types";
 import { BaseModalStore } from "@/core/base/base-modal.store";
-import { hasValidFilterConfiguration } from "@/components/x-data-view/x-table-view/x-table-view.utils";
+import { hasValidFilterConfiguration } from "@/components/data-view/table-view.utils";
 
 export class WidgetModalStore extends BaseModalStore<UpsertWidgetData> {
   public fetchedWidget: ExtendedWidget | null = null;

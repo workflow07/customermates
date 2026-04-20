@@ -5,7 +5,6 @@ import type { BaseDataViewStore } from "./base-data-view.store";
 import type { CustomFieldValueDto } from "./base-entity.schema";
 
 import { action, computed, makeObservable, observable, toJS } from "mobx";
-import { addToast } from "@heroui/toast";
 import { CustomColumnType } from "@/generated/prisma";
 
 import type { Resource } from "@/generated/prisma";
@@ -106,9 +105,9 @@ export abstract class BaseCustomColumnEntityModalStore<
     this.open();
   };
 
-  delete = async () => {
+  delete = async (): Promise<boolean> => {
     const id = this.form.id;
-    if (!id) return;
+    if (!id) return false;
 
     this.setIsLoading(true);
 
@@ -118,6 +117,7 @@ export abstract class BaseCustomColumnEntityModalStore<
       if (res.ok) await this.entityStore.removeItem(id);
 
       this.close();
+      return res.ok;
     } finally {
       this.setIsLoading(false);
     }
@@ -149,6 +149,8 @@ export abstract class BaseCustomColumnEntityModalStore<
   onSubmit = async (event?: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
+    if (this.form.id && !this.hasUnsavedChanges) return;
+
     if (!(this.canReadAll || this.isAssignedToCurrentUser)) {
       this.isSubmittingWithGuard = true;
       return;
@@ -163,14 +165,11 @@ export abstract class BaseCustomColumnEntityModalStore<
         : await this.actions.create(formData);
 
       if (res.ok) {
+        this.setError(undefined);
         await this.entityStore.upsertItem(res.data);
+        if (this.fetchedEntity) this.fetchedEntity = res.data;
         this.close();
-      } else {
-        this.setError(res.error as any);
-
-        const notesError = this.getError("notes");
-        if (notesError) addToast({ description: notesError, color: "danger" });
-      }
+      } else this.setError(res.error as any);
     } finally {
       this.setIsLoading(false);
     }

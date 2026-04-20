@@ -1,10 +1,10 @@
-import { User } from "@heroui/user";
 import { useTranslations } from "next-intl";
 
 import type { Status } from "@/generated/prisma";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { USER_STATUS_COLORS_MAP } from "@/constants/user-statuses";
-import { XChip } from "@/components/x-chip/x-chip";
+import { AppChip } from "@/components/chip/app-chip";
 
 type Props = {
   email: string;
@@ -15,29 +15,35 @@ type Props = {
   avatarUrl?: string;
 };
 
+function getInitials(firstName: string, lastName: string) {
+  return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+}
+
 export function UserDetailsAvatar({ email, firstName, lastName, roleName, status, avatarUrl }: Props) {
   const t = useTranslations("Common");
+  const displayName = `${firstName} ${lastName}`.trim();
 
   return (
-    <User
-      avatarProps={{
-        size: "lg",
-        src: avatarUrl,
-        name: `${firstName} ${lastName}`.trim(),
-        alt: t("imageAlt.avatar", { name: `${firstName} ${lastName}`.trim() }),
-      }}
-      description={
+    <div className="flex items-center gap-3 min-w-0">
+      <Avatar className="shrink-0" size="lg">
+        {avatarUrl && <AvatarImage alt={t("imageAlt.avatar", { name: displayName })} src={avatarUrl} />}
+
+        <AvatarFallback>{getInitials(firstName, lastName)}</AvatarFallback>
+      </Avatar>
+
+      <div className="flex flex-col min-w-0">
+        <span className="truncate font-medium">{displayName}</span>
+
         <div className="mt-px flex w-full flex-col space-y-1 items-start">
-          <span>{email}</span>
+          <span className="text-sm text-subdued truncate">{email}</span>
 
-          <div className="flex w-full gap-2 items-start justify-start">
-            <XChip color={USER_STATUS_COLORS_MAP[status]}>{t(`userStatuses.${status}`)}</XChip>
+          <div className="flex w-full gap-2 items-start justify-start flex-wrap">
+            <AppChip variant={USER_STATUS_COLORS_MAP[status]}>{t(`userStatuses.${status}`)}</AppChip>
 
-            {roleName && <XChip color="default">{roleName}</XChip>}
+            {roleName && <AppChip variant="outline">{roleName}</AppChip>}
           </div>
         </div>
-      }
-      name={`${firstName} ${lastName}`.trim()}
-    />
+      </div>
+    </div>
   );
 }

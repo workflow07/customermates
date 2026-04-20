@@ -2,11 +2,10 @@ import { redirect } from "next/navigation";
 import { SubscriptionStatus } from "@/generated/prisma";
 import { Resource } from "@/generated/prisma";
 
-import { SubscriptionExpiredCard } from "./components/subscription-expired-card";
+import { SubscriptionExpiredView } from "./components/subscription-expired-view";
 
 import { getGetSubscriptionInteractor, getRouteGuardService } from "@/core/di";
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
+import { PageContainer } from "@/components/shared/page-container";
 
 export default async function SubscriptionExpiredPage() {
   await getRouteGuardService().ensureAccessOrRedirect({
@@ -24,13 +23,13 @@ export default async function SubscriptionExpiredPage() {
       subscription.trialEndDate !== null &&
       subscription.trialEndDate < new Date());
 
-  if (!isExpired) redirect("/company");
+  if (!isExpired) redirect("/company/details");
 
   return (
-    <XPageContainer>
-      <XPageCenter>
-        <SubscriptionExpiredCard />
-      </XPageCenter>
-    </XPageContainer>
+    <PageContainer>
+      <div className="size-full flex flex-1 items-center justify-center p-4">
+        <SubscriptionExpiredView />
+      </div>
+    </PageContainer>
   );
 }

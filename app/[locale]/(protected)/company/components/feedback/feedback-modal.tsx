@@ -2,15 +2,14 @@
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { Button } from "@heroui/button";
 
-import { XForm } from "@/components/x-inputs/x-form";
-import { XTextarea } from "@/components/x-inputs/x-textarea";
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardFooter } from "@/components/x-card/x-card-footer";
-import { XCardHeader } from "@/components/x-card/x-card-header";
+import { Button } from "@/components/ui/button";
+import { AppModal, ModalFooter } from "@/components/modal";
+import { AppForm } from "@/components/forms/form-context";
+import { FormTextarea } from "@/components/forms/form-textarea";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
 import { useRootStore } from "@/core/stores/root-store.provider";
 
 export const FeedbackModal = observer(() => {
@@ -21,30 +20,30 @@ export const FeedbackModal = observer(() => {
   const translationKey = `feedback.${form.type}`;
 
   return (
-    <XModal store={store}>
-      <XForm store={store}>
-        <XCard>
-          <XCardHeader>
+    <AppModal store={store} title={t(`${translationKey}.title`)}>
+      <AppForm store={store}>
+        <AppCard>
+          <AppCardHeader>
             <h2 className="text-x-lg">{t(`${translationKey}.title`)}</h2>
-          </XCardHeader>
+          </AppCardHeader>
 
-          <XCardBody>
+          <AppCardBody>
             <p className="text-x-sm">{t(`${translationKey}.description`)}</p>
 
-            <XTextarea isRequired id="feedback" maxRows={8} minRows={5} />
-          </XCardBody>
+            <FormTextarea required id="feedback" rows={6} />
+          </AppCardBody>
 
-          <XCardFooter>
-            <Button isDisabled={isLoading} variant="flat" onPress={close}>
+          <ModalFooter className="p-6 pt-0">
+            <Button disabled={isLoading} variant="secondary" onClick={close}>
               {t("Common.actions.cancel")}
             </Button>
 
-            <Button color="primary" isLoading={isLoading} type="submit">
+            <Button disabled={isLoading} type="submit">
               {t("Common.actions.save")}
             </Button>
-          </XCardFooter>
-        </XCard>
-      </XForm>
-    </XModal>
+          </ModalFooter>
+        </AppCard>
+      </AppForm>
+    </AppModal>
   );
 });

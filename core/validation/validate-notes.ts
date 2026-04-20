@@ -2,8 +2,8 @@ import type { z } from "zod";
 
 import { Node } from "@tiptap/pm/model";
 
-import { parseMarkdownToJSON } from "@/components/x-editor/x-editor.utils";
-import { editorSchema } from "@/components/x-editor/x-editor-extensions";
+import { parseMarkdownToJSON } from "@/components/editor/editor.utils";
+import { editorSchema } from "@/components/editor/editor-extensions";
 import { CustomErrorCode } from "@/core/validation/validation.types";
 
 const MAX_JSON_SIZE = 262_144;

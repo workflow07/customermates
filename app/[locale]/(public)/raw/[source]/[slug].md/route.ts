@@ -8,7 +8,6 @@ import { ROUTING_LOCALES } from "@/i18n/routing";
 const SOURCE_DIRECTORY_MAP = {
   docs: "docs",
   openapi: "api",
-  skills: "skills",
 } as const;
 
 type RawRouteParams = {

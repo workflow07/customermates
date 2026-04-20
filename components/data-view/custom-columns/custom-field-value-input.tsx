@@ -1,0 +1,69 @@
+import type { CustomColumnDto } from "@/features/custom-column/custom-column.schema";
+
+import { Pencil } from "lucide-react";
+import { observer } from "mobx-react-lite";
+
+import { CustomFieldEditor } from "./custom-field-editor";
+
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
+import { FormLabel } from "@/components/forms/form-label";
+import { useRootStore } from "@/core/stores/root-store.provider";
+import { useAppForm } from "@/components/forms/form-context";
+
+type Props = {
+  isEditing: boolean;
+  column: CustomColumnDto;
+  index: number;
+};
+
+export const CustomFieldValueInput = observer(({ isEditing, column, index }: Props) => {
+  const store = useAppForm();
+  const { customColumnModalStore } = useRootStore();
+
+  const { label } = column;
+  const id = `customFieldValues[${index}].value`;
+  const value = store?.getValue(id) as string | undefined;
+
+  if (!isEditing) {
+    return (
+      <CustomFieldEditor
+        column={column}
+        id={id}
+        label={label}
+        value={value}
+        onChange={(nextValue) => store?.onChange(id, nextValue)}
+      />
+    );
+  }
+
+  return (
+    <div className="space-y-1.5">
+      {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
+
+      <div className="flex items-end gap-1.5">
+        <div className="flex-1 min-w-0 [&_.space-y-1\.5>*]:mb-0!">
+          <CustomFieldEditor
+            hideLabel
+            column={column}
+            id={id}
+            label={label}
+            value={value}
+            onChange={(nextValue) => store?.onChange(id, nextValue)}
+          />
+        </div>
+
+        <Button
+          aria-label="Edit column"
+          className="size-9 shrink-0"
+          size="icon"
+          type="button"
+          variant="default"
+          onClick={() => customColumnModalStore.openWithColumn(column)}
+        >
+          <Icon icon={Pencil} />
+        </Button>
+      </div>
+    </div>
+  );
+});

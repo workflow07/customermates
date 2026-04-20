@@ -1,7 +1,6 @@
 import { WidgetsGrid } from "./components/widgets-grid";
 
-import { XPageRow } from "@/components/x-layout-primitives/x-page-row";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
+import { PageContainer } from "@/components/shared/page-container";
 import {
   getRouteGuardService,
   getGetWidgetsInteractor,
@@ -19,14 +18,14 @@ export default async function DashboardPage() {
   ]);
 
   return (
-    <XPageContainer>
-      <XPageRow>
+    <PageContainer>
+      <div className="flex flex-col relative w-full gap-4 md:gap-6 grid-cols-1">
         <WidgetsGrid
           customColumns={customColumnsResult.data}
           filterableFields={filterableFieldsResult.data}
           widgets={widgetsResult.data}
         />
-      </XPageRow>
-    </XPageContainer>
+      </div>
+    </PageContainer>
   );
 }

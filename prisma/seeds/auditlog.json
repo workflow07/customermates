@@ -911,21 +911,21 @@
             "current": {
               "options": [
                 {
-                  "color": "default",
+                  "color": "secondary",
                   "index": 0,
                   "isDefault": true,
                   "label": "Low",
                   "value": "313e964c-1a31-4d18-a1e3-f92dd5bbcf31"
                 },
                 {
-                  "color": "default",
+                  "color": "secondary",
                   "index": 1,
                   "isDefault": false,
                   "label": "Medium",
                   "value": "6197e771-8f02-43b0-a695-9342a2d31d8e"
                 },
                 {
-                  "color": "danger",
+                  "color": "destructive",
                   "index": 2,
                   "isDefault": false,
                   "label": "High",
@@ -950,7 +950,7 @@
                   "value": "6197e771-8f02-43b0-a695-9342a2d31d8e"
                 },
                 {
-                  "color": "danger",
+                  "color": "destructive",
                   "index": 2,
                   "isDefault": false,
                   "label": "High",
@@ -967,21 +967,21 @@
           "options": {
             "options": [
               {
-                "color": "default",
+                "color": "secondary",
                 "index": 0,
                 "isDefault": true,
                 "label": "Low",
                 "value": "313e964c-1a31-4d18-a1e3-f92dd5bbcf31"
               },
               {
-                "color": "default",
+                "color": "secondary",
                 "index": 1,
                 "isDefault": false,
                 "label": "Medium",
                 "value": "6197e771-8f02-43b0-a695-9342a2d31d8e"
               },
               {
-                "color": "danger",
+                "color": "destructive",
                 "index": 2,
                 "isDefault": false,
                 "label": "High",
@@ -2887,7 +2887,7 @@
         "options": {
           "options": [
             {
-              "color": "primary",
+              "color": "default",
               "index": 0,
               "isDefault": true,
               "label": "Fixed",
@@ -5247,14 +5247,14 @@
         "options": {
           "options": [
             {
-              "color": "default",
+              "color": "secondary",
               "index": 0,
               "isDefault": true,
               "label": "Service",
               "value": "c64bf802-6600-4f19-b93d-a6be0460a716"
             },
             {
-              "color": "default",
+              "color": "secondary",
               "index": 1,
               "isDefault": false,
               "label": "Hardware",
@@ -5553,14 +5553,14 @@
               "value": "63e85eb5-ec10-47c9-b788-30640ec5369b"
             },
             {
-              "color": "danger",
+              "color": "destructive",
               "index": 2,
               "isDefault": false,
               "label": "Lost",
               "value": "b3a225d6-58ad-41d9-a425-e507b65d54a6"
             },
             {
-              "color": "default",
+              "color": "secondary",
               "index": 3,
               "isDefault": false,
               "label": "Abandoned",
@@ -5962,7 +5962,7 @@
         "label": "Emails",
         "options": {
           "allowMultiple": true,
-          "color": "default"
+          "color": "secondary"
         },
         "type": "email"
       },
@@ -9150,7 +9150,7 @@
         "label": "Website",
         "options": {
           "allowMultiple": false,
-          "color": "default"
+          "color": "secondary"
         },
         "type": "link"
       },
@@ -9173,7 +9173,7 @@
         "label": "Phones",
         "options": {
           "allowMultiple": true,
-          "color": "default"
+          "color": "secondary"
         },
         "type": "phone"
       },
@@ -9644,7 +9644,7 @@
         "options": {
           "options": [
             {
-              "color": "primary",
+              "color": "default",
               "index": 0,
               "isDefault": false,
               "label": "Direct customer",
@@ -12006,7 +12006,7 @@
               "value": "6197e771-8f02-43b0-a695-9342a2d31d8e"
             },
             {
-              "color": "danger",
+              "color": "destructive",
               "index": 2,
               "isDefault": false,
               "label": "High",
@@ -12448,14 +12448,14 @@
         "options": {
           "options": [
             {
-              "color": "default",
+              "color": "secondary",
               "index": 0,
               "isDefault": true,
               "label": "New",
               "value": "eea27d41-f9ea-461f-b994-8f57cfe9891e"
             },
             {
-              "color": "primary",
+              "color": "default",
               "index": 1,
               "isDefault": false,
               "label": "Contact",
@@ -12483,7 +12483,7 @@
               "value": "5a74caf7-3dc0-4c1c-b3d5-38e9c426b682"
             },
             {
-              "color": "danger",
+              "color": "destructive",
               "index": 5,
               "isDefault": false,
               "label": "Lost",

@@ -11,7 +11,7 @@ export function YouTube({ id, title = "YouTube video" }: Props) {
       <iframe
         allowFullScreen
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 size-full"
         loading="lazy"
         src={`https://www.youtube-nocookie.com/embed/${id}`}
         title={title}

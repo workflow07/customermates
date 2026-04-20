@@ -1,6 +1,6 @@
 "use client";
 
-import { XLink } from "@/components/x-link";
+import { AppLink } from "@/components/shared/app-link";
 
 type CompetitorLink = {
   slug: string;
@@ -18,9 +18,9 @@ export function CompetitorLinks({ competitors }: Props) {
     <>
       {competitors.map(({ slug, displayName }) => (
         <li key={slug}>
-          <XLink className="text-subdued" href={`/compare/${slug}`}>
+          <AppLink className="text-subdued" href={`/compare/${slug}`}>
             vs {displayName}
-          </XLink>
+          </AppLink>
         </li>
       ))}
     </>

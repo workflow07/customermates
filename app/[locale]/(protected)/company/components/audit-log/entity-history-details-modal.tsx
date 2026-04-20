@@ -3,8 +3,7 @@
 import type { CustomColumnDto } from "@/features/custom-column/custom-column.schema";
 
 import { Fragment, type ReactNode } from "react";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { Avatar } from "@heroui/avatar";
+import { ArrowRight } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
@@ -13,22 +12,30 @@ import deepEqual from "fast-deep-equal/es6";
 
 import { isEmpty, isRelationFieldKey, partitionRelationIds, processChanges } from "./entity-history-details.utils";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XAvatarStack } from "@/components/x-avatar-stack";
-import { XChipStack } from "@/components/x-chip/x-chip-stack";
-import { XCustomFieldValue } from "@/components/x-data-view/x-custom-column/x-custom-field-value";
-import { XIcon } from "@/components/x-icon";
-import { serializeJSONToMarkdown } from "@/components/x-editor/x-editor.utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AppModal } from "@/components/modal/app-modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AvatarStack } from "@/components/shared/avatar-stack";
+import { AppChipStack } from "@/components/chip/app-chip-stack";
+import { CustomFieldValue } from "@/components/data-view/custom-columns/custom-field-value";
+import { Icon } from "@/components/shared/icon";
+import { serializeJSONToMarkdown } from "@/components/editor/editor.utils";
 import { useRootStore } from "@/core/stores/root-store.provider";
+import { useOpenEntity } from "@/components/modal/hooks/use-entity-drawer-stack";
+import { EntityType } from "@/generated/prisma";
 
 type AvatarItem = { id: string; firstName: string; lastName: string; avatarUrl?: string | null; email?: string | null };
 
+function getInitials(firstName: string, lastName: string) {
+  return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+}
+
 export const EntityHistoryDetailsModal = observer(() => {
   const t = useTranslations("");
-  const { entityHistoryDetailsModalStore: store, intlStore, userModalStore, contactModalStore } = useRootStore();
+  const { entityHistoryDetailsModalStore: store, intlStore, userModalStore } = useRootStore();
+  const openEntity = useOpenEntity();
 
   if (!store.item) return null;
   const item = store.item;
@@ -50,27 +57,26 @@ export const EntityHistoryDetailsModal = observer(() => {
         }
       case "users":
         return (
-          <XAvatarStack items={value as AvatarItem[]} onAvatarClick={(user) => void userModalStore.loadById(user.id)} />
+          <AvatarStack items={value as AvatarItem[]} onAvatarClick={(user) => void userModalStore.loadById(user.id)} />
         );
       case "contacts":
         return (
-          <XAvatarStack
+          <AvatarStack
             items={value as AvatarItem[]}
-            onAvatarClick={(contact) => void contactModalStore.loadById(contact.id)}
+            onAvatarClick={(contact) => openEntity(EntityType.contact, contact.id)}
           />
         );
       case "organizations":
       case "deals":
         return (
-          <XChipStack
+          <AppChipStack
             items={(value as { id: string; name: string }[]).map((item) => ({ id: item.id, label: item.name }))}
             size="sm"
-            variant="flat"
           />
         );
       case "services":
         return (
-          <XChipStack
+          <AppChipStack
             items={(value as { id: string; name: string; quantity?: number; amount?: number }[]).map((item) => ({
               id: item.id,
               label:
@@ -79,7 +85,6 @@ export const EntityHistoryDetailsModal = observer(() => {
                   : item.name,
             }))}
             size="sm"
-            variant="flat"
           />
         );
       case "firstName":
@@ -94,7 +99,7 @@ export const EntityHistoryDetailsModal = observer(() => {
       default:
         if (customColumn) {
           return (
-            <XCustomFieldValue
+            <CustomFieldValue
               column={customColumn}
               item={{ id: "history", customFieldValues: [{ columnId: customColumn.id, value: value as string }] }}
             />
@@ -119,7 +124,7 @@ export const EntityHistoryDetailsModal = observer(() => {
           <div className="flex flex-wrap items-center gap-2">
             <div className="min-w-0 text-subdued">{renderValue(change.key, change.previous, change.customColumn)}</div>
 
-            <XIcon className="text-subdued shrink-0 self-center" icon={ArrowRightIcon} size="sm" />
+            <Icon className="text-subdued shrink-0 self-center" icon={ArrowRight} size="sm" />
 
             <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>
           </div>
@@ -132,7 +137,7 @@ export const EntityHistoryDetailsModal = observer(() => {
       <div className="flex flex-wrap items-center gap-2">
         <div className="min-w-0 text-subdued">{renderValue(change.key, change.previous, change.customColumn)}</div>
 
-        <XIcon className="text-subdued shrink-0 self-center" icon={ArrowRightIcon} size="sm" />
+        <Icon className="text-subdued shrink-0 self-center" icon={ArrowRight} size="sm" />
 
         <div className="min-w-0">{renderValue(change.key, change.current, change.customColumn)}</div>
       </div>
@@ -145,9 +150,17 @@ export const EntityHistoryDetailsModal = observer(() => {
   }
 
   return (
-    <XModal size="lg" store={store} onClose={handleClose}>
-      <XCard>
-        <XCardHeader>
+    <AppModal
+      size="lg"
+      store={store}
+      title={t("AuditLogModal.eventAt", {
+        event: t(`Common.events.${item.event}`),
+        date: intlStore.formatNumericalShortDateTime(item.createdAt),
+      })}
+      onClose={handleClose}
+    >
+      <AppCard>
+        <AppCardHeader>
           <h2 className="text-x-lg truncate grow">
             {t("AuditLogModal.eventAt", {
               event: t(`Common.events.${item.event}`),
@@ -155,15 +168,16 @@ export const EntityHistoryDetailsModal = observer(() => {
             })}
           </h2>
 
-          <Avatar
-            className="shrink-0"
-            name={`${item.user.firstName} ${item.user.lastName}`.trim()}
-            size="sm"
-            src={item.user.avatarUrl ?? undefined}
-          />
-        </XCardHeader>
+          <Avatar className="shrink-0" size="sm">
+            {item.user.avatarUrl && (
+              <AvatarImage alt={`${item.user.firstName} ${item.user.lastName}`.trim()} src={item.user.avatarUrl} />
+            )}
 
-        <XCardBody>
+            <AvatarFallback>{getInitials(item.user.firstName, item.user.lastName)}</AvatarFallback>
+          </Avatar>
+        </AppCardHeader>
+
+        <AppCardBody>
           <div className="max-h-[60vh] space-y-3 overflow-auto">
             {changes.map((change, index) => {
               const key = `${item.id}-${change.field}-${index}`;
@@ -211,8 +225,8 @@ export const EntityHistoryDetailsModal = observer(() => {
               );
             })}
           </div>
-        </XCardBody>
-      </XCard>
-    </XModal>
+        </AppCardBody>
+      </AppCard>
+    </AppModal>
   );
 });

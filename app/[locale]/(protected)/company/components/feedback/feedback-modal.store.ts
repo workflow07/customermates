@@ -2,7 +2,7 @@ import type { RootStore } from "@/core/stores/root.store";
 import type { SendFeedbackData } from "@/features/feedback/send-feedback.schema";
 import type { FormEvent } from "react";
 
-import { addToast } from "@heroui/toast";
+import { toast } from "sonner";
 
 import { sendFeedbackAction } from "../../actions";
 
@@ -31,10 +31,7 @@ export class FeedbackModalStore extends BaseModalStore<SendFeedbackData> {
       if (res.ok) {
         this.close();
         this.onInitOrRefresh({ feedback: "", type: this.form.type });
-        addToast({
-          description: this.rootStore.localeStore.getTranslation("feedback.success"),
-          color: "success",
-        });
+        toast.success(this.rootStore.localeStore.getTranslation("feedback.success"));
       } else this.setError(res.error);
     } finally {
       this.setIsLoading(false);

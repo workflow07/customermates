@@ -2,14 +2,14 @@
 
 import type { BlogPost } from "@/core/fumadocs/schemas/blog-posts";
 
-import { CalendarIcon } from "@heroicons/react/24/outline";
-import { Link } from "@heroui/link";
+import { Calendar } from "lucide-react";
 
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XIcon } from "@/components/x-icon";
-import { XImage } from "@/components/x-image";
+import { AppLink } from "@/components/shared/app-link";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppChip } from "@/components/chip/app-chip";
+import { Icon } from "@/components/shared/icon";
+import { AppImage } from "@/components/shared/app-image";
 
 type Props = BlogPost & {
   description?: string;
@@ -28,9 +28,9 @@ export function BlogPostCard({ url, title, description, date, author, tags, loca
   const imagePath = getImagePath(url);
 
   return (
-    <Link className="block min-w-0 w-full" href={url}>
-      <XCard isPressable className="overflow-hidden min-w-0 w-full">
-        <XImage
+    <AppLink className="block min-w-0 w-full no-underline text-foreground" href={url}>
+      <AppCard className="overflow-hidden min-w-0 w-full cursor-pointer hover:bg-accent/50 transition-colors">
+        <AppImage
           isLocalized
           alt={title}
           className="w-full h-56 object-cover object-bottom-left rounded-none"
@@ -39,12 +39,12 @@ export function BlogPostCard({ url, title, description, date, author, tags, loca
           width={1920}
         />
 
-        <XCardBody>
+        <AppCardBody>
           <div className="flex items-center justify-between gap-2 text-sm text-subdued min-w-0">
             <span className="flex items-center gap-2 min-w-0 shrink">
-              <XImage
+              <AppImage
                 alt="Benjamin Wagner"
-                className="rounded-full shrink-0 min-w-4.5 min-h-4.5 w-4.5 h-4.5"
+                className="rounded-full shrink-0 min-w-4.5 min-h-4.5 size-4.5"
                 height={800}
                 src="benjamin-wagner.png"
                 width={800}
@@ -54,7 +54,7 @@ export function BlogPostCard({ url, title, description, date, author, tags, loca
             </span>
 
             <time className="flex items-center gap-2 shrink-0" dateTime={new Date(date).toISOString()}>
-              <XIcon icon={CalendarIcon} size="md" />
+              <Icon icon={Calendar} size="md" />
 
               {new Date(date).toLocaleDateString(locale, {
                 year: "numeric",
@@ -69,14 +69,18 @@ export function BlogPostCard({ url, title, description, date, author, tags, loca
           {tags.length > 0 && (
             <div className="flex gap-2 min-w-0 overflow-hidden">
               {tags.map((tag, index) => (
-                <XChip key={tag} className={index === tags.length - 1 ? "min-w-0 shrink" : "shrink-0"} color="primary">
+                <AppChip
+                  key={tag}
+                  className={index === tags.length - 1 ? "min-w-0 shrink" : "shrink-0"}
+                  variant="default"
+                >
                   {tag}
-                </XChip>
+                </AppChip>
               ))}
             </div>
           )}
-        </XCardBody>
-      </XCard>
-    </Link>
+        </AppCardBody>
+      </AppCard>
+    </AppLink>
   );
 }

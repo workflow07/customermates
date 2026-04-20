@@ -4,14 +4,14 @@ import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 
 import { Footer } from "@/app/components/footer";
-import { PageHero } from "@/components/page-hero";
-import { XCTASection } from "@/components/x-cta-section";
-import { ShowcaseFrame } from "@/components/showcase-frame";
-import { XImage } from "@/components/x-image";
+import { PageHero } from "@/components/marketing/page-hero";
+import { CTASection } from "@/components/marketing/cta-section";
+import { ShowcaseFrame } from "@/components/marketing/showcase-frame";
+import { AppImage } from "@/components/shared/app-image";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { forPagesSource } from "@/core/fumadocs/source";
 import { getMDXComponents } from "@/core/fumadocs/mdx-components";
-import { XTOC } from "@/components/x-toc";
+import { Toc } from "@/components/shared/toc";
 
 interface Props {
   params: Promise<{
@@ -46,7 +46,7 @@ export default async function ForIndustryPage({ params }: Props) {
 
       <div className="w-full max-w-6xl mx-auto px-4 mb-8">
         <ShowcaseFrame className="mb-0">
-          <XImage
+          <AppImage
             isLocalized
             alt={page.data.hero.title}
             className="w-full h-auto rounded-none"
@@ -59,14 +59,14 @@ export default async function ForIndustryPage({ params }: Props) {
       </div>
 
       <section className="py-12 md:py-16 w-full max-w-6xl mx-auto px-4">
-        <XTOC items={page.data.toc}>
+        <Toc items={page.data.toc}>
           <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none">
             <MDX components={components} />
           </div>
-        </XTOC>
+        </Toc>
       </section>
 
-      <XCTASection {...page.data.cta} />
+      <CTASection {...page.data.cta} />
 
       <Footer />
     </div>

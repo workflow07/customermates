@@ -4,16 +4,14 @@ import type { ApiKey } from "@/features/api-key/get-api-keys.interactor";
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
-import { useEffect } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XIcon } from "@/components/x-icon";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { useDeleteConfirmation } from "@/components/x-modal/hooks/x-use-delete-confirmation";
+import { useDeleteConfirmation } from "@/components/modal/hooks/use-delete-confirmation";
+import { useSetTopBarActions } from "@/app/components/topbar-actions-context";
 
 type Props = {
   apiKeys: ApiKey[];
@@ -26,62 +24,61 @@ export const ApiKeysCard = observer(({ apiKeys }: Props) => {
 
   useEffect(() => apiKeysStore.setItems({ items: apiKeys }), [apiKeys]);
 
+  const topBarActions = useMemo(
+    () => (
+      <Button className="h-8" size="sm" onClick={() => void apiKeyModalStore.add()}>
+        <Plus className="size-3.5" />
+
+        <span className="hidden sm:inline">{t("Common.actions.add")}</span>
+      </Button>
+    ),
+    [apiKeyModalStore, t],
+  );
+  useSetTopBarActions(topBarActions);
+
   return (
-    <XCard>
-      <XCardHeader>
-        <h2 className="text-x-lg flex-1">{t("ApiKeysCard.title")}</h2>
+    <div className="flex w-full max-w-3xl flex-col gap-4">
+      <p className="text-subdued text-sm">{t("ProfileSections.apiKeysDescription")}</p>
 
-        <Button isIconOnly color="primary" size="sm" variant="flat" onPress={() => void apiKeyModalStore.add()}>
-          <XIcon icon={PlusIcon} />
-        </Button>
-      </XCardHeader>
+      {apiKeysStore.items.length === 0 ? (
+        <p className="text-subdued text-x-md">{t("Common.table.emptyContent")}</p>
+      ) : (
+        <div className="space-y-2">
+          {apiKeysStore.items.map((key) => (
+            <div key={key.id} className="flex items-center justify-between rounded-lg bg-card p-4 shadow-xs">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm">{key.name || t("ApiKeysCard.unnamed")}</p>
 
-      <XCardBody>
-        {apiKeysStore.items.length === 0 ? (
-          <p className="text-subdued text-x-md">{t("Common.table.emptyContent")}</p>
-        ) : (
-          <div className="space-y-2">
-            {apiKeysStore.items.map((key) => (
-              <div
-                key={key.id}
-                className="flex items-center justify-between p-3 border border-divider bg-content2 rounded-lg"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm truncate">{key.name || t("ApiKeysCard.unnamed")}</p>
+                <div className="mt-1 flex flex-col gap-1 text-xs text-subdued">
+                  <span>
+                    {`${t("Common.table.columns.createdAt")}: ${intlStore.formatNumericalShortDateTime(key.createdAt)}`}
+                  </span>
 
-                  <div className="flex flex-col gap-1 text-xs text-subdued mt-1">
+                  {key.expiresAt && (
                     <span>
-                      {`${t("Common.table.columns.createdAt")}: ${intlStore.formatNumericalShortDateTime(key.createdAt)}`}
+                      {`${t("Common.table.columns.expiresAt")}: ${intlStore.formatNumericalShortDateTime(key.expiresAt)}`}
                     </span>
+                  )}
 
-                    {key.expiresAt && (
-                      <span>
-                        {`${t("Common.table.columns.expiresAt")}: ${intlStore.formatNumericalShortDateTime(key.expiresAt)}`}
-                      </span>
-                    )}
-
-                    {key.lastRequest && (
-                      <span>
-                        {`${t("Common.table.columns.lastRequest")}: ${intlStore.formatNumericalShortDateTime(key.lastRequest)}`}
-                      </span>
-                    )}
-                  </div>
+                  {key.lastRequest && (
+                    <span>
+                      {`${t("Common.table.columns.lastRequest")}: ${intlStore.formatNumericalShortDateTime(key.lastRequest)}`}
+                    </span>
+                  )}
                 </div>
-
-                <Button
-                  isIconOnly
-                  color="danger"
-                  size="sm"
-                  variant="light"
-                  onPress={() => showDeleteConfirmation(() => void apiKeysStore.delete(key.id), key.name ?? undefined)}
-                >
-                  <XIcon icon={TrashIcon} />
-                </Button>
               </div>
-            ))}
-          </div>
-        )}
-      </XCardBody>
-    </XCard>
+
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => showDeleteConfirmation(() => void apiKeysStore.delete(key.id), key.name ?? undefined)}
+              >
+                <Icon className="text-destructive" icon={Trash2} />
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 });

@@ -2,98 +2,118 @@
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { ClipboardIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
-import { addToast } from "@heroui/toast";
-import { getLocalTimeZone, today } from "@internationalized/date";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XForm } from "@/components/x-inputs/x-form";
-import { XInput } from "@/components/x-inputs/x-input";
-import { XDatePicker } from "@/components/x-inputs/x-date-picker";
-import { XCardModalDefaultFooter } from "@/components/x-card/x-card-modal-default-footer";
-import { XIcon } from "@/components/x-icon";
+import { Button } from "@/components/ui/button";
+import { AppModal, ModalFooter } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppForm } from "@/components/forms/form-context";
+import { FormInput } from "@/components/forms/form-input";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { FormLabel } from "@/components/forms/form-label";
+import { useState } from "react";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XAlert } from "@/components/x-alert";
+import { Alert } from "@/components/shared/alert";
+import { CopyableCode } from "@/components/shared/copyable-code";
+
+const ExpiresInPicker = observer(function ExpiresInPicker() {
+  const t = useTranslations("ApiKeyModal");
+  const { apiKeyModalStore } = useRootStore();
+  const [date, setDate] = useState<Date | undefined>(undefined);
+
+  const today = new Date();
+  const max = new Date();
+  max.setDate(max.getDate() + 364);
+
+  return (
+    <div className="space-y-1.5">
+      <FormLabel htmlFor="expiresIn">{t("expiresIn")}</FormLabel>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
+            disabled={apiKeyModalStore.isDisabled}
+            id="expiresIn"
+            type="button"
+            variant="outline"
+          >
+            <CalendarIcon className="mr-2 size-4" />
+
+            {date ? format(date, "PPP") : <span>{t("expiresInPlaceholder")}</span>}
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent align="start" className="w-auto p-0">
+          <Calendar
+            autoFocus
+            disabled={(d) => d < today || d > max}
+            mode="single"
+            selected={date}
+            onSelect={(next) => {
+              setDate(next ?? undefined);
+              let expiresIn = next ? Math.ceil((next.getTime() - new Date().getTime()) / 1000) : undefined;
+              if (expiresIn !== undefined && expiresIn <= 1) expiresIn = undefined;
+              apiKeyModalStore.onChange("expiresIn", expiresIn);
+            }}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+});
 
 export const ApiKeyModal = observer(() => {
   const t = useTranslations("");
   const { apiKeyModalStore } = useRootStore();
-  const { createdKey } = apiKeyModalStore;
-
-  async function handleCopy() {
-    if (!createdKey) return;
-
-    try {
-      await navigator.clipboard.writeText(createdKey);
-      addToast({
-        description: t("Common.notifications.copiedToClipboard", {
-          value: createdKey,
-        }),
-        color: "success",
-        icon: <XIcon icon={ClipboardIcon} size="sm" />,
-      });
-    } catch {
-      addToast({
-        description: t("Common.notifications.copyFailed"),
-        color: "danger",
-      });
-    }
-  }
+  const { createdKey, isLoading, close, hasUnsavedChanges } = apiKeyModalStore;
 
   return (
-    <XModal store={apiKeyModalStore}>
-      <XForm store={apiKeyModalStore}>
-        <XCard>
-          <XCardHeader>
+    <AppModal store={apiKeyModalStore} title={t("ApiKeyModal.title")}>
+      <AppForm store={apiKeyModalStore}>
+        <AppCard>
+          <AppCardHeader>
             <h2 className="text-x-lg">{t("ApiKeyModal.title")}</h2>
-          </XCardHeader>
+          </AppCardHeader>
 
-          <XCardBody>
+          <AppCardBody>
             {createdKey ? (
-              <XAlert hideIcon className="mb-4" color="success">
+              <Alert hideIcon className="mb-4" color="success">
                 <div className="flex flex-col gap-2">
                   <p className="text-x-md">{t("ApiKeyModal.keyCreated")}</p>
 
-                  <div className="flex gap-2 items-center">
-                    <code className="flex-1 bg-background px-3 py-2 rounded-lg text-sm break-all">{createdKey}</code>
-
-                    <Button isIconOnly size="sm" variant="flat" onPress={() => void handleCopy()}>
-                      <XIcon icon={ClipboardIcon} />
-                    </Button>
-                  </div>
+                  <CopyableCode value={createdKey} />
 
                   <p className="text-x-sm">{t("ApiKeyModal.keyWarning")}</p>
                 </div>
-              </XAlert>
+              </Alert>
             ) : (
               <>
-                <XInput isRequired id="name" />
+                <FormInput required id="name" />
 
-                <XDatePicker
-                  id="expiresIn"
-                  maxValue={today(getLocalTimeZone()).add({ days: 364 })}
-                  minValue={today(getLocalTimeZone())}
-                  value={undefined}
-                  onChange={(date) => {
-                    let expiresIn = date
-                      ? Math.ceil((date.toDate("UTC").getTime() - new Date().getTime()) / 1000)
-                      : undefined;
-                    if (expiresIn !== undefined) if (expiresIn <= 1) expiresIn = undefined;
-
-                    apiKeyModalStore.onChange("expiresIn", expiresIn);
-                  }}
-                />
+                <ExpiresInPicker />
               </>
             )}
-          </XCardBody>
+          </AppCardBody>
 
-          <XCardModalDefaultFooter store={apiKeyModalStore} />
-        </XCard>
-      </XForm>
-    </XModal>
+          {!createdKey && (
+            <ModalFooter className="p-6 pt-0">
+              <Button disabled={isLoading} variant="secondary" onClick={close}>
+                {t("Common.actions.cancel")}
+              </Button>
+
+              <Button disabled={isLoading || !hasUnsavedChanges} type="submit">
+                {t("Common.actions.save")}
+              </Button>
+            </ModalFooter>
+          )}
+        </AppCard>
+      </AppForm>
+    </AppModal>
   );
 });

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { ShowcaseFrame } from "@/components/showcase-frame";
+import { ShowcaseFrame } from "@/components/marketing/showcase-frame";
 
 type Props = {
   src: string;
@@ -16,9 +16,7 @@ export function DocsDemo({ src, title, withHorizontalPadding = false }: Props) {
   return (
     <ShowcaseFrame withHorizontalPadding={withHorizontalPadding}>
       <>
-        {!loaded && (
-          <div className="h-[600px] w-full animate-pulse bg-default-200 dark:bg-default-100 md:h-[700px] lg:h-[750px]" />
-        )}
+        {!loaded && <div className="h-[600px] w-full animate-pulse bg-muted dark:bg-muted md:h-[700px] lg:h-[750px]" />}
 
         <iframe
           className={`${loaded ? "" : "pointer-events-none absolute inset-0 opacity-0"} h-[600px] w-full md:h-[700px] lg:h-[750px]`}

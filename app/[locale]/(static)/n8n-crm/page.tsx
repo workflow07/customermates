@@ -8,10 +8,9 @@ import { AutomationDemo } from "./components/automation-demo";
 import { AutomationBenefits } from "./components/automation-benefits";
 import { AutomationPricing } from "./components/automation-pricing";
 
-import { XCTASection } from "@/components/x-cta-section";
-import { XFAQSection } from "@/components/x-faq-section";
-import { XFeatureSection } from "@/components/x-feature-section";
-import { XTestimonialSection } from "@/components/x-testimonial-section";
+import { CTASection } from "@/components/marketing/cta-section";
+import { FAQSection } from "@/components/marketing/faq-section";
+import { FeatureSection } from "@/components/marketing/feature-section";
 import { Footer } from "@/app/components/footer";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { automationSource, pricingSource } from "@/core/fumadocs/source";
@@ -28,7 +27,7 @@ export default async function AutomationPage() {
 
   if (!automationPage) notFound();
 
-  const { hero, benefits, features, testimonials, pricingTitle, faq, cta } = automationPage.data;
+  const { hero, benefits, features, pricingTitle, faq, cta } = automationPage.data;
   const pricingData = pricingPage?.data.pricing;
 
   return (
@@ -39,17 +38,15 @@ export default async function AutomationPage() {
 
       <AutomationBenefits benefitsSection={benefits} />
 
-      <XFeatureSection {...features} />
-
-      <XTestimonialSection testimonialsSection={testimonials} />
+      <FeatureSection {...features} />
 
       {pricingData && pricingTitle && (
         <AutomationPricing pricingSection={pricingData} pricingSectionTitle={pricingTitle} />
       )}
 
-      <XFAQSection {...faq} />
+      <FAQSection {...faq} />
 
-      <XCTASection {...cta} />
+      <CTASection {...cta} />
 
       <Footer />
     </div>

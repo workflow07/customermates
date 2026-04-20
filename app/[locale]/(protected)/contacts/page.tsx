@@ -4,7 +4,7 @@ import { ContactsCard } from "./components/contacts-card";
 
 import { getGetContactsInteractor, getRouteGuardService } from "@/core/di";
 import { decodeGetParams } from "@/core/utils/get-params";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
+import { PageContainer } from "@/components/shared/page-container";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -19,8 +19,8 @@ export default async function ContactsPage({ searchParams }: Props) {
   const contacts = await getGetContactsInteractor().invoke({ ...contactParams, p13nId: "contacts-card-store" });
 
   return (
-    <XPageContainer>
+    <PageContainer padded={false}>
       <ContactsCard contacts={contacts.ok ? contacts.data : { items: [] }} />
-    </XPageContainer>
+    </PageContainer>
   );
 }

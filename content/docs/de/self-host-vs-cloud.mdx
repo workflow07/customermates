@@ -15,29 +15,23 @@ Welche Variante besser passt, hängt von eurem Betriebsmodell, Datenschutzanford
 
 ## Vergleichstabelle
 
-<table>
-  <thead>
-    <tr>
-      <th>Kriterium</th>
-      <th>Cloud</th>
-      <th>Self-Hosted</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>Pricing</td><td>€10</td><td>Infrastruktur- und Betriebskosten variieren</td></tr>
-    <tr><td>Setup Time</td><td>2 Minuten</td><td>60 - 120 Minuten</td></tr>
-    <tr><td>Maintenance Required</td><td>Keine</td><td>Regelmäßige Updates</td></tr>
-    <tr><td>Privacy friendly</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>API and integrations</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Unlimited Users</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Unlimited Records</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>n8n and automation workflows</td><td><StatusAvailable /></td><td><StatusAvailable /></td></tr>
-    <tr><td>Audit Logging</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Single Sign-On</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Managed AI Agent</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-    <tr><td>Whitelabeling</td><td><StatusAvailable /></td><td><StatusUnavailable /></td></tr>
-  </tbody>
-</table>
+<ComparisonTable
+  columns={["Kriterium", "Cloud", "Self-Hosted"]}
+  rows={[
+    { label: "Pricing", cells: ["€10", "Infrastruktur- und Betriebskosten variieren"] },
+    { label: "Setup Time", cells: ["2 Minuten", "60 - 120 Minuten"] },
+    { label: "Maintenance Required", cells: ["Keine", "Regelmäßige Updates"] },
+    { label: "Privacy friendly", cells: ["available", "available"] },
+    { label: "API and integrations", cells: ["available", "available"] },
+    { label: "Unlimited Users", cells: ["available", "available"] },
+    { label: "Unlimited Records", cells: ["available", "available"] },
+    { label: "n8n and automation workflows", cells: ["available", "available"] },
+    { label: "Audit Logging", cells: ["available", "unavailable"] },
+    { label: "Single Sign-On", cells: ["available", "unavailable"] },
+    { label: "Managed AI Agent", cells: ["available", "unavailable"] },
+    { label: "Whitelabeling", cells: ["available", "unavailable"] },
+  ]}
+/>
 
 ## Entscheidungshilfe
 

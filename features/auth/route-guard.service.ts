@@ -2,9 +2,9 @@ import type { UserService } from "../user/user.service";
 import type { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.interactor";
 
 import { redirect } from "next/navigation";
-import { Action, Resource, Status, SubscriptionStatus } from "@/generated/prisma";
+import { Action, Status, SubscriptionStatus } from "@/generated/prisma";
 
-import type { SubscriptionPlan } from "@/generated/prisma";
+import type { Resource, SubscriptionPlan } from "@/generated/prisma";
 
 import { IS_DEMO_MODE } from "@/constants/env";
 
@@ -16,15 +16,6 @@ export class RouteGuardService {
   private static readonly STATUS_REDIRECTS: Partial<Record<Status, string>> = {
     [Status.inactive]: "/auth/error?type=inactiveUser",
     [Status.pendingAuthorization]: "/auth/pending",
-  };
-
-  private static readonly RESOURCE_REDIRECTS: Partial<Record<Resource, string>> = {
-    [Resource.contacts]: "/contacts",
-    [Resource.organizations]: "/organizations",
-    [Resource.deals]: "/deals",
-    [Resource.services]: "/services",
-    [Resource.tasks]: "/tasks",
-    [Resource.company]: "/company",
   };
 
   async ensureAccessOrRedirect(options?: {
@@ -54,12 +45,6 @@ export class RouteGuardService {
     const hasRequiredPermission =
       user.role?.permissions?.some((p) => p.resource === options.resource && allowed.includes(p.action)) ?? false;
     if (hasRequiredPermission) return;
-
-    for (const [resource, path] of Object.entries(RouteGuardService.RESOURCE_REDIRECTS)) {
-      const hasRequiredPermission =
-        user.role?.permissions?.some((p) => p.resource === resource && allowed.includes(p.action)) ?? false;
-      if (hasRequiredPermission) redirect(path);
-    }
 
     redirect("/");
   }

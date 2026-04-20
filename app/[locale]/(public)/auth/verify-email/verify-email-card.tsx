@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/button";
-import { addToast } from "@heroui/toast";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
 import { resendVerificationEmailAction } from "../actions";
 
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardFooter } from "@/components/x-card/x-card-footer";
-import { XCardHeroHeader } from "@/components/x-card/x-card-hero-header";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppCardFooter } from "@/components/card/app-card-footer";
+import { CardHeroHeader } from "@/components/card/card-hero-header";
 
 export function VerifyEmailCard({ email }: { email?: string }) {
   const t = useTranslations("VerifyEmailCard");
@@ -24,31 +24,25 @@ export function VerifyEmailCard({ email }: { email?: string }) {
     try {
       await resendVerificationEmailAction(email);
       setIsSent(true);
-      addToast({ description: t("resendSuccess"), color: "success" });
+      toast.success(t("resendSuccess"));
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <XCard className="max-w-md">
-      <XCardHeroHeader subtitle={t("subtitle")} title={t("title")} />
+    <AppCard className="max-w-md">
+      <CardHeroHeader subtitle={t("subtitle")} title={t("title")} />
 
-      <XCardBody>
+      <AppCardBody>
         <p className="text-x-sm text-center">{t("body")}</p>
-      </XCardBody>
+      </AppCardBody>
 
-      <XCardFooter>
-        <Button
-          className="w-full"
-          color="primary"
-          isDisabled={isSent || !email}
-          isLoading={isLoading}
-          onPress={() => void handleResend()}
-        >
+      <AppCardFooter>
+        <Button className="w-full" disabled={isSent || !email || isLoading} onClick={() => void handleResend()}>
           {t("ctaLabel")}
         </Button>
-      </XCardFooter>
-    </XCard>
+      </AppCardFooter>
+    </AppCard>
   );
 }

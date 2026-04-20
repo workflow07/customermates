@@ -20,8 +20,6 @@ import {
   homepage,
   legal,
   pricing,
-  skills,
-  skillsOverview,
 } from "@/.source/server";
 
 export const i18n = defineI18n({
@@ -124,16 +122,4 @@ export const affiliateSource = loader({
   baseUrl: "/affiliate",
   i18n,
   source: toFumadocsSource(affiliate, []),
-});
-
-export const skillsSource = loader({
-  baseUrl: "/docs/skills",
-  i18n,
-  source: toFumadocsSource(skills, []),
-});
-
-export const skillsOverviewSource = loader({
-  baseUrl: "/docs/skills",
-  i18n,
-  source: toFumadocsSource(skillsOverview, []),
 });

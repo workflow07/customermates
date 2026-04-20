@@ -6,22 +6,20 @@ import { Status } from "@/generated/prisma";
 
 import { UserDetailsAvatar } from "../../../profile/components/user-details-avatar";
 
-import { XForm } from "@/components/x-inputs/x-form";
-import { XSelect } from "@/components/x-inputs/x-select";
-import { XSelectItem } from "@/components/x-inputs/x-select-item";
-import { XInput } from "@/components/x-inputs/x-input";
-import { XAutocompleteCountry } from "@/components/x-inputs/x-autocomplete/x-autocomplete-country";
-import { XSelectChip } from "@/components/x-inputs/x-select-chip";
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardModalDefaultFooter } from "@/components/x-card/x-card-modal-default-footer";
+import { AppForm } from "@/components/forms/form-context";
+import { FormInput } from "@/components/forms/form-input";
+import { FormSelect } from "@/components/forms/form-select";
+import { FormAutocompleteCountry } from "@/components/forms/form-autocomplete-country";
+import { FormSelectChip } from "@/components/forms/form-select-chip";
+import { AppModal } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { FormActions } from "@/components/card/form-actions";
 import { USER_STATUS_OPTIONS } from "@/constants/user-statuses";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XLink } from "@/components/x-link";
-import { XAlert } from "@/components/x-alert";
-import { XChip } from "@/components/x-chip/x-chip";
+import { AppLink } from "@/components/shared/app-link";
+import { Alert } from "@/components/shared/alert";
 
 export const CompanyUserModal = observer(() => {
   const t = useTranslations("");
@@ -29,10 +27,10 @@ export const CompanyUserModal = observer(() => {
   const { form, savedState, isOwnProfile, isDisabledOrOwnProfile } = store;
 
   return (
-    <XModal store={store}>
-      <XForm store={store}>
-        <XCard>
-          <XCardHeader>
+    <AppModal store={store} title={t("CompanyUserModal.title")}>
+      <AppForm store={store}>
+        <AppCard>
+          <AppCardHeader>
             <UserDetailsAvatar
               avatarUrl={savedState.avatarUrl ?? undefined}
               email={form.email}
@@ -40,80 +38,54 @@ export const CompanyUserModal = observer(() => {
               lastName={savedState.lastName}
               status={savedState.status}
             />
-          </XCardHeader>
+          </AppCardHeader>
 
-          <XCardBody>
-            <XInput isDisabled id="email" label={t("Common.email")} value={form.email} />
+          <AppCardBody>
+            <FormInput readOnly id="email" label={t("Common.email")} type="email" />
 
             <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
-              <XInput autoFocus isRequired id="firstName" isDisabled={isDisabledOrOwnProfile} value={form.firstName} />
+              <FormInput autoFocus required id="firstName" />
 
-              <XInput isRequired id="lastName" isDisabled={isDisabledOrOwnProfile} value={form.lastName} />
+              <FormInput required id="lastName" />
             </div>
 
-            <XAutocompleteCountry
-              isRequired
-              allowsEmptyCollection={false}
-              id="country"
-              isDisabled={isDisabledOrOwnProfile}
-              value={form.country}
+            <FormAutocompleteCountry required disabled={isDisabledOrOwnProfile} id="country" value={form.country} />
+
+            <FormSelect
+              required
+              id="roleId"
+              items={rolesStore.items.map((item) => ({ value: item.id, label: item.name }))}
             />
 
-            <XSelect
-              disallowEmptySelection
-              isMultiline
-              isRequired
-              id="roleId"
-              isDisabled={isDisabledOrOwnProfile}
-              items={rolesStore.items}
-              renderValue={(items) => items.map((item) => <XChip key={item.key}>{item.data?.name}</XChip>)}
-              value={form.roleId}
-            >
-              {(item) =>
-                XSelectItem({
-                  key: item.id,
-                  textValue: item.name,
-                  children: (
-                    <div className="flex flex-col gap-2">
-                      <XChip className="max-w-fit">{item.name}</XChip>
+            <FormInput description={t("Common.avatarUrlDescription")} id="avatarUrl" />
 
-                      {item.description && <span className="text-x-sm text-subdued">{item.description}</span>}
-                    </div>
-                  ),
-                })
-              }
-            </XSelect>
-
-            <XInput description={t("Common.avatarUrlDescription")} id="avatarUrl" isDisabled={isDisabledOrOwnProfile} />
-
-            <XSelectChip
-              disallowEmptySelection
-              isRequired
+            <FormSelectChip
+              required
+              disabled={isDisabledOrOwnProfile}
               disabledKeys={new Set([Status.pendingAuthorization])}
               id="status"
-              isDisabled={isDisabledOrOwnProfile}
               items={USER_STATUS_OPTIONS}
               translateFn={(key) => t(`Common.userStatuses.${key}`)}
             />
 
             {isOwnProfile && (
-              <XAlert color="warning">
+              <Alert color="warning">
                 <p className="text-x-sm">
                   {t.rich("CompanyUserModal.activeUserWarning", {
                     settingsLink: (chunks) => (
-                      <XLink inheritSize color="warning" href="/profile" underline="always">
+                      <AppLink inheritSize href="/profile/details">
                         {chunks}
-                      </XLink>
+                      </AppLink>
                     ),
                   })}
                 </p>
-              </XAlert>
+              </Alert>
             )}
-          </XCardBody>
+          </AppCardBody>
 
-          <XCardModalDefaultFooter overrideDisabled={isDisabledOrOwnProfile} store={store} />
-        </XCard>
-      </XForm>
-    </XModal>
+          <FormActions overrideDisabled={isDisabledOrOwnProfile} store={store} />
+        </AppCard>
+      </AppForm>
+    </AppModal>
   );
 });

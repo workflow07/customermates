@@ -7,6 +7,7 @@ import { Action, EntityType, Resource } from "@/generated/prisma";
 
 import { BaseInteractor } from "@/core/base/base-interactor";
 import { TentantInteractor } from "@/core/decorators/tenant-interactor.decorator";
+import { CloudOnly } from "@/core/decorators/cloud-only.decorator";
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { ValidateOutput } from "@/core/decorators/validate-output.decorator";
 import { AllowInDemoMode } from "@/core/decorators/allow-in-demo-mode.decorator";
@@ -32,6 +33,7 @@ const ENTITY_TYPE_PREFIX_MAP: Record<string, EntityType> = {
   "task.": EntityType.task,
 };
 
+@CloudOnly
 @AllowInDemoMode
 @TentantInteractor({ resource: Resource.auditLog, action: Action.readAll })
 export class GetEntityChangeHistoryByIdInteractor extends BaseInteractor<

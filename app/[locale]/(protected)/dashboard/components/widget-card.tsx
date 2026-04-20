@@ -9,12 +9,14 @@ import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 
+import { AggregationType } from "@/generated/prisma";
+
 import { ChartColor, DisplayType } from "@/features/widget/widget.types";
 import { getChartColors, getChartTextColors, getChartStrokeColors } from "@/constants/chart-colors";
-import { herouiConfig } from "@/styles/heroui.config";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
+import { useRootStore } from "@/core/stores/root-store.provider";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
 
 const VerticalBarChart = dynamic(
   () => import("./vertical-bar-chart").then((mod) => ({ default: mod.VerticalBarChart })),
@@ -47,11 +49,27 @@ type Props = {
 export const WidgetCard = observer(({ widget }: Props) => {
   const t = useTranslations("");
   const { resolvedTheme } = useTheme();
+  const { intlStore } = useRootStore();
+
+  const subheader = useMemo(() => {
+    const data = widget.data ?? [];
+    if (data.length === 0) return null;
+    const total = data.reduce((sum, item) => sum + (Number(item.value) || 0), 0);
+
+    const isCurrency = widget.aggregationType === AggregationType.dealValue;
+    const formatted = isCurrency
+      ? intlStore.formatCurrency(total, undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+      : intlStore.formatNumber(total);
+
+    if (data.length > 1) return `${formatted} · ${data.length} ${t("Diagrams.groups")}`;
+
+    return formatted;
+  }, [widget.data, widget.aggregationType, intlStore, t]);
 
   const cardContent = useMemo((): React.ReactElement => {
     if (!widget.data || widget.data.length === 0) {
       return (
-        <div className="flex h-full w-full flex-col space-y-3 items-center justify-center text-center">
+        <div className="flex size-full flex-col space-y-3 items-center justify-center text-center">
           {t("Diagrams.noData")}
         </div>
       );
@@ -65,14 +83,8 @@ export const WidgetCard = observer(({ widget }: Props) => {
       barColors && barColors.length > 0
         ? barColors.map((color) => chartColors[color])
         : [chartColors[ChartColor.primary1]];
-    const gridColor =
-      resolvedTheme === "dark"
-        ? (herouiConfig.themes?.dark?.colors?.divider?.[500] as string)
-        : (herouiConfig.themes?.light?.colors?.divider?.[500] as string);
-    const textColor =
-      resolvedTheme === "dark"
-        ? (herouiConfig.themes?.dark?.colors?.default?.[700] as string)
-        : (herouiConfig.themes?.light?.colors?.default?.[800] as string);
+    const gridColor = "var(--border)";
+    const textColor = "var(--muted-foreground)";
 
     const chartData: ChartDataPoint[] = widget.data.map((item, index) => {
       const colorKey = barColors[index % barColors.length] || ChartColor.primary1;
@@ -127,12 +139,14 @@ export const WidgetCard = observer(({ widget }: Props) => {
   }, [widget.displayOptions, widget.data, widget.aggregationType, resolvedTheme, t]);
 
   return (
-    <XCard className="h-full cursor-pointer overflow-visible">
-      <XCardHeader>
-        <h2 className="text-x-md truncate">{widget.name}</h2>
-      </XCardHeader>
+    <AppCard className="h-full cursor-pointer overflow-visible">
+      <AppCardHeader className="flex-col items-start gap-0.5">
+        <h2 className="text-x-md truncate w-full">{widget.name}</h2>
 
-      <XCardBody className="overflow-visible recharts-no-focus-outline">{cardContent}</XCardBody>
-    </XCard>
+        {subheader && <p className="text-xs text-muted-foreground truncate w-full">{subheader}</p>}
+      </AppCardHeader>
+
+      <AppCardBody className="overflow-visible recharts-no-focus-outline">{cardContent}</AppCardBody>
+    </AppCard>
   );
 });

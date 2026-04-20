@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { ShowcaseFrame } from "@/components/showcase-frame";
-import { XImage } from "@/components/x-image";
+import { ShowcaseFrame } from "@/components/marketing/showcase-frame";
+import { AppImage } from "@/components/shared/app-image";
 
 type Props = {
   alt: string;
@@ -16,7 +16,7 @@ export function MarkdownImage({ alt, src = "docs-placeholder.png" }: Props) {
   return (
     <div className="not-prose my-8">
       <ShowcaseFrame className="mb-0" withGlow={false}>
-        <XImage
+        <AppImage
           alt={alt}
           className="w-full h-auto rounded-none"
           height={900}

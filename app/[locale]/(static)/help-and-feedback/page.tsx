@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 
 import { Footer } from "@/app/components/footer";
-import { XFAQSection } from "@/components/x-faq-section";
+import { FAQSection } from "@/components/marketing/faq-section";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { helpAndFeedbackSource } from "@/core/fumadocs/source";
 
@@ -29,7 +29,7 @@ export default async function HelpAndSettingsPage() {
             <p className="text-x-lg pt-4 md:pt-6 px-4 max-w-4xl text-center text-subdued">{page.data.description}</p>
           </div>
 
-          <XFAQSection {...page.data.faq} />
+          <FAQSection {...page.data.faq} />
         </div>
       </section>
 

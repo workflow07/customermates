@@ -4,7 +4,7 @@ import { encodeToToon, FILTER_SYNTAX, formatDatesInResponse } from "./utils";
 
 import { FilterSchema, SortDescriptorSchema } from "@/core/base/base-get.schema";
 import { CustomFieldValueSchema } from "@/core/base/base-entity.schema";
-import { serializeJSONToMarkdown } from "@/components/x-editor/x-editor.utils";
+import { serializeJSONToMarkdown } from "@/components/editor/editor.utils";
 import {
   getGetContactsApiInteractor,
   getGetContactByIdInteractor,

@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import XTrialWelcome from "@/components/x-emails/x-trial-welcome";
+import TrialWelcome from "@/components/emails/trial-welcome";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 
 export abstract class SendWelcomeAndDemoActionRepo {
@@ -40,7 +40,7 @@ export class SendWelcomeAndDemoInteractor {
       await this.emailService.send({
         to: user.email,
         subject: t("subject"),
-        react: XTrialWelcome({
+        react: TrialWelcome({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
           dismiss: t("dismiss"),

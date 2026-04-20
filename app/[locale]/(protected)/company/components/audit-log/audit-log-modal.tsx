@@ -4,16 +4,16 @@ import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 
 import { getEntityName } from "@/features/event/entity-name.utils";
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XInfoRow } from "@/components/x-info-row";
+import { AppModal } from "@/components/modal/app-modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { InfoRow } from "@/components/shared/info-row";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XAvatarStack } from "@/components/x-avatar-stack";
-import { XCopyableChip } from "@/components/x-chip/x-copyable-chip";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XCodeBlockAccordion } from "@/components/x-code-block-accordion";
+import { AvatarStack } from "@/components/shared/avatar-stack";
+import { CopyableChip } from "@/components/chip/copyable-chip";
+import { AppChip } from "@/components/chip/app-chip";
+import { CodeBlockAccordion } from "@/components/shared/code-block-accordion";
 
 export const AuditLogModal = observer(() => {
   const t = useTranslations("");
@@ -21,47 +21,44 @@ export const AuditLogModal = observer(() => {
   const auditLog = store.form;
 
   return (
-    <XModal size="xl" store={store}>
-      <XCard>
-        <XCardHeader>
+    <AppModal size="xl" store={store} title={t("AuditLogModal.title")}>
+      <AppCard>
+        <AppCardHeader>
           <h2 className="text-x-lg grow">{t("AuditLogModal.title")}</h2>
-        </XCardHeader>
+        </AppCardHeader>
 
-        <XCardBody>
+        <AppCardBody>
           {auditLog.event && (
-            <XInfoRow label={t("AuditLogModal.entity")}>
+            <InfoRow label={t("AuditLogModal.entity")}>
               {getEntityName(auditLog.event, auditLog.eventData, t) || "-"}
-            </XInfoRow>
+            </InfoRow>
           )}
 
           {auditLog.event && (
-            <XInfoRow label={t("AuditLogModal.event")}>
-              <XChip size="sm" variant="flat">
+            <InfoRow label={t("AuditLogModal.event")}>
+              <AppChip size="sm" variant="secondary">
                 {t(`Common.events.${auditLog.event}`)}
-              </XChip>
-            </XInfoRow>
+              </AppChip>
+            </InfoRow>
           )}
 
-          <XInfoRow label={t("AuditLogModal.entityId")}>
-            <XCopyableChip size="sm" value={auditLog.entityId} variant="flat">
+          <InfoRow label={t("AuditLogModal.entityId")}>
+            <CopyableChip size="sm" value={auditLog.entityId} variant="secondary">
               {auditLog.entityId}
-            </XCopyableChip>
-          </XInfoRow>
+            </CopyableChip>
+          </InfoRow>
 
-          <XInfoRow label={t("AuditLogModal.userId")}>
-            <XAvatarStack items={[auditLog.user]} onAvatarClick={(user) => void userModalStore.loadById(user.id)} />
-          </XInfoRow>
+          <InfoRow label={t("AuditLogModal.userId")}>
+            <AvatarStack items={[auditLog.user]} onAvatarClick={(user) => void userModalStore.loadById(user.id)} />
+          </InfoRow>
 
-          <XInfoRow label={t("AuditLogModal.createdAt")}>
+          <InfoRow label={t("AuditLogModal.createdAt")}>
             {intlStore.formatNumericalShortDateTime(auditLog.createdAt)}
-          </XInfoRow>
+          </InfoRow>
 
-          <XCodeBlockAccordion
-            code={JSON.stringify(auditLog.eventData, null, 2)}
-            title={t("AuditLogModal.eventData")}
-          />
-        </XCardBody>
-      </XCard>
-    </XModal>
+          <CodeBlockAccordion code={JSON.stringify(auditLog.eventData, null, 2)} title={t("AuditLogModal.eventData")} />
+        </AppCardBody>
+      </AppCard>
+    </AppModal>
   );
 });

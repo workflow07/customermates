@@ -1,9 +1,10 @@
 import type { Resource, Action } from "@/generated/prisma";
 
 import { isAllowedInDemoMode } from "./allow-in-demo-mode.decorator";
+import { isCloudOnly } from "./cloud-only.decorator";
 
 import { runWithTenant } from "@/core/decorators/tenant-context";
-import { IS_DEMO_MODE } from "@/constants/env";
+import { IS_CLOUD_HOSTED, IS_DEMO_MODE } from "@/constants/env";
 import { DemoModeError, ForbiddenError } from "@/core/errors/app-errors";
 
 interface Permission {
@@ -35,6 +36,8 @@ export function TentantInteractor<T extends { new (...args: any[]): object }>(
 
     constructor.prototype.invoke = async function (...args: any[]) {
       if (IS_DEMO_MODE && !isAllowedInDemoMode(constructor)) throw new DemoModeError();
+      if (isCloudOnly(constructor) && !IS_CLOUD_HOSTED)
+        throw new ForbiddenError("This feature is only available on cloud-hosted deployments");
 
       const { getUserService } = await import("@/core/di");
       const user = await getUserService().getActiveUserOrThrow();

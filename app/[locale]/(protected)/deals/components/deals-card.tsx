@@ -2,35 +2,27 @@
 
 import type { GetResult } from "@/core/base/base-get.interactor";
 import type { DealDto } from "@/features/deals/deal.schema";
+import type { ColumnDef } from "@tanstack/react-table";
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { EntityType } from "@/generated/prisma";
 
-import { XAvatarStack } from "@/components/x-avatar-stack";
+import { AvatarStack } from "@/components/shared/avatar-stack";
+import { AppChipStack } from "@/components/chip/app-chip-stack";
+import { CustomFieldValue } from "@/components/data-view/custom-columns/custom-field-value";
+import { DataViewContainer } from "@/components/data-view";
+import { useOpenEntity } from "@/components/modal/hooks/use-entity-drawer-stack";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XChipStack } from "@/components/x-chip/x-chip-stack";
-import { XDataViewContainer } from "@/components/x-data-view/x-data-view-container";
-import { XCustomFieldValue } from "@/components/x-data-view/x-custom-column/x-custom-field-value";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
 
 type Props = {
   deals: GetResult<DealDto>;
 };
 
 export const DealsCard = observer(({ deals }: Props) => {
-  const {
-    dealsStore,
-    dealModalStore,
-    intlStore,
-    organizationsStore,
-    contactsStore,
-    servicesStore,
-    organizationModalStore,
-    serviceModalStore,
-    userModalStore,
-    contactModalStore,
-  } = useRootStore();
+  const { dealsStore, intlStore, organizationsStore, contactsStore, servicesStore, userModalStore } = useRootStore();
+  const openEntity = useOpenEntity();
   const t = useTranslations("");
 
   useEffect(() => dealsStore.setItems(deals), [deals]);
@@ -48,75 +40,101 @@ export const DealsCard = observer(({ deals }: Props) => {
     };
   }, []);
 
-  function renderCell(item: DealDto, columnKey: React.Key): string | number | JSX.Element {
-    switch (columnKey) {
-      case "name":
-        return <XDataViewCell className="text-x-sm">{item?.name ?? ""}</XDataViewCell>;
-
-      case "organizations":
-        return (
-          <XChipStack
-            items={item.organizations.map((org) => ({ id: org.id, label: org.name }))}
-            size="sm"
-            variant="flat"
-            onChipClick={(org) => void organizationModalStore.loadById(org.id)}
+  const columns = useMemo<ColumnDef<DealDto>[]>(() => {
+    return [
+      {
+        id: "name",
+        accessorKey: "name",
+        header: t("Common.table.columns.name"),
+        cell: ({ row }) => <span className="text-sm truncate">{row.original.name ?? ""}</span>,
+      },
+      {
+        id: "totalValue",
+        accessorKey: "totalValue",
+        header: t("Common.table.columns.totalValue"),
+        cell: ({ row }) => <span className="text-sm">{intlStore.formatCurrency(row.original.totalValue)}</span>,
+      },
+      {
+        id: "totalQuantity",
+        accessorKey: "totalQuantity",
+        header: t("Common.table.columns.totalQuantity"),
+        cell: ({ row }) => <span className="text-sm">{intlStore.formatNumber(row.original.totalQuantity)}</span>,
+      },
+      {
+        id: "contacts",
+        header: t("Common.table.columns.contacts"),
+        cell: ({ row }) => (
+          <AvatarStack
+            items={row.original.contacts || []}
+            onAvatarClick={(contact) => openEntity(EntityType.contact, contact.id)}
           />
-        );
-
-      case "services":
-        return (
-          <XChipStack
-            items={item.services.map((service) => ({
+        ),
+      },
+      {
+        id: "organizations",
+        header: t("Common.table.columns.organizations"),
+        cell: ({ row }) => (
+          <AppChipStack
+            items={row.original.organizations.map((org) => ({ id: org.id, label: org.name }))}
+            size="sm"
+            onChipClick={(org) => openEntity(EntityType.organization, org.id)}
+          />
+        ),
+      },
+      {
+        id: "services",
+        header: t("Common.table.columns.services"),
+        cell: ({ row }) => (
+          <AppChipStack
+            items={row.original.services.map((service) => ({
               id: service.id,
               label: `${service.name} – ${intlStore.formatCurrency(service.amount * service.quantity)}`,
             }))}
             size="sm"
-            variant="flat"
-            onChipClick={(service) => void serviceModalStore.loadById(service.id)}
+            onChipClick={(service) => openEntity(EntityType.service, service.id)}
           />
-        );
-
-      case "contacts":
-        return (
-          <XAvatarStack
-            items={item.contacts || []}
-            onAvatarClick={(contact) => void contactModalStore.loadById(contact.id)}
+        ),
+      },
+      ...dealsStore.customColumns.map<ColumnDef<DealDto>>((column) => ({
+        id: column.id,
+        header: column.label,
+        cell: ({ row }) => <CustomFieldValue column={column} item={row.original} store={dealsStore} />,
+      })),
+      {
+        id: "users",
+        header: t("Common.table.columns.users"),
+        cell: ({ row }) => (
+          <AvatarStack
+            items={row.original.users || []}
+            onAvatarClick={(user) => void userModalStore.loadById(user.id)}
           />
-        );
-
-      case "users":
-        return (
-          <XAvatarStack items={item.users || []} onAvatarClick={(user) => void userModalStore.loadById(user.id)} />
-        );
-
-      case "createdAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.createdAt)}</XDataViewCell>;
-
-      case "updatedAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.updatedAt)}</XDataViewCell>;
-
-      case "totalQuantity":
-        return <XDataViewCell>{intlStore.formatNumber(item.totalQuantity)}</XDataViewCell>;
-
-      case "totalValue":
-        return <XDataViewCell>{intlStore.formatCurrency(item.totalValue)}</XDataViewCell>;
-
-      default:
-        const customColumn = dealsStore.customColumns.find((column) => column.id === columnKey);
-
-        if (customColumn) return <XCustomFieldValue column={customColumn} item={item} store={dealsStore} />;
-
-        return "";
-    }
-  }
+        ),
+      },
+      {
+        id: "updatedAt",
+        accessorKey: "updatedAt",
+        header: t("Common.table.columns.updatedAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.updatedAt)}</span>
+        ),
+      },
+      {
+        id: "createdAt",
+        accessorKey: "createdAt",
+        header: t("Common.table.columns.createdAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.createdAt)}</span>
+        ),
+      },
+    ];
+  }, [t, dealsStore, dealsStore.customColumns, intlStore, openEntity, userModalStore]);
 
   return (
-    <XDataViewContainer
-      renderCell={renderCell}
+    <DataViewContainer
+      columns={columns}
       store={dealsStore}
-      title={t("DealsCard.title")}
-      onAdd={() => void dealModalStore.add()}
-      onRowAction={(item) => void dealModalStore.loadById(item.id)}
+      onAdd={() => openEntity(EntityType.deal, "new")}
+      onRowClick={(item) => openEntity(EntityType.deal, item.id)}
     />
   );
 });

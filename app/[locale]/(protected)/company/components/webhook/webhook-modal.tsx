@@ -2,25 +2,24 @@
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { EyeIcon, EyeSlashIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XForm } from "@/components/x-inputs/x-form";
-import { XInput } from "@/components/x-inputs/x-input";
-import { XSelectItem } from "@/components/x-inputs/x-select-item";
-import { XCheckbox } from "@/components/x-inputs/x-checkbox";
-import { XCardModalDefaultFooter } from "@/components/x-card/x-card-modal-default-footer";
+import { Button } from "@/components/ui/button";
+import { AppModal } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppForm } from "@/components/forms/form-context";
+import { FormInput } from "@/components/forms/form-input";
+import { FormTextarea } from "@/components/forms/form-textarea";
+import { FormCheckbox } from "@/components/forms/form-checkbox";
+import { FormAutocomplete } from "@/components/forms/form-autocomplete";
+import { FormActions } from "@/components/card/form-actions";
 import { useRootStore } from "@/core/stores/root-store.provider";
 import { WebhookEventSchema } from "@/features/webhook/webhook.schema";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XAutocomplete } from "@/components/x-inputs/x-autocomplete/x-autocomplete";
-import { XIcon } from "@/components/x-icon";
-import { useDeleteConfirmation } from "@/components/x-modal/hooks/x-use-delete-confirmation";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XTextarea } from "@/components/x-inputs/x-textarea";
+import { AppChip } from "@/components/chip/app-chip";
+import { Icon } from "@/components/shared/icon";
+import { useDeleteConfirmation } from "@/components/modal/hooks/use-delete-confirmation";
+import { AppCardHeader } from "@/components/card/app-card-header";
 
 const WEBHOOK_EVENTS = WebhookEventSchema.options.map((event) => ({ key: event }));
 
@@ -31,72 +30,76 @@ export const WebhookModal = observer(() => {
   const { showDeleteConfirmation } = useDeleteConfirmation();
 
   return (
-    <XModal store={webhookModalStore}>
-      <XForm store={webhookModalStore}>
-        <XCard>
-          <XCardHeader>
+    <AppModal store={webhookModalStore} title={t("WebhookModal.title")}>
+      <AppForm store={webhookModalStore}>
+        <AppCard>
+          <AppCardHeader>
             <div className="flex w-full justify-between items-center gap-3">
               <h2 className="text-x-lg">{t("WebhookModal.title")}</h2>
 
               {form?.id && canManage && (
                 <Button
-                  isIconOnly
-                  color="danger"
-                  isDisabled={isDisabled}
-                  size="sm"
-                  variant="flat"
-                  onPress={() => showDeleteConfirmation(() => void webhookModalStore.delete())}
+                  disabled={isDisabled}
+                  size="icon"
+                  variant="destructive"
+                  onClick={() => showDeleteConfirmation(() => void webhookModalStore.delete())}
                 >
-                  <XIcon icon={TrashIcon} />
+                  <Icon icon={Trash2} />
                 </Button>
               )}
             </div>
-          </XCardHeader>
+          </AppCardHeader>
 
-          <XCardBody>
-            <XInput isRequired description={t("WebhookModal.urlDescription")} id="url" type="url" />
+          <AppCardBody>
+            <div className="space-y-1.5">
+              <FormInput required id="url" type="url" />
 
-            <XTextarea id="description" />
+              <p className="text-subdued text-xs">{t("WebhookModal.urlDescription")}</p>
+            </div>
 
-            <XAutocomplete
-              isRequired
+            <FormTextarea id="description" />
+
+            <FormAutocomplete
+              required
               id="events"
               items={WEBHOOK_EVENTS}
               renderValue={(items) =>
                 items.map((item) => {
                   const [entity, action] = item.key.split(".");
-                  return <XChip key={item.key}>{t(`Common.events.${entity}.${action}`)}</XChip>;
+                  return <AppChip key={item.key}>{t(`Common.events.${entity}.${action}`)}</AppChip>;
                 })
               }
               selectionMode="multiple"
             >
               {(item) => {
                 const [entity, action] = item.key.split(".");
-                return XSelectItem({
-                  key: item.key,
-                  textValue: item.key,
-                  children: t(`Common.events.${entity}.${action}`),
-                });
+                return <span>{t(`Common.events.${entity}.${action}`)}</span>;
               }}
-            </XAutocomplete>
+            </FormAutocomplete>
 
-            <XInput
-              description={t("WebhookModal.secretDescription")}
-              endContent={
-                <button tabIndex={-1} type="button" onClick={webhookModalStore.toggleShowSecret}>
-                  <XIcon className="text-subdued" icon={webhookModalStore.showSecret ? EyeSlashIcon : EyeIcon} />
+            <div className="space-y-1.5">
+              <div className="relative">
+                <FormInput id="secret" type={webhookModalStore.showSecret ? "text" : "password"} />
+
+                <button
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  tabIndex={-1}
+                  type="button"
+                  onClick={webhookModalStore.toggleShowSecret}
+                >
+                  <Icon className="text-subdued" icon={webhookModalStore.showSecret ? EyeOff : Eye} />
                 </button>
-              }
-              id="secret"
-              type={webhookModalStore.showSecret ? "text" : "password"}
-            />
+              </div>
 
-            <XCheckbox id="enabled">{t("WebhookModal.enabled")}</XCheckbox>
-          </XCardBody>
+              <p className="text-subdued text-xs">{t("WebhookModal.secretDescription")}</p>
+            </div>
 
-          <XCardModalDefaultFooter store={webhookModalStore} />
-        </XCard>
-      </XForm>
-    </XModal>
+            <FormCheckbox id="enabled" label={t("WebhookModal.enabled")} />
+          </AppCardBody>
+
+          <FormActions store={webhookModalStore} />
+        </AppCard>
+      </AppForm>
+    </AppModal>
   );
 });

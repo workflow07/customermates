@@ -16,15 +16,14 @@ const nextConfig = {
   htmlLimitedBots: /.*/,
 
   devIndicators: {
-    position: "top-left",
+    position: "bottom-right",
   },
 
   compress: true,
 
   experimental: {
     optimizePackageImports: [
-      "@heroui/react",
-      "@heroicons/react",
+      "lucide-react",
       "recharts",
       "react-grid-layout",
       "mobx",

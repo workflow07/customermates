@@ -22,7 +22,7 @@ export interface HasId {
   id: string;
 }
 
-export type XTableColumn = {
+export type TableColumn = {
   uid: string;
   sortable?: boolean;
   label?: string;
@@ -60,7 +60,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
   private onChangesCallbacks: (() => void | Promise<void>)[] = [];
   private urlSyncUpdateTimer?: number;
 
-  abstract get columnsDefinition(): XTableColumn[];
+  abstract get columnsDefinition(): TableColumn[];
 
   constructor(rootStore: RootStore, resource?: Resource, entityType?: EntityType) {
     this.rootStore = rootStore;
@@ -187,11 +187,11 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
     if (this.columnOrder.length > 0) {
       const columnsFromOrder = this.columnOrder
         .map((uid) => columnMap.get(uid))
-        .filter((column): column is XTableColumn => column !== undefined && column.uid !== "name");
+        .filter((column): column is TableColumn => column !== undefined && column.uid !== "name");
 
       const columnsNotInOrder = this.columnsDefinition.filter((col) => !orderedUids.has(col.uid) && col.uid !== "name");
 
-      const res: XTableColumn[] = [];
+      const res: TableColumn[] = [];
       if (nameColumn) res.push(nameColumn);
       res.push(...columnsFromOrder, ...columnsNotInOrder);
 
@@ -200,7 +200,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
 
     const remainingColumns = this.columnsDefinition.filter((col) => col.uid !== "name");
 
-    const res: XTableColumn[] = [];
+    const res: TableColumn[] = [];
     if (nameColumn) res.push(nameColumn);
     res.push(...remainingColumns);
 
@@ -287,8 +287,6 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
 
     if ("groupingColumnId" in updates && this.groupingColumnId !== updates.groupingColumnId) {
       this.groupingColumnId = updates.groupingColumnId ?? null;
-      if (updates.groupingColumnId) this.pagination = { page: 1, pageSize: 100 };
-
       hasChanges = true;
     }
 
@@ -321,7 +319,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       }
     }
 
-    if (updates.sortDescriptor !== undefined && !deepEqual(this.sortDescriptor, updates.sortDescriptor)) {
+    if ("sortDescriptor" in updates && !deepEqual(this.sortDescriptor, updates.sortDescriptor)) {
       this.sortDescriptor = updates.sortDescriptor;
       this.resetPaginationPage();
       hasChanges = true;

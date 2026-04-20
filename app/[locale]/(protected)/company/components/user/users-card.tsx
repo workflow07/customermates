@@ -1,105 +1,127 @@
 "use client";
 
 import type { UserDto } from "@/features/user/user.schema";
+import type { UserRoleDto } from "@/features/role/get-roles.interactor";
+import type { GetResult } from "@/core/base/base-get.interactor";
+import type { ColumnDef } from "@tanstack/react-table";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@heroui/button";
-import { Avatar } from "@heroui/avatar";
 
-import { XChip } from "@/components/x-chip/x-chip";
-import { XIcon } from "@/components/x-icon";
-import { XTooltip } from "@/components/x-tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AppChip } from "@/components/chip/app-chip";
 import { useRootStore } from "@/core/stores/root-store.provider";
 import { USER_STATUS_COLORS_MAP } from "@/constants/user-statuses";
-import { XDataViewContainer } from "@/components/x-data-view/x-data-view-container";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
+import { DataViewContainer } from "@/components/data-view";
 
 type Props = {
   isCompanyOnboarding: boolean;
+  initialUsers: GetResult<UserDto>;
+  initialRoles: GetResult<UserRoleDto>;
 };
 
-export const UsersCard = observer(({ isCompanyOnboarding }: Props) => {
+function getInitials(firstName?: string, lastName?: string) {
+  return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+}
+
+export const UsersCard = observer(({ isCompanyOnboarding, initialUsers, initialRoles }: Props) => {
   const t = useTranslations("");
   const { usersStore, userModalStore, companyInviteModalStore, rolesStore, intlStore } = useRootStore();
-  const { canManage, isDisabled } = usersStore;
+  const { canManage } = usersStore;
   const roles = rolesStore.items;
+
+  useEffect(() => usersStore.setItems(initialUsers), [initialUsers]);
+  useEffect(() => rolesStore.setItems(initialRoles), [initialRoles]);
 
   useEffect(() => {
     const cleanupUrlSync = usersStore.withUrlSync();
     return () => cleanupUrlSync();
   }, []);
 
-  function renderCell(item: UserDto, columnKey: React.Key): string | number | JSX.Element {
-    const cellValue = item[columnKey as keyof UserDto];
+  const columns = useMemo<ColumnDef<UserDto>[]>(() => {
+    return [
+      {
+        id: "name",
+        accessorKey: "firstName",
+        header: t("Common.table.columns.name"),
+        cell: ({ row }) => {
+          const item = row.original;
+          return (
+            <div className="flex items-center gap-2 min-w-0">
+              <Avatar className="shrink-0">
+                {item.avatarUrl && (
+                  <AvatarImage alt={`${item.firstName} ${item.lastName}`.trim()} src={item.avatarUrl} />
+                )}
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <div className="flex items-center gap-2 min-w-0">
-            <Avatar
-              showFallback
-              className="shrink-0"
-              name={`${item?.firstName} ${item?.lastName}`.trim()}
-              size="md"
-              src={item.avatarUrl ?? undefined}
-            />
+                <AvatarFallback>{getInitials(item.firstName, item.lastName)}</AvatarFallback>
+              </Avatar>
 
-            <div className="max-w-full overflow-hidden">
-              <XDataViewCell className="text-x-sm max-w-full">
-                {`${item?.firstName} ${item?.lastName}`.trim()}
-              </XDataViewCell>
+              <div className="max-w-full overflow-hidden">
+                <div className="text-sm truncate">{`${item?.firstName} ${item?.lastName}`.trim()}</div>
 
-              <XDataViewCell className="text-subdued text-xs max-w-full">{item?.email}</XDataViewCell>
+                <div className="text-muted-foreground text-xs truncate">{item?.email}</div>
+              </div>
             </div>
-          </div>
-        );
-      case "email":
-        return <XDataViewCell>{item.email}</XDataViewCell>;
-      case "status":
-        return <XChip color={USER_STATUS_COLORS_MAP[item.status]}>{t(`Common.userStatuses.${item.status}`)}</XChip>;
-      case "role": {
-        const role = roles.find((r) => r.id === item.roleId);
-
-        return role ? <XChip>{role?.name}</XChip> : "";
-      }
-      case "createdAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.createdAt)}</XDataViewCell>;
-      case "updatedAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.updatedAt)}</XDataViewCell>;
-      default:
-        return cellValue?.toString() ?? "";
-    }
-  }
+          );
+        },
+      },
+      {
+        id: "email",
+        accessorKey: "email",
+        header: t("Common.table.columns.email"),
+        cell: ({ row }) => <span className="text-sm">{row.original.email}</span>,
+      },
+      {
+        id: "role",
+        header: t("Common.table.columns.role"),
+        cell: ({ row }) => {
+          const role = roles.find((r) => r.id === row.original.roleId);
+          return role ? <AppChip>{role.name}</AppChip> : <></>;
+        },
+      },
+      {
+        id: "status",
+        header: t("Common.table.columns.status"),
+        cell: ({ row }) => (
+          <AppChip variant={USER_STATUS_COLORS_MAP[row.original.status]}>
+            {t(`Common.userStatuses.${row.original.status}`)}
+          </AppChip>
+        ),
+      },
+      {
+        id: "updatedAt",
+        accessorKey: "updatedAt",
+        header: t("Common.table.columns.updatedAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.updatedAt)}</span>
+        ),
+      },
+      {
+        id: "createdAt",
+        accessorKey: "createdAt",
+        header: t("Common.table.columns.createdAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.createdAt)}</span>
+        ),
+      },
+    ];
+  }, [t, roles, intlStore]);
 
   return (
-    <XDataViewContainer
-      actions={
-        canManage && (
-          <XTooltip content={t("Common.ariaLabels.tooltipAdd")}>
-            <Button
-              isIconOnly
-              color="primary"
-              isDisabled={isDisabled}
-              size="sm"
-              variant="flat"
-              onPress={() => {
-                void companyInviteModalStore.generateInviteLink();
-                companyInviteModalStore.setIsDisabled(isCompanyOnboarding);
-                companyInviteModalStore.open();
-              }}
-            >
-              <XIcon icon={PlusIcon} />
-            </Button>
-          </XTooltip>
-        )
-      }
-      renderCell={renderCell}
+    <DataViewContainer
+      columns={columns}
       store={usersStore}
-      title={t("UsersCard.title")}
-      onRowAction={(item) => void userModalStore.loadById(item.id)}
+      onAdd={
+        canManage
+          ? () => {
+              void companyInviteModalStore.generateInviteLink();
+              companyInviteModalStore.setIsDisabled(isCompanyOnboarding);
+              companyInviteModalStore.open();
+            }
+          : undefined
+      }
+      onRowClick={(item) => void userModalStore.loadById(item.id)}
     />
   );
 });

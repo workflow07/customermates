@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 import type { User } from "@/generated/prisma";
 
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
-import XTrialExpiredOffer from "@/components/x-emails/x-trial-expired-offer";
+import TrialExpiredOffer from "@/components/emails/trial-expired-offer";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 
 export abstract class SendTrialExtensionOfferActionRepo {
@@ -39,7 +39,7 @@ export class SendTrialExtensionOfferInteractor {
       await this.emailService.send({
         to: user.email,
         subject: t("subject"),
-        react: XTrialExpiredOffer({
+        react: TrialExpiredOffer({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
           scheduleFallback: t("scheduleFallback"),

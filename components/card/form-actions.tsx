@@ -1,0 +1,79 @@
+"use client";
+
+import type { BaseFormStore } from "@/core/base/base-form.store";
+
+import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/shared/reveal";
+
+import { useAppForm } from "../forms/form-context";
+
+import { AppCardFooter } from "./app-card-footer";
+
+type Props = {
+  store?: BaseFormStore | null;
+  variant?: "card" | "topbar";
+  formId?: string;
+  primaryButtonLabel?: string;
+  overrideDisabled?: boolean;
+  showInitially?: boolean;
+};
+
+export const FormActions = observer(function FormActions({
+  store: storeProp,
+  variant = "card",
+  formId,
+  primaryButtonLabel = "Common.actions.save",
+  overrideDisabled,
+  showInitially,
+}: Props) {
+  const t = useTranslations("");
+  const ctxStore = useAppForm();
+  const store = storeProp ?? ctxStore;
+
+  const dirty = store?.hasUnsavedChanges ?? false;
+  const loading = store?.isLoading ?? false;
+  const disabled = !dirty || Boolean(overrideDisabled) || (store?.isDisabled ?? loading);
+
+  const isTopBar = variant === "topbar";
+  const buttonSize = isTopBar ? "sm" : undefined;
+  const buttonClassName = isTopBar ? "h-8" : undefined;
+
+  const buttons = (
+    <>
+      {dirty && (
+        <Button
+          className={buttonClassName}
+          size={buttonSize}
+          type="button"
+          variant="outline"
+          onClick={() => store?.resetForm()}
+        >
+          {t("Common.actions.reset")}
+        </Button>
+      )}
+
+      <Button
+        className={buttonClassName}
+        disabled={disabled}
+        form={formId}
+        size={buttonSize}
+        type="submit"
+        variant="default"
+      >
+        {t(primaryButtonLabel)}
+      </Button>
+    </>
+  );
+
+  if (isTopBar) return <div className="flex items-center gap-2">{buttons}</div>;
+
+  const shouldShow = Boolean(showInitially) || dirty || loading;
+  return (
+    <Reveal show={shouldShow}>
+      <AppCardFooter>{buttons}</AppCardFooter>
+    </Reveal>
+  );
+});

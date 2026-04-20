@@ -1,5 +1,5 @@
 import type { RootStore } from "@/core/stores/root.store";
-import type { GlobalSearchResult } from "@/features/search/global-search.interactor";
+import type { GlobalSearchResult, GlobalSearchResultItem } from "@/features/search/global-search.interactor";
 
 import { action, makeObservable, observable, reaction } from "mobx";
 
@@ -10,9 +10,42 @@ type GlobalSearchFormData = {
   searchTerm: string;
 };
 
+export type RecentSearchItem = GlobalSearchResultItem & { openedAt: number };
+
+const RECENT_STORAGE_KEY = "customermates:globalSearch:recent:v1";
+const RECENT_MAX = 8;
+
+function readRecentFromStorage(): RecentSearchItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(RECENT_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (it): it is RecentSearchItem =>
+        it &&
+        typeof it === "object" &&
+        typeof it.id === "string" &&
+        typeof it.name === "string" &&
+        typeof it.type === "string",
+    );
+  } catch {
+    return [];
+  }
+}
+
+function writeRecentToStorage(items: RecentSearchItem[]) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(items));
+  } catch {}
+}
+
 export class GlobalSearchModalStore extends BaseModalStore<GlobalSearchFormData> {
   public results: GlobalSearchResult | null = null;
   public debouncedSearchTerm = "";
+  public recentItems: RecentSearchItem[] = [];
 
   private debounceTimer?: ReturnType<typeof setTimeout>;
 
@@ -21,11 +54,16 @@ export class GlobalSearchModalStore extends BaseModalStore<GlobalSearchFormData>
       searchTerm: "",
     });
 
+    this.recentItems = readRecentFromStorage();
+
     makeObservable(this, {
       results: observable,
       debouncedSearchTerm: observable,
+      recentItems: observable,
       setResults: action,
       setDebouncedSearchTerm: action,
+      pushRecentItem: action,
+      clearRecentItems: action,
     });
 
     this.setupSearchReaction();
@@ -37,6 +75,18 @@ export class GlobalSearchModalStore extends BaseModalStore<GlobalSearchFormData>
 
   setResults = (results: GlobalSearchResult | null) => {
     this.results = results;
+  };
+
+  pushRecentItem = (item: GlobalSearchResultItem) => {
+    const next: RecentSearchItem = { ...item, openedAt: Date.now() };
+    const filtered = this.recentItems.filter((it) => !(it.type === item.type && it.id === item.id));
+    this.recentItems = [next, ...filtered].slice(0, RECENT_MAX);
+    writeRecentToStorage(this.recentItems);
+  };
+
+  clearRecentItems = () => {
+    this.recentItems = [];
+    writeRecentToStorage(this.recentItems);
   };
 
   private setupSearchReaction = () => {

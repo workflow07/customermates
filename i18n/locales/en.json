@@ -26,6 +26,8 @@
   "ApiKeyModal": {
     "created": "Created",
     "expires": "Expires",
+    "expiresIn": "Expires in",
+    "expiresInPlaceholder": "Pick a date",
     "keyCreated": "API key created successfully",
     "keyWarning": "Make sure to copy this key now. You won't be able to see it again. The key should only be used with caution because others could impersonate you if the key gets lost.",
     "lastUsed": "Last used",
@@ -66,6 +68,7 @@
       "approve": "Approve",
       "back": "Back",
       "cancel": "Cancel",
+      "clear": "Clear",
       "close": "Close",
       "collapse": "Collapse",
       "continue": "Continue",
@@ -77,11 +80,17 @@
       "edit": "Edit",
       "editCustomFields": "Edit Field",
       "expand": "Expand",
+      "labelData": "Data",
+      "labelHistory": "History",
+      "labelNotes": "Notes",
+      "openFullPage": "Open full page",
       "readMore": "See more",
       "refresh": "Refresh",
       "reset": "Reset",
       "save": "Save",
       "scheduleDemo": "Schedule Demo",
+      "showAll": "Show all",
+      "showFewer": "Show fewer",
       "showHistory": "Show history",
       "showMasterData": "Show data",
       "showNotes": "Show notes",
@@ -105,6 +114,7 @@
       "profileAndActions": "Profile & Actions",
       "selectOption": "Select an option",
       "switchToCardView": "Switch to card view",
+      "switchToKanbanView": "Switch to kanban view",
       "switchToTableView": "Switch to table view",
       "themeSwitcher": "Theme switcher",
       "tooltipAdd": "Add",
@@ -127,10 +137,9 @@
     },
     "city": "City",
     "colors": {
-      "danger": "Red",
-      "default": "Gray",
-      "primary": "Blue",
-      "secondary": "Cyan",
+      "default": "Blue",
+      "destructive": "Red",
+      "secondary": "Gray",
       "success": "Green",
       "warning": "Yellow"
     },
@@ -329,14 +338,18 @@
         "notIn": "not in"
       },
       "presets": {
-        "add": "Add preset",
+        "add": "Save as preset…",
         "cancelEditing": "Cancel",
         "clearPreset": "Clear preset",
         "createOrUpdate": "Create or update preset",
         "deleteConfirm": "Are you sure you want to delete this saved filter?",
+        "label": "Preset",
+        "namePlaceholder": "Preset name",
         "new": "+ Create new filter",
+        "none": "No preset",
         "select": "Saved filters"
       },
+      "selectOperator": "Select a condition…",
       "title": "Filters"
     },
     "firstName": "First name",
@@ -487,10 +500,14 @@
       "message": "You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.",
       "title": "Unsaved Changes"
     },
+    "none": "None",
     "notifications": {
       "copiedToClipboard": "{value} copied to clipboard",
       "copyFailed": "Failed to copy to clipboard",
-      "error": "Error"
+      "deleted": "Deleted",
+      "error": "Error",
+      "unexpectedError": "Something went wrong. Please try again.",
+      "updated": "Updated"
     },
     "options": "Options",
     "postalCode": "Postal Code",
@@ -565,6 +582,7 @@
       },
       "emptyContent": "No entries found",
       "groupBy": "Group By",
+      "layout": "Layout",
       "pageSize": "Page size",
       "paginationRange": "{from} - {to} of {total}",
       "search": "Search...",
@@ -619,7 +637,8 @@
       "uuid": "uuid"
     }
   },
-  "CompanyDetailsCard": {
+  "CompanyDetailsForm": {
+    "subtitle": "Your workspace's name, address, and default currency.",
     "title": "Company Profile"
   },
   "CompanyInviteModal": {
@@ -633,7 +652,8 @@
     "title": "Invite User"
   },
   "CompanyUserModal": {
-    "activeUserWarning": "You can edit your own user account in your <settingsLink>settings</settingsLink>."
+    "activeUserWarning": "You can edit your own user account in your <settingsLink>settings</settingsLink>.",
+    "title": "User"
   },
   "ContactModal": {
     "emailsLabel": "Email",
@@ -679,6 +699,8 @@
       "service": "Service",
       "task": "Task"
     },
+    "greeting": "Good day",
+    "greetingName": "Good day, {name}",
     "groupBy": "Group By",
     "groupBys": {
       "contact": "Contact",
@@ -756,6 +778,7 @@
     "title": "Deals"
   },
   "Diagrams": {
+    "groups": "groups",
     "noData": "No data available",
     "noGroup": "Unassigned",
     "quantity": "Quantity",
@@ -763,6 +786,7 @@
       "count": "Count",
       "value": "Value"
     },
+    "total": "Total",
     "value": "Value"
   },
   "DocsPage": {
@@ -798,7 +822,6 @@
     "reportAndStatistics": "Report & Statistics",
     "selfHosting": "Self-Hosting",
     "selfHostVsCloud": "Self-Hosted vs Cloud",
-    "skills": "Skills",
     "tableAndKanbanView": "Table & Kanban View",
     "webhooksEvents": "Webhooks & Events"
   },
@@ -811,6 +834,7 @@
     "heading2": "Heading 2",
     "italic": "Italic",
     "link": "Link",
+    "noResults": "No results",
     "normalText": "Normal Text",
     "numberedList": "Numbered List",
     "placeholder": "Type '/' for commands...",
@@ -882,7 +906,7 @@
     "solutions": "Solutions",
     "terms": "Terms"
   },
-  "ForgotPasswordCard": {
+  "ForgotPasswordForm": {
     "backToSignIn": "Remember your password? <backToSignInLink>Sign in</backToSignInLink>",
     "confirmEmailLabel": "Confirm E-Mail",
     "emailLabel": "E-Mail",
@@ -893,9 +917,18 @@
     "title": "Forgot password"
   },
   "GlobalSearch": {
+    "clearRecent": "Clear",
+    "emptyPrompt": "Start typing to search across your contacts, organizations, deals, and services.",
+    "groupContact": "Contacts",
+    "groupDeal": "Deals",
+    "groupOrganization": "Organizations",
+    "groupRecent": "Recently opened",
+    "groupService": "Services",
+    "hintNavigate": "Navigate",
+    "hintOpen": "Open",
     "loading": "Searching...",
     "noResults": "No results found",
-    "placeholder": "Search for contacts, organizations, deals, and services..."
+    "placeholder": "Search..."
   },
   "Loading": {
     "text": "Loading..."
@@ -903,15 +936,20 @@
   "MassActions": {
     "customFields": "Custom Fields",
     "delete": "Delete selected",
+    "noMatchingFields": "No fields match your search.",
+    "searchFieldPlaceholder": "Search fields…",
     "selectedCount": "{count, plural, one {# item selected} other {# items selected}}",
     "selectField": "Select field",
     "selectValue": "Select value",
+    "update": "Update",
     "updateValue": "Apply value"
   },
   "NavigationBar": {
     "addContact": "Add contact",
     "addDeal": "Add deal",
     "addOrganization": "Add organization",
+    "addPickerDescription": "Pick the type of record you want to create.",
+    "addPickerTitle": "Create new…",
     "addService": "Add service",
     "addTask": "Add task",
     "affiliate": "Affiliate Program",
@@ -920,27 +958,33 @@
     "automation": "Automation",
     "blog": "Blog",
     "contacts": "Contacts",
+    "crm": "CRM",
     "dashboard": "Dashboard",
     "deals": "Deals",
+    "details": "Details",
     "docs": "Documentation",
     "faq": "FAQ",
     "features": "Features",
+    "general": "General",
+    "members": "Members",
     "mission": "Mission",
     "organizations": "Organizations",
+    "overview": "Overview",
     "pricing": "Pricing",
     "search": "Search",
     "services": "Services",
-    "skills": "Skills",
+    "settings": "Settings",
     "tasks": "Tasks",
-    "webhooks": "Webhooks"
+    "webhooks": "Webhooks",
+    "workspace": "Workspace"
   },
   "NotFoundPage": {
     "body": "We've been automatically notified that this page went on vacation. We'll track it down and bring it back soon!",
     "ctaLabel": "Back to home",
-    "subtitle": "This page went on vacation without telling us 🏖️",
+    "subtitle": "This page went on vacation without telling us",
     "title": "Oops! You've entered the void"
   },
-  "OnboardingCard": {
+  "OnboardingForm": {
     "agreeToTerms": "I agree to the <dataPrivacyLink>Privacy Policy</dataPrivacyLink> and the <termsOfServiceLink>Terms & Conditions</termsOfServiceLink>",
     "subtitle": "Complete your profile to get started.",
     "title": "Onboarding"
@@ -965,13 +1009,18 @@
     "metadataDescription": "Simple pricing for small businesses",
     "metadataTitle": "Customermates | Pricing"
   },
+  "ProfileSections": {
+    "apiKeysDescription": "Long-lived API keys for programmatic access.",
+    "detailsDescription": "Your name, avatar, and account status.",
+    "settingsDescription": "Language, theme, formatting, email preferences."
+  },
   "ResetPassword": {
     "fallback": "If the button above does not work, please copy and paste the following link into your browser's address bar: ",
     "intro": "Click the button below to reset your password.",
     "securityNotice": "If you did not request a password reset, you may safely ignore and delete this message.",
     "subject": "Reset your password"
   },
-  "ResetPasswordCard": {
+  "ResetPasswordForm": {
     "backToSignIn": "Remember your password? <backToSignInLink>Sign in</backToSignInLink>",
     "confirmPasswordLabel": "Confirm Password",
     "passwordLabel": "Password",
@@ -981,13 +1030,14 @@
   },
   "RoleModal": {
     "descriptionLabel": "Description",
-    "manageAccess": "Manage Access",
+    "manageAccess": "Manage",
     "nameLabel": "Name",
     "no": "No",
-    "readAccess": "Read Access",
+    "readAccess": "Read access",
     "readAll": "All",
     "readNone": "None",
     "readOwn": "Assigned",
+    "resourceHeader": "Resource",
     "resources": {
       "aiAgent": "AI Agent",
       "api": "API & Webhooks",
@@ -1024,7 +1074,7 @@
   "ServicesCard": {
     "title": "Services"
   },
-  "SignInCard": {
+  "SignInForm": {
     "agreeToTerms": "By signing in, you agree to our <termsOfServiceLink>Terms</termsOfServiceLink> and <dataPrivacyLink>Privacy Policy</dataPrivacyLink>.",
     "buttonLabel": "Continue with {provider}",
     "emailLabel": "Email Address",
@@ -1037,7 +1087,7 @@
     "subtitle": "to continue to Customermates",
     "switchToSignUp": "Don't have an account? <registerLink>Register</registerLink>"
   },
-  "SignUpCard": {
+  "SignUpForm": {
     "acceptInviteCta": "Accept invitation",
     "agreeToTerms": "By registering, you agree to our <termsOfServiceLink>Terms</termsOfServiceLink> and <dataPrivacyLink>Privacy Policy</dataPrivacyLink>.",
     "buttonLabel": "Register with {provider}",
@@ -1053,29 +1103,6 @@
     "subtitleSanatize": "Create your account to get started.",
     "switchToSignIn": "Already have an account? <signInLink>Sign in</signInLink>",
     "title": "Create a Customermates Account"
-  },
-  "SkillsPage": {
-    "agentSetupCommand": "Install this skill: {url}",
-    "agentSetupTitle": "Copy this instruction and paste it into your AI agent:",
-    "agentSetupToast": "Copied. Paste this into your AI agent to add the skill.",
-    "copy": "Copy skill",
-    "searchEmpty": "No skills match your search.",
-    "searchPlaceholder": "Search by title, description, or tag..."
-  },
-  "SkillTags": {
-    "advanced": "Advanced",
-    "automation": "Automation",
-    "beginner": "Beginner",
-    "email": "Email",
-    "intermediate": "Intermediate",
-    "lead-enrichment": "Lead Enrichment",
-    "lead-finding": "Lead Finding",
-    "native": "Native",
-    "orthogonal": "Orthogonal",
-    "outreach": "Outreach",
-    "phone": "Phone",
-    "research": "Research",
-    "social": "Social"
   },
   "subscription": {
     "currentPeriodEnd": "Current period ends",
@@ -1097,7 +1124,7 @@
     "title": "Current Subscription",
     "trialEnds": "Trial ends"
   },
-  "SubscriptionExpiredCard": {
+  "SubscriptionExpiredView": {
     "contactSupportCta": "Contact Support",
     "description": "Your trial period has ended and your company is not currently subscribed. Please subscribe to continue using Customermates, or contact our support team if you have any questions.",
     "subscribeCta": "Subscribe",
@@ -1160,9 +1187,12 @@
   },
   "UserAvatar": {
     "company": "My Company",
+    "darkMode": "Dark Mode",
     "documentation": "Documentation",
     "home": "Home",
+    "lightMode": "Light Mode",
     "profile": "My Profile",
+    "settings": "Settings",
     "signOut": "Sign Out",
     "tasks": "Tasks",
     "theme": "Theme"
@@ -1189,7 +1219,7 @@
     "statusSelect": "User status select",
     "title": "User Administration"
   },
-  "UserSettingsCard": {
+  "UserSettingsForm": {
     "displayLanguage": "Display Language",
     "displayLanguageHint": "Controls the UI language — labels, buttons, etc.",
     "emailSubscription": "Email Subscriptions",

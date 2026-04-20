@@ -16,8 +16,6 @@ import { helpAndFeedbackSchema } from "./schemas/help-and-feedback";
 import { homepageSchema } from "./schemas/homepage";
 import { legalSchema } from "./schemas/legal";
 import { pricingSchema } from "./schemas/pricing";
-import { skillsOverviewSchema } from "./schemas/skills-overview";
-import { skillsSchema } from "./schemas/skills";
 
 export const blog = defineCollections({
   type: "doc",
@@ -113,18 +111,6 @@ export const affiliate = defineCollections({
   type: "doc",
   dir: "content/affiliate",
   schema: affiliateSchema,
-});
-
-export const skills = defineCollections({
-  type: "doc",
-  dir: "content/skills",
-  schema: skillsSchema,
-});
-
-export const skillsOverview = defineCollections({
-  type: "doc",
-  dir: "content/skills-overview",
-  schema: skillsOverviewSchema,
 });
 
 export default defineConfig({

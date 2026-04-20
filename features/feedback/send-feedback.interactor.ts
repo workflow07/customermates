@@ -11,7 +11,7 @@ import { Validate } from "@/core/decorators/validate.decorator";
 import { ValidateOutput } from "@/core/decorators/validate-output.decorator";
 import { BaseInteractor } from "@/core/base/base-interactor";
 import { getTenantUser } from "@/core/decorators/tenant-context";
-import XFeedback from "@/components/x-emails/x-feedback";
+import Feedback from "@/components/emails/feedback";
 
 const SUBJECT_MAP: Record<FeedbackType, string> = {
   general: "General Feedback",
@@ -34,7 +34,7 @@ export class SendFeedbackInteractor extends BaseInteractor<SendFeedbackData, Sen
     await this.emailService.send({
       to: "feedback@customermates.com",
       subject: `${subject} from ${userName}`,
-      react: React.createElement(XFeedback, {
+      react: React.createElement(Feedback, {
         feedback: data.feedback,
         userEmail: email,
         userName: userName,

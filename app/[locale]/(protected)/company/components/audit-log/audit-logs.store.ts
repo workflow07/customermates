@@ -1,5 +1,5 @@
 import type { RootStore } from "@/core/stores/root.store";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 import type { AuditLogDto } from "@/ee/audit-log/get/get-audit-logs-by-entity-id.interactor";
 
@@ -14,7 +14,7 @@ export class AuditLogsStore extends BaseDataViewStore<AuditLogDto> {
     super(rootStore, Resource.auditLog);
   }
 
-  get columnsDefinition(): XTableColumn[] {
+  get columnsDefinition(): TableColumn[] {
     return [
       { uid: "name" },
       { uid: "event" },

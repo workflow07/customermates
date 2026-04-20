@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ToastProvider } from "@heroui/toast";
 
 import { FeedbackModal } from "./company/components/feedback/feedback-modal";
 import { CompanyUserModal } from "./company/components/user/user-modal";
@@ -14,19 +13,15 @@ import { WebhookDeliveryModal } from "./company/components/webhook/webhook-deliv
 import { WebhookModal } from "./company/components/webhook/webhook-modal";
 import { ApiKeyModal } from "./profile/components/api-key-modal";
 
+import { Toaster } from "@/components/ui/sonner";
 import { GlobalSearchModal } from "@/app/components/global-search-modal";
-import { ContactModal } from "@/app/[locale]/(protected)/contacts/components/contact-modal";
-import { DealModal } from "@/app/[locale]/(protected)/deals/components/deal-modal";
-import { OrganizationModal } from "@/app/[locale]/(protected)/organizations/components/organization-modal";
-import { ServiceModal } from "@/app/[locale]/(protected)/services/components/service-modal";
-import { TaskModal } from "@/app/[locale]/(protected)/tasks/components/task-modal";
-import { XLoadingOverlay } from "@/components/x-loading-overlay";
-import { XDeleteConfirmationModal } from "@/components/x-modal/x-delete-confirmation-modal";
-import { XUnexpectedErrorToaster } from "@/components/x-unexpected-error-toaster";
-import { XTranslationSync } from "@/components/x-translation-sync";
+import { EntityDrawer } from "@/components/modal/entity-drawer";
+import { LoadingOverlay } from "@/components/shared/loading-overlay";
+import { DeleteConfirmationModal } from "@/components/modal/delete-confirmation-modal";
+import { UnexpectedErrorToaster } from "@/components/shared/unexpected-error-toaster";
+import { TranslationSync } from "@/components/shared/translation-sync";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XCustomColumnModal } from "@/components/x-data-view/x-custom-column/x-custom-column-modal";
-import { XEditFiltersModal } from "@/components/x-data-view/x-filter-modal/x-edit-filters-modal";
+import { CustomColumnModal } from "@/components/data-view/custom-columns/custom-column-modal";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -53,15 +48,15 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     <>
       {children}
 
-      <ToastProvider />
+      <Toaster />
 
-      <XDeleteConfirmationModal />
+      <DeleteConfirmationModal />
 
-      <XLoadingOverlay />
+      <LoadingOverlay />
 
-      <XUnexpectedErrorToaster />
+      <UnexpectedErrorToaster />
 
-      <XTranslationSync />
+      <TranslationSync />
 
       <GlobalSearchModal />
 
@@ -69,19 +64,11 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
       <CompanyInviteModal />
 
-      <ContactModal />
-
-      <OrganizationModal />
-
-      <DealModal />
-
-      <ServiceModal />
-
-      <TaskModal />
+      <EntityDrawer />
 
       <FeedbackModal />
 
-      <XCustomColumnModal />
+      <CustomColumnModal />
 
       <AuditLogModal />
 
@@ -94,8 +81,6 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
       <WebhookDeliveryModal />
 
       <WebhookModal />
-
-      <XEditFiltersModal />
     </>
   );
 }

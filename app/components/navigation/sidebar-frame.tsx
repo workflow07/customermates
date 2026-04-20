@@ -1,10 +1,10 @@
 "use client";
 
-import { Bars3Icon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
-import { cn } from "@heroui/theme";
+import { Menu as Bars3Icon } from "lucide-react";
 
-import { XIcon } from "@/components/x-icon";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
+import { cn } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -24,13 +24,12 @@ export function SidebarFrame({
   return (
     <>
       <Button
-        isIconOnly
         className={cn("md:hidden fixed top-3 left-3 z-50 bg-background", isMobileOpen ? "hidden" : "")}
-        size="sm"
-        variant="bordered"
-        onPress={onMobileOpen}
+        size="icon-sm"
+        variant="outline"
+        onClick={onMobileOpen}
       >
-        <XIcon icon={Bars3Icon} />
+        <Icon icon={Bars3Icon} />
       </Button>
 
       {isMobileOpen ? (
@@ -39,7 +38,7 @@ export function SidebarFrame({
 
       <aside
         className={cn(
-          "fixed left-0 top-0 h-full w-64 min-h-0 border-r border-divider overflow-hidden flex flex-col z-50 gap-1 py-3 bg-content1 transform transition-transform duration-200 ease-out md:relative md:z-40 md:self-stretch md:h-full md:shrink-0 md:translate-x-0",
+          "fixed left-0 top-0 h-full w-60 min-h-0 overflow-hidden flex flex-col z-50 gap-0.5 py-3 bg-background transform transition-transform duration-200 ease-out md:relative md:z-40 md:self-stretch md:h-full md:shrink-0 md:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           desktopWidthClassName,
         )}

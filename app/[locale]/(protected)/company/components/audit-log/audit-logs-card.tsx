@@ -1,66 +1,85 @@
 "use client";
 
 import type { AuditLogDto } from "@/ee/audit-log/get/get-audit-logs-by-entity-id.interactor";
+import type { GetResult } from "@/core/base/base-get.interactor";
+import type { ColumnDef } from "@tanstack/react-table";
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
+import { useEffect, useMemo } from "react";
 
 import { getEntityName } from "@/features/event/entity-name.utils";
-import { XDataViewContainer } from "@/components/x-data-view/x-data-view-container";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
+import { DataViewContainer } from "@/components/data-view";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XCopyableChip } from "@/components/x-chip/x-copyable-chip";
-import { XAvatarStack } from "@/components/x-avatar-stack";
+import { AppChip } from "@/components/chip/app-chip";
+import { CopyableChip } from "@/components/chip/copyable-chip";
+import { AvatarStack } from "@/components/shared/avatar-stack";
 
-export const AuditLogsCard = observer(() => {
+type Props = {
+  initialAuditLogs: GetResult<AuditLogDto>;
+};
+
+export const AuditLogsCard = observer(({ initialAuditLogs }: Props) => {
   const t = useTranslations("");
   const { auditLogModalStore, auditLogsStore, intlStore, userModalStore } = useRootStore();
 
-  function renderCell(item: AuditLogDto, columnKey: React.Key): string | number | JSX.Element {
-    switch (columnKey) {
-      case "name": {
-        const entityName = getEntityName(item.event, item.eventData, t);
-        return entityName ? <XDataViewCell>{entityName}</XDataViewCell> : <XDataViewCell>-</XDataViewCell>;
-      }
+  useEffect(() => auditLogsStore.setItems(initialAuditLogs), [initialAuditLogs]);
 
-      case "user":
-        return (
-          <XAvatarStack
-            items={item.user ? [item.user] : []}
+  const columns = useMemo<ColumnDef<AuditLogDto>[]>(() => {
+    return [
+      {
+        id: "name",
+        header: t("Common.table.columns.name"),
+        cell: ({ row }) => {
+          const entityName = getEntityName(row.original.event, row.original.eventData, t);
+          return <span className="text-sm">{entityName ?? "-"}</span>;
+        },
+      },
+      {
+        id: "event",
+        header: t("Common.table.columns.event"),
+        cell: ({ row }) => (
+          <AppChip size="sm" variant="secondary">
+            {t(`Common.events.${row.original.event}`)}
+          </AppChip>
+        ),
+      },
+      {
+        id: "entityId",
+        header: t("Common.table.columns.entityId"),
+        cell: ({ row }) => (
+          <CopyableChip size="sm" value={row.original.entityId} variant="secondary">
+            {row.original.entityId}
+          </CopyableChip>
+        ),
+      },
+      {
+        id: "user",
+        header: t("Common.table.columns.user"),
+        cell: ({ row }) => (
+          <AvatarStack
+            items={row.original.user ? [row.original.user] : []}
             onAvatarClick={(user) => void userModalStore.loadById(user.id)}
           />
-        );
-
-      case "event":
-        return (
-          <XChip size="sm" variant="flat">
-            {t(`Common.events.${item.event}`)}
-          </XChip>
-        );
-
-      case "entityId":
-        return (
-          <XCopyableChip size="sm" value={item.entityId} variant="flat">
-            {item.entityId}
-          </XCopyableChip>
-        );
-
-      case "createdAt":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.createdAt)}</XDataViewCell>;
-
-      default:
-        return "";
-    }
-  }
+        ),
+      },
+      {
+        id: "createdAt",
+        accessorKey: "createdAt",
+        header: t("Common.table.columns.createdAt"),
+        cell: ({ row }) => (
+          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.createdAt)}</span>
+        ),
+      },
+    ];
+  }, [t, intlStore, userModalStore]);
 
   return (
-    <XDataViewContainer
-      renderCell={renderCell}
-      searchTooltip={t("AuditLogsCard.searchTooltip")}
+    <DataViewContainer
+      columns={columns}
+      searchPlaceholder={t("AuditLogsCard.searchTooltip")}
       store={auditLogsStore}
-      title={t("AuditLogsCard.title")}
-      onRowAction={(item) => {
+      onRowClick={(item) => {
         auditLogModalStore.onInitOrRefresh(item);
         auditLogModalStore.open();
       }}

@@ -4,7 +4,7 @@ import { ServicesCard } from "./components/services-card";
 
 import { getGetServicesInteractor, getRouteGuardService } from "@/core/di";
 import { decodeGetParams } from "@/core/utils/get-params";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
+import { PageContainer } from "@/components/shared/page-container";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -19,8 +19,8 @@ export default async function ServicesPage({ searchParams }: Props) {
   const services = await getGetServicesInteractor().invoke({ ...serviceParams, p13nId: "services-card-store" });
 
   return (
-    <XPageContainer>
+    <PageContainer padded={false}>
       <ServicesCard services={services.ok ? services.data : { items: [] }} />
-    </XPageContainer>
+    </PageContainer>
   );
 }

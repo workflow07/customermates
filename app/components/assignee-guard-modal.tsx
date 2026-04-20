@@ -2,16 +2,14 @@
 
 import type { BaseModalStore } from "@/core/base/base-modal.store";
 
-import { Button } from "@heroui/button";
 import { useTranslations } from "next-intl";
 import { observer } from "mobx-react-lite";
 
-import { XModal } from "../../components/x-modal/x-modal";
-
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardFooter } from "@/components/x-card/x-card-footer";
-import { XCardHeader } from "@/components/x-card/x-card-header";
+import { Button } from "@/components/ui/button";
+import { AppModal, ModalFooter } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppCardHeader } from "@/components/card/app-card-header";
 
 type Props = {
   store: BaseModalStore;
@@ -23,22 +21,26 @@ export const AssigneeGuardModal = observer(({ store }: Props) => {
   if (!store) return null;
 
   return (
-    <XModal isOpen={store.isSubmittingWithGuard} onClose={() => store.setIsSubmittingWithGuard(false)}>
-      <XCard>
-        <XCardHeader>
+    <AppModal
+      open={store.isSubmittingWithGuard}
+      title={t("assigneeGuard.title")}
+      onClose={() => store.setIsSubmittingWithGuard(false)}
+    >
+      <AppCard>
+        <AppCardHeader>
           <h2 className="text-x-lg">{t("assigneeGuard.title")}</h2>
-        </XCardHeader>
+        </AppCardHeader>
 
-        <XCardBody>
+        <AppCardBody>
           <p className="text-x-sm">{t("assigneeGuard.message")}</p>
-        </XCardBody>
+        </AppCardBody>
 
-        <XCardFooter>
-          <Button variant="flat" onPress={() => store.setIsSubmittingWithGuard(false)}>
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => store.setIsSubmittingWithGuard(false)}>
             {t("actions.cancel")}
           </Button>
-        </XCardFooter>
-      </XCard>
-    </XModal>
+        </ModalFooter>
+      </AppCard>
+    </AppModal>
   );
 });

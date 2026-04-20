@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CalendarIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { Calendar, ChevronLeft } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { BlogPostCard } from "../blog-post-card";
 
 import { blogPostsSource } from "@/core/fumadocs/source";
-import { ShowcaseFrame } from "@/components/showcase-frame";
+import { ShowcaseFrame } from "@/components/marketing/showcase-frame";
 import { Footer } from "@/app/components/footer";
-import { XIcon } from "@/components/x-icon";
-import { XChip } from "@/components/x-chip/x-chip";
+import { Icon } from "@/components/shared/icon";
+import { AppChip } from "@/components/chip/app-chip";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { getMDXComponents } from "@/core/fumadocs/mdx-components";
-import { XTOC } from "@/components/x-toc";
-import { XImage } from "@/components/x-image";
+import { Toc } from "@/components/shared/toc";
+import { AppImage } from "@/components/shared/app-image";
 
 export async function generateMetadata({
   params,
@@ -60,14 +60,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <section className="pt-12 md:pt-16 pb-16 md:pb-24 w-full">
         <article className="max-w-6xl mx-auto px-4 flex-1">
           <Link className="inline-flex items-center text-subdued mb-8" href={`/${locale}/blog`}>
-            <XIcon className="mr-2" icon={ChevronLeftIcon} size="sm" />
+            <Icon className="mr-2" icon={ChevronLeft} size="sm" />
 
             {backToBlog}
           </Link>
 
           <header>
             <ShowcaseFrame className="mb-8">
-              <XImage
+              <AppImage
                 isLocalized
                 alt={hero.title}
                 className="w-full h-auto rounded-none"
@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-sm text-subdued pb-6">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <time className="whitespace-nowrap flex items-center gap-2" dateTime={new Date(date).toISOString()}>
-                  <XIcon icon={CalendarIcon} size="md" />
+                  <Icon icon={Calendar} size="md" />
 
                   {new Date(date).toLocaleDateString(locale, {
                     year: "numeric",
@@ -93,9 +93,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <span className="hidden sm:inline">•</span>
 
                 <span className="whitespace-nowrap flex items-center gap-2">
-                  <XImage
+                  <AppImage
                     alt="Benjamin Wagner"
-                    className="rounded-full shrink-0 min-w-4.5 min-h-4.5 w-4.5 h-4.5"
+                    className="rounded-full shrink-0 min-w-4.5 min-h-4.5 size-4.5"
                     height={800}
                     src="benjamin-wagner.png"
                     width={800}
@@ -111,9 +111,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag: string) => (
-                      <XChip key={tag} color="primary">
+                      <AppChip key={tag} variant="default">
                         {tag}
-                      </XChip>
+                      </AppChip>
                     ))}
                   </div>
                 </>
@@ -121,11 +121,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </header>
 
-          <XTOC items={page.data.toc}>
+          <Toc items={page.data.toc}>
             <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none">
               <MDX components={components} />
             </div>
-          </XTOC>
+          </Toc>
         </article>
       </section>
 

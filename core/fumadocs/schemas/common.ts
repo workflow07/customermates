@@ -41,23 +41,6 @@ export const faqSchema = z.object({
 });
 export type FAQ = z.infer<typeof faqSchema>;
 
-export const testimonialItemSchema = z.object({
-  avatar: z.string(),
-  description: z.string(),
-  name: z.string(),
-  rating: z.union([z.literal(4), z.literal(4.5), z.literal(5)]),
-  text: z.string(),
-});
-export type TestimonialItem = z.infer<typeof testimonialItemSchema>;
-
-export const testimonialsSchema = z.object({
-  badge: z.string(),
-  subtitle: z.string(),
-  testimonials: z.array(testimonialItemSchema),
-  title: z.string(),
-});
-export type Testimonials = z.infer<typeof testimonialsSchema>;
-
 const featureItemSchema = z.object({
   description: z.string(),
   icon: z.string(),

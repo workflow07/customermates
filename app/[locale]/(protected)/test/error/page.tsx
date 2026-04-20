@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/button";
 import { useTranslations } from "next-intl";
 
 import { triggerServerErrorAction } from "./actions";
 
-import { XPageCenter } from "@/components/x-layout-primitives/x-page-center";
-import { XPageContainer } from "@/components/x-layout-primitives/x-page-container";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardHeroHeader } from "@/components/x-card/x-card-hero-header";
+import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/shared/page-container";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { CardHeroHeader } from "@/components/card/card-hero-header";
 
 export default function ErrorTestPage() {
   const t = useTranslations("ErrorTestPage");
@@ -27,33 +26,33 @@ export default function ErrorTestPage() {
   }
 
   return (
-    <XPageContainer>
-      <XPageCenter>
-        <XCard className="max-w-md">
-          <XCardHeroHeader subtitle={t("subtitle")} title={t("title")} />
+    <PageContainer>
+      <div className="size-full flex flex-1 items-center justify-center p-4">
+        <AppCard className="max-w-md">
+          <CardHeroHeader subtitle={t("subtitle")} title={t("title")} />
 
-          <XCardBody>
+          <AppCardBody>
             <div className="space-y-6">
-              <div className="border-t border-default pt-6">
+              <div className="border-t border-border pt-6">
                 <h3 className="text-x-lg mb-2">{t("clientSideErrors.title")}</h3>
 
                 <p className="text-x-sm text-subdued mb-4">{t("clientSideErrors.description")}</p>
 
-                <Button className="w-full" color="danger" onPress={triggerUnexpectedClientError}>
+                <Button className="w-full" variant="destructive" onClick={triggerUnexpectedClientError}>
                   {t("clientSideErrors.triggerClientError")}
                 </Button>
               </div>
 
-              <div className="border-t border-default pt-6">
+              <div className="border-t border-border pt-6">
                 <h3 className="text-x-lg mb-2">{t("serverSideError.title")}</h3>
 
                 <p className="text-x-sm text-subdued mb-4">{t("serverSideError.description")}</p>
 
                 <Button
                   className="w-full"
-                  color="danger"
                   disabled={loading}
-                  onPress={() => {
+                  variant="destructive"
+                  onClick={() => {
                     void triggerUnexpectedServerError();
                   }}
                 >
@@ -61,9 +60,9 @@ export default function ErrorTestPage() {
                 </Button>
               </div>
             </div>
-          </XCardBody>
-        </XCard>
-      </XPageCenter>
-    </XPageContainer>
+          </AppCardBody>
+        </AppCard>
+      </div>
+    </PageContainer>
   );
 }

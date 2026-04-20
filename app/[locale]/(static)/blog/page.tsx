@@ -5,7 +5,7 @@ import { getLocale } from "next-intl/server";
 import { BlogPostCard } from "./blog-post-card";
 
 import { Footer } from "@/app/components/footer";
-import { PageHero } from "@/components/page-hero";
+import { PageHero } from "@/components/marketing/page-hero";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { blogPostsSource, blogSource } from "@/core/fumadocs/source";
 

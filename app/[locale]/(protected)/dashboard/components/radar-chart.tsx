@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 
 import type { AggregationType } from "@/generated/prisma";
 
-import { XChartTooltip } from "@/components/x-chart/chart-tooltip";
+import { ChartTooltip } from "@/components/chart/chart-tooltip";
 
 type Props = {
   aggregationType?: AggregationType;
@@ -22,7 +22,7 @@ export const RadarChartComponent = observer(({ aggregationType, chartData, color
   return (
     <ResponsiveContainer height="100%" width="100%">
       <RadarChart data={chartData}>
-        <XChartTooltip aggregationType={aggregationType} />
+        <ChartTooltip aggregationType={aggregationType} />
 
         <PolarAngleAxis dataKey="label" tick={{ fill: textColor, fontSize: 12, fontFamily: "Inter" }} />
 

@@ -8,7 +8,7 @@ type DocsPageHeaderProps = {
 
 export function DocsPageHeader({ description, markdownUrl, title }: DocsPageHeaderProps) {
   return (
-    <header className="mb-6 min-w-0 border-b border-divider pb-6">
+    <header className="mb-8 min-w-0 pb-2">
       <h1 className="text-x-3xl">{title}</h1>
 
       {description ? <p className="mt-3 max-w-3xl text-base text-subdued">{description}</p> : null}

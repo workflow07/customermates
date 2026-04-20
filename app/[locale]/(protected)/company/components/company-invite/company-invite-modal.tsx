@@ -2,19 +2,19 @@
 
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
-import { ClipboardIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/button";
-import { addToast } from "@heroui/toast";
+import { Clipboard } from "lucide-react";
+import { toast } from "sonner";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardFooter } from "@/components/x-card/x-card-footer";
-import { XInput } from "@/components/x-inputs/x-input";
-import { XIcon } from "@/components/x-icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FormLabel } from "@/components/forms/form-label";
+import { AppModal, ModalFooter } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { XAlert } from "@/components/x-alert";
+import { Alert } from "@/components/shared/alert";
 
 export const CompanyInviteModal = observer(() => {
   const t = useTranslations("");
@@ -28,18 +28,16 @@ export const CompanyInviteModal = observer(() => {
 
     try {
       await navigator.clipboard.writeText(form.inviteLink);
-      addToast({
-        description: t("Common.notifications.copiedToClipboard", {
+      toast.success(
+        t("Common.notifications.copiedToClipboard", {
           value: form.inviteLink,
         }),
-        color: "success",
-        icon: <XIcon icon={ClipboardIcon} size="sm" />,
-      });
+        {
+          icon: <Icon icon={Clipboard} size="sm" />,
+        },
+      );
     } catch {
-      addToast({
-        description: t("Common.notifications.copyFailed"),
-        color: "danger",
-      });
+      toast.error(t("Common.notifications.copyFailed"));
     }
   }
 
@@ -53,54 +51,58 @@ export const CompanyInviteModal = observer(() => {
     })}`;
   }
 
-  return (
-    <XModal store={companyInviteModalStore}>
-      <XCard>
-        <XCardHeader>
-          <h2 className="text-x-lg grow">{t("CompanyInviteModal.title")}</h2>
-        </XCardHeader>
+  const resolvedValue = form.isDisabled
+    ? t("CompanyInviteModal.notAvailable")
+    : isLoading
+      ? t("CompanyInviteModal.generating")
+      : form.inviteLink;
 
-        <XCardBody>
-          <XInput
-            readOnly
-            classNames={{ input: "truncate" }}
-            description={getDescription()}
-            endContent={
+  return (
+    <AppModal store={companyInviteModalStore} title={t("CompanyInviteModal.title")}>
+      <AppCard>
+        <AppCardHeader>
+          <h2 className="text-x-lg grow">{t("CompanyInviteModal.title")}</h2>
+        </AppCardHeader>
+
+        <AppCardBody>
+          <div className="space-y-1.5">
+            <FormLabel htmlFor="inviteLink">{t("CompanyInviteModal.label")}</FormLabel>
+
+            <div className="flex gap-2 items-center">
+              <Input
+                readOnly
+                className="truncate"
+                disabled={isLoading || form.isDisabled}
+                id="inviteLink"
+                value={resolvedValue}
+              />
+
               <Button
-                isIconOnly
-                isDisabled={isLoading || form.isDisabled}
-                size="sm"
-                variant="light"
-                onPress={() => void handleCopy()}
+                disabled={isLoading || form.isDisabled}
+                size="icon"
+                variant="ghost"
+                onClick={() => void handleCopy()}
               >
-                <XIcon icon={ClipboardIcon} />
+                <Icon icon={Clipboard} />
               </Button>
-            }
-            id="inviteLink"
-            isDisabled={isLoading || form.isDisabled}
-            label={t("CompanyInviteModal.label")}
-            value={
-              form.isDisabled
-                ? t("CompanyInviteModal.notAvailable")
-                : isLoading
-                  ? t("CompanyInviteModal.generating")
-                  : form.inviteLink
-            }
-          />
+            </div>
+
+            <p className="text-subdued text-xs">{getDescription()}</p>
+          </div>
 
           {form.isDisabled && (
-            <XAlert color="warning">
+            <Alert color="warning">
               <p className="text-x-sm">{t("CompanyInviteModal.disabled")}</p>
-            </XAlert>
+            </Alert>
           )}
-        </XCardBody>
+        </AppCardBody>
 
-        <XCardFooter>
-          <Button autoFocus variant="flat" onPress={() => companyInviteModalStore.close()}>
+        <ModalFooter className="p-6 pt-0">
+          <Button autoFocus variant="secondary" onClick={() => companyInviteModalStore.close()}>
             {t("Common.actions.close")}
           </Button>
-        </XCardFooter>
-      </XCard>
-    </XModal>
+        </ModalFooter>
+      </AppCard>
+    </AppModal>
   );
 });

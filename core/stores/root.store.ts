@@ -1,43 +1,43 @@
 import type { BaseModalStore } from "../base/base-modal.store";
 
-import { SignInCardStore } from "@/app/[locale]/(public)/auth/signin/sign-in-card.store";
-import { SignUpCardStore } from "@/app/[locale]/(public)/auth/signup/sign-up-card.store";
-import { ForgotPasswordCardStore } from "@/app/[locale]/(public)/auth/forgot-password/forgot-password-card.store";
-import { CompanyDetailsCardStore } from "@/app/[locale]/(protected)/company/components/company-details/company-details-card.store";
-import { SubscriptionCardStore } from "@/app/[locale]/(protected)/company/components/subscription/subscription-card.store";
-import { SubscriptionExpiredCardStore } from "@/app/[locale]/(protected)/subscription-expired/components/subscription-expired-card.store";
+import { SignInStore } from "@/app/[locale]/(public)/auth/signin/sign-in.store";
+import { SignUpStore } from "@/app/[locale]/(public)/auth/signup/sign-up.store";
+import { ForgotPasswordStore } from "@/app/[locale]/(public)/auth/forgot-password/forgot-password.store";
+import { CompanyDetailsStore } from "@/app/[locale]/(protected)/company/components/company-details/company-details.store";
+import { SubscriptionStore } from "@/app/[locale]/(protected)/company/components/subscription/subscription.store";
+import { SubscriptionExpiredStore } from "@/app/[locale]/(protected)/subscription-expired/components/subscription-expired.store";
 import { CompanyInviteModalStore } from "@/app/[locale]/(protected)/company/components/company-invite/company-invite-modal.store";
 import { UserModalStore } from "@/app/[locale]/(protected)/company/components/user/user-modal.store";
 import { RoleModalStore } from "@/app/[locale]/(protected)/company/components/role/role-modal.store";
 import { UsersStore } from "@/app/[locale]/(protected)/company/components/user/users.store";
 import { CompanyStore } from "@/app/[locale]/(protected)/company/components/company.store";
-import { ContactModalStore } from "@/app/[locale]/(protected)/contacts/components/contact-modal.store";
-import { OrganizationModalStore } from "@/app/[locale]/(protected)/organizations/components/organization-modal.store";
+import { ContactDetailStore } from "@/app/[locale]/(protected)/contacts/components/contact-detail.store";
+import { OrganizationDetailStore } from "@/app/[locale]/(protected)/organizations/components/organization-detail.store";
 import { OrganizationsStore } from "@/app/[locale]/(protected)/organizations/components/organizations.store";
-import { OnboardingCardStore } from "@/app/[locale]/(public)/onboarding/components/onboarding-card.store";
-import { UserDetailsCardStore } from "@/app/[locale]/(protected)/profile/components/user-details-card.store";
-import { UserSettingsCardStore } from "@/app/[locale]/(protected)/profile/components/user-settings-card.store";
+import { OnboardingStore } from "@/app/[locale]/(public)/onboarding/components/onboarding.store";
+import { UserDetailsStore } from "@/app/[locale]/(protected)/profile/components/user-details.store";
+import { UserSettingsStore } from "@/app/[locale]/(protected)/profile/components/user-settings.store";
 import { ApiKeyModalStore } from "@/app/[locale]/(protected)/profile/components/api-key-modal.store";
 import { ApiKeysStore } from "@/app/[locale]/(protected)/profile/components/api-keys.store";
 import { ContactsStore } from "@/app/[locale]/(protected)/contacts/components/contacts.store";
 import { UserStore } from "@/app/[locale]/(protected)/profile/components/user.store";
 import { TasksStore } from "@/app/[locale]/(protected)/tasks/components/tasks.store";
-import { TaskModalStore } from "@/app/[locale]/(protected)/tasks/components/task-modal.store";
-import { LayoutStore } from "@/components/x-layout-primitives/layout.store";
-import { XLoadingOverlayStore } from "@/components/x-loading-overlay.store";
+import { TaskDetailStore } from "@/app/[locale]/(protected)/tasks/components/task-detail.store";
+import { LayoutStore } from "@/components/layout/layout.store";
+import { LoadingOverlayStore } from "@/components/shared/loading-overlay.store";
 import { ServicesStore } from "@/app/[locale]/(protected)/services/components/services.store";
-import { ServiceModalStore } from "@/app/[locale]/(protected)/services/components/service-modal.store";
+import { ServiceDetailStore } from "@/app/[locale]/(protected)/services/components/service-detail.store";
 import { IntlStore } from "@/core/stores/intl.store";
 import { LocaleStore } from "@/core/stores/locale.store";
 import { WidgetsStore } from "@/app/[locale]/(protected)/dashboard/components/widgets.store";
 import { WidgetModalStore } from "@/app/[locale]/(protected)/dashboard/components/widget-modal.store";
 import { RolesStore } from "@/app/[locale]/(protected)/company/components/role/roles.store";
-import { XCustomColumnModalStore } from "@/components/x-data-view/x-custom-column/x-custom-column-modal.store";
-import { XEditFiltersModalStore } from "@/components/x-data-view/x-filter-modal/x-edit-filters-modal.store";
-import { XDeleteConfirmationModalStore } from "@/components/x-modal/x-delete-confirmation-modal.store";
-import { DealModalStore } from "@/app/[locale]/(protected)/deals/components/deal-modal.store";
+import { CustomColumnModalStore } from "@/components/data-view/custom-columns/custom-column-modal.store";
+import { EditFiltersModalStore } from "@/components/data-view/filter-modal/edit-filters-modal.store";
+import { DeleteConfirmationModalStore } from "@/components/modal/delete-confirmation-modal.store";
+import { DealDetailStore } from "@/app/[locale]/(protected)/deals/components/deal-detail.store";
 import { DealsStore } from "@/app/[locale]/(protected)/deals/components/deals.store";
-import { ResetPasswordCardStore } from "@/app/[locale]/(public)/auth/reset-password/reset-password-card.store";
+import { ResetPasswordStore } from "@/app/[locale]/(public)/auth/reset-password/reset-password.store";
 import { GlobalSearchModalStore } from "@/app/components/global-search-modal.store";
 import { WebhookModalStore } from "@/app/[locale]/(protected)/company/components/webhook/webhook-modal.store";
 import { WebhooksStore } from "@/app/[locale]/(protected)/company/components/webhook/webhooks.store";
@@ -61,7 +61,7 @@ export class RootStore {
   private _dealsStore?: DealsStore;
   private _intlStore?: IntlStore;
   private _layoutStore?: LayoutStore;
-  private _loadingOverlayStore?: XLoadingOverlayStore;
+  private _loadingOverlayStore?: LoadingOverlayStore;
   private _localeStore?: LocaleStore;
   private _organizationsStore?: OrganizationsStore;
   private _rolesStore?: RolesStore;
@@ -74,27 +74,27 @@ export class RootStore {
   private _widgetsGridStore?: WidgetsStore;
   private _auditLogsStore?: AuditLogsStore;
 
-  private _companyDetailsCardStore?: CompanyDetailsCardStore;
-  private _forgotPasswordCardStore?: ForgotPasswordCardStore;
-  private _onboardingCardStore?: OnboardingCardStore;
-  private _resetPasswordCardStore?: ResetPasswordCardStore;
-  private _signInCardStore?: SignInCardStore;
-  private _signUpCardStore?: SignUpCardStore;
-  private _subscriptionCardStore?: SubscriptionCardStore;
-  private _subscriptionExpiredCardStore?: SubscriptionExpiredCardStore;
-  private _userDetailsCardStore?: UserDetailsCardStore;
-  private _userSettingsCardStore?: UserSettingsCardStore;
+  private _companyDetailsStore?: CompanyDetailsStore;
+  private _forgotPasswordStore?: ForgotPasswordStore;
+  private _onboardingStore?: OnboardingStore;
+  private _resetPasswordStore?: ResetPasswordStore;
+  private _signInStore?: SignInStore;
+  private _signUpStore?: SignUpStore;
+  private _subscriptionStore?: SubscriptionStore;
+  private _subscriptionExpiredStore?: SubscriptionExpiredStore;
+  private _userDetailsStore?: UserDetailsStore;
+  private _userSettingsStore?: UserSettingsStore;
 
   private _companyInviteModalStore?: CompanyInviteModalStore;
-  private _contactModalStore?: ContactModalStore;
+  private _contactDetailStore?: ContactDetailStore;
   private _createApiKeyModalStore?: ApiKeyModalStore;
-  private _dealModalStore?: DealModalStore;
-  private _deleteConfirmationModalStore?: XDeleteConfirmationModalStore;
+  private _dealDetailStore?: DealDetailStore;
+  private _deleteConfirmationModalStore?: DeleteConfirmationModalStore;
   private _globalSearchModalStore?: GlobalSearchModalStore;
-  private _organizationModalStore?: OrganizationModalStore;
+  private _organizationDetailStore?: OrganizationDetailStore;
   private _roleModalStore?: RoleModalStore;
-  private _serviceModalStore?: ServiceModalStore;
-  private _taskModalStore?: TaskModalStore;
+  private _serviceDetailStore?: ServiceDetailStore;
+  private _taskDetailStore?: TaskDetailStore;
   private _userModalStore?: UserModalStore;
   private _webhookDeliveryModalStore?: WebhookDeliveryModalStore;
   private _webhookModalStore?: WebhookModalStore;
@@ -106,8 +106,8 @@ export class RootStore {
   private _aiAgentProvisionModalStore?: AiAgentProvisionModalStore;
   private _aiAgentEnvironmentVariableModalStore?: AiAgentEnvironmentVariableModalStore;
   private _appSidebarStore?: AppSidebarStore;
-  private _xCustomColumnModalStore?: XCustomColumnModalStore;
-  private _xTableFilterModalStore?: XEditFiltersModalStore;
+  private _customColumnModalStore?: CustomColumnModalStore;
+  private _editFiltersModalStore?: EditFiltersModalStore;
 
   isDemoMode: boolean;
   isCloudHosted: boolean;
@@ -131,7 +131,7 @@ export class RootStore {
   }
 
   get loadingOverlayStore() {
-    return (this._loadingOverlayStore ??= new XLoadingOverlayStore());
+    return (this._loadingOverlayStore ??= new LoadingOverlayStore());
   }
 
   get intlStore() {
@@ -174,24 +174,24 @@ export class RootStore {
     return (this._servicesStore ??= new ServicesStore(this));
   }
 
-  get xCustomColumnModalStore() {
-    return (this._xCustomColumnModalStore ??= new XCustomColumnModalStore(this));
+  get customColumnModalStore() {
+    return (this._customColumnModalStore ??= new CustomColumnModalStore(this));
   }
 
-  get xTableFilterModalStore() {
-    return (this._xTableFilterModalStore ??= new XEditFiltersModalStore(this));
+  get editFiltersModalStore() {
+    return (this._editFiltersModalStore ??= new EditFiltersModalStore(this));
   }
 
   get widgetsStore() {
     return (this._widgetsGridStore ??= new WidgetsStore(this));
   }
 
-  get userDetailsCardStore() {
-    return (this._userDetailsCardStore ??= new UserDetailsCardStore(this));
+  get userDetailsStore() {
+    return (this._userDetailsStore ??= new UserDetailsStore(this));
   }
 
-  get userSettingsCardStore() {
-    return (this._userSettingsCardStore ??= new UserSettingsCardStore(this));
+  get userSettingsStore() {
+    return (this._userSettingsStore ??= new UserSettingsStore(this));
   }
 
   get apiKeyModalStore() {
@@ -202,36 +202,36 @@ export class RootStore {
     return (this._apiKeysStore ??= new ApiKeysStore(this));
   }
 
-  get onboardingCardStore() {
-    return (this._onboardingCardStore ??= new OnboardingCardStore(this));
+  get onboardingStore() {
+    return (this._onboardingStore ??= new OnboardingStore(this));
   }
 
-  get signInCardStore() {
-    return (this._signInCardStore ??= new SignInCardStore(this));
+  get signInStore() {
+    return (this._signInStore ??= new SignInStore(this));
   }
 
-  get signUpCardStore() {
-    return (this._signUpCardStore ??= new SignUpCardStore(this));
+  get signUpStore() {
+    return (this._signUpStore ??= new SignUpStore(this));
   }
 
-  get forgotPasswordCardStore() {
-    return (this._forgotPasswordCardStore ??= new ForgotPasswordCardStore(this));
+  get forgotPasswordStore() {
+    return (this._forgotPasswordStore ??= new ForgotPasswordStore(this));
   }
 
-  get resetPasswordCardStore() {
-    return (this._resetPasswordCardStore ??= new ResetPasswordCardStore(this));
+  get resetPasswordStore() {
+    return (this._resetPasswordStore ??= new ResetPasswordStore(this));
   }
 
-  get companyDetailsCardStore() {
-    return (this._companyDetailsCardStore ??= new CompanyDetailsCardStore(this));
+  get companyDetailsStore() {
+    return (this._companyDetailsStore ??= new CompanyDetailsStore(this));
   }
 
-  get subscriptionCardStore() {
-    return (this._subscriptionCardStore ??= new SubscriptionCardStore(this));
+  get subscriptionStore() {
+    return (this._subscriptionStore ??= new SubscriptionStore(this));
   }
 
-  get subscriptionExpiredCardStore() {
-    return (this._subscriptionExpiredCardStore ??= new SubscriptionExpiredCardStore(this));
+  get subscriptionExpiredStore() {
+    return (this._subscriptionExpiredStore ??= new SubscriptionExpiredStore(this));
   }
 
   get userModalStore() {
@@ -246,28 +246,28 @@ export class RootStore {
     return (this._roleModalStore ??= new RoleModalStore(this));
   }
 
-  get contactModalStore() {
-    return (this._contactModalStore ??= new ContactModalStore(this));
+  get contactDetailStore() {
+    return (this._contactDetailStore ??= new ContactDetailStore(this));
   }
 
-  get organizationModalStore() {
-    return (this._organizationModalStore ??= new OrganizationModalStore(this));
+  get organizationDetailStore() {
+    return (this._organizationDetailStore ??= new OrganizationDetailStore(this));
   }
 
-  get dealModalStore() {
-    return (this._dealModalStore ??= new DealModalStore(this));
+  get dealDetailStore() {
+    return (this._dealDetailStore ??= new DealDetailStore(this));
   }
 
-  get serviceModalStore() {
-    return (this._serviceModalStore ??= new ServiceModalStore(this));
+  get serviceDetailStore() {
+    return (this._serviceDetailStore ??= new ServiceDetailStore(this));
   }
 
-  get taskModalStore() {
-    return (this._taskModalStore ??= new TaskModalStore(this));
+  get taskDetailStore() {
+    return (this._taskDetailStore ??= new TaskDetailStore(this));
   }
 
   get deleteConfirmationModalStore() {
-    return (this._deleteConfirmationModalStore ??= new XDeleteConfirmationModalStore(this));
+    return (this._deleteConfirmationModalStore ??= new DeleteConfirmationModalStore(this));
   }
 
   get widgetModalStore() {

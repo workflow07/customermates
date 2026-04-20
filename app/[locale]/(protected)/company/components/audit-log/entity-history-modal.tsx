@@ -2,23 +2,26 @@
 
 import type { AuditLogDto } from "@/ee/audit-log/get/get-audit-logs-by-entity-id.interactor";
 
-import { Avatar } from "@heroui/avatar";
-import { Spinner } from "@heroui/spinner";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table";
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 
 import { processChanges } from "./entity-history-details.utils";
 
-import { XModal } from "@/components/x-modal/x-modal";
-import { XCard } from "@/components/x-card/x-card";
-import { XCardBody } from "@/components/x-card/x-card-body";
-import { XCardHeader } from "@/components/x-card/x-card-header";
-import { XChip } from "@/components/x-chip/x-chip";
-import { XDataViewCell } from "@/components/x-data-view/x-data-view-cell";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Spinner } from "@/components/ui/spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AppModal } from "@/components/modal";
+import { AppCard } from "@/components/card/app-card";
+import { AppCardBody } from "@/components/card/app-card-body";
+import { AppCardHeader } from "@/components/card/app-card-header";
+import { AppChip } from "@/components/chip/app-chip";
 import { useRootStore } from "@/core/stores/root-store.provider";
 
 type TableColumnDef = { key: "user" | "event" | "changesCount" | "timestamp"; label: string };
+
+function getInitials(firstName: string, lastName: string) {
+  return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+}
 
 export const EntityHistoryModal = observer(() => {
   const t = useTranslations("");
@@ -36,40 +39,38 @@ export const EntityHistoryModal = observer(() => {
       case "user":
         return (
           <div className="flex items-center gap-2 min-w-0">
-            <Avatar
-              showFallback
-              className="shrink-0"
-              name={`${item.user.firstName} ${item.user.lastName}`.trim()}
-              size="sm"
-              src={item.user.avatarUrl ?? undefined}
-            />
+            <Avatar className="shrink-0" size="sm">
+              {item.user.avatarUrl && (
+                <AvatarImage alt={`${item.user.firstName} ${item.user.lastName}`.trim()} src={item.user.avatarUrl} />
+              )}
+
+              <AvatarFallback>{getInitials(item.user.firstName, item.user.lastName)}</AvatarFallback>
+            </Avatar>
 
             <div className="max-w-full overflow-hidden">
-              <XDataViewCell className="text-x-sm max-w-full">
-                {`${item.user.firstName} ${item.user.lastName}`.trim()}
-              </XDataViewCell>
+              <span className="block truncate text-x-sm">{`${item.user.firstName} ${item.user.lastName}`.trim()}</span>
 
-              <XDataViewCell className="text-subdued text-xs max-w-full">{item.user.email}</XDataViewCell>
+              <span className="block truncate text-xs text-subdued">{item.user.email}</span>
             </div>
           </div>
         );
       case "event":
-        return <XChip>{t(`Common.events.${item.event}`)}</XChip>;
+        return <AppChip>{t(`Common.events.${item.event}`)}</AppChip>;
       case "changesCount":
-        return <XDataViewCell>{processChanges(item, customColumnsById, t).length}</XDataViewCell>;
+        return <span className="block truncate">{processChanges(item, customColumnsById, t).length}</span>;
       case "timestamp":
-        return <XDataViewCell>{intlStore.formatNumericalShortDateTime(item.createdAt)}</XDataViewCell>;
+        return <span className="block truncate">{intlStore.formatNumericalShortDateTime(item.createdAt)}</span>;
     }
   }
 
   return (
-    <XModal size="2xl" store={store}>
-      <XCard>
-        <XCardHeader>
+    <AppModal size="xl" store={store} title={t("AuditLogModal.titleHistory")}>
+      <AppCard>
+        <AppCardHeader>
           <h2 className="text-x-lg grow">{t("AuditLogModal.titleHistory")}</h2>
-        </XCardHeader>
+        </AppCardHeader>
 
-        <XCardBody className="p-3">
+        <AppCardBody className="p-3">
           {store.isLoading ? (
             <div className="flex items-center justify-center py-8">
               <Spinner size="lg" />
@@ -77,45 +78,36 @@ export const EntityHistoryModal = observer(() => {
           ) : store.items.length === 0 ? (
             <p className="text-subdued py-8 text-center text-x-sm">{t("AuditLogModal.emptyHistory")}</p>
           ) : (
-            <Table
-              removeWrapper
-              classNames={{
-                base: "contents",
-                th: "bg-transparent",
-                tbody: "[&>tr:hover>td]:bg-content2 dark:[&>tr:hover>td]:bg-content4",
-                td: "group-data-[first=true]/tr:first:before:rounded-none group-data-[first=true]/tr:last:before:rounded-none group-data-[middle=true]/tr:before:rounded-none group-data-[last=true]/tr:first:before:rounded-none group-data-[last=true]/tr:last:before:rounded-none",
-              }}
-              selectionMode="none"
-              onRowAction={(key) => {
-                const item = store.items.find((entry) => entry.id === key);
-                if (item) entityHistoryDetailsModalStore.openWithData(item, store.customColumns);
-              }}
-            >
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn key={column.key} className="relative text-subdued truncate">
-                    {column.label.toUpperCase()}
-                  </TableColumn>
-                )}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableHead key={column.key} className="text-subdued">
+                      {column.label.toUpperCase()}
+                    </TableHead>
+                  ))}
+                </TableRow>
               </TableHeader>
 
-              <TableBody items={store.items}>
-                {(item) => (
-                  <TableRow key={item.id}>
-                    {(columnKey) => (
-                      <TableCell data-column-uid={columnKey}>
-                        <div className="max-w-full overflow-hidden">
-                          {renderTableCell(item, columnKey as TableColumnDef["key"])}
-                        </div>
+              <TableBody>
+                {store.items.map((item) => (
+                  <TableRow
+                    key={item.id}
+                    className="hover:bg-muted dark:hover:bg-muted/40 cursor-pointer"
+                    onClick={() => entityHistoryDetailsModalStore.openWithData(item, store.customColumns)}
+                  >
+                    {columns.map((column) => (
+                      <TableCell key={column.key} data-column-uid={column.key}>
+                        <div className="max-w-full overflow-hidden">{renderTableCell(item, column.key)}</div>
                       </TableCell>
-                    )}
+                    ))}
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
           )}
-        </XCardBody>
-      </XCard>
-    </XModal>
+        </AppCardBody>
+      </AppCard>
+    </AppModal>
   );
 });

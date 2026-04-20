@@ -1,6 +1,6 @@
 import type { WebhookDeliveryDto } from "@/features/webhook/get-webhook-deliveries.interactor";
 import type { RootStore } from "@/core/stores/root.store";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 
 import { Resource } from "@/generated/prisma";
@@ -14,7 +14,7 @@ export class WebhookDeliveriesStore extends BaseDataViewStore<WebhookDeliveryDto
     super(rootStore, Resource.api);
   }
 
-  get columnsDefinition(): XTableColumn[] {
+  get columnsDefinition(): TableColumn[] {
     return [
       { uid: "name" },
       { uid: "event" },

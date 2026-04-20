@@ -1,31 +1,30 @@
 import { getTranslations } from "next-intl/server";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 
-import { XCard } from "../components/x-card/x-card";
-import { XCardBody } from "../components/x-card/x-card-body";
-import { XCardFooter } from "../components/x-card/x-card-footer";
-import { XCardHeroHeader } from "../components/x-card/x-card-hero-header";
-import { XLink } from "../components/x-link";
-import { XPageCenter } from "../components/x-layout-primitives/x-page-center";
+import { AppCard } from "../components/card/app-card";
+import { AppCardBody } from "../components/card/app-card-body";
+import { AppCardFooter } from "../components/card/app-card-footer";
+import { CardHeroHeader } from "../components/card/card-hero-header";
+import { AppLink } from "../components/shared/app-link";
 
 export default async function NotFoundPage() {
   const t = await getTranslations("NotFoundPage");
 
   return (
-    <XPageCenter>
-      <XCard className="max-w-md">
-        <XCardHeroHeader subtitle={t("subtitle")} title={t("title")} />
+    <div className="size-full flex flex-1 items-center justify-center p-4">
+      <AppCard className="max-w-md">
+        <CardHeroHeader subtitle={t("subtitle")} title={t("title")} />
 
-        <XCardBody>
+        <AppCardBody>
           <p className="text-x-sm text-center">{t("body")}</p>
-        </XCardBody>
+        </AppCardBody>
 
-        <XCardFooter>
-          <Button as={XLink} className="w-full" color="primary" href="/">
-            {t("ctaLabel")}
+        <AppCardFooter>
+          <Button asChild className="w-full">
+            <AppLink href="/">{t("ctaLabel")}</AppLink>
           </Button>
-        </XCardFooter>
-      </XCard>
-    </XPageCenter>
+        </AppCardFooter>
+      </AppCard>
+    </div>
   );
 }

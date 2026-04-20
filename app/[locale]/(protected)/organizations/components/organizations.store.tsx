@@ -1,6 +1,6 @@
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 import type { RootStore } from "@/core/stores/root.store";
-import type { XTableColumn } from "@/core/base/base-data-view.store";
+import type { TableColumn } from "@/core/base/base-data-view.store";
 import type { OrganizationDto } from "@/features/organizations/organization.schema";
 
 import { EntityType, Resource } from "@/generated/prisma";
@@ -23,7 +23,7 @@ export class OrganizationsStore extends BaseDataViewStore<OrganizationDto> {
   }
 
   get columnsDefinition() {
-    const columns: (XTableColumn | false)[] = [
+    const columns: (TableColumn | false)[] = [
       { uid: "name", sortable: true },
       this.canAccessContacts && { uid: "contacts" },
       this.canAccessDeals && { uid: "deals" },
@@ -33,7 +33,7 @@ export class OrganizationsStore extends BaseDataViewStore<OrganizationDto> {
       { uid: "createdAt", sortable: true },
     ];
 
-    return columns.filter((col): col is XTableColumn => Boolean(col));
+    return columns.filter((col): col is TableColumn => Boolean(col));
   }
 
   protected async refreshAction(params?: GetQueryParams) {

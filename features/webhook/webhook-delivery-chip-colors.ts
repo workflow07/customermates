@@ -6,5 +6,5 @@ export const WEBHOOK_DELIVERY_QUEUE_STATUS_CHIP_COLOR: Record<WebhookDeliverySta
   [WebhookDeliveryStatus.success]: "success",
   [WebhookDeliveryStatus.pending]: "warning",
   [WebhookDeliveryStatus.processing]: "warning",
-  [WebhookDeliveryStatus.failed]: "danger",
+  [WebhookDeliveryStatus.failed]: "destructive",
 };
