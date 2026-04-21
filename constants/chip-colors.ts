@@ -6,6 +6,6 @@
  * add a name here that differs from a shadcn variant, don't — keep them in
  * lockstep and add the variant to `components/ui/badge.tsx` first.
  */
-export const CHIP_COLORS = ["default", "secondary", "destructive", "success", "warning"] as const;
+export const CHIP_COLORS = ["default", "secondary", "destructive", "success", "warning", "info"] as const;
 
 export type ChipColor = (typeof CHIP_COLORS)[number];

@@ -28,6 +28,8 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-input-background: var(--input-background);
@@ -90,6 +92,8 @@
   --success-foreground: #ffffff;
   --warning: #ff9500;
   --warning-foreground: #ffffff;
+  --info: #007aff;
+  --info-foreground: #ffffff;
   --border: #e7e7e7;
   --input: #e7e7e7;
   --input-background: #fcfcfc;
@@ -147,6 +151,8 @@
   --success-foreground: #042f2e;
   --warning: #fbbf24;
   --warning-foreground: #451a03;
+  --info: #60a5fa;
+  --info-foreground: #082f49;
   --border: #1f1f23;
   --input: #1f1f23;
   --input-background: #1a1a1d;

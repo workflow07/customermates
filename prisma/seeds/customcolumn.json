@@ -95,7 +95,7 @@
           "value": "313e964c-1a31-4d18-a1e3-f92dd5bbcf31"
         },
         {
-          "color": "secondary",
+          "color": "info",
           "index": 1,
           "isDefault": false,
           "label": "Medium",
@@ -188,7 +188,7 @@
     "options": {
       "options": [
         {
-          "color": "secondary",
+          "color": "info",
           "index": 0,
           "isDefault": true,
           "label": "Open",
@@ -269,7 +269,7 @@
           "value": "bc87aa03-158f-4b89-bbc2-c34a8f617f81"
         },
         {
-          "color": "secondary",
+          "color": "info",
           "index": 2,
           "isDefault": false,
           "label": "Qualified",
