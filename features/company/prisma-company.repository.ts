@@ -165,7 +165,6 @@ export class PrismaCompanyRepo
       companyId: data.companyId,
       lemonSqueezyId: data.lemonSqueezyId,
       lemonSqueezyVariantId: data.lemonSqueezyVariantId,
-      plan: data.plan,
       status: data.status ?? SubscriptionStatus.trial,
       quantity: data.quantity,
       trialEndDate: data.trialEndDate,

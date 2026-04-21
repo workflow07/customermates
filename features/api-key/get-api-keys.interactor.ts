@@ -24,29 +24,20 @@ export interface ApiKey {
   lastRequest: Date | null;
 }
 
-export abstract class GetApiKeysRepo {
-  abstract getCrmApiKeyId(): Promise<string | null>;
-}
-
 @AllowInDemoMode
 @TentantInteractor({ resource: Resource.api, action: Action.readAll })
 export class GetApiKeysInteractor extends BaseInteractor<void, ApiKey[]> {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly repo: GetApiKeysRepo,
-  ) {
+  constructor(private readonly authService: AuthService) {
     super();
   }
 
   @ValidateOutput(ApiKeyDtoSchema)
   async invoke(): Promise<{ ok: true; data: ApiKey[] }> {
-    const [keys, crmApiKeyId] = await Promise.all([this.authService.listApiKeys(), this.repo.getCrmApiKeyId()]);
-
-    const filtered = crmApiKeyId ? keys.filter((k) => k.id !== crmApiKeyId) : keys;
+    const keys = await this.authService.listApiKeys();
 
     return {
       ok: true,
-      data: filtered.map((key) => ({
+      data: keys.map((key) => ({
         id: key.id,
         name: key.name,
         createdAt: key.createdAt,

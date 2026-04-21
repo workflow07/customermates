@@ -10,6 +10,10 @@ import { PricingCardComponent } from "./pricing-card";
 
 type Props = Pricing;
 
+const MONTHLY_PER_USER = 12;
+const YEARLY_MONTHLY_EQUIVALENT_PER_USER = 9;
+const YEARLY_DISCOUNT_PERCENT = Math.round((1 - YEARLY_MONTHLY_EQUIVALENT_PER_USER / MONTHLY_PER_USER) * 100);
+
 export function PricingSection({
   ariaLabelSlider,
   ariaLabelTabs,
@@ -22,24 +26,11 @@ export function PricingSection({
   const [isAnnual, setIsAnnual] = useState(true);
 
   const maxUsers = 25;
-  const pricingByPlan = {
-    basic: {
-      monthlyPerUser: 12,
-      yearlyMonthlyEquivalentPerUser: 10,
-    },
-    pro: {
-      monthlyPerUser: 29,
-      yearlyMonthlyEquivalentPerUser: 24,
-    },
-  } as const;
-  const yearlyDiscountPercent = Math.round(
-    (1 - pricingByPlan.basic.yearlyMonthlyEquivalentPerUser / pricingByPlan.basic.monthlyPerUser) * 100,
-  );
   const yearlyTitle = (
     <>
       {yearly}
 
-      <span className="ml-1 text-x-xs font-bold">{`-${yearlyDiscountPercent}%`}</span>
+      <span className="ml-1 text-x-xs font-bold">{`-${YEARLY_DISCOUNT_PERCENT}%`}</span>
     </>
   );
 
@@ -85,24 +76,13 @@ export function PricingSection({
         </div>
       </div>
 
-      <div className="grid min-[1280px]:grid-cols-4 min-[900px]:grid-cols-2 min-[500px]:grid-cols-2 min-[400px]:grid-cols-1 gap-6 max-w-7xl mx-auto justify-center items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto justify-center items-stretch">
         {mdxPricingCards.map((card, index) => {
-          const normalizedTitle = card.title.toLowerCase();
-          const planType = normalizedTitle === "basic" ? "basic" : normalizedTitle === "pro" ? "pro" : "static";
-          const monthlyPrice = planType === "static" ? 0 : userCount * pricingByPlan[planType].monthlyPerUser;
-          const annualPrice =
-            planType === "static" ? 0 : userCount * pricingByPlan[planType].yearlyMonthlyEquivalentPerUser * 12;
+          const hasDynamicPrice = card.title.toLowerCase() === "pro";
+          const perUserPerMonth = isAnnual ? YEARLY_MONTHLY_EQUIVALENT_PER_USER : MONTHLY_PER_USER;
+          const displayPrice = hasDynamicPrice ? `${userCount * perUserPerMonth}` : card.price;
 
-          return (
-            <PricingCardComponent
-              key={index}
-              annualPrice={annualPrice}
-              card={card}
-              isAnnual={isAnnual}
-              monthlyPrice={monthlyPrice}
-              planType={planType}
-            />
-          );
+          return <PricingCardComponent key={index} card={card} displayPrice={displayPrice} />;
         })}
       </div>
     </>

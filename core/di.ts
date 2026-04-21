@@ -37,7 +37,6 @@ import { WidgetService } from "@/features/widget/widget.service";
 import { WidgetDataFetcher } from "@/features/widget/calculator/widget-data-fetcher.service";
 import { WidgetGroupingService } from "@/features/widget/calculator/widget-grouping.service";
 import { SubscriptionService } from "@/ee/subscription/subscription.service";
-import { AgentMachineService } from "@/ee/agent/agent-machine.service";
 // Task Listeners
 import { CompanyOnboardingTaskListener } from "@/features/tasks/listener/company-onboarding-task.listener";
 import { UserPendingAuthorizationTaskListener } from "@/features/tasks/listener/user-pending-authorization-task.listener";
@@ -160,14 +159,6 @@ import { DeleteApiKeyInteractor } from "@/features/api-key/delete-api-key.intera
 import { CreateCheckoutSessionInteractor } from "@/ee/subscription/create-checkout-session.interactor";
 import { GetSubscriptionInteractor } from "@/ee/subscription/get-subscription.interactor";
 import { RefreshSubscriptionInteractor } from "@/ee/subscription/refresh-subscription.interactor";
-// EE Agent interactors
-import { CheckAgentHealthInteractor } from "@/ee/agent/check-agent-health.interactor";
-import { GetAgentControlUrlInteractor } from "@/ee/agent/get-agent-control-url.interactor";
-import { GetAgentProvisionedInteractor } from "@/ee/agent/get-agent-provisioned.interactor";
-import { ResetAgentInteractor } from "@/ee/agent/reset-agent.interactor";
-import { ProvisionAgentInteractor } from "@/ee/agent/provision-agent.interactor";
-import { SetAgentEnvironmentVariableInteractor } from "@/ee/agent/set-agent-environment-variable.interactor";
-import { VerifyAgentMachineInteractor } from "@/ee/agent/verify-agent-machine.interactor";
 // EE Audit Log interactors
 import { GetAuditLogsByEntityIdInteractor } from "@/ee/audit-log/get/get-audit-logs-by-entity-id.interactor";
 import { GetAuditLogsInteractor } from "@/ee/audit-log/get/get-audit-logs.interactor";
@@ -175,9 +166,6 @@ import { GetEntityChangeHistoryByIdInteractor } from "@/ee/audit-log/get/get-ent
 // Validators
 import { ValidateQueryParamsValidator } from "@/core/base/validate-query-params.validator";
 // EE Lifecycle interactors
-import { CleanupInactiveUsersResourcesInteractor } from "@/ee/lifecycle/cleanup-inactive-users-resources.interactor";
-import { CleanupNonProCompaniesResourcesInteractor } from "@/ee/lifecycle/cleanup-non-pro-companies-resources.interactor";
-import { StopInactiveUsersMachinesInteractor } from "@/ee/lifecycle/stop-inactive-users-machines.interactor";
 import { SendWelcomeAndDemoInteractor } from "@/ee/lifecycle/send-welcome-and-demo.interactor";
 import { SendTrialExtensionOfferInteractor } from "@/ee/lifecycle/send-trial-extension-offer.interactor";
 import { SendTrialInactivationReminderInteractor } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
@@ -224,7 +212,6 @@ export const getWidgetService = () => new WidgetService(getWidgetRepo());
 export const getWidgetDataFetcher = () => new WidgetDataFetcher();
 export const getWidgetGroupingService = () => new WidgetGroupingService();
 export const getSubscriptionService = () => new SubscriptionService(getCompanyRepo());
-export const getAgentMachineService = () => new AgentMachineService();
 
 // ─── Section 4: Interactors ─────────────────────────────────────────────────
 
@@ -626,9 +613,9 @@ export const getSendFeedbackInteractor = () => new SendFeedbackInteractor(getEma
 
 export const getCreateApiKeyInteractor = () => new CreateApiKeyInteractor(getAuthService());
 
-export const getGetApiKeysInteractor = () => new GetApiKeysInteractor(getAuthService(), getUserRepo());
+export const getGetApiKeysInteractor = () => new GetApiKeysInteractor(getAuthService());
 
-export const getDeleteApiKeyInteractor = () => new DeleteApiKeyInteractor(getAuthService(), getUserRepo());
+export const getDeleteApiKeyInteractor = () => new DeleteApiKeyInteractor(getAuthService());
 
 // --- EE Subscription ---
 
@@ -641,27 +628,6 @@ export const getGetSubscriptionInteractor = () =>
 export const getRefreshSubscriptionInteractor = () =>
   new RefreshSubscriptionInteractor(getCompanyRepo(), getSubscriptionService());
 
-// --- EE Agent ---
-
-export const getCheckAgentHealthInteractor = () =>
-  new CheckAgentHealthInteractor(getUserRepo(), getAgentMachineService());
-
-export const getGetAgentControlUrlInteractor = () =>
-  new GetAgentControlUrlInteractor(getUserRepo(), getAgentMachineService());
-
-export const getGetAgentProvisionedInteractor = () => new GetAgentProvisionedInteractor(getUserRepo());
-
-export const getResetAgentInteractor = () => new ResetAgentInteractor(getUserRepo(), getAgentMachineService());
-
-export const getProvisionAgentInteractor = () =>
-  new ProvisionAgentInteractor(getUserRepo(), getAuthService(), getAgentMachineService());
-
-export const getSetAgentEnvironmentVariableInteractor = () =>
-  new SetAgentEnvironmentVariableInteractor(getUserRepo(), getAgentMachineService());
-
-export const getVerifyAgentMachineInteractor = () =>
-  new VerifyAgentMachineInteractor(getUserRepo(), getAgentMachineService());
-
 // --- EE Audit Log ---
 
 export const getGetAuditLogsByEntityIdInteractor = () => new GetAuditLogsByEntityIdInteractor(getAuditLogRepo());
@@ -673,15 +639,6 @@ export const getGetEntityChangeHistoryByIdInteractor = () =>
 
 // --- EE Lifecycle ---
 
-export const getCleanupInactiveUsersResourcesInteractor = () =>
-  new CleanupInactiveUsersResourcesInteractor(getUserRepo(), getAgentMachineService());
-
-export const getCleanupNonProCompaniesResourcesInteractor = () =>
-  new CleanupNonProCompaniesResourcesInteractor(getUserRepo(), getAgentMachineService());
-
-export const getStopInactiveUsersMachinesInteractor = () =>
-  new StopInactiveUsersMachinesInteractor(getUserRepo(), getAgentMachineService());
-
 export const getSendWelcomeAndDemoInteractor = () => new SendWelcomeAndDemoInteractor(getUserRepo(), getEmailService());
 
 export const getSendTrialExtensionOfferInteractor = () =>
@@ -691,7 +648,7 @@ export const getSendTrialInactivationReminderInteractor = () =>
   new SendTrialInactivationReminderInteractor(getUserRepo(), getEmailService());
 
 export const getDeactivateTrialUsersAndSendNoticeInteractor = () =>
-  new DeactivateTrialUsersAndSendNoticeInteractor(getUserRepo(), getEmailService(), getAgentMachineService());
+  new DeactivateTrialUsersAndSendNoticeInteractor(getUserRepo(), getEmailService());
 
 export const getDeactivateUsersAfterSubscriptionGracePeriodInteractor = () =>
   new DeactivateUsersAfterSubscriptionGracePeriodInteractor(getUserRepo(), getEmailService());

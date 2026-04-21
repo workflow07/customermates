@@ -11,7 +11,6 @@ The [`ee/`](https://github.com/customermates/customermates/tree/main/ee) subfold
 
 - Audit Logging
 - Single Sign-On
-- Managed AI Agent
 - Whitelabeling
 
 > _WARNING: This repository is copyrighted. You are not allowed to use this code to host your own version of Customermates without obtaining a proper license first._

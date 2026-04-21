@@ -36,7 +36,6 @@ export const MOCK_ENV_MODULE = {
   IS_CLOUD_BUILD: false,
   BASE_URL: "http://localhost:4000",
   RESEND_FROM_EMAIL: "test@test.com",
-  AGENT_BASE_URL: "http://localhost:4000",
 };
 
 // ---------------------------------------------------------------------------

@@ -36,8 +36,8 @@ export default function Feedback({ feedback, userEmail, userName, subject }: Pro
 }
 
 Feedback.PreviewProps = {
-  feedback: "The AI agent is working great! I found it very helpful for managing my contacts.",
+  feedback: "The CRM is working great! I found it very helpful for managing my contacts.",
   userEmail: "user@example.com",
   userName: "John Doe",
-  subject: "AI Agent Feedback",
+  subject: "Product Feedback",
 };

@@ -6,9 +6,6 @@ import {
   getSendTrialInactivationReminderInteractor,
   getDeactivateTrialUsersAndSendNoticeInteractor,
   getDeactivateUsersAfterSubscriptionGracePeriodInteractor,
-  getCleanupInactiveUsersResourcesInteractor,
-  getCleanupNonProCompaniesResourcesInteractor,
-  getStopInactiveUsersMachinesInteractor,
 } from "@/core/di";
 
 export async function GET(request: Request) {
@@ -24,9 +21,6 @@ export async function GET(request: Request) {
     getSendTrialInactivationReminderInteractor().invoke(),
     getDeactivateTrialUsersAndSendNoticeInteractor().invoke(),
     getDeactivateUsersAfterSubscriptionGracePeriodInteractor().invoke(),
-    getCleanupInactiveUsersResourcesInteractor().invoke(),
-    getCleanupNonProCompaniesResourcesInteractor().invoke(),
-    getStopInactiveUsersMachinesInteractor().invoke(),
   ]);
 
   return new NextResponse("ok");

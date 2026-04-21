@@ -1,28 +1,4 @@
 {
-  "AiAgent": {
-    "addEnvironmentVariable": "Add Environment Variable",
-    "agentSetup": {
-      "anthropic": "Anthropic API Key",
-      "openai": "OpenAI API Key",
-      "provisioningHint": "By continuing, you agree to the Privacy Policy and Terms of Service. You can also add additional API providers manually later in the OpenClaw Control UI.",
-      "skip": "Configure other provider later",
-      "submit": "Save and continue",
-      "title": "Connect Your AI Providers"
-    },
-    "environmentVariable": {
-      "key": "Key",
-      "restartHint": "Adding or changing environment variables restarts the container. This may take up to 10 minutes.",
-      "title": "Add Environment Variable",
-      "value": "Value",
-      "valuePlaceholder": "Variable value"
-    },
-    "openControlUi": "Open Chat",
-    "provision": "Provision Agent",
-    "provisionPending": "Provisioning has started in the background and may take up to 10 minutes on first setup. Please try opening the AI Agent again after that.",
-    "reset": "Reset Agent",
-    "resetConfirmMessage": "This will permanently erase all chat history, memory, and learned skills. The agent will start fresh. This cannot be undone.",
-    "resetConfirmTitle": "Reset Agent"
-  },
   "ApiKeyModal": {
     "created": "Created",
     "expires": "Expires",
@@ -421,9 +397,6 @@
       "pageSize": "Page Size",
       "password": "Password",
       "permissions": {
-        "aiAgent": {
-          "canManage": "Manage rights"
-        },
         "api": {
           "canManage": "Manage rights",
           "readAccess": "Read rights"
@@ -816,7 +789,6 @@
     "mcp": "MCP",
     "n8n": "N8N",
     "openapi": "OpenAPI 3.1.0",
-    "openClawAiAgents": "OpenClaw & AI Agents",
     "organizationSettings": "Organization Settings",
     "permissionsRoles": "Permissions & Roles",
     "reportAndStatistics": "Report & Statistics",
@@ -953,7 +925,6 @@
     "addService": "Add service",
     "addTask": "Add task",
     "affiliate": "Affiliate Program",
-    "aiAgent": "AI Agent",
     "apiDocs": "API Documentation",
     "automation": "Automation",
     "blog": "Blog",
@@ -1039,7 +1010,6 @@
     "readOwn": "Assigned",
     "resourceHeader": "Resource",
     "resources": {
-      "aiAgent": "AI Agent",
       "api": "API & Webhooks",
       "auditLog": "Audit Log",
       "company": "Company",

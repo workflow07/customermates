@@ -21,9 +21,6 @@ const Schema = z.object({
   name: z.string().min(1, "Name must be at least 1 character"),
   description: z.string().min(1, "Description must be at least 1 character"),
   permissions: z.object({
-    aiAgent: z.object({
-      canManage: z.enum(["yes", "no"]),
-    }),
     contacts: z.object({
       canManage: z.enum(["yes", "no"]),
       readAccess: z.enum(["none", "own", "all"]),

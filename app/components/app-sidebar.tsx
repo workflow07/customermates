@@ -1,7 +1,6 @@
 "use client";
 
 import type { ExtendedUser } from "@/features/user/user.types";
-import type { Key } from "react";
 import type { Company, SubscriptionStatus } from "@/generated/prisma";
 import type { UpdateUserSettingsData } from "@/features/user/upsert/update-user-settings.interactor";
 import type { NavGroup } from "./navigation/nav-main";
@@ -16,7 +15,6 @@ import { useTheme } from "next-themes";
 import {
   Building,
   Building2,
-  MessagesSquare,
   CheckCircle2,
   MessageCircle,
   FileText,
@@ -37,8 +35,6 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Icon } from "@/components/shared/icon";
 import { signOutAction } from "@/app/[locale]/actions";
 import { FeedbackType } from "@/features/feedback/send-feedback.schema";
-import { AiAgentProvisionModal } from "@/app/components/ai-agent-provision-modal";
-import { AiAgentEnvironmentVariableModal } from "@/app/components/ai-agent-environment-variable-modal";
 import { EntityType, Action } from "@/generated/prisma";
 
 import { NavHeader } from "./navigation/nav-header";
@@ -50,29 +46,15 @@ type Props = {
   systemTaskCount: number;
   user: ExtendedUser | null;
   company: Company | null;
-  subscriptionPlan: "basic" | "pro" | null;
   subscriptionStatus: SubscriptionStatus | null;
 };
 
-export const AppSidebar = observer(function AppSidebar({
-  user,
-  systemTaskCount,
-  company,
-  subscriptionPlan,
-  subscriptionStatus,
-}: Props) {
+export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, company, subscriptionStatus }: Props) {
   const t = useTranslations("");
   const pathname = usePathname();
   const intlPathname = useIntlPathname();
   const rootStore = useRootStore();
-  const {
-    userStore,
-    companyStore,
-    globalSearchModalStore,
-    feedbackModalStore,
-    deleteConfirmationModalStore,
-    appSidebarStore,
-  } = rootStore;
+  const { userStore, companyStore, globalSearchModalStore, feedbackModalStore } = rootStore;
 
   const { setOpenMobile } = useSidebar();
   const { theme, setTheme } = useTheme();
@@ -101,16 +83,6 @@ export const AppSidebar = observer(function AppSidebar({
   useEffect(() => setSelectedKey(pathname.split("/")[2] ?? null), [pathname]);
 
   useEffect(() => {
-    if (
-      !rootStore.isDemoMode &&
-      rootStore.isCloudHosted &&
-      subscriptionPlan === "pro" &&
-      userStore.canManage(Resource.aiAgent)
-    )
-      void appSidebarStore.refreshAgentStatus();
-  }, [subscriptionPlan, userStore.user, rootStore.isCloudHosted, rootStore.isDemoMode]);
-
-  useEffect(() => {
     userStore.setUser(user);
     if (company) companyStore.setCompany(company);
   }, [user, company]);
@@ -133,13 +105,6 @@ export const AppSidebar = observer(function AppSidebar({
               href: "/dashboard",
               icon: LayoutGrid,
               visible: true,
-            },
-            {
-              key: "ai-agent",
-              title: t("NavigationBar.aiAgent"),
-              href: "/ai-agent",
-              icon: MessagesSquare,
-              visible: rootStore.isCloudHosted && subscriptionPlan === "pro" && userStore.canManage(Resource.aiAgent),
             },
             {
               key: "tasks",
@@ -277,7 +242,7 @@ export const AppSidebar = observer(function AppSidebar({
           ].filter((i) => i.visible),
         },
       ].filter((g) => g.items.length > 0),
-    [t, rootStore.isCloudHosted, subscriptionPlan, userStore.user, systemTaskCount],
+    [t, rootStore.isCloudHosted, subscriptionStatus, userStore.user, systemTaskCount],
   );
 
   const secondaryItems: NavSecondaryItem[] = useMemo(
@@ -325,32 +290,9 @@ export const AppSidebar = observer(function AppSidebar({
     { resource: Resource.tasks, key: "add_task", label: t("NavigationBar.addTask"), entity: EntityType.task },
   ];
 
-  function onAiAgentAction(actionKey: Key) {
-    closeMobileSidebar();
-
-    if (actionKey === "openControlUi") {
-      void appSidebarStore.openControlUi();
-      return;
-    }
-
-    if (actionKey === "addEnvironmentVariable") {
-      rootStore.aiAgentEnvironmentVariableModalStore.open();
-      return;
-    }
-
-    if (actionKey === "reset") {
-      deleteConfirmationModalStore.onInitOrRefresh({
-        title: t("AiAgent.resetConfirmTitle"),
-        message: t("AiAgent.resetConfirmMessage"),
-        onConfirm: () => void appSidebarStore.resetAgent(),
-      });
-      deleteConfirmationModalStore.open();
-    }
-  }
-
   if (isDocsRoute) return null;
 
-  const planLabel = buildPlanLabel(subscriptionPlan, subscriptionStatus, t);
+  const planLabel = buildPlanLabel(subscriptionStatus, t);
 
   return (
     <>
@@ -368,23 +310,10 @@ export const AppSidebar = observer(function AppSidebar({
 
         <SidebarContent>
           <NavMain
-            aiAgentTitles={{
-              openControlUi: t("AiAgent.openControlUi"),
-              addEnvironmentVariable: t("AiAgent.addEnvironmentVariable"),
-              reset: t("AiAgent.reset"),
-            }}
-            appSidebarStore={appSidebarStore}
             groups={navGroups}
             pathname={intlPathname}
             selectedKey={selectedKey}
-            onAiAgentAction={onAiAgentAction}
             onNavigate={(key) => closeMobileSidebar(() => setSelectedKey(key))}
-            onProvisionAgent={() =>
-              closeMobileSidebar(() => {
-                rootStore.aiAgentProvisionModalStore.onInitOrRefresh({ openaiApiKey: "", anthropicApiKey: "" });
-                rootStore.aiAgentProvisionModalStore.open();
-              })
-            }
           />
 
           <NavSecondary className="mt-auto" items={secondaryItems} />
@@ -404,10 +333,6 @@ export const AppSidebar = observer(function AppSidebar({
           />
         </SidebarFooter>
       </Sidebar>
-
-      {rootStore.isCloudHosted && <AiAgentProvisionModal />}
-
-      {rootStore.isCloudHosted && <AiAgentEnvironmentVariableModal />}
 
       <AddPickerDrawer
         items={addItems.filter((item) => userStore.canManage(item.resource))}
@@ -468,14 +393,10 @@ function AddPickerDrawer({
   );
 }
 
-function buildPlanLabel(
-  plan: "basic" | "pro" | null,
-  status: SubscriptionStatus | null,
-  t: (key: string) => string,
-): string | undefined {
-  if (!plan) return undefined;
+function buildPlanLabel(status: SubscriptionStatus | null, t: (key: string) => string): string | undefined {
+  if (!status) return undefined;
 
-  const base = plan === "pro" ? "Pro" : "Basic";
+  const base = "Pro";
 
   if (status === "trial") return `${base} · ${t("subscription.status.trial")}`;
   if (status === "cancelled") return `${base} · ${t("subscription.status.cancelled")}`;

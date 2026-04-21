@@ -4,7 +4,7 @@ import type { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.int
 import { redirect } from "next/navigation";
 import { Action, Status, SubscriptionStatus } from "@/generated/prisma";
 
-import type { Resource, SubscriptionPlan } from "@/generated/prisma";
+import type { Resource } from "@/generated/prisma";
 
 import { IS_DEMO_MODE } from "@/constants/env";
 
@@ -22,7 +22,6 @@ export class RouteGuardService {
     resource?: Resource;
     allowedActions?: Action[];
     skipSubscriptionCheck?: boolean;
-    requiredPlan?: SubscriptionPlan;
   }): Promise<void> {
     const user = await this.userService.getUser();
 
@@ -33,8 +32,7 @@ export class RouteGuardService {
       redirect(path);
     }
 
-    if (!options?.skipSubscriptionCheck && !IS_DEMO_MODE)
-      await this.checkSubscriptionAndRedirect(user.companyId, options?.requiredPlan);
+    if (!options?.skipSubscriptionCheck && !IS_DEMO_MODE) await this.checkSubscriptionAndRedirect(user.companyId);
 
     if (!options?.resource) return;
 
@@ -49,7 +47,7 @@ export class RouteGuardService {
     redirect("/");
   }
 
-  private async checkSubscriptionAndRedirect(companyId: string, requiredPlan?: SubscriptionPlan): Promise<void> {
+  private async checkSubscriptionAndRedirect(companyId: string): Promise<void> {
     const subscription = await this.subscriptionRepo.getSubscriptionOrThrow(companyId);
 
     const isExpired =
@@ -60,6 +58,5 @@ export class RouteGuardService {
         subscription.trialEndDate < new Date());
 
     if (isExpired) redirect("/subscription-expired");
-    if (requiredPlan && subscription.plan !== requiredPlan) redirect("/");
   }
 }

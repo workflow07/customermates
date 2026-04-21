@@ -5,26 +5,16 @@ import type { UpdateUserDetailsRepo } from "@/features/user/upsert/update-user-d
 import type { UpdateUserSettingsRepo } from "@/features/user/upsert/update-user-settings.interactor";
 import type { AdminUpdateUserDetailsRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
 import type { GetUserByIdRepo } from "@/features/user/get/get-user-by-id.interactor";
-import type { CheckAgentHealthRepo } from "@/ee/agent/check-agent-health.interactor";
-import type { DeleteApiKeyRepo } from "@/features/api-key/delete-api-key.interactor";
-import type { GetApiKeysRepo } from "@/features/api-key/get-api-keys.interactor";
-import type { GetAgentControlUrlRepo } from "@/ee/agent/get-agent-control-url.interactor";
-import type { GetAgentProvisionedRepo } from "@/ee/agent/get-agent-provisioned.interactor";
-import type { ProvisionAgentRepo } from "@/ee/agent/provision-agent.interactor";
-import type { ResetAgentRepo } from "@/ee/agent/reset-agent.interactor";
-import type { VerifyAgentMachineRepo } from "@/ee/agent/verify-agent-machine.interactor";
 import type { SendWelcomeAndDemoActionRepo } from "@/ee/lifecycle/send-welcome-and-demo.interactor";
 import type { SendTrialExtensionOfferActionRepo } from "@/ee/lifecycle/send-trial-extension-offer.interactor";
 import type { SendTrialInactivationReminderActionRepo } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
 import type { DeactivateTrialUsersAndSendNoticeRepo } from "@/ee/lifecycle/deactivate-trial-users-and-send-notice.interactor";
 import type { DeactivateUsersAfterSubscriptionGracePeriodRepo } from "@/ee/lifecycle/deactivate-users-after-subscription-grace-period.interactor";
-import type { CleanupInactiveUsersResourcesActionRepo } from "@/ee/lifecycle/cleanup-inactive-users-resources.interactor";
-import type { CleanupNonProCompaniesResourcesRepo } from "@/ee/lifecycle/cleanup-non-pro-companies-resources.interactor";
 
 import { randomUUID } from "crypto";
 
 import { getTranslations } from "next-intl/server";
-import { CustomColumnType, EntityType, Status, SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
+import { CustomColumnType, EntityType, Status, SubscriptionStatus } from "@/generated/prisma";
 
 import { type UserDto } from "./user.schema";
 
@@ -42,16 +32,6 @@ export class PrismaUserRepo
     UpdateUserDetailsRepo,
     UpdateUserSettingsRepo,
     AdminUpdateUserDetailsRepo,
-    DeleteApiKeyRepo,
-    GetApiKeysRepo,
-    ProvisionAgentRepo,
-    CheckAgentHealthRepo,
-    GetAgentControlUrlRepo,
-    GetAgentProvisionedRepo,
-    ResetAgentRepo,
-    VerifyAgentMachineRepo,
-    CleanupInactiveUsersResourcesActionRepo,
-    CleanupNonProCompaniesResourcesRepo,
     SendWelcomeAndDemoActionRepo,
     SendTrialExtensionOfferActionRepo,
     SendTrialInactivationReminderActionRepo,
@@ -74,8 +54,6 @@ export class PrismaUserRepo
       avatarUrl: true,
       agreeToTerms: true,
       marketingEmails: true,
-      flyMachineId: true,
-      flyVolumeId: true,
       lastActiveAt: true,
       createdAt: true,
       updatedAt: true,
@@ -208,7 +186,6 @@ export class PrismaUserRepo
           }
         : {
             companyId: company.id,
-            plan: SubscriptionPlan.basic,
             status: SubscriptionStatus.active,
             trialEndDate: null,
           },
@@ -456,116 +433,6 @@ export class PrismaUserRepo
     return authUser?.companyId ?? null;
   }
 
-  async getCrmApiKeyId() {
-    const { id, companyId } = this.user;
-
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id, companyId },
-      select: { crmApiKeyId: true },
-    });
-
-    return user?.crmApiKeyId ?? null;
-  }
-
-  async getMachineIds() {
-    const { id, companyId } = this.user;
-
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id, companyId },
-      select: { flyMachineId: true, flyVolumeId: true },
-    });
-
-    return { machineId: user.flyMachineId, volumeId: user.flyVolumeId };
-  }
-
-  async getMachineIdsOrThrow() {
-    const { machineId, volumeId } = await this.getMachineIds();
-
-    if (!machineId || !volumeId) throw new Error("No agent provisioned for this user");
-
-    return { machineId, volumeId };
-  }
-
-  async verifyProPlanOrThrow() {
-    const { companyId } = this.user;
-
-    await this.prisma.subscription.findFirstOrThrow({
-      where: {
-        companyId,
-        plan: SubscriptionPlan.pro,
-      },
-      select: { companyId: true },
-    });
-  }
-
-  async storeMachineIds(machineId: string, volumeId: string) {
-    const { id, companyId } = this.user;
-
-    await this.prisma.user.update({
-      where: { id, companyId },
-      data: { flyMachineId: machineId, flyVolumeId: volumeId },
-    });
-  }
-
-  async getMachineId() {
-    const { id, companyId } = this.user;
-
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id, companyId },
-      select: { flyMachineId: true },
-    });
-
-    return user?.flyMachineId ?? null;
-  }
-
-  async getMachineIdOrThrow() {
-    const machineId = await this.getMachineId();
-
-    if (!machineId) throw new Error("No agent provisioned for this user");
-
-    return machineId;
-  }
-
-  async getAgentGatewayToken() {
-    const { id, companyId } = this.user;
-
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id, companyId },
-      select: { agentGatewayToken: true },
-    });
-
-    return user?.agentGatewayToken ?? null;
-  }
-
-  async getAgentGatewayTokenOrThrow() {
-    const gatewayToken = await this.getAgentGatewayToken();
-
-    if (!gatewayToken) throw new Error("No agent gateway token for this user");
-
-    return gatewayToken;
-  }
-
-  async clearMachineIds() {
-    const { id, companyId } = this.user;
-
-    await this.prisma.user.update({
-      where: { id, companyId },
-      data: { flyMachineId: null, flyVolumeId: null },
-    });
-  }
-
-  async clearMachineIdsForUser(userId: string) {
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        flyMachineId: null,
-        flyVolumeId: null,
-        agentGatewayToken: null,
-        agentHooksToken: null,
-      },
-    });
-  }
-
   async findProspectUsers() {
     const now = Date.now();
     const from = new Date(now - 24 * 60 * 60 * 1000);
@@ -579,42 +446,6 @@ export class PrismaUserRepo
             status: SubscriptionStatus.trial,
             OR: [{ trialEndDate: null }, { trialEndDate: { gt: new Date(now) } }],
           },
-        },
-      },
-    });
-  }
-
-  async findActiveUsersInactiveFor24HoursWithMachine() {
-    const before = new Date(Date.now() - 24 * 60 * 60 * 1000);
-
-    return await this.prisma.user.findMany({
-      where: {
-        status: Status.active,
-        lastActiveAt: { lte: before },
-        flyMachineId: { not: null },
-      },
-    });
-  }
-
-  async findInactiveUsersPast3DaysForCleanup() {
-    const now = Date.now();
-    const before = new Date(now - 3 * 24 * 60 * 60 * 1000);
-
-    return await this.prisma.user.findMany({
-      where: {
-        status: Status.inactive,
-        updatedAt: { lte: before },
-        OR: [{ flyMachineId: { not: null } }, { flyVolumeId: { not: null } }],
-      },
-    });
-  }
-
-  async findUsersWithResourcesOutsideProPlan() {
-    return await this.prisma.user.findMany({
-      where: {
-        OR: [{ flyMachineId: { not: null } }, { flyVolumeId: { not: null } }],
-        company: {
-          OR: [{ subscription: { is: null } }, { subscription: { is: { plan: { not: SubscriptionPlan.pro } } } }],
         },
       },
     });
@@ -714,35 +545,6 @@ export class PrismaUserRepo
     await this.prisma.user.update({
       where: { id: userId },
       data: { status: Status.inactive },
-    });
-  }
-
-  async getCrmApiKey() {
-    const { id, companyId } = this.user;
-
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id, companyId },
-      select: { crmApiKey: true },
-    });
-
-    return user?.crmApiKey ?? null;
-  }
-
-  async storeCrmApiKey(keyId: string, key: string) {
-    const { id, companyId } = this.user;
-
-    await this.prisma.user.update({
-      where: { id, companyId },
-      data: { crmApiKeyId: keyId, crmApiKey: key },
-    });
-  }
-
-  async storeAgentTokens(gatewayToken: string, hooksToken: string) {
-    const { id, companyId } = this.user;
-
-    await this.prisma.user.update({
-      where: { id, companyId },
-      data: { agentGatewayToken: gatewayToken, agentHooksToken: hooksToken },
     });
   }
 }

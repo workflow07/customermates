@@ -16,26 +16,15 @@ const Schema = z.object({
 
 export type DeleteApiKeyData = Data<typeof Schema>;
 
-export abstract class DeleteApiKeyRepo {
-  abstract getCrmApiKeyId(): Promise<string | null>;
-}
-
 @TentantInteractor({ resource: Resource.api, action: Action.delete })
 export class DeleteApiKeyInteractor extends BaseInteractor<DeleteApiKeyData, string> {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly repo: DeleteApiKeyRepo,
-  ) {
+  constructor(private readonly authService: AuthService) {
     super();
   }
 
   @Validate(Schema)
   @ValidateOutput(z.string())
   async invoke(data: DeleteApiKeyData): Validated<string> {
-    const crmApiKeyId = await this.repo.getCrmApiKeyId();
-
-    if (crmApiKeyId && crmApiKeyId === data.id) throw new Error("Cannot delete the CRM Agent API key");
-
     await this.authService.deleteApiKey(data.id);
 
     return { ok: true as const, data: data.id };

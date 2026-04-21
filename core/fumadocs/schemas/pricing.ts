@@ -5,7 +5,6 @@ import { ctaSchema, faqSchema } from "./common";
 
 const pricingRowSchema = z.object({
   label: z.string(),
-  basic: z.union([z.boolean(), z.string()]),
   pro: z.union([z.boolean(), z.string()]),
   enterprise: z.union([z.boolean(), z.string()]),
 });
@@ -51,7 +50,6 @@ const comparisonTablePlanSchema = z.object({
 export type ComparisonTablePlan = z.infer<typeof comparisonTablePlanSchema>;
 
 export const comparisonTablePlansSchema = z.object({
-  basic: comparisonTablePlanSchema,
   pro: comparisonTablePlanSchema,
   enterprise: comparisonTablePlanSchema,
 });

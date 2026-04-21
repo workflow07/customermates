@@ -119,12 +119,6 @@ model User {
   avatarUrl        String?
   agreeToTerms     Boolean            @default(false)
   marketingEmails  Boolean            @default(false)
-  crmApiKeyId      String?
-  crmApiKey        String?
-  agentGatewayToken String?
-  agentHooksToken   String?
-  flyMachineId           String?
-  flyVolumeId            String?
   lastActiveAt           DateTime?
   welcomeEmailSentAt           DateTime?
   trialExpiredOfferSentAt      DateTime?
@@ -657,7 +651,6 @@ model Subscription {
   company               Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
   lemonSqueezyId        String?           @unique
   lemonSqueezyVariantId String?
-  plan                  SubscriptionPlan  @default(pro)
   status                SubscriptionStatus @default(trial)
   quantity              Int?
   trialEndDate          DateTime?
@@ -670,7 +663,6 @@ model Subscription {
 }
 
 enum Resource {
-  aiAgent
   contacts
   deals
   organizations
@@ -967,7 +959,3 @@ enum SubscriptionStatus {
   unPaid
 }
 
-enum SubscriptionPlan {
-  basic
-  pro
-}

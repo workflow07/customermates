@@ -48,9 +48,6 @@ import { AuditLogsStore } from "@/app/[locale]/(protected)/company/components/au
 import { EntityHistoryDetailsModalStore } from "@/app/[locale]/(protected)/company/components/audit-log/entity-history-details-modal.store";
 import { EntityHistoryModalStore } from "@/app/[locale]/(protected)/company/components/audit-log/entity-history-modal.store";
 import { FeedbackModalStore } from "@/app/[locale]/(protected)/company/components/feedback/feedback-modal.store";
-import { AiAgentProvisionModalStore } from "@/app/components/ai-agent-provision-modal.store";
-import { AiAgentEnvironmentVariableModalStore } from "@/app/components/ai-agent-environment-variable-modal.store";
-import { AppSidebarStore } from "@/app/components/app-sidebar.store";
 
 export class RootStore {
   private readonly modalStores = new Set<BaseModalStore<any>>();
@@ -103,9 +100,6 @@ export class RootStore {
   private _entityHistoryDetailsModalStore?: EntityHistoryDetailsModalStore;
   private _entityHistoryModalStore?: EntityHistoryModalStore;
   private _feedbackModalStore?: FeedbackModalStore;
-  private _aiAgentProvisionModalStore?: AiAgentProvisionModalStore;
-  private _aiAgentEnvironmentVariableModalStore?: AiAgentEnvironmentVariableModalStore;
-  private _appSidebarStore?: AppSidebarStore;
   private _customColumnModalStore?: CustomColumnModalStore;
   private _editFiltersModalStore?: EditFiltersModalStore;
 
@@ -312,18 +306,6 @@ export class RootStore {
 
   get feedbackModalStore() {
     return (this._feedbackModalStore ??= new FeedbackModalStore(this));
-  }
-
-  get aiAgentProvisionModalStore() {
-    return (this._aiAgentProvisionModalStore ??= new AiAgentProvisionModalStore(this));
-  }
-
-  get aiAgentEnvironmentVariableModalStore() {
-    return (this._aiAgentEnvironmentVariableModalStore ??= new AiAgentEnvironmentVariableModalStore(this));
-  }
-
-  get appSidebarStore() {
-    return (this._appSidebarStore ??= new AppSidebarStore(this));
   }
 
   registerModalStore = (modalStore: BaseModalStore<any>) => {

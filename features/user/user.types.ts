@@ -3,10 +3,6 @@ import type { UserRoleDto } from "@/features/role/role.types";
 import type { User } from "@/generated/prisma";
 
 type SensitiveUserFields =
-  | "crmApiKeyId"
-  | "crmApiKey"
-  | "agentGatewayToken"
-  | "agentHooksToken"
   | "welcomeEmailSentAt"
   | "trialExpiredOfferSentAt"
   | "trialInactivationReminderSentAt"

@@ -34,17 +34,9 @@ export function PricingComparisonTable({ header, plans, sections }: Props) {
   return (
     <section className="pb-8 w-full">
       <div className="max-w-7xl mx-auto px-4 overflow-x-auto">
-        <AppCard className="min-w-[800px] overflow-hidden">
-          <div className="grid grid-cols-4 gap-0 py-6">
+        <AppCard className="min-w-[600px] overflow-hidden">
+          <div className="grid grid-cols-3 gap-0 py-6">
             <div className="flex items-center px-6 text-x-xl font-semibold">{header}</div>
-
-            <div className="flex flex-col items-center justify-center px-6">
-              <div className="font-semibold text-x-lg text-center mb-3">{plans.basic.name}</div>
-
-              <Button asChild size="sm" variant="secondary">
-                <AppLink href={plans.basic.buttonHref}>{plans.basic.button}</AppLink>
-              </Button>
-            </div>
 
             <div className="flex flex-col items-center justify-center px-6">
               <div className="font-semibold text-x-lg text-primary dark:text-primary text-center mb-3">
@@ -68,12 +60,10 @@ export function PricingComparisonTable({ header, plans, sections }: Props) {
           {sections.map((section, sectionIndex) => (
             <div key={sectionIndex}>
               {sectionIndex > 0 && (
-                <div className="grid grid-cols-4 gap-0 py-3 bg-muted/40">
+                <div className="grid grid-cols-3 gap-0 py-3 bg-muted/40">
                   <div className="flex items-center px-6">
                     <h3 className="font-semibold text-base">{section.title}</h3>
                   </div>
-
-                  <div />
 
                   <div />
 
@@ -82,13 +72,9 @@ export function PricingComparisonTable({ header, plans, sections }: Props) {
               )}
 
               {section.rows.map((row, rowIndex) => (
-                <div key={rowIndex} className="grid grid-cols-4 gap-0 py-3 hover:bg-muted/30 transition-colors">
+                <div key={rowIndex} className="grid grid-cols-3 gap-0 py-3 hover:bg-muted/30 transition-colors">
                   <div className="flex items-center px-6">
                     <span className="text-x-sm text-subdued">{row.label}</span>
-                  </div>
-
-                  <div>
-                    <ComparisonCell value={row.basic} />
                   </div>
 
                   <div>

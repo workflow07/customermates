@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { RefreshCw } from "lucide-react";
-import { SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
+import { SubscriptionStatus } from "@/generated/prisma";
 
 import { useRootStore } from "@/core/stores/root-store.provider";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,7 @@ export const SubscriptionPanel = observer(({ initialSubscription }: Props) => {
   const subscription = subscriptionStore.subscription;
   const statusColor = subscription ? STATUS_COLOR_MAP[subscription.status] : "default";
   const statusLabel = t(`subscription.status.${subscription?.status ?? SubscriptionStatus.trial}`);
-  const planLabel = (subscription?.plan ?? SubscriptionPlan.pro) === SubscriptionPlan.basic ? "Basic" : "Pro";
+  const planLabel = "Pro";
   const showSeats = Boolean(subscription?.quantity);
 
   return (

@@ -118,7 +118,6 @@ export default async function RootLayout({ children }: Props) {
   const isRegistered = user?.email != null;
   let systemTaskCount = 0;
   let company: Company | null = null;
-  let subscriptionPlan: "basic" | "pro" | null = null;
   let subscriptionStatus: SubscriptionStatus | null = null;
   let isAuthenticated = false;
 
@@ -133,7 +132,6 @@ export default async function RootLayout({ children }: Props) {
       ]);
       company = companyResult.data;
       systemTaskCount = systemTaskCountResult.data;
-      subscriptionPlan = subscriptionResult.data?.plan ?? null;
       subscriptionStatus = subscriptionResult.data?.status ?? null;
     }
   }
@@ -160,7 +158,6 @@ export default async function RootLayout({ children }: Props) {
             company={company}
             defaultSidebarOpen={initialSidebarOpen}
             isAuthenticated={isAuthenticated}
-            subscriptionPlan={subscriptionPlan}
             subscriptionStatus={subscriptionStatus}
             systemTaskCount={systemTaskCount}
             user={user}

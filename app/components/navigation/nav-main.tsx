@@ -1,19 +1,12 @@
 "use client";
 
-import type { AppSidebarStore } from "@/app/components/app-sidebar.store";
-import type { Key, SVGProps } from "react";
+import type { SVGProps } from "react";
 
 import NextLink from "next/link";
-import { ChevronRight, Loader2 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -50,10 +43,6 @@ type Props = {
   selectedKey: string | null;
   pathname: string | null;
   onNavigate: (next: string) => void;
-  aiAgentTitles: { openControlUi: string; addEnvironmentVariable: string; reset: string };
-  appSidebarStore?: AppSidebarStore;
-  onProvisionAgent?: () => void;
-  onAiAgentAction?: (key: Key) => void;
 };
 
 type NavMainParentProps = {
@@ -122,66 +111,12 @@ function NavMainParent({ item, pathname, onNavigate }: NavMainParentProps) {
   );
 }
 
-export const NavMain = observer(function NavMain({
-  groups,
-  selectedKey,
-  pathname,
-  onNavigate,
-  aiAgentTitles,
-  appSidebarStore,
-  onProvisionAgent,
-  onAiAgentAction,
-}: Props) {
+export const NavMain = observer(function NavMain({ groups, selectedKey, pathname, onNavigate }: Props) {
   function renderItem(item: NavItem) {
     const isActive = selectedKey === item.key;
 
     if (item.items && item.items.length > 0)
       return <NavMainParent key={item.key} item={item} pathname={pathname} onNavigate={onNavigate} />;
-
-    if (item.key === "ai-agent" && appSidebarStore) {
-      const booting = appSidebarStore.agentBooting;
-      const provisioned = appSidebarStore.agentProvisioned === true;
-
-      if (!provisioned) {
-        return (
-          <SidebarMenuItem key={item.key}>
-            <SidebarMenuButton disabled={booting} tooltip={item.title} onClick={onProvisionAgent}>
-              {booting ? <Loader2 className="size-4 animate-spin" /> : <Icon icon={item.icon} />}
-
-              <span>{item.title}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        );
-      }
-
-      return (
-        <SidebarMenuItem key={item.key}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton disabled={booting} isActive={isActive} tooltip={item.title}>
-                {booting ? <Loader2 className="size-4 animate-spin" /> : <Icon icon={item.icon} />}
-
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="start" side="right">
-              <DropdownMenuItem onClick={() => onAiAgentAction?.("openControlUi")}>
-                {aiAgentTitles.openControlUi}
-              </DropdownMenuItem>
-
-              <DropdownMenuItem onClick={() => onAiAgentAction?.("addEnvironmentVariable")}>
-                {aiAgentTitles.addEnvironmentVariable}
-              </DropdownMenuItem>
-
-              <DropdownMenuItem className="text-destructive" onClick={() => onAiAgentAction?.("reset")}>
-                {aiAgentTitles.reset}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarMenuItem>
-      );
-    }
 
     return (
       <SidebarMenuItem key={item.key}>

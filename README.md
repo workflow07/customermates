@@ -48,8 +48,7 @@ Docs entry points:
 - Webhooks and event-driven integrations
 - n8n workflows and automation support
 - MCP support for agent tooling and structured tool calling
-- AI-agent workflows and managed OpenClaw containers in cloud deployments
-- Cloud-only enterprise features: Audit Logging, Single Sign-On, Managed AI Agent, and Whitelabeling
+- Cloud-only enterprise features: Audit Logging, Single Sign-On, and Whitelabeling
 - Role-based access control for teams
 - Self-hosted deployment with Docker Compose and PostgreSQL
 - Cloud pricing from **€10**
@@ -70,7 +69,6 @@ Customermates supports both cloud and self-hosted deployment models.
 | n8n and automation workflows | ✅ | ✅ |
 | Audit Logging | ✅ | ❌ |
 | Single Sign-On | ✅ | ❌ |
-| Managed AI Agent | ✅ | ❌ |
 | Whitelabeling | ✅ | ❌ |
 
 If you want the full decision guide, see [Self-Hosted CRM vs Cloud CRM](https://customermates.com/docs/self-host-vs-cloud).
@@ -139,7 +137,6 @@ The docs cover:
 - self-hosting and operations
 - API integrations and OpenAPI
 - MCP and n8n
-- OpenClaw and AI agents
 - architecture and security
 
 Start here: [customermates.com/docs](https://customermates.com/docs)

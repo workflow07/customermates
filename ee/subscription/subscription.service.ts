@@ -7,7 +7,7 @@ import {
   listSubscriptionItems,
   updateSubscriptionItem,
 } from "@lemonsqueezy/lemonsqueezy.js";
-import { SubscriptionPlan, SubscriptionStatus } from "@/generated/prisma";
+import { SubscriptionStatus } from "@/generated/prisma";
 
 import type { CountryCode } from "@/generated/prisma";
 
@@ -16,7 +16,6 @@ export abstract class SubscriptionRepo {
     companyId: string;
     lemonSqueezyId?: string;
     lemonSqueezyVariantId?: string;
-    plan?: SubscriptionPlan;
     status?: SubscriptionStatus;
     quantity?: number;
     trialEndDate?: Date;
@@ -47,13 +46,13 @@ export class SubscriptionService {
   }) {
     this.ensureConfigured();
 
-    const monthlyVariantId = process.env.LEMONSQUEEZY_VARIANT_ID_PRO_MONTHLY;
-    const yearlyVariantId = process.env.LEMONSQUEEZY_VARIANT_ID_PRO_YEARLY;
+    const monthlyVariantId = process.env.LEMONSQUEEZY_VARIANT_ID_MONTHLY;
+    const yearlyVariantId = process.env.LEMONSQUEEZY_VARIANT_ID_YEARLY;
     const storeId = process.env.LEMONSQUEEZY_STORE_ID;
 
     if (!storeId) throw new Error("LEMONSQUEEZY_STORE_ID is not configured");
     if (!monthlyVariantId || !yearlyVariantId)
-      throw new Error("LEMONSQUEEZY_VARIANT_ID_PRO_MONTHLY or LEMONSQUEEZY_VARIANT_ID_PRO_YEARLY is not configured");
+      throw new Error("LEMONSQUEEZY_VARIANT_ID_MONTHLY or LEMONSQUEEZY_VARIANT_ID_YEARLY is not configured");
 
     const result = await createCheckout(storeId, yearlyVariantId, {
       checkoutData: {
@@ -114,17 +113,11 @@ export class SubscriptionService {
     const trialEndsAt = attributes.trial_ends_at ? new Date(attributes.trial_ends_at) : undefined;
     const quantity = attributes.first_subscription_item?.quantity;
     const variantId = attributes.variant_id?.toString();
-    const basicVariantIds = [
-      process.env.LEMONSQUEEZY_VARIANT_ID_BASIC_MONTHLY,
-      process.env.LEMONSQUEEZY_VARIANT_ID_BASIC_YEARLY,
-    ].filter((value): value is string => Boolean(value));
-    const plan = variantId && basicVariantIds.includes(variantId) ? SubscriptionPlan.basic : SubscriptionPlan.pro;
 
     await this.subscriptionRepo.upsertSubscription({
       companyId,
       lemonSqueezyId: subscription.data.id,
       lemonSqueezyVariantId: variantId,
-      plan,
       status,
       quantity,
       trialEndDate: trialEndsAt,

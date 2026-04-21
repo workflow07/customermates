@@ -1,19 +1,16 @@
 ---
 title: Architecture & Security
-description: Learn how Customermates CRM is structured and how data isolation, runtime separation, and AI execution security are handled.
+description: Learn how Customermates CRM is structured and how data isolation and external AI access are handled.
 ---
 
 ## A simple overview
 
 Customermates is built so non-technical teams can use it confidently while technical teams still get a robust foundation.  
-You can think of the platform as three clear layers: the application experience, the secure data core, and the isolated AI runtime. This is the right page when you need a high-level view of CRM architecture, data isolation, and how AI execution is separated from the shared application layer.
+You can think of the platform as two clear layers: the application experience and the secure data core. External native AI integration, automation platforms, and custom integrations reach the data core only through authenticated, user-scoped APIs. This is the right page when you need a high-level view of CRM architecture, data isolation, and how external access is scoped.
 
-## How your data and AI runtime are handled
+## How your data is handled
 
-Your CRM data is managed in the core platform with strict access boundaries.  
-For AI workflows, each user gets a secure, managed, sandboxed Docker-based VPS with their own AI agent. That agent can be called either directly or through the Customermates API. When it works against the CRM, it does so with the user’s own API-key-backed permissions rather than broad shared access. This means agent execution is isolated per user and does not run in a shared process with other users.
-
-That design gives you practical protection in daily operations: stronger isolation, clearer control boundaries, and predictable behavior even when many agents are active at the same time.
+Your CRM data is managed in the core platform with strict access boundaries. External integrations (API, MCP, n8n) authenticate with user-scoped API keys, so any automated client runs with the user's own permissions rather than broad shared access.
 
 ## Architecture diagram
 
@@ -23,18 +20,12 @@ flowchart LR
   UA[User A]
   UB[User B]
   C[Customermates CRM]
-  RA[Sandboxed OpenClaw Agent A]
-  RB[Sandboxed OpenClaw Agent B]
 
   UA <--> C
   UB <--> C
-  UA <--> RA
-  UB <--> RB
-  RA <--> C
-  RB <--> C
 "
 />
 
 ## Why this matters for your team
 
-You get a setup that feels simple from the outside, but is designed for trust and control underneath. Business teams can focus on workflows and customer work, while technical stakeholders can rely on clear isolation and managed infrastructure for AI execution. For the integration surfaces built on top of that foundation, continue with [CRM Integrations](/docs/integrations-intro), [Model Context Protocol (MCP)](/docs/mcp), [Permissions & Roles](/docs/features-permissions-roles), or [Webhooks & Events](/docs/features-webhooks-events).
+You get a setup that feels simple from the outside, but is designed for trust and control underneath. Business teams can focus on workflows and customer work, while technical stakeholders can rely on clear tenant isolation and audit trails. For the integration surfaces built on top of that foundation, continue with [CRM Integrations](/docs/integrations-intro), [Model Context Protocol (MCP)](/docs/mcp), [Permissions & Roles](/docs/features-permissions-roles), or [Webhooks & Events](/docs/features-webhooks-events).

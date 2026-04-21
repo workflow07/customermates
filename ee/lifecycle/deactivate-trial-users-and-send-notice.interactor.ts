@@ -1,4 +1,3 @@
-import type { AgentMachineService } from "@/ee/agent/agent-machine.service";
 import type { EmailService } from "@/features/email/email.service";
 
 import { getTranslations } from "next-intl/server";
@@ -12,7 +11,6 @@ import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
 export abstract class DeactivateTrialUsersAndSendNoticeRepo {
   abstract findUsersWithTrialEndedBetween6And7Days(): Promise<User[]>;
   abstract claimTrialInactivationNoticeSent(userId: string, sentAt: Date): Promise<boolean>;
-  abstract clearMachineIdsForUser(userId: string): Promise<void>;
   abstract deactivateUser(userId: string): Promise<void>;
 }
 
@@ -21,7 +19,6 @@ export class DeactivateTrialUsersAndSendNoticeInteractor {
   constructor(
     private repo: DeactivateTrialUsersAndSendNoticeRepo,
     private emailService: EmailService,
-    private machineService: AgentMachineService,
   ) {}
 
   async invoke(): Promise<void> {
@@ -31,10 +28,6 @@ export class DeactivateTrialUsersAndSendNoticeInteractor {
       const claimed = await this.repo.claimTrialInactivationNoticeSent(user.id, new Date());
       if (!claimed) continue;
 
-      if (user.flyMachineId) await this.machineService.destroyMachine(user.flyMachineId);
-      if (user.flyVolumeId) await this.machineService.destroyVolume(user.flyVolumeId);
-
-      await this.repo.clearMachineIdsForUser(user.id);
       await this.repo.deactivateUser(user.id);
 
       const locale = user.displayLanguage === "system" ? ROUTING_DEFAULT_LOCALE : user.displayLanguage;

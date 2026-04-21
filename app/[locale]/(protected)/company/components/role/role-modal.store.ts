@@ -18,7 +18,6 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
         name: "",
         description: "",
         permissions: {
-          aiAgent: { canManage: "no" },
           contacts: { canManage: "no", readAccess: "own" },
           deals: { canManage: "no", readAccess: "own" },
           organizations: { canManage: "no", readAccess: "own" },
@@ -75,7 +74,6 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
       name: "",
       description: "",
       permissions: {
-        aiAgent: { canManage: "no" },
         contacts: { canManage: "no", readAccess: "own" },
         deals: { canManage: "no", readAccess: "own" },
         organizations: { canManage: "no", readAccess: "own" },
@@ -112,7 +110,6 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
     this.setError(undefined);
 
     const permissions: UpsertRoleData["permissions"] = {
-      aiAgent: { canManage: "no" },
       contacts: { canManage: "no", readAccess: "none" },
       deals: { canManage: "no", readAccess: "none" },
       organizations: { canManage: "no", readAccess: "none" },

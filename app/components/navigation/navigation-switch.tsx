@@ -19,7 +19,6 @@ import { useRootStore } from "@/core/stores/root-store.provider";
 type Props = {
   isAuthenticated: boolean;
   company: Company | null;
-  subscriptionPlan: "basic" | "pro" | null;
   subscriptionStatus: SubscriptionStatus | null;
   systemTaskCount: number;
   user: ExtendedUser | null;
@@ -30,7 +29,6 @@ type Props = {
 export function NavigationSwitch({
   isAuthenticated,
   company,
-  subscriptionPlan,
   subscriptionStatus,
   systemTaskCount,
   user,
@@ -78,7 +76,6 @@ export function NavigationSwitch({
     <SidebarProvider defaultOpen={defaultSidebarOpen}>
       <AppSidebar
         company={company}
-        subscriptionPlan={subscriptionPlan}
         subscriptionStatus={subscriptionStatus}
         systemTaskCount={systemTaskCount}
         user={user}

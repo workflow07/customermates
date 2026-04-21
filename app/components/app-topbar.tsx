@@ -32,7 +32,6 @@ type Crumb = { label: string; href?: string; siblings?: Sibling[] };
 
 const GROUP_MAP: Record<string, { group: "overview" | "crm" | "settings" | null; label: string }> = {
   dashboard: { group: "overview", label: "dashboard" },
-  "ai-agent": { group: "overview", label: "aiAgent" },
   tasks: { group: "overview", label: "tasks" },
   contacts: { group: "crm", label: "contacts" },
   organizations: { group: "crm", label: "organizations" },

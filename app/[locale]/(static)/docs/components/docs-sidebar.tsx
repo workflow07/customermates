@@ -9,7 +9,6 @@ import { observer } from "mobx-react-lite";
 import {
   ArrowLeft,
   BookOpen,
-  Bot,
   GitCompare,
   Network,
   PlugZap,
@@ -128,12 +127,6 @@ export function useDocGroups(): DocSidebarGroup[] {
         },
         { key: "integrations-openapi", url: "/docs/openapi", title: t("DocsSidebar.openapi"), icon: Webhook },
         { key: "integrations-mcp", url: "/docs/mcp", title: t("DocsSidebar.mcp"), icon: PlugZap },
-        {
-          key: "integrations-openclaw-ai-agents",
-          url: "/docs/openclaw-and-ai-agents",
-          title: t("DocsSidebar.openClawAiAgents"),
-          icon: Bot,
-        },
         { key: "integrations-n8n", url: "/docs/n8n", title: t("DocsSidebar.n8n"), icon: Workflow },
       ],
     },

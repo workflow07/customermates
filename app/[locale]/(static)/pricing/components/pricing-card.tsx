@@ -11,11 +11,8 @@ import { Icon } from "@/components/shared/icon";
 import { AppLink } from "@/components/shared/app-link";
 
 type Props = {
-  annualPrice: number;
   card: PricingCard;
-  isAnnual: boolean;
-  planType: "basic" | "pro" | "static";
-  monthlyPrice: number;
+  displayPrice: string;
 };
 
 function mapButtonVariant(
@@ -27,9 +24,7 @@ function mapButtonVariant(
   return "default";
 }
 
-export function PricingCardComponent({ annualPrice, card, isAnnual, monthlyPrice, planType }: Props) {
-  const dynamicPrice = planType !== "static" ? `${Math.round(isAnnual ? annualPrice / 12 : monthlyPrice)}` : card.price;
-
+export function PricingCardComponent({ card, displayPrice }: Props) {
   const transformedFeatures = card.features.map((text) => ({
     icon: Check,
     text,
@@ -57,7 +52,7 @@ export function PricingCardComponent({ annualPrice, card, isAnnual, monthlyPrice
 
         <div className="mb-6">
           <div>
-            <span className="text-x-3xl">{dynamicPrice}</span>
+            <span className="text-x-3xl">{displayPrice}</span>
 
             {card.priceSubtext && <span className="ml-1 text-muted-foreground">{card.priceSubtext}</span>}
           </div>

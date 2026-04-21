@@ -1,6 +1,6 @@
 ---
 title: "Model Context Protocol (MCP): KI-Anbindung"
-description: Verbinde KI-Agenten, LLM-Tool-Clients und MCP-Runtimes über den MCP-Endpunkt mit dem Customermates CRM.
+description: Verbinde native KI-Integration, LLM-Tool-Clients und MCP-Runtimes über den MCP-Endpunkt mit dem Customermates CRM.
 ---
 
 ## MCP-Endpunkt
@@ -15,7 +15,7 @@ Der beabsichtigte Unterschied ist klar:
 - Nutze [OpenAPI 3.1.0](/docs/openapi), wenn du kanonische HTTP-Dokumentation, Payload-Schemas und direkte API-Integrationen brauchst.
 - Nutze MCP, wenn ein LLM oder Tool-Client Fähigkeiten entdecken, das passende Werkzeug auswählen und Aktionen auf Tool-Ebene ausführen soll.
 
-Praktisch bedeutet das: OpenAPI ist die Quelle für exakte Endpoint- und Schema-Details, während MCP die höhere Abstraktion für Workflows mit KI-Agenten ist.
+Praktisch bedeutet das: OpenAPI ist die Quelle für exakte Endpoint- und Schema-Details, während MCP die höhere Abstraktion für Workflows mit native KI-Integration ist.
 
 OpenAPI ist ideal, wenn ein Entwickler oder ein Integrationsdienst schon genau weiß, welchen Endpoint er braucht. MCP wird dann stark, wenn der Client zuerst über die Nutzerabsicht nachdenken, das richtige Werkzeug auswählen und mit einer strukturierten Tool-Oberfläche statt mit einer großen rohen API arbeiten soll.
 
@@ -72,7 +72,7 @@ Gerade in Agent-Flows ist das nützlich, wenn das Modell das richtige Tool ausw�
 
 ## Beispiel für Skill-Guidance
 
-Der folgende Block orientiert sich eng an der Customermates-Skill, die in OpenClaw verwendet wird, nur ohne die ingressspezifischen Hinweise:
+Der folgende Block zeigt eine beispielhafte Anleitung, die du deinem MCP-Client mitgeben kannst, um CRM-basiertes Reasoning konsistent zu halten:
 
 ```md
 # Customermates CRM

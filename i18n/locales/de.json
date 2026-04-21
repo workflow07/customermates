@@ -1,28 +1,4 @@
 {
-  "AiAgent": {
-    "addEnvironmentVariable": "Umgebungsvariable hinzufügen",
-    "agentSetup": {
-      "anthropic": "Anthropic API-Schlüssel",
-      "openai": "OpenAI API-Schlüssel",
-      "provisioningHint": "Indem du fortfährst, stimmst du der Datenschutzerklärung und den Nutzungsbedingungen zu. Weitere API-Provider kannst du später manuell in der OpenClaw Control UI hinzufügen.",
-      "skip": "Anderen Anbieter später konfigurieren",
-      "submit": "Speichern und fortfahren",
-      "title": "Verbinde deine AI-Provider"
-    },
-    "environmentVariable": {
-      "key": "Schlüssel",
-      "restartHint": "Das Hinzufügen oder Ändern von Umgebungsvariablen startet den Container neu. Dies kann bis zu 10 Minuten dauern.",
-      "title": "Umgebungsvariable hinzufügen",
-      "value": "Wert",
-      "valuePlaceholder": "Variablenwert"
-    },
-    "openControlUi": "Chat öffnen",
-    "provision": "Agent bereitstellen",
-    "provisionPending": "Die Bereitstellung wurde im Hintergrund gestartet und kann beim ersten Setup bis zu 10 Minuten dauern. Bitte versuche danach erneut, den AI-Agenten zu öffnen.",
-    "reset": "Agent zurücksetzen",
-    "resetConfirmMessage": "Dies löscht unwiderruflich den gesamten Chatverlauf, alle Erinnerungen und erlernten Skills. Der Agent startet komplett neu.",
-    "resetConfirmTitle": "Agent zurücksetzen"
-  },
   "ApiKeyModal": {
     "created": "Erstellt",
     "expires": "Läuft ab",
@@ -420,9 +396,6 @@
       "pageSize": "Seitengröße",
       "password": "Passwort",
       "permissions": {
-        "aiAgent": {
-          "canManage": "Verwaltungsrechte"
-        },
         "api": {
           "canManage": "Verwaltungsrechte",
           "readAccess": "Leserechte"
@@ -813,7 +786,6 @@
     "mcp": "MCP",
     "n8n": "N8N",
     "openapi": "OpenAPI 3.1.0",
-    "openClawAiAgents": "OpenClaw & KI-Agenten",
     "organizationSettings": "Organisationseinstellungen",
     "permissionsRoles": "Berechtigungen & Rollen",
     "reportAndStatistics": "Reports & Statistiken",
@@ -950,7 +922,6 @@
     "addService": "Service hinzufügen",
     "addTask": "Aufgabe hinzufügen",
     "affiliate": "Affiliate Programm",
-    "aiAgent": "KI-Agent",
     "apiDocs": "API Dokumentation",
     "automation": "Automatisierung",
     "blog": "Blog",
@@ -1036,7 +1007,6 @@
     "readOwn": "Zugewiesen",
     "resourceHeader": "Ressource",
     "resources": {
-      "aiAgent": "KI-Agent",
       "api": "API & Webhooks",
       "auditLog": "Audit-Log",
       "company": "Unternehmen",
