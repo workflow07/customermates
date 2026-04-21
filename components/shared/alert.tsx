@@ -8,10 +8,8 @@ const alertColorVariants = cva("[&_a]:text-inherit [&_a]:underline", {
   variants: {
     color: {
       default: "",
-      success:
-        "border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 [&>svg]:text-emerald-600 dark:[&>svg]:text-emerald-400",
-      warning:
-        "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400",
+      success: "border-success/30 bg-success/10 text-success [&>svg]:text-success",
+      warning: "border-warning/30 bg-warning/10 text-warning [&>svg]:text-warning",
       danger: "border-destructive/30 bg-destructive/10 text-destructive [&>svg]:text-destructive",
       primary: "border-primary/30 bg-primary/10 text-primary [&>svg]:text-primary",
     },

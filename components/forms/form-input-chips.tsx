@@ -18,7 +18,7 @@ type Props = {
   placeholder?: string;
   required?: boolean;
   allowMultiple?: boolean;
-  renderChip?: (value: string) => ReactNode;
+  renderChip?: (value: string, endContent: ReactNode) => ReactNode;
   chipColor?: ChipColor;
   value?: string;
   onValueChange?: (value: string | undefined) => void;
@@ -119,7 +119,7 @@ export const FormInputChips = observer(
             const removeButton = (
               <button
                 aria-label="Remove"
-                className="-mr-0.5 opacity-50 hover:opacity-100 transition-opacity"
+                className="opacity-50 hover:opacity-100 transition-opacity"
                 tabIndex={-1}
                 type="button"
                 onClick={() => handleRemove(item)}
@@ -128,11 +128,7 @@ export const FormInputChips = observer(
               </button>
             );
             const chip = renderChip ? (
-              <span className="inline-flex items-center gap-0.5">
-                {renderChip(item)}
-
-                {removeButton}
-              </span>
+              renderChip(item, removeButton)
             ) : (
               <AppChip endContent={removeButton} variant={chipColor ? chipColor : "secondary"}>
                 {item}

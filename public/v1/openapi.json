@@ -1190,7 +1190,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -1320,7 +1321,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -1392,7 +1394,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -1451,7 +1454,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2300,7 +2304,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2430,7 +2435,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -2502,7 +2508,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -2561,7 +2568,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3066,7 +3074,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3196,7 +3205,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -3268,7 +3278,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -3327,7 +3338,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -4996,7 +5008,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -5126,7 +5139,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -5198,7 +5212,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -5257,7 +5272,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6106,7 +6122,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6236,7 +6253,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -6308,7 +6326,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6367,7 +6386,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -6872,7 +6892,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -7002,7 +7023,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -7074,7 +7096,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -7133,7 +7156,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -8912,7 +8936,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -9042,7 +9067,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -9114,7 +9140,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -9173,7 +9200,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10060,7 +10088,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10190,7 +10219,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -10262,7 +10292,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10321,7 +10352,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10864,7 +10896,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -10994,7 +11027,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -11066,7 +11100,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -11125,7 +11160,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -12790,7 +12826,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -12920,7 +12957,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -12992,7 +13030,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -13051,7 +13090,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -13878,7 +13918,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14008,7 +14049,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -14080,7 +14122,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14139,7 +14182,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14622,7 +14666,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14752,7 +14797,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -14824,7 +14870,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -14883,7 +14930,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16398,7 +16446,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16528,7 +16577,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -16600,7 +16650,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -16659,7 +16710,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17469,7 +17521,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17599,7 +17652,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -17671,7 +17725,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -17730,7 +17785,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18196,7 +18252,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18326,7 +18383,8 @@
                                             "secondary",
                                             "destructive",
                                             "success",
-                                            "warning"
+                                            "warning",
+                                            "info"
                                           ]
                                         },
                                         "isDefault": {
@@ -18398,7 +18456,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {
@@ -18457,7 +18516,8 @@
                                       "secondary",
                                       "destructive",
                                       "success",
-                                      "warning"
+                                      "warning",
+                                      "info"
                                     ]
                                   },
                                   "allowMultiple": {

@@ -36,7 +36,7 @@ export function FormAutocompleteAvatar({ items = [], onChipClick, ...props }: Pr
           <AppChip
             key={String(item.key ?? (item.data ? item.data.id : ""))}
             startContent={
-              <Avatar className="mr-1 size-4">
+              <Avatar className="size-4">
                 {item.data?.avatarUrl && <AvatarImage src={item.data.avatarUrl} />}
 
                 <AvatarFallback className="text-[8px]">

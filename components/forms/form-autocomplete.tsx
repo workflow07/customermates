@@ -193,7 +193,7 @@ export const FormAutocomplete = observer(
           endContent: (
             <span
               aria-label="Remove"
-              className="ml-0.5 inline-flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
+              className="inline-flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
               role="button"
               tabIndex={-1}
               onClick={(e) => {

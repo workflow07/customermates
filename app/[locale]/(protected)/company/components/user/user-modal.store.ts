@@ -55,27 +55,28 @@ export class UserModalStore extends BaseModalStore<AdminUpdateUserDetailsData> {
   loadById = async (id: string) => {
     this.fetchedUser = null;
     this.setIsLoading(true);
-    this.open();
 
     try {
       const [{ user }, roles] = await Promise.all([getUserByIdAction({ id }), getRolesAction()]);
 
       this.rootStore.rolesStore.setItems(roles);
 
-      if (user) {
-        this.fetchedUser = user;
-        this.setError(undefined);
+      if (!user) return;
 
-        this.onInitOrRefresh({
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          country: user.country,
-          status: user.status as typeof Status.active | typeof Status.inactive,
-          avatarUrl: user.avatarUrl,
-          roleId: user.roleId ?? "",
-        });
-      } else this.close();
+      this.fetchedUser = user;
+      this.setError(undefined);
+
+      this.onInitOrRefresh({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        country: user.country,
+        status: user.status as typeof Status.active | typeof Status.inactive,
+        avatarUrl: user.avatarUrl,
+        roleId: user.roleId ?? "",
+      });
+
+      this.open();
     } finally {
       this.setIsLoading(false);
     }

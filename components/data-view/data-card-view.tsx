@@ -11,6 +11,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DataCardBody } from "./data-card-body";
 import { cn } from "@/lib/utils";
 
+import { isInteractiveClick } from "./is-interactive-click";
+
 type Props<E extends HasId> = {
   store: BaseDataViewStore<E>;
   columns: ColumnDef<E>[];
@@ -46,7 +48,10 @@ export const DataCardView = observer(function DataCardView<E extends HasId>({
           <Card
             key={row.id}
             className={cn("gap-3 py-4", onCardClick && "cursor-pointer hover:bg-muted/40 transition-colors")}
-            onClick={() => onCardClick?.(row.original)}
+            onClick={(e) => {
+              if (isInteractiveClick(e)) return;
+              onCardClick?.(row.original);
+            }}
           >
             <CardContent className="px-4">
               {renderCard ? renderCard(row.original) : <DataCardBody row={row} />}

@@ -63,8 +63,6 @@ export const AppModal = observer(function AppModal({
         <DialogContent
           className={cn(
             "p-0 gap-0 border-0 bg-transparent shadow-none",
-            "*:data-[slot=dialog-close]:-top-10 *:data-[slot=dialog-close]:right-0",
-            "*:data-[slot=dialog-close]:z-10 *:data-[slot=dialog-close]:text-white *:data-[slot=dialog-close]:opacity-80 *:data-[slot=dialog-close]:hover:opacity-100",
             "flex flex-col max-h-[90vh]",
             sizeClassMap[size],
             className,

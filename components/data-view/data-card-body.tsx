@@ -25,7 +25,9 @@ export function DataCardBody<E extends HasId>({ row, maxCells, className }: Prop
   return (
     <div className={cn("space-y-2", className)}>
       {nameCell && (
-        <div className="text-sm font-medium">{flexRender(nameCell.column.columnDef.cell, nameCell.getContext())}</div>
+        <div className="text-sm font-medium truncate">
+          {flexRender(nameCell.column.columnDef.cell, nameCell.getContext())}
+        </div>
       )}
 
       {labelValueCells.map((cell) => {

@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 const chipVariants = cva("", {
   variants: {
     size: {
-      sm: "px-2 py-0.5 text-[11px] h-5",
-      md: "px-2 py-0.5 text-xs h-6",
-      lg: "px-2.5 py-0.5 text-sm h-7",
+      sm: "px-1.5 py-0.5 text-[11px] h-[22px] [&>svg]:size-3",
+      md: "px-2 py-0.5 text-xs h-[26px] [&>svg]:size-3.5",
+      lg: "px-2.5 py-0.5 text-sm h-[30px] [&>svg]:size-4",
     },
   },
   defaultVariants: {

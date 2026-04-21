@@ -78,7 +78,7 @@ export const CustomFieldEditor = observer(function CustomFieldEditor({
           chipColor={column.options?.color}
           id={inputId}
           label={formLabel}
-          renderChip={(url) => {
+          renderChip={(url, endContent) => {
             let startContent: React.ReactNode;
             let displayLabel: string;
 
@@ -86,21 +86,33 @@ export const CustomFieldEditor = observer(function CustomFieldEditor({
               const parsedUrl = new URL(url);
               if (parsedUrl.protocol === "mailto:") {
                 displayLabel = parsedUrl.pathname;
-                startContent = <Icon className="mr-0.5" icon={Mail} size="sm" />;
+                startContent = (
+                  <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+                    <Icon icon={Mail} size="md" />
+                  </span>
+                );
               } else if (parsedUrl.protocol === "tel:") {
                 displayLabel = parsedUrl.pathname;
-                startContent = <Icon className="mr-0.5" icon={Phone} size="sm" />;
+                startContent = (
+                  <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+                    <Icon icon={Phone} size="md" />
+                  </span>
+                );
               } else {
                 displayLabel = parsedUrl.hostname;
-                startContent = <Favicon className="mr-0.5 rounded-full" value={url} />;
+                startContent = <Favicon className="rounded-full" size={16} value={url} />;
               }
             } catch {
               displayLabel = url;
-              startContent = <Favicon className="mr-0.5 rounded-full" value={url} />;
+              startContent = <Favicon className="rounded-full" size={16} value={url} />;
             }
 
             return (
-              <AppChip startContent={startContent} variant={column.options?.color ? column.options.color : "secondary"}>
+              <AppChip
+                endContent={endContent}
+                startContent={startContent}
+                variant={column.options?.color ? column.options.color : "secondary"}
+              >
                 {displayLabel}
               </AppChip>
             );

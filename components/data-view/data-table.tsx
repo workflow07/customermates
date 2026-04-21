@@ -14,6 +14,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type { Prisma } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
 
+import { isInteractiveClick } from "./is-interactive-click";
+
 type Props<E extends HasId> = {
   store: BaseDataViewStore<E>;
   columns: ColumnDef<E>[];
@@ -71,7 +73,11 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
     [store],
   );
 
-  const allColumns = useMemo(() => [selectionColumn, ...columns], [selectionColumn, columns]);
+  const canBulkAct = Boolean(store.entityType);
+  const allColumns = useMemo(
+    () => (canBulkAct ? [selectionColumn, ...columns] : columns),
+    [canBulkAct, selectionColumn, columns],
+  );
 
   const table = useReactTable<E>({
     data: store.items,
@@ -129,10 +135,10 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
                   style={liveWidth ? { width: liveWidth, minWidth: liveWidth, maxWidth: liveWidth } : undefined}
                 >
                   {header.isPlaceholder ? null : (
-                    <div className="flex items-center gap-1">
+                    <div className="flex min-w-0 items-center gap-1 overflow-hidden">
                       {canSort ? (
                         <Button
-                          className="-ml-2 h-8 font-medium"
+                          className="-ml-2 h-8 min-w-0 shrink justify-start !px-2 font-medium uppercase tracking-wide text-muted-foreground"
                           size="xs"
                           variant="ghost"
                           onClick={() => {
@@ -144,18 +150,22 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
                             store.setQueryOptions({ sortDescriptor: { field: fieldId, direction: nextDirection } });
                           }}
                         >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          <span className="min-w-0 truncate">
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                          </span>
 
                           {sorted === "asc" ? (
-                            <ArrowUp className="size-3" />
+                            <ArrowUp className="size-3 shrink-0" />
                           ) : sorted === "desc" ? (
-                            <ArrowDown className="size-3" />
+                            <ArrowDown className="size-3 shrink-0" />
                           ) : (
-                            <ChevronsUpDown className="size-3 opacity-50" />
+                            <ChevronsUpDown className="size-3 shrink-0 opacity-50" />
                           )}
                         </Button>
                       ) : (
-                        flexRender(header.column.columnDef.header, header.getContext())
+                        <span className="min-w-0 truncate">
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                        </span>
                       )}
                     </div>
                   )}
@@ -193,7 +203,10 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
               key={row.id}
               className={cn(onRowClick && "cursor-pointer")}
               data-state={store.selectedIds.has(row.original.id) ? "selected" : undefined}
-              onClick={() => onRowClick?.(row.original)}
+              onClick={(e) => {
+                if (isInteractiveClick(e)) return;
+                onRowClick?.(row.original);
+              }}
             >
               {row.getVisibleCells().map((cell) => {
                 const isSelectionCell = cell.column.id === "__select";
@@ -202,7 +215,7 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
                 return (
                   <TableCell key={cell.id} className={isSelectionCell ? "w-10" : undefined}>
                     {persistedWidth != null && !isSelectionCell ? (
-                      <div className="overflow-hidden" style={{ width: persistedWidth - 24 }}>
+                      <div className="truncate" style={{ width: persistedWidth - 24 }}>
                         {content}
                       </div>
                     ) : (

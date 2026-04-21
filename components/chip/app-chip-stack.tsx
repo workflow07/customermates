@@ -192,10 +192,10 @@ export function AppChipStack<T extends ChipStackItem>({
   return (
     <div
       ref={containerRef}
-      className="flex min-w-0 overflow-hidden flex-nowrap whitespace-nowrap"
+      className="relative flex min-w-0 overflow-hidden flex-nowrap whitespace-nowrap"
       style={{ gap: GAP_PX, maxWidth }}
     >
-      <div aria-hidden className="absolute -z-50 opacity-0 pointer-events-none">
+      <div aria-hidden className="absolute left-0 top-0 -z-50 opacity-0 pointer-events-none">
         <div
           ref={measurerRef}
           className="flex flex-nowrap"

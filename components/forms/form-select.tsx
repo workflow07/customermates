@@ -66,7 +66,7 @@ export const FormSelect = observer(
 
           <SelectContent>
             {items?.map((item) => (
-              <SelectItem key={item.value} disabled={item.disabled} value={item.value}>
+              <SelectItem key={item.value} disabled={item.disabled} textValue={item.label} value={item.value}>
                 {item.color ? <AppChip variant={item.color}>{item.label}</AppChip> : item.label}
               </SelectItem>
             ))}

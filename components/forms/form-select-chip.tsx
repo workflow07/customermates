@@ -72,7 +72,12 @@ export const FormSelectChip = observer(
 
           <SelectContent>
             {itemsArray.map((item) => (
-              <SelectItem key={item.key} disabled={disabledSet?.has(item.key)} value={item.key}>
+              <SelectItem
+                key={item.key}
+                disabled={disabledSet?.has(item.key)}
+                textValue={translateFn(item.key)}
+                value={item.key}
+              >
                 <AppChip variant={item.color ?? "secondary"}>{translateFn(item.key)}</AppChip>
               </SelectItem>
             ))}

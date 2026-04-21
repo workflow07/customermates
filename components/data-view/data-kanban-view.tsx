@@ -103,7 +103,7 @@ function KanbanColumn({
   const { isOver, setNodeRef } = useDroppable({ id });
   return (
     <div className={cn("flex w-72 shrink-0 flex-col", !isLast && "border-r border-border pr-4")}>
-      <div className="sticky top-0 z-10 flex items-center gap-2 bg-background py-2">
+      <div className="sticky top-0 z-10 -mx-4 flex w-auto items-center gap-2 bg-background/70 backdrop-blur-md px-4 py-2">
         {option ? (
           <AppChip size="sm" variant={option.color}>
             <span className="truncate">

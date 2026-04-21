@@ -34,7 +34,7 @@ function getInitials(firstName: string, lastName: string) {
 export function AvatarStack<T extends AvatarStackItem>({
   items,
   maxVisible = 3,
-  size = "sm",
+  size = "default",
   className = "",
   onAvatarClick,
 }: Props<T>) {
@@ -60,11 +60,15 @@ export function AvatarStack<T extends AvatarStackItem>({
     >
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <div className="flex -space-x-2 outline-none" tabIndex={-1} onFocus={(e) => e.target.blur()}>
+          <div
+            className="flex -space-x-2 outline-none [&>[data-slot=avatar]:not(:last-child)]:mask-[radial-gradient(circle_16px_at_calc(100%+6px)_50%,transparent_99%,black_100%)]"
+            tabIndex={-1}
+            onFocus={(e) => e.target.blur()}
+          >
             {visibleItems.map((item) => {
               const name = `${item.firstName} ${item.lastName}`.trim();
               return (
-                <Avatar key={item.id} className="ring-2 ring-background" size={size}>
+                <Avatar key={item.id} className="size-7" size={size}>
                   {item.avatarUrl && <AvatarImage alt={name} src={item.avatarUrl} />}
 
                   <AvatarFallback>{getInitials(item.firstName, item.lastName)}</AvatarFallback>
@@ -73,7 +77,7 @@ export function AvatarStack<T extends AvatarStackItem>({
             })}
 
             {remainingCount > 0 && (
-              <Avatar className="ring-2 ring-background" size={size}>
+              <Avatar className="size-7" size={size}>
                 <AvatarFallback>+{remainingCount}</AvatarFallback>
               </Avatar>
             )}
