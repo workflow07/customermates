@@ -4,6 +4,7 @@ import type { RootStore } from "@/core/stores/root.store";
 import type { CustomColumnOption, CustomColumnDto } from "@/features/custom-column/custom-column.schema";
 
 import { action, makeObservable, toJS } from "mobx";
+import { cloneDeep } from "lodash";
 import { CustomColumnType, EntityType, Currency, Resource } from "@/generated/prisma";
 
 import { type ChipColor } from "@/constants/chip-colors";
@@ -106,14 +107,14 @@ export class CustomColumnModalStore extends BaseModalStore<UpsertCustomColumnDat
   };
 
   changeType = (type: CustomColumnType) => {
-    this.onInitOrRefresh(
-      this.createFormData({
-        type,
-        entityType: this.form.entityType,
-        id: this.form.id,
-        label: this.form.label,
-      }),
-    );
+    this.form = this.createFormData({
+      type,
+      entityType: this.form.entityType,
+      id: this.form.id,
+      label: this.form.label,
+    });
+    this.savedState = cloneDeep(this.form);
+    this.error = undefined;
   };
 
   toggleDefaultOption = (option: CustomColumnOption) => {

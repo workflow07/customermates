@@ -33,6 +33,19 @@ export const heroSchema = z.object({
 });
 export type Hero = z.infer<typeof heroSchema>;
 
+export const howItWorksStepSchema = z.object({
+  n: z.string(),
+  title: z.string(),
+  description: z.string(),
+});
+
+export const howItWorksSchema = z.object({
+  eyebrow: z.string(),
+  title: z.string(),
+  steps: z.array(howItWorksStepSchema),
+});
+export type HowItWorks = z.infer<typeof howItWorksSchema>;
+
 export const pricingTitleSchema = z.object({
   subtitle: z.string(),
   title: z.string(),
@@ -55,6 +68,7 @@ export const homepageSchema = frontmatterSchema.extend({
   faq: faqSchema,
   features: featuresSchema,
   hero: heroSchema,
+  howItWorks: howItWorksSchema.optional(),
   pricing: pricingDataSchema.optional(),
   pricingTitle: pricingTitleSchema.optional(),
   rootMetadata: rootMetadataSchema,

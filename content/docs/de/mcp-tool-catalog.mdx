@@ -3,15 +3,15 @@ title: MCP-Tool-Katalog
 description: Jedes Tool, das Customermates über MCP exponiert, gruppiert nach Oberfläche, mit Sicherheits-Flags und Einzeiler-Zweck.
 ---
 
-**TL;DR** — 57 Tools für Entitäten, Widgets, Webhooks, Custom Columns und Admin. Jedes destruktive Tool ist geflaggt und startet die Beschreibung mit `IRREVERSIBLE`. Jedes Tool, das ein Relationship-Array ersetzt, warnt und verweist auf `link_entities` / `unlink_entities`.
+57 Tools für Entitäten, Widgets, Webhooks, Custom Columns und Admin. Jedes destruktive Tool ist geflaggt und startet die Beschreibung mit `IRREVERSIBLE`. Jedes Tool, das ein Relationship-Array ersetzt, warnt und verweist auf `link_entities` / `unlink_entities`.
 
 ## Wie diese Seite zu lesen ist
 
 Drei Flags pro Tool:
 
-- **Read** — keine Mutation.
-- **Destructive** — nicht rückgängig.
-- **Idempotent** — zweimal derselbe Call = derselbe State.
+- **Read**: keine Mutation.
+- **Destructive**: nicht rückgängig.
+- **Idempotent**: zweimal derselbe Call = derselbe State.
 
 Das volle JSON-Schema jedes Tools liegt live an `POST /api/v1/mcp` mit `method: "tools/list"`.
 
@@ -26,10 +26,10 @@ Ein Set Tools arbeitet gegen alle fünf Entity-Typen (contact, organization, dea
 | `count_entity` | ✓ | | Günstiges Total mit optionalen Filtern. |
 | `search_all_entities` | ✓ | | Freitext über alle fünf Entitäten in einem Call. |
 | `get_entities` | ✓ | | Batch-Fetch per ID; Typen mischbar. |
-| `update_entity_notes` | | | Markdown-Notes ersetzen, 1–100 Records. |
+| `update_entity_notes` | | | Markdown-Notes ersetzen, 1 bis 100 Records. |
 | `append_entity_notes` | | | Markdown anhängen, ohne zu überschreiben. Leerzeile zwischen Alt und Neu. |
 | `update_entity_custom_fields` | | | Per-Column-Merge: nur übergebene Spalten ändern sich. `value: null` leert. |
-| `delete_entities` | | ✓ | IRREVERSIBLE Löschen von 1–100 Records per ID. |
+| `delete_entities` | | ✓ | IRREVERSIBLE Löschen von 1 bis 100 Records per ID. |
 | `link_entities` | | | IDs zu einer Beziehung hinzufügen, ohne andere zu berühren. |
 | `unlink_entities` | | | IDs aus einer Beziehung entfernen, ohne andere zu berühren. |
 
@@ -112,6 +112,6 @@ Plus:
 
 ## Weiter
 
-- [Setup-Prompt](/docs/setup-ai-assistant)
-- [Filter-Syntax](/docs/filter-syntax)
-- [Webhook-Events](/docs/webhook-events)
+- [Claude verbinden](/docs/mcp-connect-claude): Setup-Prompt einfügen und ein Tool probieren.
+- [Filter-Syntax](/docs/filter-syntax): jeder Operator mit Beispielen.
+- [Webhooks](/docs/webhooks): voller Event-Katalog.

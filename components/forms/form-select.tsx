@@ -28,10 +28,11 @@ type Props = {
   children?: ReactNode;
   className?: string;
   containerClassName?: string;
+  onValueChange?: (value: string) => void;
 };
 
 export const FormSelect = observer(
-  ({ id, label, placeholder, required, items, children, className, containerClassName }: Props) => {
+  ({ id, label, placeholder, required, items, children, className, containerClassName, onValueChange }: Props) => {
     const store = useAppForm();
     const raw = store?.getValue(id);
     const value = raw == null ? "" : String(raw);
@@ -52,7 +53,7 @@ export const FormSelect = observer(
         <Select
           disabled={store?.isDisabled}
           value={value || undefined}
-          onValueChange={(next) => store?.onChange(id, next)}
+          onValueChange={(next) => (onValueChange ? onValueChange(next) : store?.onChange(id, next))}
         >
           <SelectTrigger aria-invalid={hasError} className={cn("w-full", className)} id={id}>
             <SelectValue placeholder={placeholder ?? " "}>

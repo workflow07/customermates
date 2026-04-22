@@ -69,4 +69,5 @@ export const pricingSchema = frontmatterSchema.extend({
   faq: faqSchema,
   pricing: pricingDataSchema,
   title: z.string(),
+  titleAccent: z.string().optional(),
 });

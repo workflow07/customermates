@@ -3,24 +3,24 @@ title: Architektur und Sicherheit
 description: Wie Customermates gebaut ist, wie Daten isoliert sind, und wie externer KI-Zugriff kontrolliert wird.
 ---
 
-**TL;DR** — Single-Tenant-pro-Company-Datenmodell, auf jeder Ebene erzwungen. Postgres-Row-Isolation per Company-Scope. API-Keys tragen User-Identität. Agents sehen nur das, was der Owner-User sehen darf.
+Single-Tenant-pro-Company-Datenmodell, auf jeder Ebene erzwungen. Postgres-Row-Isolation per Company-Scope. API-Keys tragen User-Identität. Agents sehen nur das, was der Owner-User sehen darf.
 
 ## Stack
 
-- **Next.js 16** (App Router, Turbopack) — Web-App und API.
-- **PostgreSQL** — Primary Datastore. JSONB für Custom-Column-Werte und Webhook-Payloads.
-- **Prisma** — ORM und Migrationen.
-- **better-auth** — Sessions, Social-Login, API-Keys.
-- **mcp-handler** — Model-Context-Protocol-Endpoint.
+- **Next.js 16** (App Router, Turbopack): Web-App und API.
+- **PostgreSQL**: Primary Datastore. JSONB für Custom-Column-Werte und Webhook-Payloads.
+- **Prisma**: ORM und Migrationen.
+- **better-auth**: Sessions, Social-Login, API-Keys.
+- **mcp-handler**: Model-Context-Protocol-Endpoint.
 - **TypeScript** durchgängig, Zod-validiert an jeder Grenze.
 
 ## Tenancy
 
 Jeder Record gehört zu einer **Company**. Die Company-ID wird an drei Stellen erzwungen:
 
-1. **App-Layer** — jeder Interactor löst den aktuellen User auf Company auf und filtert danach.
-2. **Prisma-Layer** — Queries enthalten `companyId` in jedem `where`.
-3. **Decorator-Layer** — `@TenantInteractor` stellt sicher, dass Interactors, die Scope vergessen, zur Laufzeit werfen.
+1. **App-Layer**: jeder Interactor löst den aktuellen User auf Company auf und filtert danach.
+2. **Prisma-Layer**: Queries enthalten `companyId` in jedem `where`.
+3. **Decorator-Layer**: `@TenantInteractor` stellt sicher, dass Interactors, die Scope vergessen, zur Laufzeit werfen.
 
 Cross-Tenant-Reads sind über die Public-Oberfläche nicht möglich. Es gibt keinen Admin-Panel, das Scope umgeht.
 
@@ -28,8 +28,8 @@ Cross-Tenant-Reads sind über die Public-Oberfläche nicht möglich. Es gibt kei
 
 Drei Wege:
 
-- **Session-Cookie** (UI) — signed, http-only, `Secure` unter HTTPS.
-- **API-Key im `x-api-key`** — 64-Zeichen-Token, SHA-256-gehasht at-rest, an User gebunden.
+- **Session-Cookie** (UI): signed, http-only, `Secure` unter HTTPS.
+- **API-Key im `x-api-key`**: 64-Zeichen-Token, SHA-256-gehasht at-rest, an User gebunden.
 - **Social-Provider** via better-auth.
 
 Alle drei lösen auf denselben User- und Company-Kontext auf. API-Keys haben ein Display-Präfix für die Erkennung in Audit-Logs.
@@ -45,7 +45,7 @@ API-Keys erben die Rechte ihres Users. Keine separaten Key-Level-ACLs heute.
 MCP-Calls sind durch denselben API-Key-Check gegated. Wenn eine KI über MCP handelt:
 
 - Sie ruft `/api/v1/mcp` mit dem API-Key des Users.
-- Der Server löst User + Company aus dem Key auf.
+- Der Server löst User und Company aus dem Key auf.
 - Jeder Tool-Call läuft in Tenant-Scope.
 - Validation-Errors liefern strukturierte Meldungen mit Remediation-Hints; interne Schema-Details leaken nicht.
 
@@ -77,6 +77,6 @@ Verantwortungsvoll an `security@customermates.com`. PGP-Key im Repo. Ack-Ziel: 2
 
 ## Weiter
 
-- [Self-Hosting](/docs/self-hosting)
-- [API-Keys](/docs/api-keys)
-- [MCP](/docs/mcp)
+- [Self-Hosting](/docs/self-hosting): wenn du das selbst betreiben willst.
+- [API-Keys](/docs/api-keys): Hygiene-Regeln.
+- [MCP](/docs/mcp): wie die KI-Oberfläche geformt ist.

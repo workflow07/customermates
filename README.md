@@ -36,10 +36,9 @@ There are two ways to start using Customermates:
 Docs entry points:
 
 - [CRM Overview](https://customermates.com/docs)
-- [Self-Hosted CRM vs Cloud CRM](https://customermates.com/docs/self-host-vs-cloud)
-- [Self-Hosting Get Started](https://customermates.com/docs/self-hosting)
-- [Managing Your Self-Hosted Installation](https://customermates.com/docs/managing-your-installation)
-- [CRM Integrations](https://customermates.com/docs/integrations-intro)
+- [Self-Hosting (install, manage, cloud vs self-host)](https://customermates.com/docs/self-hosting)
+- [Connect your AI (Claude)](https://customermates.com/docs/mcp-connect-claude)
+- [Webhooks](https://customermates.com/docs/webhooks)
 
 ## ⭐ Key Features
 
@@ -71,7 +70,7 @@ Customermates supports both cloud and self-hosted deployment models.
 | Single Sign-On | ✅ | ❌ |
 | Whitelabeling | ✅ | ❌ |
 
-If you want the full decision guide, see [Self-Hosted CRM vs Cloud CRM](https://customermates.com/docs/self-host-vs-cloud).
+If you want the full decision guide, see the [Self-hosting docs](https://customermates.com/docs/self-hosting).
 
 ## 🐳 Self-Hosting
 
@@ -108,8 +107,8 @@ Useful self-hosting scripts:
 
 More docs:
 
-- [Self-Hosting Get Started](https://customermates.com/docs/self-hosting)
-- [Managing Your Self-Hosted Installation](https://customermates.com/docs/managing-your-installation)
+- [Self-Hosting (install and manage)](https://customermates.com/docs/self-hosting)
+- [Architecture and security](https://customermates.com/docs/architecture-security)
 
 ## 🛠️ Development
 

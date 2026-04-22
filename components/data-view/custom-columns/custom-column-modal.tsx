@@ -221,6 +221,7 @@ export const CustomColumnModal = observer(() => {
                 label: t(`Common.customColumnTypes.${item.value}`),
               }))}
               label={t("Common.inputs.type")}
+              onValueChange={(next) => store.changeType(next as CustomColumnType)}
             />
 
             <FormInput required id="label" label={t("Common.inputs.label")} />

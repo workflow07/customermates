@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { SectionBadge } from "@/components/marketing/section-badge";
 import { WaveDecoration } from "@/components/marketing/wave-decoration";
-import { IconContainer } from "@/components/shared/icon-container";
+import { FeatureIcon } from "@/components/shared/feature-icon";
 import { ICONS } from "@/components/shared/icons";
 import { AppImage } from "@/components/shared/app-image";
 
@@ -44,20 +44,20 @@ export function FeatureSection({ badge, features, subtitle, title }: Props) {
           const Icon = ICONS[feature.icon];
 
           return (
-            <Card key={index} className="w-full">
-              <CardContent className={feature.image ? "flex flex-col gap-2" : "flex flex-col gap-4"}>
-                <IconContainer icon={Icon} />
+            <Card key={index} className="w-full py-4">
+              <CardContent className={feature.image ? "flex flex-col gap-2" : "flex flex-col gap-3"}>
+                <FeatureIcon icon={Icon} />
 
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-x-xl">{feature.title}</h3>
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="text-base font-semibold">{feature.title}</h3>
 
-                  <p className="text-x-sm mb-2 text-subdued">{feature.description}</p>
+                  <p className="text-[13px] leading-normal text-subdued">{feature.description}</p>
                 </div>
 
                 {feature.image ? (
                   <AppImage
                     alt={feature.title}
-                    className="w-full rounded-lg"
+                    className="mt-1 aspect-2/1 w-full rounded-md object-cover object-top"
                     height={900}
                     src={feature.image}
                     width={1516}

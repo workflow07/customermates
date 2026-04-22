@@ -1,9 +1,9 @@
 ---
 title: n8n
-description: Build visual workflows over Customermates — webhook triggers, HTTP actions, and ready-made templates.
+description: Build visual workflows over Customermates with webhook triggers, HTTP actions, and ready-made templates.
 ---
 
-**TL;DR** — Subscribe an n8n webhook node to Customermates events, use the HTTP Request node with your API key to push changes back. No custom node required — the Customermates REST and MCP surfaces work directly.
+Subscribe an n8n webhook node to Customermates events, use the HTTP Request node with your API key to push changes back. No custom node required. The Customermates REST and MCP surfaces work directly.
 
 ## When n8n fits
 
@@ -13,19 +13,19 @@ description: Build visual workflows over Customermates — webhook triggers, HTT
 
 If you want an AI to drive the CRM in conversation, use [MCP](/docs/mcp) instead or alongside.
 
-## Pattern 1 — Trigger n8n from CRM changes
+## Pattern 1: trigger n8n from CRM changes
 
 1. In n8n, add a **Webhook** node. Copy the URL it generates.
 2. In Customermates, **Company → Webhooks → New** and paste the URL. Pick the events you care about.
 3. Add steps after the Webhook node to transform and forward the payload.
 
-The payload shape is documented at [webhook events](/docs/webhook-events). Common next steps:
+The payload shape is documented at [Webhooks](/docs/webhooks). Common next steps:
 
 - **Slack**: post "new deal: $[amount]" to a channel.
 - **Google Sheets**: append a row every time a contact is created.
 - **HubSpot**: mirror the contact.
 
-## Pattern 2 — Push to Customermates from n8n
+## Pattern 2: push to Customermates from n8n
 
 Use the **HTTP Request** node:
 
@@ -36,9 +36,9 @@ Use the **HTTP Request** node:
 
 For MCP-style tool calls from n8n, hit `/api/v1/mcp` with `method: "tools/call"`. Useful when you want n8n to get the same guardrails (null-wipe rejection, type-mismatch routing).
 
-## Pattern 3 — Scheduled cleanup
+## Pattern 3: scheduled cleanup
 
-n8n's Cron trigger + Customermates REST makes scheduled jobs easy:
+n8n's Cron trigger plus Customermates REST makes scheduled jobs easy:
 
 - Daily: find contacts without an organization, post a reminder.
 - Weekly: export last week's won deals to a Google Sheet.
@@ -50,12 +50,12 @@ Store the API key as an n8n **Header Auth** credential with name `x-api-key`. Re
 
 ## Common gotchas
 
-- **Null-wipe guard** — if you pass `null` on a relationship array, the server rejects. Use `[]` or `link_entities` / `unlink_entities`.
-- **Rate limits** — high-frequency loops hit API limits. Batch where possible.
-- **Webhook ordering** — deliveries are not strictly ordered. Treat them as idempotent messages keyed by `entityId`.
+- **Null-wipe guard**: if you pass `null` on a relationship array, the server rejects. Use `[]` or `link_entities` / `unlink_entities`.
+- **Rate limits**: high-frequency loops hit API limits. Batch where possible.
+- **Webhook ordering**: deliveries are not strictly ordered. Treat them as idempotent messages keyed by `entityId`.
 
 ## Next
 
-- [Webhooks](/docs/webhooks) — the trigger side in detail.
-- [OpenAPI](/docs/openapi) — full REST reference for the action side.
-- [MCP](/docs/mcp) — if you want an AI in the loop.
+- [Webhooks](/docs/webhooks): the trigger side in detail.
+- [OpenAPI](/docs/openapi): full REST reference for the action side.
+- [MCP](/docs/mcp): if you want an AI in the loop.

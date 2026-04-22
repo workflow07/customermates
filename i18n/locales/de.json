@@ -1,4 +1,7 @@
 {
+  "AgplGithubBadge": {
+    "label": "AGPL · Open Source auf GitHub"
+  },
   "ApiKeyModal": {
     "created": "Erstellt",
     "expires": "Läuft ab",
@@ -36,6 +39,10 @@
   },
   "BlogPostPage": {
     "relatedArticles": "Verwandte Artikel"
+  },
+  "BrowserFrame": {
+    "live": "live",
+    "open": "Öffnen"
   },
   "Common": {
     "actions": {
@@ -116,6 +123,7 @@
     "colors": {
       "default": "Blau",
       "destructive": "Rot",
+      "info": "Hellblau",
       "secondary": "Grau",
       "success": "Grün",
       "warning": "Gelb"
@@ -811,6 +819,7 @@
     "connectChatgpt": "ChatGPT verbinden",
     "connectClaude": "Claude Desktop verbinden",
     "connectCursor": "Cursor verbinden",
+    "connectYourAi": "KI verbinden",
     "customColumns": "Benutzerdefinierte Felder",
     "entitiesRelationships": "Entitäten & Beziehungen",
     "features": "Features",
@@ -886,6 +895,11 @@
     "subtitle": "Absichtlich Dinge kaputt machen, für die Wissenschaft!",
     "title": "Fehlertest"
   },
+  "FAQSection": {
+    "contactCta": "Kontakt aufnehmen →",
+    "contactIntro": "Nichts passendes gefunden?",
+    "label": "FAQ"
+  },
   "FeaturesCTA": {
     "description": "Starte noch heute mit Customermates und verwalte deine Kundenbeziehungen effizient",
     "noCreditCard": "Keine Kreditkarte benötigt • Jederzeit kündbar • Erste 3 Tage kostenlos",
@@ -944,6 +958,59 @@
     "loading": "Suche...",
     "noResults": "Keine Ergebnisse gefunden",
     "placeholder": "Suchen..."
+  },
+  "HomepageClipTerminal": {
+    "connected": "verbunden · 12 Tools · customermates@mcp",
+    "done": "✓ 3 Entwürfe im Posteingang · bereit zur Prüfung",
+    "followOk": "ja, speicher sie als Entwürfe in meinem Posteingang",
+    "followQ": "3 Follow-up-E-Mails jetzt entwerfen?",
+    "prompt": "Welche Deals liegen seit > 14 Tagen? Entwirf für jeden eine Follow-up-E-Mail. Und wer schuldet mir noch eine Antwort?",
+    "resultSummary": "→ 3 Deals · €32.000 liegen"
+  },
+  "HomepageHowItWorks": {
+    "loopCaption": "▶ stumm · loopt · 10 s",
+    "tailCaption": "ein Snippet · deine KI"
+  },
+  "HomepagePricing": {
+    "cloud": {
+      "badge": "Beliebt",
+      "ctaText": "Kostenlos starten",
+      "featureAudit": "Audit-Logs",
+      "featureEverything": "Alles aus Self-Hosted",
+      "featureMcp": "Gehosteter MCP-Endpoint",
+      "featurePriority": "Priority-Support",
+      "featureSso": "SSO",
+      "period": "/ Nutzer / Monat",
+      "price": "10 €",
+      "tag": "Gehostet in Frankfurt. Kostenlos starten, keine Kreditkarte.",
+      "title": "Cloud"
+    },
+    "compare": {
+      "cancelAnytime": "Jederzeit kündbar",
+      "gdpr": "DSGVO-konform",
+      "noLimits": "Keine Feature-Limits",
+      "openSource": "Open Source"
+    },
+    "eyebrow": "Preise",
+    "selfHosted": {
+      "ctaText": "Download",
+      "featureApi": "Volle API, MCP & Webhooks",
+      "featureCommunity": "Community-Support",
+      "featureN8n": "n8n-Integrationen",
+      "featureRecords": "Unbegrenzte Datensätze",
+      "featureUsers": "Unbegrenzte Nutzer",
+      "period": "für immer",
+      "price": "Kostenlos",
+      "tag": "Auf deinem Server mit Docker Compose. Voller Source. AGPLv3.",
+      "title": "Self-Hosted"
+    },
+    "subtitle": "Keine versteckten Kosten, keine Feature-Limits. Self-host für immer kostenlos, oder starte mit der Cloud ohne Kreditkarte.",
+    "title": "Einfach, ehrlich, europäisch"
+  },
+  "HomepageStatsRow": {
+    "taglineMcp": "MCP",
+    "taglinePost": ", also funktioniert es mit dem Modell, das du ohnehin schon bezahlst",
+    "taglinePre": "Bring your own AI. Customermates spricht"
   },
   "Loading": {
     "text": "Laden..."

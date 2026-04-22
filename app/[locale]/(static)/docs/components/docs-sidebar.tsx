@@ -18,12 +18,9 @@ import {
   Network,
   PlayCircle,
   PlugZap,
-  Puzzle,
   Rocket,
   Server,
-  ServerCog,
   Shield,
-  Sparkles,
   Webhook,
   Workflow,
 } from "lucide-react";
@@ -97,16 +94,9 @@ export function useDocGroups(): DocSidebarGroup[] {
       ],
     },
     {
-      key: "integrations",
-      label: t("DocsSidebar.integrations"),
+      key: "connect-your-ai",
+      label: t("DocsSidebar.connectYourAi"),
       items: [
-        {
-          key: "integrations-intro",
-          url: "/docs/integrations-intro",
-          title: t("DocsSidebar.introduction"),
-          icon: Puzzle,
-        },
-        { key: "integrations-mcp", url: "/docs/mcp", title: t("DocsSidebar.mcp"), icon: PlugZap },
         {
           key: "mcp-connect-claude",
           url: "/docs/mcp-connect-claude",
@@ -125,6 +115,13 @@ export function useDocGroups(): DocSidebarGroup[] {
           title: t("DocsSidebar.connectCursor"),
           icon: Code2,
         },
+      ],
+    },
+    {
+      key: "integrations",
+      label: t("DocsSidebar.integrations"),
+      items: [
+        { key: "integrations-mcp", url: "/docs/mcp", title: t("DocsSidebar.mcp"), icon: PlugZap },
         { key: "webhooks", url: "/docs/webhooks", title: t("DocsSidebar.webhooks"), icon: Webhook },
         { key: "integrations-openapi", url: "/docs/openapi", title: t("DocsSidebar.openapi"), icon: Code2 },
         { key: "integrations-n8n", url: "/docs/n8n", title: t("DocsSidebar.n8n"), icon: Workflow },
@@ -134,19 +131,7 @@ export function useDocGroups(): DocSidebarGroup[] {
       key: "self-hosting",
       label: t("DocsSidebar.selfHosting"),
       items: [
-        {
-          key: "self-host-vs-cloud",
-          url: "/docs/self-host-vs-cloud",
-          title: t("DocsSidebar.selfHostVsCloud"),
-          icon: GitCompare,
-        },
         { key: "self-hosting", url: "/docs/self-hosting", title: t("DocsSidebar.getStarted"), icon: Server },
-        {
-          key: "managing-your-installation",
-          url: "/docs/managing-your-installation",
-          title: t("DocsSidebar.managingYourInstallation"),
-          icon: ServerCog,
-        },
         {
           key: "architecture-security",
           url: "/docs/architecture-security",
@@ -160,22 +145,10 @@ export function useDocGroups(): DocSidebarGroup[] {
       label: t("DocsSidebar.reference"),
       items: [
         {
-          key: "setup-ai-assistant",
-          url: "/docs/setup-ai-assistant",
-          title: t("DocsSidebar.setupAiAssistant"),
-          icon: Sparkles,
-        },
-        {
           key: "mcp-tool-catalog",
           url: "/docs/mcp-tool-catalog",
           title: t("DocsSidebar.mcpToolCatalog"),
           icon: PlayCircle,
-        },
-        {
-          key: "webhook-events",
-          url: "/docs/webhook-events",
-          title: t("DocsSidebar.webhookEvents"),
-          icon: Webhook,
         },
         {
           key: "filter-syntax",

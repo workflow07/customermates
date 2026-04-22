@@ -1,9 +1,9 @@
 ---
 title: Webhooks
-description: Subscribe to CRM events, verify signatures, and debug failed deliveries.
+description: Subscribe to CRM events, verify signatures, debug failed deliveries, and the full event catalog in one place.
 ---
 
-**TL;DR** — Pick events, give us an HTTPS URL, we POST JSON there every time something changes. Re-send failed deliveries from the UI or through MCP. Verify signatures with HMAC-SHA256 over the raw body.
+Pick events, give us an HTTPS URL, we POST JSON there every time something changes. Re-send failed deliveries from the UI or through MCP. Verify signatures with HMAC-SHA256 over the raw body. Every event with its payload shape is listed at the bottom of this page.
 
 ## Why webhooks
 
@@ -35,19 +35,52 @@ The URL must be HTTPS. HTTP is rejected.
 
 ## What you receive
 
-Every delivery is a `POST` with `Content-Type: application/json`:
+Every delivery is a `POST` with `Content-Type: application/json`. Every delivery follows the same envelope:
+
+```json
+{
+  "event": "<event-name>",
+  "data": {
+    "userId": "<who-triggered-it>",
+    "companyId": "<tenant>",
+    "entityId": "<affected-record>",
+    "payload": { /* event-specific */ }
+  },
+  "timestamp": "<iso-8601>"
+}
+```
+
+The `userId` is the user that caused the write, which includes a user acting through an API key.
+
+The `changes` record is only present on `*.updated` events. It names every field that actually moved, with previous and current values.
+
+Example, `contact.updated`:
 
 ```json
 {
   "event": "contact.updated",
   "data": {
-    "userId": "...",
-    "companyId": "...",
-    "entityId": "...",
+    "userId": "u_123",
+    "companyId": "c_abc",
+    "entityId": "ct_xyz",
     "payload": {
-      "contact": { "id": "...", "firstName": "Max", "lastName": "Mustermann" },
+      "contact": {
+        "id": "ct_xyz",
+        "firstName": "Max",
+        "lastName": "Mustermann",
+        "notes": { /* Tiptap JSON */ },
+        "organizationIds": ["org_1"],
+        "userIds": [],
+        "dealIds": ["deal_1", "deal_2"],
+        "customFieldValues": [
+          { "columnId": "col_stage", "value": "won" }
+        ]
+      },
       "changes": {
-        "organizationIds": { "previous": [], "current": ["..."] }
+        "organizationIds": {
+          "previous": [],
+          "current": ["org_1"]
+        }
       }
     }
   },
@@ -55,9 +88,13 @@ Every delivery is a `POST` with `Content-Type: application/json`:
 }
 ```
 
-The `changes` record is only present on `*.updated` events. It names every field that actually moved, with previous and current values.
+## The `changes` record
 
-See [webhook events](/docs/webhook-events) for the full event list and payload shapes.
+Each key in `changes` is a field name whose value moved. `previous` is what was there before, `current` is what is there now.
+
+Arrays of relationship ids compare as sets. Objects compare by deep equality. Scalar fields compare by value.
+
+If a write does not actually change any field, the event is suppressed. You will not see no-op `*.updated` events.
 
 ## Signature verification
 
@@ -94,14 +131,43 @@ Customermates does not automatically retry failed deliveries. If your receiver i
 
 Deliveries are **not** strictly ordered across events. Two `contact.updated` events a millisecond apart can arrive out of order. Use the timestamp in the payload to resolve, or treat deliveries as idempotent messages keyed by `entityId`.
 
+## Notes are JSON, not markdown
+
+The `notes` field in payloads is Tiptap JSON, the same structure the editor stores. To render as markdown on your side, run it through a Tiptap-compatible serializer. In MCP tools, `get_entities` with `include: "withNotes"` returns notes pre-serialized to markdown.
+
+## Deleted payloads
+
+Delete events carry only the id, not the final state of the record. If you need the final state for a delete hook (for archiving, say), subscribe to `*.updated` as well and keep a local mirror.
+
 ## Debugging tips
 
 - Use [webhook.site](https://webhook.site) for a throwaway receiver during integration testing.
 - The `list_webhook_deliveries` tool supports `searchTerm` on url and event name.
 - If your receiver returns a 500, Customermates records the response body so you can see exactly what happened.
 
+## Event catalog
+
+15 events across the five entity types, all with the envelope above.
+
+| Event | When it fires | Payload keys |
+|---|---|---|
+| `contact.created` | A contact is created via UI, API, MCP, or import | `contact` |
+| `contact.updated` | Any contact field changes | `contact`, `changes` |
+| `contact.deleted` | A contact is deleted | `contactId` |
+| `organization.created` | An organization is created | `organization` |
+| `organization.updated` | Any organization field changes | `organization`, `changes` |
+| `organization.deleted` | An organization is deleted | `organizationId` |
+| `deal.created` | A deal is created | `deal` |
+| `deal.updated` | Any deal field changes | `deal`, `changes` |
+| `deal.deleted` | A deal is deleted | `dealId` |
+| `service.created` | A service is created | `service` |
+| `service.updated` | Any service field changes | `service`, `changes` |
+| `service.deleted` | A service is deleted | `serviceId` |
+| `task.created` | A task is created | `task` |
+| `task.updated` | Any task field changes | `task`, `changes` |
+| `task.deleted` | A task is deleted | `taskId` |
+
 ## Next
 
-- [Webhook events](/docs/webhook-events) — every event with payload shape.
-- [MCP tool catalog](/docs/mcp-tool-catalog#webhooks) — programmatic webhook management.
-- [n8n integration](/docs/n8n) — drop webhooks into visual workflows.
+- [MCP tool catalog](/docs/mcp-tool-catalog#webhooks): programmatic webhook management.
+- [n8n integration](/docs/n8n): drop webhooks into visual workflows.

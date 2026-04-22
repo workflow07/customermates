@@ -1,9 +1,9 @@
 ---
 title: n8n
-description: Visuelle Workflows über Customermates — Webhook-Trigger, HTTP-Actions und fertige Templates.
+description: Visuelle Workflows über Customermates mit Webhook-Triggern, HTTP-Actions und fertigen Templates.
 ---
 
-**TL;DR** — n8n-Webhook-Node auf Customermates-Events abonnieren, HTTP-Request-Node mit API-Key für Writes zurück. Kein Custom-Node nötig — die REST- und MCP-Oberflächen funktionieren direkt.
+n8n-Webhook-Node auf Customermates-Events abonnieren, HTTP-Request-Node mit API-Key für Writes zurück. Kein Custom-Node nötig. Die REST- und MCP-Oberflächen funktionieren direkt.
 
 ## Wann n8n passt
 
@@ -13,19 +13,19 @@ description: Visuelle Workflows über Customermates — Webhook-Trigger, HTTP-Ac
 
 Wenn eine KI das CRM im Gespräch fahren soll: [MCP](/docs/mcp) stattdessen oder parallel.
 
-## Pattern 1 — n8n aus CRM-Änderungen triggern
+## Pattern 1: n8n aus CRM-Änderungen triggern
 
 1. In n8n: **Webhook**-Node hinzufügen. Die generierte URL kopieren.
 2. In Customermates: **Unternehmen → Webhooks → Neu** und URL einfügen. Events wählen.
 3. Nach dem Webhook-Node Schritte zum Transformieren und Weiterleiten.
 
-Payload-Shape dokumentiert unter [Webhook-Events](/docs/webhook-events). Typische nächste Schritte:
+Payload-Shape dokumentiert unter [Webhooks](/docs/webhooks). Typische nächste Schritte:
 
 - **Slack**: "neuer Deal: $[Betrag]" in einen Channel.
 - **Google Sheets**: Zeile anhängen bei jedem neuen Contact.
 - **HubSpot**: Contact mirrored.
 
-## Pattern 2 — Aus n8n nach Customermates pushen
+## Pattern 2: aus n8n nach Customermates pushen
 
 **HTTP Request**-Node:
 
@@ -36,9 +36,9 @@ Payload-Shape dokumentiert unter [Webhook-Events](/docs/webhook-events). Typisch
 
 Für MCP-Style-Tool-Calls aus n8n auf `/api/v1/mcp` mit `method: "tools/call"`. Nützlich, wenn n8n dieselben Guardrails will (Null-Wipe-Rejection, Type-Mismatch-Routing).
 
-## Pattern 3 — Scheduled Cleanup
+## Pattern 3: Scheduled Cleanup
 
-n8n Cron-Trigger + Customermates-REST:
+n8n Cron-Trigger plus Customermates-REST:
 
 - Täglich: Contacts ohne Organization finden, Reminder posten.
 - Wöchentlich: Won-Deals der letzten Woche in Google Sheet.
@@ -50,12 +50,12 @@ API-Key als n8n-**Header-Auth**-Credential mit Name `x-api-key` speichern. Über
 
 ## Typische Fallstricke
 
-- **Null-Wipe-Guard** — `null` auf Relationship-Array wird abgelehnt. `[]` oder `link_entities` / `unlink_entities` nutzen.
-- **Rate-Limits** — High-Frequency-Loops laufen in Limits. Wenn möglich batchen.
-- **Webhook-Ordering** — Deliveries nicht strikt geordnet. Als idempotente Messages per `entityId` behandeln.
+- **Null-Wipe-Guard**: `null` auf Relationship-Array wird abgelehnt. `[]` oder `link_entities` / `unlink_entities` nutzen.
+- **Rate-Limits**: High-Frequency-Loops laufen in Limits. Wenn möglich batchen.
+- **Webhook-Ordering**: Deliveries nicht strikt geordnet. Als idempotente Messages per `entityId` behandeln.
 
 ## Weiter
 
-- [Webhooks](/docs/webhooks) — die Trigger-Seite im Detail.
-- [OpenAPI](/docs/openapi) — volle REST-Referenz für die Action-Seite.
-- [MCP](/docs/mcp) — wenn KI im Loop sein soll.
+- [Webhooks](/docs/webhooks): die Trigger-Seite im Detail.
+- [OpenAPI](/docs/openapi): volle REST-Referenz für die Action-Seite.
+- [MCP](/docs/mcp): wenn KI im Loop sein soll.

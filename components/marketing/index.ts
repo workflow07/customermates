@@ -1,3 +1,4 @@
+export { BrowserFrame } from "./browser-frame";
 export { ComparisonTable } from "./comparison-table";
 export type { ComparisonFeature, ComparisonSection, ComparisonTableProps } from "./comparison-table";
 export { CTASection } from "./cta-section";

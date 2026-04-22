@@ -19,7 +19,7 @@ export function UnexpectedErrorToaster() {
     toast.warning(
       t.rich("demoModeError", {
         link: (chunks) => (
-          <AppLink external className="underline" href="https://customermates.com/auth/signin">
+          <AppLink external className="text-current underline" href="https://customermates.com/auth/signin">
             {chunks}
           </AppLink>
         ),

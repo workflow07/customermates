@@ -22,6 +22,7 @@ export const heroSchema = z.object({
   startFree: z.string(),
   subtitle: z.string(),
   title: z.string(),
+  titleAccent: z.string().optional(),
 });
 export type Hero = z.infer<typeof heroSchema>;
 

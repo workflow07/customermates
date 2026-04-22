@@ -6,31 +6,41 @@ demo:
   title: Customermates Demo
 ---
 
-**TL;DR** — Customermates is an open-source CRM designed to be driven by your AI. Native MCP support means Claude, ChatGPT, Cursor, and anything else that speaks the Model Context Protocol can read and write your CRM without copy-paste.
+Customermates is an open-source CRM designed to be driven by your AI. Native MCP support means Claude, ChatGPT, Cursor, and anything else that speaks the Model Context Protocol can read and write your CRM without copy-paste.
 
-## Start here
+## Pick your client and start
 
-Pick the path that matches where you are:
-
-| I want to… | Go to |
+| Your AI | Full setup on one page |
 |---|---|
-| Run through a working setup in 5 minutes | [Quickstart](/docs/quickstart) |
-| Understand how the entities fit together | [Core concepts](/docs/concepts) |
-| Hook up Claude / ChatGPT / Cursor | [MCP](/docs/mcp) |
-| Subscribe my stack to CRM events | [Webhooks](/docs/webhooks) |
-| Self-host on my own infra | [Self-hosting](/docs/self-hosting) |
-| Migrate from Pipedrive | [From Pipedrive](/docs/from-pipedrive) |
-| See every tool my AI can call | [MCP tool catalog](/docs/mcp-tool-catalog) |
+| Claude Desktop | [Connect Claude](/docs/mcp-connect-claude) |
+| ChatGPT | [Connect ChatGPT](/docs/mcp-connect-chatgpt) |
+| Cursor | [Connect Cursor](/docs/mcp-connect-cursor) |
+| Any MCP client | [MCP overview](/docs/mcp) |
+
+Each of those pages is self-contained: API key steps, JSON config, the full setup prompt, and your first commands. You do not need to bounce between pages.
+
+Prefer a walkthrough with a webhook and a quick AI interaction at the end? Go to [Quickstart](/docs/quickstart).
 
 ## What Customermates is
 
-A modern CRM with the usual parts — contacts, organizations, deals, services, tasks, custom fields, pipelines, dashboards — plus:
+A modern CRM with the usual parts (contacts, organizations, deals, services, tasks, custom fields, pipelines, dashboards) plus:
 
 - **Native MCP endpoint** so your AI client can discover and call CRM operations without a plugin.
 - **Open source** under AGPLv3 (Enterprise components under a separate commercial license). Self-host or use our cloud.
 - **EU-hosted and GDPR-compliant** for the managed version.
 - **Real webhooks** with signed payloads, retries, and a delivery log.
 - **OpenAPI 3.1** for the full REST surface.
+
+## Four ways Customermates talks to your stack
+
+| I want to… | Use |
+|---|---|
+| Have Claude, ChatGPT, or Cursor update the CRM in conversation | [MCP](/docs/mcp) |
+| Build a custom integration in code | [OpenAPI](/docs/openapi) |
+| React to CRM changes in Slack, a sequencer, BI, your warehouse | [Webhooks](/docs/webhooks) |
+| Compose workflows visually without code | [n8n](/docs/n8n) |
+
+All four use the same API key. See [API keys](/docs/api-keys).
 
 ## Our take
 
@@ -40,12 +50,13 @@ The CRM that updates itself in the AI you already use. Not a new tab, not anothe
 
 ## How the docs are organized
 
-- **Getting started** — [Quickstart](/docs/quickstart), [Concepts](/docs/concepts), [From Pipedrive](/docs/from-pipedrive).
-- **Integrations** — [MCP](/docs/mcp), [Webhooks](/docs/webhooks), [OpenAPI](/docs/openapi), [n8n](/docs/n8n).
-- **Self-hosting** — [Get started](/docs/self-hosting), [Self-host vs cloud](/docs/self-host-vs-cloud), [Managing your installation](/docs/managing-your-installation), [Architecture and security](/docs/architecture-security).
-- **Reference** — [MCP tool catalog](/docs/mcp-tool-catalog), [Webhook events](/docs/webhook-events), [Filter syntax](/docs/filter-syntax), [API keys](/docs/api-keys).
-- **Comparison** — [Customermates vs alternatives](/docs/comparison).
+- **Getting started**: [Quickstart](/docs/quickstart), [Concepts](/docs/concepts), [From Pipedrive](/docs/from-pipedrive).
+- **Connect your AI**: [Claude](/docs/mcp-connect-claude), [ChatGPT](/docs/mcp-connect-chatgpt), [Cursor](/docs/mcp-connect-cursor).
+- **Integrations**: [MCP](/docs/mcp), [Webhooks](/docs/webhooks), [OpenAPI](/docs/openapi), [n8n](/docs/n8n).
+- **Self-hosting**: [Get started and manage](/docs/self-hosting), [Architecture and security](/docs/architecture-security).
+- **Reference**: [MCP tool catalog](/docs/mcp-tool-catalog), [Filter syntax](/docs/filter-syntax), [API keys](/docs/api-keys).
+- **Comparison**: [Customermates vs alternatives](/docs/comparison).
 
 ## Try it
 
-The embedded demo on this page is a real live instance. Click around, create contacts, delete them — nothing persists across sessions.
+The embedded demo on this page is a real live instance. Click around, create contacts, delete them. Nothing persists across sessions.

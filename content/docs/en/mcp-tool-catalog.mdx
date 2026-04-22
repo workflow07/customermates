@@ -3,15 +3,15 @@ title: MCP tool catalog
 description: Every tool Customermates exposes over MCP, grouped by surface, with safety flags and one-line purpose.
 ---
 
-**TL;DR** — 57 tools across entities, widgets, webhooks, custom columns, and admin. Every destructive tool is flagged and starts its description with `IRREVERSIBLE`. Every tool that replaces a relationship array warns about it and points to `link_entities` / `unlink_entities`.
+57 tools across entities, widgets, webhooks, custom columns, and admin. Every destructive tool is flagged and starts its description with `IRREVERSIBLE`. Every tool that replaces a relationship array warns about it and points to `link_entities` / `unlink_entities`.
 
 ## How to read this page
 
 Three flags per tool:
 
-- **Read** — no mutation.
-- **Destructive** — cannot be undone.
-- **Idempotent** — same call twice produces the same state.
+- **Read**: no mutation.
+- **Destructive**: cannot be undone.
+- **Idempotent**: same call twice produces the same state.
 
 Full JSON Schema for every tool is available live at `POST /api/v1/mcp` with `method: "tools/list"`.
 
@@ -26,10 +26,10 @@ One set of tools works against any of the five entity types (contact, organizati
 | `count_entity` | ✓ | | Cheap total with optional filters. |
 | `search_all_entities` | ✓ | | Free-text across all five entity types in one call. |
 | `get_entities` | ✓ | | Batch fetch full records by id; mixed entity types allowed. |
-| `update_entity_notes` | | | Replace markdown notes on 1–100 records. |
+| `update_entity_notes` | | | Replace markdown notes on 1 to 100 records. |
 | `append_entity_notes` | | | Append markdown without overwriting. Blank line inserted between old and new. |
 | `update_entity_custom_fields` | | | Per-column merge: only columns you include are changed. `value: null` clears a column. |
-| `delete_entities` | | ✓ | IRREVERSIBLE delete of 1–100 records by id. |
+| `delete_entities` | | ✓ | IRREVERSIBLE delete of 1 to 100 records by id. |
 | `link_entities` | | | Add ids to a relationship without touching others. Safer than `update_*` replace. |
 | `unlink_entities` | | | Remove ids from a relationship without touching others. |
 
@@ -112,6 +112,6 @@ Plus:
 
 ## Next
 
-- [Setup prompt](/docs/setup-ai-assistant) — paste this in your AI's first message.
-- [Filter syntax](/docs/filter-syntax) — every operator, with examples.
-- [Webhook events](/docs/webhook-events) — payload catalog.
+- [Connect Claude](/docs/mcp-connect-claude): paste the setup prompt and try a tool.
+- [Filter syntax](/docs/filter-syntax): every operator, with examples.
+- [Webhooks](/docs/webhooks): full event catalog.

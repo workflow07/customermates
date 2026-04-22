@@ -1,10 +1,8 @@
-"use client";
-
 import type { Feature } from "@/core/fumadocs/schemas/features";
 
 import { AppCard } from "@/components/card/app-card";
 import { AppCardBody } from "@/components/card/app-card-body";
-import { Icon } from "@/components/shared/icon";
+import { FeatureIcon } from "@/components/shared/feature-icon";
 import { ICONS } from "@/components/shared/icons";
 
 type Props = Feature;
@@ -32,9 +30,7 @@ export function BaseFeaturesSection({
             return (
               <AppCard key={index}>
                 <AppCardBody>
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Icon icon={IconComponent} />
-                  </div>
+                  <FeatureIcon icon={IconComponent} />
 
                   <h3 className="font-semibold">{feature.title}</h3>
 

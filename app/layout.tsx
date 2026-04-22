@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 
 import type { Metadata, Viewport } from "next";
 
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Lora } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 import { cookies } from "next/headers";
 import Script from "next/script";
@@ -38,6 +38,14 @@ const mono = JetBrains_Mono({
   weight: ["400", "500"],
   display: "swap",
   variable: "--font-mono",
+});
+
+const serif = Lora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-serif",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -139,7 +147,7 @@ export default async function RootLayout({ children }: Props) {
   return (
     <html
       suppressHydrationWarning
-      className={`${latin.variable} ${mono.variable} ${latin.className}`}
+      className={`${latin.variable} ${mono.variable} ${serif.variable} ${latin.className}`}
       lang={displayLanguage}
     >
       <head />

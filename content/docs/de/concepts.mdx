@@ -3,7 +3,7 @@ title: Kernkonzepte
 description: Entitäten, Beziehungen, Custom Columns, Widgets und Webhooks auf einer Seite.
 ---
 
-**TL;DR** — Customermates verfolgt fünf Entitätstypen, jede kann eigene Felder tragen, sie verknüpfen sich typisiert untereinander, und jede Änderung löst einen Webhook aus.
+Customermates verfolgt fünf Entitätstypen, jede kann eigene Felder tragen, sie verknüpfen sich typisiert untereinander, und jede Änderung löst einen Webhook aus.
 
 ## Die fünf Entitäten
 
@@ -60,7 +60,7 @@ Widgets rendern sich neu, wenn sich die zugrundeliegenden Datensätze ändern. K
 
 Jeder Write emittiert ein Domain-Event: `contact.created`, `deal.updated`, `task.deleted` und so weiter. Du abonnierst per URL und Event-Liste. Jede Delivery enthält den geänderten Datensatz plus eine `changes`-Map, die zeigt, was sich von wo nach wo bewegt hat.
 
-Siehe [Webhook-Events](/docs/webhook-events) für den vollen Payload-Katalog.
+Siehe [Webhooks](/docs/webhooks) für den vollen Event-Katalog und Payload-Shape.
 
 ## Notes
 
@@ -68,10 +68,10 @@ Notes sind per-Record Markdown. Sie rendern per Tiptap in der UI, sind sonst üb
 
 ## User, Rollen, Company
 
-User sind deine Teammitglieder. Rollen steuern Lese- und Schreibrechte. Die Company ist der Tenant — jeder Datensatz lebt in genau einer Company, Cross-Tenant-Zugriff ist nicht möglich.
+User sind deine Teammitglieder. Rollen steuern Lese- und Schreibrechte. Die Company ist der Tenant. Jeder Datensatz lebt in genau einer Company, Cross-Tenant-Zugriff ist nicht möglich.
 
 ## Weiter
 
-- **[Custom Columns](/docs/mcp-tool-catalog#custom-columns)** — Rezepte und Fallstricke.
-- **[Filter-Syntax](/docs/filter-syntax)** — Operatoren und Beispiele.
-- **[MCP-Tool-Katalog](/docs/mcp-tool-catalog)** — jedes Tool auf diese Konzepte abgebildet.
+- **[Custom Columns](/docs/mcp-tool-catalog#custom-columns)**: Rezepte und Fallstricke.
+- **[Filter-Syntax](/docs/filter-syntax)**: Operatoren und Beispiele.
+- **[MCP-Tool-Katalog](/docs/mcp-tool-catalog)**: jedes Tool auf diese Konzepte abgebildet.

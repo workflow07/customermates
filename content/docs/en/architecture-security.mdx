@@ -3,24 +3,24 @@ title: Architecture and security
 description: How Customermates is built, how data is isolated, and how external AI access is controlled.
 ---
 
-**TL;DR** — Single-tenant-per-company data model enforced at every layer. Postgres row-level isolation via a company scope. API keys carry user identity. Agents see only what the owning user can see.
+Single-tenant-per-company data model enforced at every layer. Postgres row-level isolation via a company scope. API keys carry user identity. Agents see only what the owning user can see.
 
 ## Stack
 
-- **Next.js 16** (App Router, Turbopack) — web app and API.
-- **PostgreSQL** — primary datastore. JSONB for custom column values and webhook payloads.
-- **Prisma** — ORM and migrations.
-- **better-auth** — sessions, social login, API keys.
-- **mcp-handler** — Model Context Protocol endpoint.
+- **Next.js 16** (App Router, Turbopack): web app and API.
+- **PostgreSQL**: primary datastore. JSONB for custom column values and webhook payloads.
+- **Prisma**: ORM and migrations.
+- **better-auth**: sessions, social login, API keys.
+- **mcp-handler**: Model Context Protocol endpoint.
 - **TypeScript** end-to-end, Zod-validated at every boundary.
 
 ## Tenancy
 
 Every record belongs to a **Company**. The company id is enforced in three places:
 
-1. **App layer** — every interactor resolves the current user's company and filters by it.
-2. **Prisma layer** — queries include `companyId` in every `where`.
-3. **Decorator layer** — `@TenantInteractor` ensures interactors that forget to scope throw at runtime.
+1. **App layer**: every interactor resolves the current user's company and filters by it.
+2. **Prisma layer**: queries include `companyId` in every `where`.
+3. **Decorator layer**: `@TenantInteractor` ensures interactors that forget to scope throw at runtime.
 
 Cross-tenant reads are not possible through the public surface. There is no admin panel that bypasses scope.
 
@@ -28,8 +28,8 @@ Cross-tenant reads are not possible through the public surface. There is no admi
 
 Three ways to authenticate:
 
-- **Session cookie** (UI) — signed, http-only, `Secure` under HTTPS.
-- **API key in `x-api-key`** — 64-character token, SHA-256-hashed at rest, tied to a user.
+- **Session cookie** (UI): signed, http-only, `Secure` under HTTPS.
+- **API key in `x-api-key`**: 64-character token, SHA-256-hashed at rest, tied to a user.
 - **Social providers** via better-auth.
 
 All three resolve to the same user and company context. API keys have a display prefix so you can identify them in audit logs.
@@ -45,7 +45,7 @@ API keys inherit the permissions of their owning user. No separate key-level ACL
 MCP calls are gated by the same API key check. When an AI acts through MCP:
 
 - It calls `/api/v1/mcp` with the user's API key.
-- The server resolves user + company from the key.
+- The server resolves user and company from the key.
 - Every tool call runs inside a tenant-scoped context.
 - Validation errors return structured messages with remediation hints; they don't leak internal schema details.
 
@@ -77,6 +77,6 @@ Please disclose responsibly to `security@customermates.com`. PGP key in the repo
 
 ## Next
 
-- [Self-hosting](/docs/self-hosting) — if you want to run this yourself.
-- [API keys](/docs/api-keys) — hygiene rules.
-- [MCP](/docs/mcp) — how the AI surface is shaped.
+- [Self-hosting](/docs/self-hosting): if you want to run this yourself.
+- [API keys](/docs/api-keys): hygiene rules.
+- [MCP](/docs/mcp): how the AI surface is shaped.

@@ -6,8 +6,8 @@ import { getLocale } from "next-intl/server";
 import { PricingSection } from "./components/pricing-section";
 import { PricingComparisonTable } from "./components/pricing-comparison-table";
 
-import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { Footer } from "@/app/components/footer";
+import { AgplGithubBadge } from "@/components/marketing/agpl-github-badge";
 import { FAQSection } from "@/components/marketing/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { WaveDecoration } from "@/components/marketing/wave-decoration";
@@ -46,12 +46,21 @@ export default async function PricingPage() {
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="mb-12 text-center max-w-3xl mx-auto">
-            <GitHubStarButton />
+          <div className="mb-12 text-center max-w-3xl mx-auto flex flex-col items-center">
+            <AgplGithubBadge />
 
-            <h1 className="text-x-4xl tracking-tight pb-4 text-transparent bg-clip-text bg-linear-to-b from-neutral-900 via-neutral-700 to-neutral-500 dark:from-white dark:via-gray-200 dark:to-gray-400">
+            <h1 className="text-x-4xl tracking-tight pb-3 text-transparent bg-clip-text bg-linear-to-b from-neutral-900 via-neutral-700 to-neutral-500 dark:from-white dark:via-gray-200 dark:to-gray-400">
               {page.data.title}
             </h1>
+
+            {page.data.titleAccent ? (
+              <div
+                className="mb-4 text-[26px] italic text-primary sm:text-[32px] md:text-[36px] tracking-[-0.02em]"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {page.data.titleAccent}
+              </div>
+            ) : null}
 
             <h2 className="text-x-lg text-subdued">{page.data.description}</h2>
           </div>

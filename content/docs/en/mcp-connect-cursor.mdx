@@ -1,16 +1,24 @@
 ---
 title: Connect Cursor
-description: Run Customermates as an MCP server inside Cursor so your IDE can update the CRM while you code.
+description: Run Customermates as an MCP server inside Cursor so your IDE can update the CRM while you code. API key, JSON config, and the setup prompt, all on one page.
 ---
 
-**TL;DR** — Add a `customermates` block to `~/.cursor/mcp.json`, reload Cursor, paste the [setup prompt](/docs/setup-ai-assistant).
+Add a `customermates` block to `~/.cursor/mcp.json`, reload Cursor, paste the setup prompt. Everything is on this page.
 
-## Prerequisites
+## 1. Create an API key
 
-- A current Cursor build with MCP support.
-- A 64-character Customermates API key from **Profile → API Keys**.
+**Profile → API Keys → New key** in Customermates. Name it for the client, e.g. `Cursor personal laptop`. Copy the 64-character string immediately; it is shown once.
 
-## Configure
+Export the key in your shell profile:
+
+```bash
+echo 'export CUSTOMERMATES_API_KEY=your-64-character-key' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Full key management: [API keys](/docs/api-keys).
+
+## 2. Configure Cursor
 
 Open (or create) `~/.cursor/mcp.json`:
 
@@ -27,22 +35,62 @@ Open (or create) `~/.cursor/mcp.json`:
 }
 ```
 
-Export the key in your shell profile:
-
-```bash
-echo 'export CUSTOMERMATES_API_KEY=your-64-character-key' >> ~/.zshrc
-source ~/.zshrc
-```
-
 Reload Cursor (`Cmd+Shift+P → Developer: Reload Window`). The MCP server appears in the Composer panel.
 
-## First conversation
+## 3. Paste this setup prompt into Composer
 
-In Composer, paste the [setup prompt](/docs/setup-ai-assistant). Cursor will pass it to the model and the model will start asking for your API key.
+Copy the entire box below and paste it into Composer as your first message. It orients the model to your CRM and prevents the common mistakes (wiping relationships, using the wrong update tool, guessing enum values).
+
+````markdown
+You are now connected to my Customermates CRM through MCP.
+
+## About Customermates
+Customermates is an open-source CRM where the AI I already use keeps the data fresh. Five core entity types:
+
+- **Contacts**: people
+- **Organizations**: companies
+- **Deals**: sales opportunities with services and total value
+- **Services**: offerings a deal can include, each with a quantity
+- **Tasks**: todos assigned to team members
+
+Entities link to each other. A contact belongs to one or more organizations and one or more deals. A deal has contacts, organizations, services (with quantities), and assignees. A task has assignees only. Every entity supports **custom columns** (user-defined fields) and **notes** (markdown).
+
+## Before you do anything, ask me for
+1. My Customermates API key. I will paste it; use it in the `x-api-key` header on every MCP call.
+2. My name and role, so you can tailor your replies.
+3. What I usually do with my CRM, in one sentence.
+
+## Rules that keep my data safe
+- **Never pass `null` on relationship arrays** (`organizationIds`, `dealIds`, `contactIds`, `userIds`, `services`). Null wipes the relationship. Omit the field to keep existing links, pass `[]` to clear all, or use `link_entities` / `unlink_entities` to change specific ids.
+- **Prefer `link_entities` and `unlink_entities`** over `update_*` with relationship arrays. They merge instead of replacing.
+- **Custom fields are per-column merge**. Only the columnIds you include are changed; the rest are preserved. To clear one field pass `{ columnId, value: null }`.
+- **Use the correct per-type custom-column tool**. `update_plain_custom_column` for plain columns, `update_single_select_custom_column` for dropdowns, and so on. The server will tell you if you picked the wrong one.
+- **Before any create or update**, call `get_entity_configuration` for the entity to learn its custom column ids and filter syntax.
+- **Destructive actions need confirmation.** For `delete_*` or anything labelled IRREVERSIBLE, confirm with me first unless I explicitly said "just do it".
+
+## Suggested first moves
+1. Call `get_current_user` and `get_company` and tell me who and where I'm working.
+2. Call `count_entity` for contact, organization, deal, service, and task.
+3. Call `list_custom_columns` so we don't recreate fields that already exist.
+4. Ask me what I want to work on first.
+
+## Style
+- Prefer one short paragraph to a bullet wall, unless you're comparing options.
+- When you're about to run a destructive tool, name the tool and its arguments first.
+- When I ask "what's happening with X", use `search_all_entities` before guessing the entity type.
+
+Ready. Please ask me for my API key.
+````
 
 ## Why run Customermates in Cursor
 
 Because the CRM state is context. "Show me the deals blocked on engineering" while you're in a ticket, or "log this call" while you're reading the customer's repo, keeps you in flow. The agent can read or write without you leaving the editor.
+
+## Try your first real prompt
+
+- *"Move the Acme deal to stage 'Won' and add a note that the contract was signed today."*
+- *"Find contacts at the org for the repo I'm currently in."*
+- *"Log a task to follow up on the bug report we just discussed."*
 
 ## Troubleshooting
 

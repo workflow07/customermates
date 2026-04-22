@@ -1,11 +1,9 @@
-"use client";
-
 import type { Hero } from "@/core/fumadocs/schemas/automation";
 
 import { Button } from "@/components/ui/button";
+import { AgplGithubBadge } from "@/components/marketing/agpl-github-badge";
 import { WaveDecoration } from "@/components/marketing/wave-decoration";
 
-import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { AppLink } from "@/components/shared/app-link";
 
 type Props = Hero;
@@ -18,6 +16,7 @@ export function AutomationHero({
   startFree,
   subtitle,
   title,
+  titleAccent,
 }: Props) {
   return (
     <section className="relative isolate py-16 md:py-24 w-full">
@@ -35,14 +34,23 @@ export function AutomationHero({
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-[620px] bg-[radial-gradient(ellipse_50%_55%_at_50%_45%,var(--background)_0%,color-mix(in_oklab,var(--background)_80%,transparent)_30%,transparent_85%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 z-5 h-[620px] bg-[radial-gradient(ellipse_50%_55%_at_50%_45%,var(--background)_0%,color-mix(in_oklab,var(--background)_80%,transparent)_30%,transparent_85%)]"
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <GitHubStarButton />
+        <div className="text-center max-w-4xl mx-auto flex flex-col items-center">
+          <AgplGithubBadge />
 
-          <h1 className="text-x-4xl mb-6">{title}</h1>
+          <h1 className="text-x-4xl mb-3">{title}</h1>
+
+          {titleAccent ? (
+            <div
+              className="mb-6 text-[26px] italic text-primary sm:text-[32px] md:text-[36px] tracking-[-0.02em]"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {titleAccent}
+            </div>
+          ) : null}
 
           <p className="text-x-lg text-subdued mb-8">{subtitle}</p>
 

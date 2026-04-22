@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Github, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { observer } from "mobx-react-lite";
 import NextLink from "next/link";
@@ -69,6 +69,18 @@ export const PublicNavbar = observer(() => {
     </Button>
   );
 
+  const githubButton = (
+    <AppLink
+      external
+      aria-label="GitHub"
+      className="inline-flex size-8 items-center justify-center rounded-md text-subdued transition-colors hover:bg-muted hover:text-foreground"
+      href="https://github.com/customermates/customermates"
+      onClick={closeMenu}
+    >
+      <Github aria-hidden className="size-4" />
+    </AppLink>
+  );
+
   return (
     <div className="sticky top-0 z-40 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -83,6 +95,8 @@ export const PublicNavbar = observer(() => {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          {githubButton}
+
           {contactButton}
 
           {signInButton}
@@ -114,6 +128,8 @@ export const PublicNavbar = observer(() => {
                     {item.title}
                   </AppLink>
                 ))}
+
+                {githubButton}
 
                 {contactButton}
 

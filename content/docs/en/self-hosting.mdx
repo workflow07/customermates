@@ -1,17 +1,49 @@
 ---
-title: Self-hosting — get started
-description: Run Customermates on your own infrastructure with Docker Compose in under 15 minutes.
+title: Self-hosting
+description: Run Customermates on your own infrastructure. When to pick self-host, how to install it with Docker Compose in under 15 minutes, and how to operate it day to day.
 ---
 
-**TL;DR** — Clone the repo, copy the example env, run `docker compose up -d`, visit `http://localhost:3000`. Postgres, the app, and a background worker start together.
+Self-hosting is one `docker compose up -d` once you've set a few env vars. This page covers the decision vs cloud, the install, and the day-to-day operations (update, restart, reset, backup).
 
-## Prerequisites
+## Self-host vs cloud
+
+Both have the same feature set.
+
+| If you… | Pick |
+|---|---|
+| Want to be using the CRM today | **Cloud** |
+| Have a team of < 20 and no strong data-residency requirement | **Cloud** |
+| Need the CRM on private infra for compliance | **Self-host** |
+| Want to avoid per-seat pricing long-term | **Self-host** |
+| Are an agency managing multiple tenants | **Self-host**, one instance per tenant |
+| Want to contribute to the project | **Self-host** locally, Cloud for real work |
+
+| | Cloud | Self-host |
+|---|---|---|
+| Setup time | 2 minutes | ~15 minutes |
+| Infra you manage | none | Docker, Postgres, proxy, TLS, backups |
+| Updates | automatic | you run `selfhost-update.sh` |
+| EU-hosted | ✓ | wherever you put it |
+| Backups | automatic daily | you configure |
+| Support SLA | included on paid plans | community |
+| Enterprise features (SSO, Audit Log) | paid plan | paid license key |
+| Pricing | per seat | free, pay only for Enterprise |
+
+**Data custody:** Cloud stores data in our EU region, GDPR-compliant, with the usual encryption-at-rest and in-transit. If your compliance posture requires data on your own infra, self-host.
+
+**Cost shape:** Cloud is predictable per-seat and scales linearly. Self-host is free for the core plus whatever you pay for infra (a small VPS handles hundreds of users). For a 5-person team, cloud is usually cheaper once you factor in the time to run Postgres backups yourself. For a 50-person team, self-host pays off quickly.
+
+You can migrate between them. Export from one, import to the other. The data model is identical. No lock-in either direction.
+
+## Install
+
+### Prerequisites
 
 - Docker and Docker Compose v2.
 - A domain name if you want TLS (optional for local).
 - ~2 GB RAM and a couple of GB of disk per thousand records.
 
-## Step 1 — Clone and configure
+### 1. Clone and configure
 
 ```bash
 git clone https://github.com/customermates/customermates.git
@@ -21,13 +53,13 @@ cd customermates
 
 The setup script copies `.env.selfhost.template` to `.env`. Edit the key values:
 
-- `BETTER_AUTH_SECRET` — a long random string (`openssl rand -hex 32`).
-- `CRON_SECRET` — another long random string.
-- `POSTGRES_PASSWORD` — change the default.
-- `BASE_URL` — your public URL (e.g. `https://crm.example.com`). Defaults to `http://localhost:4000` for local.
-- `RESEND_API_KEY` and `RESEND_FROM_EMAIL` — required if you want signup and invite emails.
+- `BETTER_AUTH_SECRET`: a long random string (`openssl rand -hex 32`).
+- `CRON_SECRET`: another long random string.
+- `POSTGRES_PASSWORD`: change the default.
+- `BASE_URL`: your public URL (e.g. `https://crm.example.com`). Defaults to `http://localhost:4000` for local.
+- `RESEND_API_KEY` and `RESEND_FROM_EMAIL`: required if you want signup and invite emails.
 
-## Step 2 — Start
+### 2. Start
 
 ```bash
 docker compose up -d
@@ -41,11 +73,11 @@ docker compose logs -f app
 
 When the app is ready, open `http://localhost:4000` (or your custom `APP_PORT`).
 
-## Step 3 — First account
+### 3. First account
 
 Open the URL. Sign up with your email. Once inside, manage roles for additional users from Company → Users and Company → Roles.
 
-## Step 4 — Reverse proxy and TLS
+### 4. Reverse proxy and TLS
 
 Point your reverse proxy (Caddy, nginx, Traefik) at the app port (4000 by default, or your custom `APP_PORT`). Caddy example:
 
@@ -57,24 +89,66 @@ crm.example.com {
 
 Customermates sets secure cookies when `BASE_URL` uses `https://`. Make sure the proxy forwards `X-Forwarded-Proto` correctly.
 
-## Step 5 — Create an API key
+### 5. Create an API key
 
-Profile → API Keys → New key. Same as cloud. See [API keys](/docs/api-keys).
+Profile → API Keys → New key. Same flow as cloud. See [API keys](/docs/api-keys).
 
-## Enterprise features
+## Day-to-day operations
 
-Audit Logging, SSO, and White-labeling require an Enterprise license. Everything else is free. Configure the license per the instructions shipped with your license key.
+### Update
+
+```bash
+./scripts/selfhost-update.sh
+```
+
+Pulls the latest app image, runs `prisma migrate deploy`, and restarts the `app` and `webhook-worker` services. Verify with `docker compose ps`.
+
+### Restart
+
+```bash
+./scripts/selfhost-restart.sh
+```
+
+Restarts the stack without running migrations. Use after `.env` or config changes.
+
+### Logs and troubleshooting
+
+```bash
+docker compose logs -f app
+docker compose logs -f postgres
+docker compose ps
+docker compose exec app sh
+```
+
+### Reset all data
+
+```bash
+./scripts/selfhost-reset.sh
+```
+
+Requires explicit `RESET` confirmation before deleting volumes. IRREVERSIBLE.
 
 ## Backups
 
 Back up Postgres with `pg_dump` on a schedule. The app container is stateless.
 
 ```bash
-docker compose exec postgres pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" > backup-$(date +%Y%m%d).sql
+docker compose exec -T postgres pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" \
+  | gzip > /var/backups/customermates-$(date +%Y%m%d).sql.gz
 ```
+
+For production:
+
+- Schedule daily dumps to a separate volume or off-site storage.
+- Test restore procedures in a non-production environment.
+- Keep `.env` and secrets out of source control.
+
+## Enterprise features
+
+Audit Logging, SSO, and White-labeling require an Enterprise license. Everything else is free. Configure the license per the instructions shipped with your license key.
 
 ## Next
 
-- [Managing your installation](/docs/managing-your-installation) — updates, resets, log inspection.
-- [Self-host vs cloud](/docs/self-host-vs-cloud) — if you're still deciding.
-- [Architecture and security](/docs/architecture-security) — what you're running.
+- [Architecture and security](/docs/architecture-security): what you're running.
+- [API keys](/docs/api-keys): key hygiene.
+- [Connect your AI](/docs/mcp-connect-claude): once installed, point an MCP client at your instance.

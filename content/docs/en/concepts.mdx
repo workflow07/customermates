@@ -3,7 +3,7 @@ title: Core concepts
 description: Entities, relationships, custom columns, widgets, and webhooks, in one page.
 ---
 
-**TL;DR** — Customermates tracks five entity types, lets each one carry user-defined fields, links them to each other through typed relationships, and fires webhooks whenever any of that changes.
+Customermates tracks five entity types, lets each one carry user-defined fields, links them to each other through typed relationships, and fires webhooks whenever any of that changes.
 
 ## The five entities
 
@@ -21,7 +21,7 @@ Each entity has `id`, `createdAt`, `updatedAt`, and supports markdown `notes`. E
 
 Relationships are typed and many-to-many. A contact belongs to zero or more organizations and zero or more deals. A deal belongs to zero or more contacts, organizations, and services (with quantities) plus assignees.
 
-| From → To | Example |
+| From ↔ To | Example |
 |---|---|
 | Contact ↔ Organization | "Max works at Initech" |
 | Contact ↔ Deal | "Max is a stakeholder on the Q2 contract" |
@@ -60,7 +60,7 @@ A widget re-renders whenever underlying records change. No refresh button.
 
 Every write emits a domain event: `contact.created`, `deal.updated`, `task.deleted`, and so on. You subscribe by URL and event list. Each delivery includes the changed record plus a `changes` map showing what moved from what to what, so subscribers can act on diffs without polling.
 
-See [Webhook events](/docs/webhook-events) for the full payload catalog.
+See [Webhooks](/docs/webhooks) for the full event catalog and payload shape.
 
 ## Notes
 
@@ -68,10 +68,10 @@ Notes are per-record markdown. They render through a Tiptap editor in the UI but
 
 ## Users, roles, and the company
 
-Users are your teammates. Roles control what they can read and write. The company is the tenant — every record you see lives inside one company, and cross-tenant access is not possible.
+Users are your teammates. Roles control what they can read and write. The company is the tenant. Every record you see lives inside one company, and cross-tenant access is not possible.
 
 ## Next
 
-- **[Custom columns](/docs/mcp-tool-catalog#custom-columns)** — recipes and gotchas.
-- **[Filter syntax](/docs/filter-syntax)** — operators and examples.
-- **[MCP tool catalog](/docs/mcp-tool-catalog)** — every tool that operates on these concepts.
+- **[Custom columns](/docs/mcp-tool-catalog#custom-columns)**: recipes and gotchas.
+- **[Filter syntax](/docs/filter-syntax)**: operators and examples.
+- **[MCP tool catalog](/docs/mcp-tool-catalog)**: every tool that operates on these concepts.

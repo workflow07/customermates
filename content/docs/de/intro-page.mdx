@@ -6,31 +6,41 @@ demo:
   title: Customermates Demo
 ---
 
-**TL;DR** — Customermates ist ein Open-Source-CRM, designed to be driven by deine KI. Native MCP-Unterstützung bedeutet: Claude, ChatGPT, Cursor und alles andere, das Model Context Protocol spricht, kann dein CRM lesen und schreiben — ohne Copy-Paste.
+Customermates ist ein Open-Source-CRM, das von deiner KI gefahren werden soll. Native MCP-Unterstützung bedeutet: Claude, ChatGPT, Cursor und alles andere, das Model Context Protocol spricht, liest und schreibt dein CRM, ganz ohne Copy-Paste.
 
-## Hier starten
+## Client wählen und loslegen
 
-Wähl den Pfad, der zu dir passt:
-
-| Ich will… | Gehe zu |
+| Deine KI | Volles Setup auf einer Seite |
 |---|---|
-| Ein funktionierendes Setup in 5 Minuten | [Quickstart](/docs/quickstart) |
-| Verstehen, wie die Entitäten zusammenhängen | [Kernkonzepte](/docs/concepts) |
-| Claude / ChatGPT / Cursor anschließen | [MCP](/docs/mcp) |
-| Meinen Stack auf CRM-Events abonnieren | [Webhooks](/docs/webhooks) |
-| Auf eigener Infra self-hosten | [Self-Hosting](/docs/self-hosting) |
-| Von Pipedrive migrieren | [Von Pipedrive](/docs/from-pipedrive) |
-| Jedes Tool sehen, das meine KI aufrufen kann | [MCP-Tool-Katalog](/docs/mcp-tool-catalog) |
+| Claude Desktop | [Claude verbinden](/docs/mcp-connect-claude) |
+| ChatGPT | [ChatGPT verbinden](/docs/mcp-connect-chatgpt) |
+| Cursor | [Cursor verbinden](/docs/mcp-connect-cursor) |
+| Beliebiger MCP-Client | [MCP-Übersicht](/docs/mcp) |
+
+Jede dieser Seiten ist selbständig: API-Key-Schritte, JSON-Config, der volle Setup-Prompt und deine ersten Kommandos. Du musst nicht zwischen Seiten hin und her springen.
+
+Lieber ein Durchlauf mit Webhook und erster KI-Interaktion am Ende? Geh zum [Quickstart](/docs/quickstart).
 
 ## Was Customermates ist
 
-Ein modernes CRM mit allem Üblichen — Contacts, Organizations, Deals, Services, Tasks, Custom Fields, Pipelines, Dashboards — plus:
+Ein modernes CRM mit allem Üblichen (Contacts, Organizations, Deals, Services, Tasks, Custom Fields, Pipelines, Dashboards) plus:
 
 - **Native MCP-Endpoint**, damit dein KI-Client CRM-Operationen ohne Plugin entdeckt und aufruft.
 - **Open Source** unter AGPLv3 (Enterprise-Komponenten unter separater kommerzieller Lizenz). Self-Host oder unsere Cloud.
 - **EU-gehostet und DSGVO-konform** in der Managed-Version.
 - **Echte Webhooks** mit signierten Payloads, Retries und Delivery-Log.
 - **OpenAPI 3.1** für die volle REST-Oberfläche.
+
+## Vier Wege, wie Customermates mit deinem Stack spricht
+
+| Ich will… | Nimm |
+|---|---|
+| Claude, ChatGPT oder Cursor aktualisiert das CRM im Gespräch | [MCP](/docs/mcp) |
+| Custom-Integration in Code bauen | [OpenAPI](/docs/openapi) |
+| Auf CRM-Änderungen in Slack, Sequencer, BI oder Warehouse reagieren | [Webhooks](/docs/webhooks) |
+| Workflows visuell ohne Code komponieren | [n8n](/docs/n8n) |
+
+Alle vier nutzen denselben API-Key. Siehe [API-Keys](/docs/api-keys).
 
 ## Unsere Haltung
 
@@ -40,12 +50,13 @@ Das CRM, das sich in der KI aktualisiert, die du ohnehin nutzt. Kein neuer Tab, 
 
 ## Wie die Docs organisiert sind
 
-- **Getting Started** — [Quickstart](/docs/quickstart), [Konzepte](/docs/concepts), [Von Pipedrive](/docs/from-pipedrive).
-- **Integrationen** — [MCP](/docs/mcp), [Webhooks](/docs/webhooks), [OpenAPI](/docs/openapi), [n8n](/docs/n8n).
-- **Self-Hosting** — [Get Started](/docs/self-hosting), [Self-Host vs Cloud](/docs/self-host-vs-cloud), [Installation managen](/docs/managing-your-installation), [Architektur und Security](/docs/architecture-security).
-- **Reference** — [MCP-Tool-Katalog](/docs/mcp-tool-catalog), [Webhook-Events](/docs/webhook-events), [Filter-Syntax](/docs/filter-syntax), [API-Keys](/docs/api-keys).
-- **Vergleich** — [Customermates vs Alternativen](/docs/comparison).
+- **Getting Started**: [Quickstart](/docs/quickstart), [Konzepte](/docs/concepts), [Von Pipedrive](/docs/from-pipedrive).
+- **KI verbinden**: [Claude](/docs/mcp-connect-claude), [ChatGPT](/docs/mcp-connect-chatgpt), [Cursor](/docs/mcp-connect-cursor).
+- **Integrationen**: [MCP](/docs/mcp), [Webhooks](/docs/webhooks), [OpenAPI](/docs/openapi), [n8n](/docs/n8n).
+- **Self-Hosting**: [Start und Betrieb](/docs/self-hosting), [Architektur und Sicherheit](/docs/architecture-security).
+- **Reference**: [MCP-Tool-Katalog](/docs/mcp-tool-catalog), [Filter-Syntax](/docs/filter-syntax), [API-Keys](/docs/api-keys).
+- **Vergleich**: [Customermates vs Alternativen](/docs/comparison).
 
 ## Ausprobieren
 
-Die eingebettete Demo auf dieser Seite ist eine echte Live-Instanz. Rumklicken, Contacts anlegen, löschen — nichts wird zwischen Sessions gespeichert.
+Die eingebettete Demo auf dieser Seite ist eine echte Live-Instanz. Rumklicken, Contacts anlegen, löschen. Nichts wird zwischen Sessions gespeichert.

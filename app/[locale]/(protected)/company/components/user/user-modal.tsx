@@ -73,7 +73,7 @@ export const CompanyUserModal = observer(() => {
                 <p className="text-x-sm">
                   {t.rich("CompanyUserModal.activeUserWarning", {
                     settingsLink: (chunks) => (
-                      <AppLink inheritSize href="/profile/details">
+                      <AppLink inheritSize className="text-current" href="/profile/details">
                         {chunks}
                       </AppLink>
                     ),

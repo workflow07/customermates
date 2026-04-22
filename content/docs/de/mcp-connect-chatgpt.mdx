@@ -1,16 +1,19 @@
 ---
 title: ChatGPT verbinden
-description: Customermates in ChatGPT über das Connectors-Feature nutzen.
+description: Customermates in ChatGPT über Connectors nutzen. API-Key, Connector-Config und voller Setup-Prompt, alles auf einer Seite.
 ---
 
-**TL;DR** — Customermates als Custom Connector in ChatGPT anlegen, URL und API-Key eintragen, [Setup-Prompt](/docs/setup-ai-assistant) einfügen.
+Customermates als Custom Connector in ChatGPT anlegen, URL und API-Key eintragen, Setup-Prompt einfügen. Alles steht auf dieser Seite.
 
-## Voraussetzungen
+## 1. API-Key anlegen
 
-- Ein ChatGPT-Plan mit **Connectors** (Plus oder höher).
-- 64-Zeichen-Customermates-API-Key. Erstellen unter **Profil → API Keys** — siehe [API-Keys](/docs/api-keys).
+In Customermates: **Profil → API Keys → Neuer Key**. Gib ihm einen Namen, der den Client identifiziert, z.B. `ChatGPT privat`. Die 64 Zeichen sofort kopieren, sie werden nur einmal angezeigt.
 
-## Konfigurieren
+Volles Key-Management: [API-Keys](/docs/api-keys).
+
+## 2. Connector in ChatGPT konfigurieren
+
+Du brauchst einen ChatGPT-Plan mit **Connectors** (Plus oder höher).
 
 1. In ChatGPT: **Settings → Connectors → Add connector**.
 2. **Custom connector (MCP)** wählen.
@@ -22,9 +25,60 @@ description: Customermates in ChatGPT über das Connectors-Feature nutzen.
    - **Header value:** dein 64-Zeichen-Key
 4. Speichern. ChatGPT pingt den Server und listet die Tools.
 
-## Erstes Gespräch
+## 3. Diesen Setup-Prompt als erste Nachricht einfügen
 
-Neuen Chat mit aktiviertem Customermates-Connector starten. [Setup-Prompt](/docs/setup-ai-assistant) als erste Nachricht. ChatGPT orientiert sich und fragt nach.
+Neuen Chat mit aktiviertem Customermates-Connector starten, dann den ganzen Block unten paste, bevor du etwas anderes fragst. Er orientiert ChatGPT an deinem CRM und verhindert die typischen Fehler (Beziehungen löschen, falsches Update-Tool, Enum-Werte raten).
+
+````markdown
+Du bist jetzt per MCP mit meinem Customermates CRM verbunden.
+
+## Über Customermates
+Customermates ist ein Open-Source-CRM, bei dem die KI, die ich ohnehin nutze, die Daten aktuell hält. Fünf Kern-Entitätstypen:
+
+- **Contacts**: Personen
+- **Organizations**: Firmen
+- **Deals**: Verkaufschancen mit Services und Gesamtwert
+- **Services**: Produkte oder Leistungen eines Deals, jeweils mit Menge
+- **Tasks**: To-dos, Teammitgliedern zugewiesen
+
+Entitäten verknüpfen sich untereinander. Ein Contact gehört zu einer oder mehreren Organizations und Deals. Ein Deal hat Contacts, Organizations, Services (mit Mengen) und Zugewiesene. Ein Task hat nur Zugewiesene. Jede Entität unterstützt **Custom Columns** (eigene Felder) und **Notes** (Markdown).
+
+## Bevor du etwas tust, frag mich nach
+1. Meinem Customermates-API-Key. Ich paste ihn; nutz ihn im Header `x-api-key` bei jedem MCP-Call.
+2. Meinem Namen und meiner Rolle, damit du deine Antworten anpasst.
+3. Wofür ich mein CRM typischerweise nutze, in einem Satz.
+
+## Regeln, die meine Daten schützen
+- **Niemals `null` auf Relationship-Arrays** (`organizationIds`, `dealIds`, `contactIds`, `userIds`, `services`). Null löscht die Beziehung. Feld weglassen, um bestehende Links zu behalten, `[]` um alle zu löschen, oder `link_entities` / `unlink_entities` für einzelne IDs.
+- **Bevorzug `link_entities` und `unlink_entities`** gegenüber `update_*` mit Relationship-Arrays. Sie mergen statt zu ersetzen.
+- **Custom Fields sind per-Column-Merge**. Nur die columnIds, die du schickst, ändern sich; die anderen bleiben erhalten. Um ein Feld zu leeren: `{ columnId, value: null }`.
+- **Nutze das richtige per-Type-Custom-Column-Tool**. `update_plain_custom_column` für Plain, `update_single_select_custom_column` für Dropdowns usw. Der Server sagt dir, wenn du das falsche gewählt hast.
+- **Vor Create oder Update**: `get_entity_configuration` aufrufen, um Custom-Column-IDs und Filter-Syntax zu kennen.
+- **Destruktive Aktionen bestätigen lassen.** Bei `delete_*` oder allem, was als IRREVERSIBLE markiert ist, frag nach, es sei denn ich habe "mach einfach" gesagt.
+
+## Vorgeschlagene erste Schritte
+1. Ruf `get_current_user` und `get_company` auf und sag mir, wer und wo ich arbeite.
+2. Ruf `count_entity` für contact, organization, deal, service und task.
+3. Ruf `list_custom_columns`, damit wir keine Felder neu anlegen, die bereits existieren.
+4. Frag, woran ich zuerst arbeiten will.
+
+## Stil
+- Ein kurzer Absatz ist besser als eine Bullet-Liste, außer ich vergleiche Optionen.
+- Bevor du ein destruktives Tool ausführst: nenn Tool und Argumente.
+- Wenn ich frage "was ist mit X?", nutz erst `search_all_entities`, bevor du den Entity-Typ rätst.
+
+Bereit. Bitte frag nach meinem API-Key.
+````
+
+ChatGPT behält diesen Prompt nicht zwischen Chats. In einem Snippet-Manager (Raycast, TextExpander, Alfred) ablegen, damit du ihn jede Session schnell pasten kannst.
+
+## 4. Ersten echten Prompt probieren
+
+- *"Verschieb den Acme-Deal auf Stage 'Won' und hinterleg die Notiz, dass der Vertrag heute unterschrieben wurde."*
+- *"Zeig mir die letzten zehn Contacts, die ich erstellt habe. Welche haben keine E-Mail?"*
+- *"Leg Jane Doe bei Initech an, verknüpf mit der Initech-Org, und starte einen Deal für 12 Stunden Beratung."*
+
+ChatGPT sagt dir, welche Tools er genutzt hat und was sich geändert hat.
 
 ## Troubleshooting
 
@@ -37,12 +91,11 @@ Neuen Chat mit aktiviertem Customermates-Connector starten. [Setup-Prompt](/docs
 
 ## Tipps
 
-- ChatGPT behält den Setup-Prompt nicht über Chats hinweg. In einem Snippet-Manager (Raycast, TextExpander, Alfred) ablegen.
 - Customermates-Connector pinnen, damit er in jedem Chat verfügbar ist.
-- Bei langen Sessions: ChatGPT erinnern, `search_all_entities` vor dem Raten des Entity-Typs zu nutzen.
+- Bei langen Sessions: ChatGPT erinnern, `search_all_entities` vor dem Raten des Entity-Typs zu nutzen. Der Setup-Prompt sagt das bereits, aber eine Erinnerung hilft bei Model-Drift.
 
 ## Weiter
 
-- [MCP-Tool-Katalog](/docs/mcp-tool-catalog)
-- [Claude Desktop verbinden](/docs/mcp-connect-claude)
-- [Webhooks](/docs/webhooks)
+- [MCP-Tool-Katalog](/docs/mcp-tool-catalog): jedes aufrufbare Tool.
+- [Claude Desktop verbinden](/docs/mcp-connect-claude): wenn du in Claude lebst.
+- [Webhooks](/docs/webhooks): Änderungen außerhalb von ChatGPT mitbekommen.

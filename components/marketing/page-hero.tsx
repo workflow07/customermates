@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 
-import { GitHubStarButton } from "@/app/[locale]/(static)/components/github-star-button";
 import { AppChip } from "@/components/chip/app-chip";
 import { Button } from "@/components/ui/button";
 
+import { AgplGithubBadge } from "./agpl-github-badge";
 import { WaveDecoration } from "./wave-decoration";
 
 type Props = {
@@ -17,11 +17,13 @@ type Props = {
   description: string;
   hint: string;
   title: string;
+  titleAccent?: string;
 };
 
 export function PageHero({
   badge,
   title,
+  titleAccent,
   description,
   buttonLeftHref,
   buttonLeftText,
@@ -49,7 +51,7 @@ export function PageHero({
       />
 
       <div className="relative z-10 flex flex-col items-center">
-        <GitHubStarButton />
+        <AgplGithubBadge />
 
         {badge ? (
           <div className="mb-4 flex justify-center">
@@ -58,6 +60,15 @@ export function PageHero({
         ) : null}
 
         <h1 className="text-x-4xl mx-auto max-w-4xl px-4 text-center">{title}</h1>
+
+        {titleAccent ? (
+          <div
+            className="mx-auto mt-1.5 px-4 text-center text-[26px] italic text-primary sm:text-[32px] md:text-[36px] tracking-[-0.02em]"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {titleAccent}
+          </div>
+        ) : null}
 
         <h2 className="text-x-lg mx-auto max-w-4xl px-4 pt-4 text-center text-subdued md:pt-6">{description}</h2>
 
