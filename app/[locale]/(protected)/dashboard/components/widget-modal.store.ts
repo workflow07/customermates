@@ -194,6 +194,7 @@ export class WidgetModalStore extends BaseModalStore<UpsertWidgetData> {
   }
 
   onGroupByChange = (value: string) => {
+    if (!value) return;
     this.groupByValue = value;
   };
 
@@ -270,27 +271,29 @@ export class WidgetModalStore extends BaseModalStore<UpsertWidgetData> {
         const groupByCustomColumnId = widget.groupByCustomColumnId ?? undefined;
 
         this.skipReactions = true;
-        this.onInitOrRefresh({
-          id: widget.id,
-          name: widget.name,
-          entityType: widget.entityType,
-          displayOptions: {
-            barColors: widget.displayOptions?.barColors ?? [ChartColor.primary1],
-            displayType: widget.displayOptions?.displayType ?? DisplayType.verticalBarChart,
-            reverseXAxis: widget.displayOptions?.reverseXAxis ?? false,
-            reverseYAxis: widget.displayOptions?.reverseYAxis ?? false,
-          },
-          groupByType,
-          groupByCustomColumnId,
-          aggregationType: widget.aggregationType,
-          isTemplate: widget.isTemplate,
-          entityFilters: this.mergeFiltersWithFilterableFields(widget.entityType, widget.entityFilters),
-          dealFilters: this.mergeFiltersWithFilterableFields(EntityType.deal, widget.dealFilters),
-        });
+        runInAction(() => {
+          if (groupByType === WidgetGroupByType.customColumn && groupByCustomColumnId)
+            this.groupByValue = `custom:${groupByCustomColumnId}`;
+          else this.groupByValue = groupByType;
 
-        if (groupByType === WidgetGroupByType.customColumn && groupByCustomColumnId)
-          this.groupByValue = `custom:${groupByCustomColumnId}`;
-        else this.groupByValue = groupByType;
+          this.onInitOrRefresh({
+            id: widget.id,
+            name: widget.name,
+            entityType: widget.entityType,
+            displayOptions: {
+              barColors: widget.displayOptions?.barColors ?? [ChartColor.primary1],
+              displayType: widget.displayOptions?.displayType ?? DisplayType.verticalBarChart,
+              reverseXAxis: widget.displayOptions?.reverseXAxis ?? false,
+              reverseYAxis: widget.displayOptions?.reverseYAxis ?? false,
+            },
+            groupByType,
+            groupByCustomColumnId,
+            aggregationType: widget.aggregationType,
+            isTemplate: widget.isTemplate,
+            entityFilters: this.mergeFiltersWithFilterableFields(widget.entityType, widget.entityFilters),
+            dealFilters: this.mergeFiltersWithFilterableFields(EntityType.deal, widget.dealFilters),
+          });
+        });
         this.skipReactions = false;
       } else this.close();
     } finally {

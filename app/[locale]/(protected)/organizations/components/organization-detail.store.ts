@@ -61,4 +61,8 @@ export class OrganizationDetailStore extends BaseCustomColumnEntityModalStore<
       dealIds: [],
     };
   }
+
+  protected buildRecentSearchItem(entity: OrganizationDto) {
+    return { type: "organization" as const, id: entity.id, name: entity.name };
+  }
 }

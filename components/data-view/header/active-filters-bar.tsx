@@ -103,7 +103,7 @@ export const DataViewActiveFiltersBar = observer(function DataViewActiveFiltersB
             <span className="truncate text-[11px]">
               <span className="font-medium">{label}</span>
 
-              <span className="mx-1 opacity-60">{operator}</span>
+              <span className="mx-1 font-normal">{operator}</span>
 
               <FilterChipValue customColumns={store.customColumns} filter={filter} />
             </span>

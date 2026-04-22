@@ -58,4 +58,10 @@ export class ContactDetailStore extends BaseCustomColumnEntityModalStore<
       dealIds: [],
     };
   }
+
+  protected buildRecentSearchItem(entity: ContactDto) {
+    const name = `${entity.firstName ?? ""} ${entity.lastName ?? ""}`.trim();
+    if (!name) return null;
+    return { type: "contact" as const, id: entity.id, name };
+  }
 }

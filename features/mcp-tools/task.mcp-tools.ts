@@ -1,68 +1,53 @@
 import { z } from "zod";
 
-import { encodeToToon } from "./utils";
+import { encodeToToon, forbidNullFields, NO_NULL_WIPE_WARNING } from "./utils";
 
 import { getCreateManyTasksInteractor, getUpdateManyTasksInteractor } from "@/core/di";
 import { BaseCreateTaskSchema } from "@/features/tasks/upsert/create-task-base.schema";
+import { BaseUpdateTaskSchema } from "@/features/tasks/upsert/update-task-base.schema";
 
-const McpCreateManyTasksSchema = z.object({
-  tasks: z.array(BaseCreateTaskSchema).min(1).max(10),
+const TASK_WIPE_GUARDED_FIELDS = ["userIds", "customFieldValues"] as const;
+
+const CreateTasksSchema = z.object({
+  tasks: z.array(BaseCreateTaskSchema).min(1).max(100),
 });
 
-const UpdateTasksNameSchema = z.object({
-  tasks: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        name: z.string().min(1),
-      }),
-    )
-    .min(1)
-    .max(10),
+const UpdateTasksSchema = z.object({
+  tasks: z.array(forbidNullFields(BaseUpdateTaskSchema, TASK_WIPE_GUARDED_FIELDS)).min(1).max(100),
 });
 
-const ChangeTasksUsersSchema = z.object({
-  tasks: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        userIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-export const batchCreateTasksTool = {
-  name: "batch_create_tasks",
-  description: "Create tasks. Run get_entity_configuration first. Required: name. Returns IDs.",
+export const createTasksTool = {
+  name: "create_tasks",
+  description:
+    "Create up to 100 tasks in one call. " +
+    "Required per item: name. " +
+    "Optional per item: notes, userIds, customFieldValues. " +
+    "Prereq: call get_entity_configuration for custom-column ids. " +
+    "Returns the list of created task ids and names.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
-  inputSchema: McpCreateManyTasksSchema,
-  execute: async (params: z.infer<typeof McpCreateManyTasksSchema>) => {
+  inputSchema: CreateTasksSchema,
+  execute: async (params: z.infer<typeof CreateTasksSchema>) => {
     const result = await getCreateManyTasksInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return encodeToToon(result.data.map((item) => item.id));
+    return encodeToToon({
+      items: result.data.map((item) => ({ id: item.id, name: item.name })),
+    });
   },
 };
 
-export const batchUpdateTaskNameTool = {
-  name: "batch_update_task_name",
-  description: "Update task name. Only updates provided fields.",
+export const updateTasksTool = {
+  name: "update_tasks",
+  description:
+    "Partial update for up to 100 tasks in one call. " +
+    "Required per item: id. " +
+    "Optional per item: name, notes, userIds, customFieldValues. " +
+    "WARNING: if you pass userIds, the array REPLACES existing assignees (any id not in the array is unassigned). " +
+    "To ADD or REMOVE a single assignee without touching the rest, use link_entities or unlink_entities instead. " +
+    NO_NULL_WIPE_WARNING +
+    " Idempotent: same payload produces the same state.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateTasksNameSchema,
-  execute: async (params: z.infer<typeof UpdateTasksNameSchema>) => {
-    const result = await getUpdateManyTasksInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} task(s)`;
-  },
-};
-
-export const batchSetTaskUsersTool = {
-  name: "batch_set_task_users",
-  description: "Set (replace) all users assigned to a task. Pass empty array to unassign all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeTasksUsersSchema,
-  execute: async (params: z.infer<typeof ChangeTasksUsersSchema>) => {
+  inputSchema: UpdateTasksSchema,
+  execute: async (params: z.infer<typeof UpdateTasksSchema>) => {
     const result = await getUpdateManyTasksInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} task(s)`;

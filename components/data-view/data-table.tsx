@@ -205,6 +205,11 @@ export const DataTable = observer(function DataTable<E extends HasId>({ store, c
               data-state={store.selectedIds.has(row.original.id) ? "selected" : undefined}
               onClick={(e) => {
                 if (isInteractiveClick(e)) return;
+                if (store.selectedIds.size > 0 && canBulkAct) {
+                  if (store.selectedIds.has(row.original.id)) store.selectedIds.delete(row.original.id);
+                  else store.selectedIds.add(row.original.id);
+                  return;
+                }
                 onRowClick?.(row.original);
               }}
             >

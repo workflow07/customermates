@@ -1073,23 +1073,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -1127,23 +1134,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -2187,23 +2201,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -2241,23 +2262,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -2957,23 +2985,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -3011,23 +3046,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -4891,23 +4933,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -4945,23 +4994,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -6005,23 +6061,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -6059,23 +6122,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -6775,23 +6845,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -6829,23 +6906,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -8819,23 +8903,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -8873,23 +8964,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -9971,23 +10069,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -10025,23 +10130,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -10779,23 +10891,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -10833,23 +10952,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -12709,23 +12835,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -12763,23 +12896,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -13801,23 +13941,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -13855,23 +14002,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -14549,23 +14703,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -14603,23 +14764,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -16329,23 +16497,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -16383,23 +16558,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -17404,23 +17586,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -17458,23 +17647,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -18135,23 +18331,30 @@
                                 "const": "date"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -18189,23 +18392,30 @@
                                 "const": "dateTime"
                               },
                               "options": {
-                                "type": "object",
-                                "properties": {
-                                  "displayFormat": {
-                                    "type": "string",
-                                    "enum": [
-                                      "numericalLong",
-                                      "numericalShort",
-                                      "descriptiveShort",
-                                      "descriptiveLong",
-                                      "relative"
-                                    ]
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "displayFormat": {
+                                        "type": "string",
+                                        "enum": [
+                                          "numericalLong",
+                                          "numericalShort",
+                                          "descriptiveShort",
+                                          "descriptiveLong",
+                                          "relative"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "displayFormat"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
                                   }
-                                },
-                                "required": [
-                                  "displayFormat"
-                                ],
-                                "additionalProperties": false
+                                ]
                               }
                             },
                             "required": [
@@ -19913,7 +20123,7 @@
         "properties": {
           "contacts": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20219,7 +20429,7 @@
         "properties": {
           "organizations": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20539,7 +20749,7 @@
         "properties": {
           "deals": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -20883,7 +21093,7 @@
         "properties": {
           "services": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",
@@ -21148,7 +21358,7 @@
         "properties": {
           "tasks": {
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 100,
             "type": "array",
             "items": {
               "type": "object",

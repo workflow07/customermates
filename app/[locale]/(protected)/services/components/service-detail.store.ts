@@ -55,4 +55,8 @@ export class ServiceDetailStore extends BaseCustomColumnEntityModalStore<
       dealIds: [],
     };
   }
+
+  protected buildRecentSearchItem(entity: ServiceDto) {
+    return { type: "service" as const, id: entity.id, name: entity.name };
+  }
 }

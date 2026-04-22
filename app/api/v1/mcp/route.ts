@@ -1,141 +1,130 @@
 import { createMcpRoute } from "./mcp-route-utils";
 
+import { createContactsTool, updateContactsTool } from "@/features/mcp-tools/contact.mcp-tools";
+import { createOrganizationsTool, updateOrganizationsTool } from "@/features/mcp-tools/organization.mcp-tools";
+import { createDealsTool, updateDealsTool } from "@/features/mcp-tools/deal.mcp-tools";
+import { createServicesTool, updateServicesTool } from "@/features/mcp-tools/service.mcp-tools";
+import { createTasksTool, updateTasksTool } from "@/features/mcp-tools/task.mcp-tools";
 import {
-  batchCreateContactsTool,
-  batchUpdateContactNameTool,
-  batchSetContactOrganizationsTool,
-  batchSetContactUsersTool,
-  batchSetContactDealsTool,
-} from "@/features/mcp-tools/contact.mcp-tools";
-import {
-  batchCreateOrganizationsTool,
-  batchUpdateOrganizationNameTool,
-  batchSetOrganizationContactsTool,
-  batchSetOrganizationUsersTool,
-  batchSetOrganizationDealsTool,
-} from "@/features/mcp-tools/organization.mcp-tools";
-import {
-  batchCreateDealsTool,
-  batchUpdateDealNameTool,
-  batchSetDealOrganizationsTool,
-  batchSetDealUsersTool,
-  batchSetDealContactsTool,
-  batchSetDealServicesTool,
-} from "@/features/mcp-tools/deal.mcp-tools";
-import {
-  batchCreateServicesTool,
-  batchUpdateServiceNameAmountTool,
-  batchSetServiceUsersTool,
-  batchSetServiceDealsTool,
-} from "@/features/mcp-tools/service.mcp-tools";
-import {
-  batchCreateTasksTool,
-  batchUpdateTaskNameTool,
-  batchSetTaskUsersTool,
-} from "@/features/mcp-tools/task.mcp-tools";
-import {
+  listWidgetsTool,
   getWidgetsTool,
-  batchGetWidgetDetailsTool,
   createWidgetTool,
-  updateWidgetGroupingTool,
-  updateWidgetAggregationTool,
-  updateWidgetEntityFiltersTool,
-  updateWidgetDealFiltersTool,
-  updateWidgetDisplayOptionsTool,
+  updateWidgetTool,
+  deleteWidgetTool,
 } from "@/features/mcp-tools/widget.mcp-tools";
 import {
   listWebhooksTool,
+  getWebhookTool,
   createWebhookTool,
   updateWebhookTool,
   deleteWebhookTool,
+  listWebhookDeliveriesTool,
+  resendWebhookDeliveryTool,
 } from "@/features/mcp-tools/webhook.mcp-tools";
-import { getUserDetailsTool, getUsersTool } from "@/features/mcp-tools/user.mcp-tools";
-import { getCompanyDetailsTool, getRolesTool } from "@/features/mcp-tools/company.mcp-tools";
+import { getCurrentUserTool, listUsersTool, updateMyProfileTool } from "@/features/mcp-tools/user.mcp-tools";
+import { getCompanyTool, listRolesTool, updateCompanyTool } from "@/features/mcp-tools/company.mcp-tools";
 import {
-  addPlainCustomColumnTool,
-  addDateCustomColumnTool,
-  addDateTimeCustomColumnTool,
-  addCurrencyCustomColumnTool,
-  addSingleSelectCustomColumnTool,
-  addLinkCustomColumnTool,
-  addEmailCustomColumnTool,
-  addPhoneCustomColumnTool,
+  createPlainCustomColumnTool,
+  createDateCustomColumnTool,
+  createDateTimeCustomColumnTool,
+  createCurrencyCustomColumnTool,
+  createSingleSelectCustomColumnTool,
+  createLinkCustomColumnTool,
+  createEmailCustomColumnTool,
+  createPhoneCustomColumnTool,
+  listCustomColumnsTool,
+  updatePlainCustomColumnTool,
+  updateDateCustomColumnTool,
+  updateDateTimeCustomColumnTool,
+  updateCurrencyCustomColumnTool,
+  updateSingleSelectCustomColumnTool,
+  updateLinkCustomColumnTool,
+  updateEmailCustomColumnTool,
+  updatePhoneCustomColumnTool,
+  deleteCustomColumnTool,
 } from "@/features/mcp-tools/custom-column.mcp-tools";
 import {
   getEntityConfigurationTool,
   filterEntityTool,
   countEntityTool,
-  batchGetEntityDetailsTool,
-  batchSetEntityNotesTool,
-  batchDeleteEntityTool,
-  batchUpdateEntityCustomFieldTool,
+  getEntitiesTool,
+  updateEntityNotesTool,
+  appendEntityNotesTool,
+  deleteEntitiesTool,
+  updateEntityCustomFieldsTool,
+  linkEntitiesTool,
+  unlinkEntitiesTool,
+  searchAllEntitiesTool,
 } from "@/features/mcp-tools/entity-generic.mcp-tools";
 
 const ALL_TOOLS = [
   getEntityConfigurationTool,
   filterEntityTool,
   countEntityTool,
-  batchGetEntityDetailsTool,
-  batchSetEntityNotesTool,
-  batchDeleteEntityTool,
-  batchUpdateEntityCustomFieldTool,
+  searchAllEntitiesTool,
+  getEntitiesTool,
+  updateEntityNotesTool,
+  appendEntityNotesTool,
+  deleteEntitiesTool,
+  updateEntityCustomFieldsTool,
+  linkEntitiesTool,
+  unlinkEntitiesTool,
 
-  batchCreateContactsTool,
-  batchUpdateContactNameTool,
-  batchSetContactOrganizationsTool,
-  batchSetContactUsersTool,
-  batchSetContactDealsTool,
+  createContactsTool,
+  updateContactsTool,
 
-  batchCreateOrganizationsTool,
-  batchUpdateOrganizationNameTool,
-  batchSetOrganizationContactsTool,
-  batchSetOrganizationUsersTool,
-  batchSetOrganizationDealsTool,
+  createOrganizationsTool,
+  updateOrganizationsTool,
 
-  batchCreateDealsTool,
-  batchUpdateDealNameTool,
-  batchSetDealOrganizationsTool,
-  batchSetDealUsersTool,
-  batchSetDealContactsTool,
-  batchSetDealServicesTool,
+  createDealsTool,
+  updateDealsTool,
 
-  batchCreateServicesTool,
-  batchUpdateServiceNameAmountTool,
-  batchSetServiceUsersTool,
-  batchSetServiceDealsTool,
+  createServicesTool,
+  updateServicesTool,
 
-  batchCreateTasksTool,
-  batchUpdateTaskNameTool,
-  batchSetTaskUsersTool,
+  createTasksTool,
+  updateTasksTool,
 
+  listWidgetsTool,
   getWidgetsTool,
-  batchGetWidgetDetailsTool,
   createWidgetTool,
-  updateWidgetGroupingTool,
-  updateWidgetAggregationTool,
-  updateWidgetEntityFiltersTool,
-  updateWidgetDealFiltersTool,
-  updateWidgetDisplayOptionsTool,
+  updateWidgetTool,
+  deleteWidgetTool,
 
   listWebhooksTool,
+  getWebhookTool,
   createWebhookTool,
   updateWebhookTool,
   deleteWebhookTool,
+  listWebhookDeliveriesTool,
+  resendWebhookDeliveryTool,
 
-  getUserDetailsTool,
-  getUsersTool,
+  getCurrentUserTool,
+  updateMyProfileTool,
+  listUsersTool,
 
-  getCompanyDetailsTool,
-  getRolesTool,
+  getCompanyTool,
+  updateCompanyTool,
+  listRolesTool,
 
-  addPlainCustomColumnTool,
-  addDateCustomColumnTool,
-  addDateTimeCustomColumnTool,
-  addCurrencyCustomColumnTool,
-  addSingleSelectCustomColumnTool,
-  addLinkCustomColumnTool,
-  addEmailCustomColumnTool,
-  addPhoneCustomColumnTool,
+  createPlainCustomColumnTool,
+  createDateCustomColumnTool,
+  createDateTimeCustomColumnTool,
+  createCurrencyCustomColumnTool,
+  createSingleSelectCustomColumnTool,
+  createLinkCustomColumnTool,
+  createEmailCustomColumnTool,
+  createPhoneCustomColumnTool,
+  listCustomColumnsTool,
+  updatePlainCustomColumnTool,
+  updateDateCustomColumnTool,
+  updateDateTimeCustomColumnTool,
+  updateCurrencyCustomColumnTool,
+  updateSingleSelectCustomColumnTool,
+  updateLinkCustomColumnTool,
+  updateEmailCustomColumnTool,
+  updatePhoneCustomColumnTool,
+  deleteCustomColumnTool,
 ];
 
 const handler = createMcpRoute(ALL_TOOLS, "/api/v1/mcp");

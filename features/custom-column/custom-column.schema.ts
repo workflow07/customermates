@@ -31,6 +31,7 @@ export const DateSchema = BaseSchema.extend({
     .object({
       displayFormat: z.enum(DATE_DISPLAY_FORMATS),
     })
+    .nullable()
     .optional(),
 });
 
@@ -40,6 +41,7 @@ export const DateTimeSchema = BaseSchema.extend({
     .object({
       displayFormat: z.enum(DATE_DISPLAY_FORMATS),
     })
+    .nullable()
     .optional(),
 });
 

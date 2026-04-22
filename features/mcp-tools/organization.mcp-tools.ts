@@ -1,116 +1,57 @@
 import { z } from "zod";
 
-import { encodeToToon } from "./utils";
+import { encodeToToon, forbidNullFields, NO_NULL_WIPE_WARNING } from "./utils";
 
 import { getCreateManyOrganizationsInteractor, getUpdateManyOrganizationsInteractor } from "@/core/di";
 import { BaseCreateOrganizationSchema } from "@/features/organizations/upsert/create-organization-base.schema";
+import { BaseUpdateOrganizationSchema } from "@/features/organizations/upsert/update-organization-base.schema";
 
-const McpCreateManyOrganizationsSchema = z.object({
-  organizations: z.array(BaseCreateOrganizationSchema).min(1).max(10),
+const ORGANIZATION_WIPE_GUARDED_FIELDS = ["contactIds", "userIds", "dealIds", "customFieldValues"] as const;
+
+const CreateOrganizationsSchema = z.object({
+  organizations: z.array(BaseCreateOrganizationSchema).min(1).max(100),
 });
 
-const UpdateOrganizationsNameSchema = z.object({
+const UpdateOrganizationsSchema = z.object({
   organizations: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        name: z.string().min(1),
-      }),
-    )
+    .array(forbidNullFields(BaseUpdateOrganizationSchema, ORGANIZATION_WIPE_GUARDED_FIELDS))
     .min(1)
-    .max(10),
+    .max(100),
 });
 
-const ChangeOrganizationsContactsSchema = z.object({
-  organizations: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        contactIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeOrganizationsUsersSchema = z.object({
-  organizations: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        userIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeOrganizationsDealsSchema = z.object({
-  organizations: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        dealIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-export const batchCreateOrganizationsTool = {
-  name: "batch_create_organizations",
-  description: "Create organizations. Run get_entity_configuration first. Required: name. Returns IDs.",
+export const createOrganizationsTool = {
+  name: "create_organizations",
+  description:
+    "Create up to 100 organizations in one call. " +
+    "Required per item: name. " +
+    "Optional per item: notes, contactIds, userIds, dealIds, customFieldValues. " +
+    "You can pass contactIds/userIds/dealIds directly in create so linked orgs are created in one call. " +
+    "Prereq: call get_entity_configuration for custom-column ids. " +
+    "Returns the list of created organization ids and names.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
-  inputSchema: McpCreateManyOrganizationsSchema,
-  execute: async (params: z.infer<typeof McpCreateManyOrganizationsSchema>) => {
+  inputSchema: CreateOrganizationsSchema,
+  execute: async (params: z.infer<typeof CreateOrganizationsSchema>) => {
     const result = await getCreateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return encodeToToon(result.data.map((item) => item.id));
+    return encodeToToon({
+      items: result.data.map((item) => ({ id: item.id, name: item.name })),
+    });
   },
 };
 
-export const batchUpdateOrganizationNameTool = {
-  name: "batch_update_organization_name",
-  description: "Update organization name. Only updates provided fields.",
+export const updateOrganizationsTool = {
+  name: "update_organizations",
+  description:
+    "Partial update for up to 100 organizations in one call. " +
+    "Required per item: id. " +
+    "Optional per item: name, notes, contactIds, userIds, dealIds, customFieldValues. " +
+    "WARNING: if you pass contactIds, userIds, or dealIds, the array REPLACES existing links (any id not in the array is unlinked). " +
+    "To ADD or REMOVE a single link without touching the rest, use link_entities or unlink_entities instead. " +
+    NO_NULL_WIPE_WARNING +
+    " Idempotent: same payload produces the same state.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateOrganizationsNameSchema,
-  execute: async (params: z.infer<typeof UpdateOrganizationsNameSchema>) => {
-    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} organization(s)`;
-  },
-};
-
-export const batchSetOrganizationContactsTool = {
-  name: "batch_set_organization_contacts",
-  description: "Set (replace) all contacts linked to an organization. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeOrganizationsContactsSchema,
-  execute: async (params: z.infer<typeof ChangeOrganizationsContactsSchema>) => {
-    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} organization(s)`;
-  },
-};
-
-export const batchSetOrganizationUsersTool = {
-  name: "batch_set_organization_users",
-  description: "Set (replace) all users assigned to an organization. Pass empty array to unassign all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeOrganizationsUsersSchema,
-  execute: async (params: z.infer<typeof ChangeOrganizationsUsersSchema>) => {
-    const result = await getUpdateManyOrganizationsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} organization(s)`;
-  },
-};
-
-export const batchSetOrganizationDealsTool = {
-  name: "batch_set_organization_deals",
-  description: "Set (replace) all deals linked to an organization. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeOrganizationsDealsSchema,
-  execute: async (params: z.infer<typeof ChangeOrganizationsDealsSchema>) => {
+  inputSchema: UpdateOrganizationsSchema,
+  execute: async (params: z.infer<typeof UpdateOrganizationsSchema>) => {
     const result = await getUpdateManyOrganizationsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} organization(s)`;

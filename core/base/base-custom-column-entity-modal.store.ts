@@ -11,6 +11,8 @@ import type { Resource } from "@/generated/prisma";
 
 import { BaseModalStore } from "./base-modal.store";
 
+import type { GlobalSearchResultItem } from "@/features/search/global-search.interactor";
+
 export type EntityDto = {
   id: string;
   users: Array<{ id: string }>;
@@ -140,11 +142,18 @@ export abstract class BaseCustomColumnEntityModalStore<
 
         const formData = this.initFormWithCustomFieldValues(result.entity);
         this.onInitOrRefresh(formData);
+
+        const recentItem = this.buildRecentSearchItem(result.entity);
+        if (recentItem) this.rootStore.globalSearchModalStore.pushRecentItem(recentItem);
       } else this.close();
     } finally {
       this.setIsLoading(false);
     }
   };
+
+  protected buildRecentSearchItem(_entity: TDto): GlobalSearchResultItem | null {
+    return null;
+  }
 
   onSubmit = async (event?: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
@@ -168,6 +177,7 @@ export abstract class BaseCustomColumnEntityModalStore<
         this.setError(undefined);
         await this.entityStore.upsertItem(res.data);
         if (this.fetchedEntity) this.fetchedEntity = res.data;
+        this.onInitOrRefresh(this.initFormWithCustomFieldValues(res.data));
         this.close();
       } else this.setError(res.error as any);
     } finally {

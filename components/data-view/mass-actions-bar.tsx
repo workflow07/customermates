@@ -6,7 +6,6 @@ import { TrashIcon, XIcon } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { bulkDeleteEntitiesAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -32,12 +31,24 @@ export const MassActionsBar = observer(function MassActionsBar<E extends HasId>(
 
     setIsLoading(true);
     try {
-      await bulkDeleteEntitiesAction({ entityType, ids });
+      const res = await bulkDeleteEntitiesAction({ entityType, ids });
+      if (res && !res.ok) {
+        const tree = res.error as
+          | {
+              errors?: string[];
+              properties?: { ids?: { errors?: string[]; items?: Array<{ errors?: string[] } | undefined> } };
+            }
+          | undefined;
+        const firstItemError = tree?.properties?.ids?.items?.find((it) => it?.errors?.length)?.errors?.[0];
+        const message =
+          firstItemError ??
+          tree?.errors?.[0] ??
+          tree?.properties?.ids?.errors?.[0] ??
+          t("Common.notifications.unexpectedError");
+        throw new Error(message);
+      }
       store.clearSelection();
       await store.refresh();
-      toast.success(t("Common.notifications.deleted"));
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : t("Common.notifications.unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -49,9 +60,9 @@ export const MassActionsBar = observer(function MassActionsBar<E extends HasId>(
         {t("MassActions.selectedCount", { count: store.selectedCount })}
       </span>
 
-      <MassUpdatePopover store={store} />
-
       <div className="grow" />
+
+      <MassUpdatePopover store={store} />
 
       <Button
         className="h-8"
@@ -59,7 +70,7 @@ export const MassActionsBar = observer(function MassActionsBar<E extends HasId>(
         size="sm"
         type="button"
         variant="outline"
-        onClick={() => showDeleteConfirmation(() => void handleDelete())}
+        onClick={() => showDeleteConfirmation(handleDelete)}
       >
         <TrashIcon className="size-4 text-destructive" />
 

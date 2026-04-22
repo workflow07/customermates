@@ -1,117 +1,57 @@
 import { z } from "zod";
 
-import { encodeToToon } from "./utils";
+import { encodeToToon, forbidNullFields, NO_NULL_WIPE_WARNING } from "./utils";
 
 import { getCreateManyContactsInteractor, getUpdateManyContactsInteractor } from "@/core/di";
 import { BaseCreateContactSchema } from "@/features/contacts/upsert/create-contact-base.schema";
+import { BaseUpdateContactSchema } from "@/features/contacts/upsert/update-contact-base.schema";
 
-const McpCreateManyContactsSchema = z.object({
-  contacts: z.array(BaseCreateContactSchema).min(1).max(10),
+const CONTACT_WIPE_GUARDED_FIELDS = ["organizationIds", "userIds", "dealIds", "customFieldValues"] as const;
+
+const CreateContactsSchema = z.object({
+  contacts: z.array(BaseCreateContactSchema).min(1).max(100),
 });
 
-const UpdateContactsNameSchema = z.object({
-  contacts: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        firstName: z.string().min(1).optional(),
-        lastName: z.string().min(1).optional(),
-      }),
-    )
-    .min(1)
-    .max(10),
+const UpdateContactsSchema = z.object({
+  contacts: z.array(forbidNullFields(BaseUpdateContactSchema, CONTACT_WIPE_GUARDED_FIELDS)).min(1).max(100),
 });
 
-const ChangeContactsOrganizationsSchema = z.object({
-  contacts: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        organizationIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeContactsUsersSchema = z.object({
-  contacts: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        userIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeContactsDealsSchema = z.object({
-  contacts: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        dealIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-export const batchCreateContactsTool = {
-  name: "batch_create_contacts",
-  description: "Create contacts. Run get_entity_configuration first. Required: firstName, lastName. Returns IDs.",
+export const createContactsTool = {
+  name: "create_contacts",
+  description:
+    "Create up to 100 contacts in one call. " +
+    "Required per item: firstName, lastName. " +
+    "Optional per item: notes, organizationIds, userIds, dealIds, customFieldValues. " +
+    "You can pass organizationIds/userIds/dealIds directly in create so linked contacts are created in one call. " +
+    "Prereq: call get_entity_configuration for custom-column ids. " +
+    "Returns the list of created contact ids and names.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
-  inputSchema: McpCreateManyContactsSchema,
-  execute: async (params: z.infer<typeof McpCreateManyContactsSchema>) => {
+  inputSchema: CreateContactsSchema,
+  execute: async (params: z.infer<typeof CreateContactsSchema>) => {
     const result = await getCreateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return encodeToToon(result.data.map((item) => item.id));
+    return encodeToToon({
+      items: result.data.map((item) => ({
+        id: item.id,
+        name: `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim(),
+      })),
+    });
   },
 };
 
-export const batchUpdateContactNameTool = {
-  name: "batch_update_contact_name",
-  description: "Update contact firstName/lastName. Only updates provided fields.",
+export const updateContactsTool = {
+  name: "update_contacts",
+  description:
+    "Partial update for up to 100 contacts in one call. " +
+    "Required per item: id. " +
+    "Optional per item: firstName, lastName, notes, organizationIds, userIds, dealIds, customFieldValues. " +
+    "WARNING: if you pass organizationIds, userIds, or dealIds, the array REPLACES existing links (any id not in the array is unlinked). " +
+    "To ADD or REMOVE a single link without touching the rest, use link_entities or unlink_entities instead. " +
+    NO_NULL_WIPE_WARNING +
+    " Idempotent: same payload produces the same state.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateContactsNameSchema,
-  execute: async (params: z.infer<typeof UpdateContactsNameSchema>) => {
-    const result = await getUpdateManyContactsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} contact(s)`;
-  },
-};
-
-export const batchSetContactOrganizationsTool = {
-  name: "batch_set_contact_organizations",
-  description: "Set (replace) all organizations linked to a contact. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeContactsOrganizationsSchema,
-  execute: async (params: z.infer<typeof ChangeContactsOrganizationsSchema>) => {
-    const result = await getUpdateManyContactsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} contact(s)`;
-  },
-};
-
-export const batchSetContactUsersTool = {
-  name: "batch_set_contact_users",
-  description: "Set (replace) all users assigned to a contact. Pass empty array to unassign all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeContactsUsersSchema,
-  execute: async (params: z.infer<typeof ChangeContactsUsersSchema>) => {
-    const result = await getUpdateManyContactsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} contact(s)`;
-  },
-};
-
-export const batchSetContactDealsTool = {
-  name: "batch_set_contact_deals",
-  description: "Set (replace) all deals linked to a contact. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeContactsDealsSchema,
-  execute: async (params: z.infer<typeof ChangeContactsDealsSchema>) => {
+  inputSchema: UpdateContactsSchema,
+  execute: async (params: z.infer<typeof UpdateContactsSchema>) => {
     const result = await getUpdateManyContactsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} contact(s)`;

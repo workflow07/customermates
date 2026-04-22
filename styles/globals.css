@@ -247,6 +247,28 @@ path:focus {
   outline: none !important;
 }
 
+@keyframes rotatingAccentIn {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotatingAccentOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
 .recharts-no-focus-outline .recharts-wrapper:focus,
 .recharts-no-focus-outline .recharts-wrapper:focus-visible,
 .recharts-no-focus-outline .recharts-surface:focus,

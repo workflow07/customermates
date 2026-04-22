@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { encodeToToon, FILTER_SYNTAX, formatDatesInResponse } from "./utils";
+import { encodeToToon, FILTER_FIELD_DESCRIPTION, FILTER_SYNTAX, formatDatesInResponse } from "./utils";
 
 import { FilterSchema, SortDescriptorSchema } from "@/core/base/base-get.schema";
 import { CustomFieldValueSchema } from "@/core/base/base-entity.schema";
-import { serializeJSONToMarkdown } from "@/components/editor/editor.utils";
+import { parseMarkdownToJSON, serializeJSONToMarkdown } from "@/components/editor/editor.utils";
 import {
   getGetContactsApiInteractor,
   getGetContactByIdInteractor,
@@ -33,19 +33,64 @@ import {
   getUpdateManyTasksInteractor,
 } from "@/core/di";
 
-const EntitySchema = z.enum(["contact", "organization", "deal", "service", "task"]);
+const EntitySchema = z
+  .enum(["contact", "organization", "deal", "service", "task"])
+  .describe("Entity type (one of: contact, organization, deal, service, task)");
+
+const RelationSchema = z
+  .enum(["organizations", "contacts", "deals", "services", "users"])
+  .describe(
+    "Relationship to modify. Allowed pairs: " +
+      "contact -> organizations|users|deals; " +
+      "organization -> contacts|users|deals; " +
+      "deal -> organizations|users|contacts|services; " +
+      "service -> users|deals; " +
+      "task -> users",
+  );
 
 const FilterEntitySchema = z.object({
   entity: EntitySchema,
-  searchTerm: z.string().optional(),
-  filters: z.array(FilterSchema).optional(),
+  searchTerm: z.string().optional().describe("Free-text search against the entity's name or related fields"),
+  filters: z.array(FilterSchema).optional().describe(FILTER_FIELD_DESCRIPTION),
   sortDescriptor: SortDescriptorSchema.optional(),
-  page: z.number().int().min(1).default(1),
+  page: z.number().int().min(1).default(1).describe("1-indexed page number"),
+  pageSize: z
+    .union([z.literal(5), z.literal(10), z.literal(25), z.literal(100)])
+    .default(10)
+    .describe("Results per page (one of: 5, 10, 25, 100). Default 10."),
+});
+
+const SearchAllSchema = z.object({
+  searchTerm: z.string().min(1).describe("Free-text query; matches names and related fields across every entity"),
+  entities: z
+    .array(EntitySchema)
+    .optional()
+    .describe("Restrict the search to specific entity types. Default: all five."),
+  limitPerEntity: z
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .default(5)
+    .describe("Max results per entity type. Upper bound tracks list pageSize (100)."),
+});
+
+const AppendNotesSchema = z.object({
+  entity: EntitySchema,
+  items: z
+    .array(
+      z.object({
+        id: z.uuid(),
+        notes: z.string().min(1).describe("Markdown to append. A blank line is inserted between old and new notes."),
+      }),
+    )
+    .min(1)
+    .max(100),
 });
 
 const CountEntitySchema = z.object({
   entity: EntitySchema,
-  filters: z.array(FilterSchema).optional(),
+  filters: z.array(FilterSchema).optional().describe(FILTER_FIELD_DESCRIPTION),
   sortDescriptor: SortDescriptorSchema.optional(),
 });
 
@@ -55,11 +100,14 @@ const DetailsEntitySchema = z.object({
       z.object({
         entity: EntitySchema,
         id: z.uuid(),
-        include: z.enum(["masterData", "withNotes"]).default("masterData"),
+        include: z
+          .enum(["masterData", "withNotes"])
+          .default("masterData")
+          .describe("masterData = fields only; withNotes = fields + markdown notes"),
       }),
     )
     .min(1)
-    .max(10),
+    .describe("Entities to fetch. Mixed entity types are allowed in a single call."),
 });
 
 const NotesEntitySchema = z.object({
@@ -68,11 +116,11 @@ const NotesEntitySchema = z.object({
     .array(
       z.object({
         id: z.uuid(),
-        notes: z.string(),
+        notes: z.string().describe("Markdown notes. Pass an empty string to clear."),
       }),
     )
     .min(1)
-    .max(10),
+    .max(100),
 });
 
 const DeleteEntitySchema = z.object({
@@ -93,7 +141,18 @@ const UpdateCustomFieldEntitySchema = z.object({
     .max(100),
 });
 
+const LinkEntitiesSchema = z.object({
+  entity: EntitySchema,
+  sourceId: z.uuid().describe("ID of the entity whose relationship is being modified"),
+  relation: RelationSchema,
+  ids: z
+    .array(z.uuid())
+    .min(1)
+    .describe("IDs to add to (link) or remove from (unlink) the source entity's relationship"),
+});
+
 type Entity = z.infer<typeof EntitySchema>;
+type Relation = z.infer<typeof RelationSchema>;
 type FilterInput = z.infer<typeof FilterSchema>;
 type SortInput = z.infer<typeof SortDescriptorSchema>;
 
@@ -112,27 +171,30 @@ const singularLabels: Record<Entity, string> = {
   task: "task",
 };
 
-const configurationExecutors: Record<Entity, () => Promise<unknown>> = {
-  contact: async () => {
-    const result = await getGetContactsConfigurationInteractor().invoke();
-    return result.data;
-  },
-  organization: async () => {
-    const result = await getGetOrganizationsConfigurationInteractor().invoke();
-    return result.data;
-  },
-  deal: async () => {
-    const result = await getGetDealsConfigurationInteractor().invoke();
-    return result.data;
-  },
-  service: async () => {
-    const result = await getGetServicesConfigurationInteractor().invoke();
-    return result.data;
-  },
-  task: async () => {
-    const result = await getGetTasksConfigurationInteractor().invoke();
-    return result.data;
-  },
+const allowedRelations: Record<Entity, Relation[]> = {
+  contact: ["organizations", "users", "deals"],
+  organization: ["contacts", "users", "deals"],
+  deal: ["organizations", "users", "contacts", "services"],
+  service: ["users", "deals"],
+  task: ["users"],
+};
+
+const relationFieldName: Record<Relation, string> = {
+  organizations: "organizationIds",
+  contacts: "contactIds",
+  deals: "dealIds",
+  services: "services",
+  users: "userIds",
+};
+
+type ConfigResult = { ok: true; data: unknown } | { ok: false; error: z.ZodError };
+
+const configurationExecutors: Record<Entity, () => Promise<ConfigResult>> = {
+  contact: async () => (await getGetContactsConfigurationInteractor().invoke()) as ConfigResult,
+  organization: async () => (await getGetOrganizationsConfigurationInteractor().invoke()) as ConfigResult,
+  deal: async () => (await getGetDealsConfigurationInteractor().invoke()) as ConfigResult,
+  service: async () => (await getGetServicesConfigurationInteractor().invoke()) as ConfigResult,
+  task: async () => (await getGetTasksConfigurationInteractor().invoke()) as ConfigResult,
 };
 
 const listExecutors: Record<Entity, (params: ListQueryParams) => Promise<any>> = {
@@ -167,29 +229,85 @@ const nameExtractors: Record<Entity, (item: any) => string> = {
   task: (item) => String(item.name ?? ""),
 };
 
+async function updateManyEntities(
+  entity: Entity,
+  items: Array<{ id: string } & Record<string, unknown>>,
+): Promise<any> {
+  if (entity === "contact") return getUpdateManyContactsInteractor().invoke({ contacts: items as any });
+  if (entity === "organization") return getUpdateManyOrganizationsInteractor().invoke({ organizations: items as any });
+  if (entity === "deal") return getUpdateManyDealsInteractor().invoke({ deals: items as any });
+  if (entity === "service") return getUpdateManyServicesInteractor().invoke({ services: items as any });
+  return getUpdateManyTasksInteractor().invoke({ tasks: items as any });
+}
+
+async function updateEntityById(entity: Entity, payload: { id: string } & Record<string, unknown>): Promise<any> {
+  return updateManyEntities(entity, [payload]);
+}
+
+async function loadEntityOrError(
+  entity: Entity,
+  id: string,
+): Promise<{ ok: true; entity: any } | { ok: false; error: string }> {
+  const result = await detailsExecutors[entity](id);
+  if (!result.ok) return { ok: false, error: `Validation error: ${z.prettifyError(result.error)}` };
+  const key = singularLabels[entity];
+  const row = result.data?.[key];
+  if (!row) return { ok: false, error: `Validation error: ${key[0].toUpperCase()}${key.slice(1)} ${id} not found` };
+  return { ok: true, entity: row };
+}
+
+function currentRelationIds(entityRow: any, relation: Relation): string[] {
+  const list = entityRow?.[relation];
+  if (!Array.isArray(list)) return [];
+  return list.map((item: any) => String(item.id)).filter((id) => id.length > 0);
+}
+
+function ensureAllowedRelation(entity: Entity, relation: Relation): string | null {
+  if (!allowedRelations[entity].includes(relation)) {
+    return (
+      `Relation "${relation}" is not allowed on ${entity}. ` +
+      `Allowed for ${entity}: ${allowedRelations[entity].join(", ")}.`
+    );
+  }
+  return null;
+}
+
 export const getEntityConfigurationTool = {
   name: "get_entity_configuration",
   description:
-    "Get available fields, custom columns, and filters for one entity type. Use before create/update/filter operations.",
+    "Return the editable fields, custom columns, and filter syntax for one entity type. " +
+    "Required: entity (contact, organization, deal, service, task). " +
+    "Call this BEFORE any create / update / filter / count call so you use valid field names and custom-column ids.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: z.object({ entity: EntitySchema }),
-  execute: async ({ entity }: { entity: z.infer<typeof EntitySchema> }) => {
+  execute: async ({ entity }: { entity: Entity }) => {
     const result = await configurationExecutors[entity]();
-    return encodeToToon({ ...(result as Record<string, unknown>), filterSyntax: FILTER_SYNTAX });
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    return encodeToToon({ ...(result.data as Record<string, unknown>), filterSyntax: FILTER_SYNTAX });
   },
 };
 
 export const filterEntityTool = {
   name: "filter_entity",
-  description: "Search, filter, and sort records for a selected entity type.",
+  description:
+    "Search, filter, and sort records for a single entity type. " +
+    "Required: entity. Optional: searchTerm, filters, sortDescriptor, page, pageSize (5/10/25/100, default 10). " +
+    "Returns id and name per item plus total. Use count_entity when you only need the total, get_entities for full details.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: FilterEntitySchema,
-  execute: async ({ entity, searchTerm, filters, sortDescriptor, page }: z.infer<typeof FilterEntitySchema>) => {
+  execute: async ({
+    entity,
+    searchTerm,
+    filters,
+    sortDescriptor,
+    page,
+    pageSize,
+  }: z.infer<typeof FilterEntitySchema>) => {
     const result = await listExecutors[entity]({
       searchTerm,
       filters,
       sortDescriptor,
-      pagination: { page, pageSize: 10 },
+      pagination: { page, pageSize },
     });
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
 
@@ -207,7 +325,10 @@ export const filterEntityTool = {
 
 export const countEntityTool = {
   name: "count_entity",
-  description: "Count records for a selected entity type using optional filters.",
+  description:
+    "Count matching records for a single entity type. " +
+    "Required: entity. Optional: filters, sortDescriptor. " +
+    "Much cheaper than filter_entity when you only need the total.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: CountEntitySchema,
   execute: async ({ entity, filters, sortDescriptor }: z.infer<typeof CountEntitySchema>) => {
@@ -224,9 +345,13 @@ export const countEntityTool = {
   },
 };
 
-export const batchGetEntityDetailsTool = {
-  name: "batch_get_entity_details",
-  description: "Get details by IDs for selected entity types. Supports mixed entity types in a single call.",
+export const getEntitiesTool = {
+  name: "get_entities",
+  description:
+    "Fetch full details for one or more records by id. Mixed entity types are allowed in one call. " +
+    "Required per item: entity, id. " +
+    "Optional per item: include (masterData = fields only, default; withNotes = fields + markdown notes). " +
+    "Use this before update_* or link_/unlink_* when you need the current state.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   inputSchema: DetailsEntitySchema,
   execute: async ({ items }: z.infer<typeof DetailsEntitySchema>) => {
@@ -253,47 +378,31 @@ export const batchGetEntityDetailsTool = {
   },
 };
 
-export const batchSetEntityNotesTool = {
-  name: "batch_set_entity_notes",
-  description: "Set markdown notes for a selected entity type. Pass empty string to clear notes.",
+export const updateEntityNotesTool = {
+  name: "update_entity_notes",
+  description:
+    "Replace markdown notes on up to 100 records of a single entity type. " +
+    "Required: entity, items[{id, notes}]. " +
+    "Pass empty string to clear notes. Idempotent.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: NotesEntitySchema,
   execute: async ({ entity, items }: z.infer<typeof NotesEntitySchema>) => {
     const normalized = items.map(({ id, notes }) => ({
       id,
-      notes: notes.trim() === "" ? null : notes,
+      notes: notes.trim() === "" ? null : parseMarkdownToJSON(notes),
     }));
-
-    if (entity === "contact") {
-      const result = await getUpdateManyContactsInteractor().invoke({ contacts: normalized });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
-    }
-    if (entity === "organization") {
-      const result = await getUpdateManyOrganizationsInteractor().invoke({ organizations: normalized });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
-    }
-    if (entity === "deal") {
-      const result = await getUpdateManyDealsInteractor().invoke({ deals: normalized });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
-    }
-    if (entity === "service") {
-      const result = await getUpdateManyServicesInteractor().invoke({ services: normalized });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
-    }
-
-    const result = await getUpdateManyTasksInteractor().invoke({ tasks: normalized });
+    const result = await updateManyEntities(entity, normalized);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated notes for ${normalized.length} ${singularLabels.task}(s)`;
+    return `Updated notes for ${normalized.length} ${singularLabels[entity]}(s)`;
   },
 };
 
-export const batchDeleteEntityTool = {
-  name: "batch_delete_entity",
-  description: "Delete records by IDs for a selected entity type. Irreversible.",
+export const deleteEntitiesTool = {
+  name: "delete_entities",
+  description:
+    "IRREVERSIBLE. Delete up to 100 records by id for a single entity type. " +
+    "Required: entity, ids. " +
+    "This cannot be undone. Consider exporting first. Idempotent on repeat (missing ids are reported as errors).",
   annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
   inputSchema: DeleteEntitySchema,
   execute: async ({ entity, ids }: z.infer<typeof DeleteEntitySchema>) => {
@@ -303,38 +412,169 @@ export const batchDeleteEntityTool = {
   },
 };
 
-export const batchUpdateEntityCustomFieldTool = {
-  name: "batch_update_entity_custom_field",
-  description: "Update custom fields for selected records of one entity type.",
+export const updateEntityCustomFieldsTool = {
+  name: "update_entity_custom_fields",
+  description:
+    "Set custom-column values on up to 100 records of a single entity type. " +
+    "Required: entity, items[{id, customFieldValues[]}]. " +
+    "Each customFieldValues entry is { columnId, value }. " +
+    "Per-column merge: ONLY columns you include are changed. Columns you omit keep their current value. " +
+    "To clear a column pass { columnId, value: null } (or empty string). " +
+    "Call get_entity_configuration or list_custom_columns to discover column ids.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   inputSchema: UpdateCustomFieldEntitySchema,
   execute: async ({ entity, items }: z.infer<typeof UpdateCustomFieldEntitySchema>) => {
-    if (entity === "contact") {
-      const result = await getUpdateManyContactsInteractor().invoke({ contacts: items });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
-    }
-
-    if (entity === "organization") {
-      const result = await getUpdateManyOrganizationsInteractor().invoke({ organizations: items });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
-    }
-
-    if (entity === "deal") {
-      const result = await getUpdateManyDealsInteractor().invoke({ deals: items });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
-    }
-
-    if (entity === "service") {
-      const result = await getUpdateManyServicesInteractor().invoke({ services: items });
-      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-      return `Updated ${result.data.length} ${singularLabels[entity]}(s)`;
-    }
-
-    const result = await getUpdateManyTasksInteractor().invoke({ tasks: items });
+    const result = await updateManyEntities(entity, items);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} ${singularLabels.task}(s)`;
+    return `Updated custom fields on ${result.data.length} ${singularLabels[entity]}(s)`;
+  },
+};
+
+export const linkEntitiesTool = {
+  name: "link_entities",
+  description:
+    "Add ids to a relationship on a single source entity, WITHOUT touching existing links. " +
+    "Required: entity, sourceId, relation, ids. " +
+    "Allowed (entity, relation) pairs: " +
+    "contact -> organizations|users|deals; organization -> contacts|users|deals; " +
+    "deal -> organizations|users|contacts|services; service -> users|deals; task -> users. " +
+    "For deal -> services, new ids are added with quantity 1 (use update_deals to set exact quantities). " +
+    "Idempotent: linking an already-linked id is a no-op.",
+  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  inputSchema: LinkEntitiesSchema,
+  execute: async ({ entity, sourceId, relation, ids }: z.infer<typeof LinkEntitiesSchema>) => {
+    const relationError = ensureAllowedRelation(entity, relation);
+    if (relationError) return `Validation error: ${relationError}`;
+
+    const loaded = await loadEntityOrError(entity, sourceId);
+    if (!loaded.ok) return loaded.error;
+
+    if (entity === "deal" && relation === "services") {
+      const existing: Array<{ id: string; quantity?: number }> = Array.isArray(loaded.entity.services)
+        ? loaded.entity.services
+        : [];
+      const existingMap = new Map(existing.map((s) => [s.id, s.quantity ?? 1]));
+      for (const id of ids) if (!existingMap.has(id)) existingMap.set(id, 1);
+      const services = [...existingMap.entries()].map(([serviceId, quantity]) => ({ serviceId, quantity }));
+      const result = await updateEntityById("deal", { id: sourceId, services });
+      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+      return `Linked ${ids.length} service(s) to ${entity} ${sourceId}`;
+    }
+
+    const current = currentRelationIds(loaded.entity, relation);
+    const merged = Array.from(new Set([...current, ...ids]));
+    const payload = { id: sourceId, [relationFieldName[relation]]: merged };
+    const result = await updateEntityById(entity, payload);
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    return `Linked ${ids.length} ${relation} to ${entity} ${sourceId} (was ${current.length}, now ${merged.length})`;
+  },
+};
+
+export const unlinkEntitiesTool = {
+  name: "unlink_entities",
+  description:
+    "Remove ids from a relationship on a single source entity, WITHOUT touching other existing links. " +
+    "Required: entity, sourceId, relation, ids. " +
+    "Allowed (entity, relation) pairs: " +
+    "contact -> organizations|users|deals; organization -> contacts|users|deals; " +
+    "deal -> organizations|users|contacts|services; service -> users|deals; task -> users. " +
+    "Idempotent: unlinking an id that was not linked is a no-op. " +
+    "This does NOT delete the related entity; it only removes the link.",
+  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  inputSchema: LinkEntitiesSchema,
+  execute: async ({ entity, sourceId, relation, ids }: z.infer<typeof LinkEntitiesSchema>) => {
+    const relationError = ensureAllowedRelation(entity, relation);
+    if (relationError) return `Validation error: ${relationError}`;
+
+    const loaded = await loadEntityOrError(entity, sourceId);
+    if (!loaded.ok) return loaded.error;
+
+    const removeSet = new Set(ids);
+
+    if (entity === "deal" && relation === "services") {
+      const existing: Array<{ id: string; quantity?: number }> = Array.isArray(loaded.entity.services)
+        ? loaded.entity.services
+        : [];
+      const services = existing
+        .filter((s) => !removeSet.has(s.id))
+        .map((s) => ({ serviceId: s.id, quantity: s.quantity ?? 1 }));
+      const result = await updateEntityById("deal", { id: sourceId, services });
+      if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+      return `Unlinked ${ids.length} service(s) from ${entity} ${sourceId}`;
+    }
+
+    const current = currentRelationIds(loaded.entity, relation);
+    const kept = current.filter((id) => !removeSet.has(id));
+    const payload = { id: sourceId, [relationFieldName[relation]]: kept };
+    const result = await updateEntityById(entity, payload);
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    return `Unlinked ${ids.length} ${relation} from ${entity} ${sourceId} (was ${current.length}, now ${kept.length})`;
+  },
+};
+
+export const appendEntityNotesTool = {
+  name: "append_entity_notes",
+  description:
+    "Append markdown to existing notes on up to 100 records of a single entity type, WITHOUT overwriting. " +
+    "Required: entity, items[{id, notes}]. " +
+    "Existing notes are preserved; new content is added after a blank line. " +
+    "Use update_entity_notes to replace instead of append.",
+  annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+  inputSchema: AppendNotesSchema,
+  execute: async ({ entity, items }: z.infer<typeof AppendNotesSchema>) => {
+    const loadedItems = await Promise.all(
+      items.map(async ({ id, notes }) => {
+        const loaded = await loadEntityOrError(entity, id);
+        if (!loaded.ok) return { ok: false as const, error: loaded.error };
+        const existingMarkdown = loaded.entity.notes ? serializeJSONToMarkdown(loaded.entity.notes) : "";
+        const combined = existingMarkdown ? `${existingMarkdown}\n\n${notes}` : notes;
+        return { ok: true as const, payload: { id, notes: parseMarkdownToJSON(combined) } };
+      }),
+    );
+    const firstError = loadedItems.find((r) => !r.ok);
+    if (firstError && !firstError.ok) return firstError.error;
+    const merged = loadedItems
+      .filter((r): r is { ok: true; payload: { id: string; notes: object } } => r.ok)
+      .map((r) => r.payload);
+
+    const result = await updateManyEntities(entity, merged);
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    return `Appended notes on ${merged.length} ${singularLabels[entity]}(s)`;
+  },
+};
+
+export const searchAllEntitiesTool = {
+  name: "search_all_entities",
+  description:
+    "Free-text search across every entity type in one call. " +
+    "Required: searchTerm. Optional: entities (restrict to specific types), limitPerEntity (default 5, max 100). " +
+    "Returns up to `limitPerEntity` matches per entity type with { entity, id, name }. " +
+    "Use this when you don't know which entity holds what you're looking for. For filtered/paginated results, use filter_entity.",
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  inputSchema: SearchAllSchema,
+  execute: async ({ searchTerm, entities, limitPerEntity }: z.infer<typeof SearchAllSchema>) => {
+    const targets: Entity[] = entities ?? ["contact", "organization", "deal", "service", "task"];
+    const pageSize: 5 | 10 | 25 | 100 =
+      limitPerEntity <= 5 ? 5 : limitPerEntity <= 10 ? 10 : limitPerEntity <= 25 ? 25 : 100;
+
+    const results = await Promise.all(
+      targets.map(async (entity) => {
+        const result = await listExecutors[entity]({
+          searchTerm,
+          pagination: { page: 1, pageSize },
+        });
+        if (!result.ok) return { entity, items: [], error: z.prettifyError(result.error) };
+        return {
+          entity,
+          items: result.data.items.slice(0, limitPerEntity).map((item: any) => ({
+            id: item.id,
+            name: nameExtractors[entity](item),
+          })),
+          total: result.data.pagination?.total ?? result.data.items.length,
+        };
+      }),
+    );
+
+    return encodeToToon({ searchTerm, results });
   },
 };

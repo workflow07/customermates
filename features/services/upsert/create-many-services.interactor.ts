@@ -28,7 +28,7 @@ import { getCompanyRepo, getCustomColumnRepo, getDealRepo } from "@/core/di";
 
 export const CreateManyServicesSchema = z
   .object({
-    services: z.array(BaseCreateServiceSchema).min(1).max(10),
+    services: z.array(BaseCreateServiceSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const userSet = new Set<string>();

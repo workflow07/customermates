@@ -87,20 +87,15 @@ export async function bulkDeleteEntitiesAction(data: { entityType: EntityType; i
   const { entityType, ids } = data;
   switch (entityType) {
     case EntityType.contact:
-      await getDeleteManyContactsInteractor().invoke({ ids });
-      break;
+      return serializeResult(getDeleteManyContactsInteractor().invoke({ ids }));
     case EntityType.organization:
-      await getDeleteManyOrganizationsInteractor().invoke({ ids });
-      break;
+      return serializeResult(getDeleteManyOrganizationsInteractor().invoke({ ids }));
     case EntityType.deal:
-      await getDeleteManyDealsInteractor().invoke({ ids });
-      break;
+      return serializeResult(getDeleteManyDealsInteractor().invoke({ ids }));
     case EntityType.service:
-      await getDeleteManyServicesInteractor().invoke({ ids });
-      break;
+      return serializeResult(getDeleteManyServicesInteractor().invoke({ ids }));
     case EntityType.task:
-      await getDeleteManyTasksInteractor().invoke({ ids });
-      break;
+      return serializeResult(getDeleteManyTasksInteractor().invoke({ ids }));
   }
 }
 

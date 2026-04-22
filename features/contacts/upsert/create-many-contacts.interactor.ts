@@ -30,7 +30,7 @@ import { getCompanyRepo, getCustomColumnRepo, getDealRepo, getOrganizationRepo }
 
 export const CreateManyContactsSchema = z
   .object({
-    contacts: z.array(BaseCreateContactSchema).min(1).max(10),
+    contacts: z.array(BaseCreateContactSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const organizationSet = new Set<string>();

@@ -1,145 +1,54 @@
 import { z } from "zod";
 
-import { encodeToToon } from "./utils";
+import { encodeToToon, forbidNullFields, NO_NULL_WIPE_WARNING } from "./utils";
 
 import { getCreateManyDealsInteractor, getUpdateManyDealsInteractor } from "@/core/di";
 import { BaseCreateDealSchema } from "@/features/deals/upsert/create-deal-base.schema";
+import { BaseUpdateDealSchema } from "@/features/deals/upsert/update-deal-base.schema";
 
-const McpCreateManyDealsSchema = z.object({
-  deals: z.array(BaseCreateDealSchema).min(1).max(10),
+const DEAL_WIPE_GUARDED_FIELDS = ["organizationIds", "userIds", "contactIds", "services", "customFieldValues"] as const;
+
+const CreateDealsSchema = z.object({
+  deals: z.array(BaseCreateDealSchema).min(1).max(100),
 });
 
-const UpdateDealsNameSchema = z.object({
-  deals: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        name: z.string().min(1),
-      }),
-    )
-    .min(1)
-    .max(10),
+const UpdateDealsSchema = z.object({
+  deals: z.array(forbidNullFields(BaseUpdateDealSchema, DEAL_WIPE_GUARDED_FIELDS)).min(1).max(100),
 });
 
-const ChangeDealsOrganizationsSchema = z.object({
-  deals: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        organizationIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeDealsUsersSchema = z.object({
-  deals: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        userIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeDealsContactsSchema = z.object({
-  deals: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        contactIds: z.array(z.uuid()),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-const ChangeDealsServicesSchema = z.object({
-  deals: z
-    .array(
-      z.object({
-        id: z.uuid(),
-        services: z.array(
-          z.object({
-            serviceId: z.uuid(),
-            quantity: z.number().min(0).default(1),
-          }),
-        ),
-      }),
-    )
-    .min(1)
-    .max(10),
-});
-
-export const batchCreateDealsTool = {
-  name: "batch_create_deals",
-  description: "Create deals. Run get_entity_configuration first. Required: name. Returns IDs.",
+export const createDealsTool = {
+  name: "create_deals",
+  description:
+    "Create up to 100 deals in one call. " +
+    "Required per item: name. " +
+    "Optional per item: notes, organizationIds, userIds, contactIds, services (array of { serviceId, quantity }), customFieldValues. " +
+    "You can pass organizationIds/userIds/contactIds/services directly in create so linked deals are created in one call. " +
+    "Prereq: call get_entity_configuration for custom-column ids. " +
+    "Returns the list of created deal ids and names.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
-  inputSchema: McpCreateManyDealsSchema,
-  execute: async (params: z.infer<typeof McpCreateManyDealsSchema>) => {
+  inputSchema: CreateDealsSchema,
+  execute: async (params: z.infer<typeof CreateDealsSchema>) => {
     const result = await getCreateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return encodeToToon(result.data.map((item) => item.id));
+    return encodeToToon({
+      items: result.data.map((item) => ({ id: item.id, name: item.name })),
+    });
   },
 };
 
-export const batchUpdateDealNameTool = {
-  name: "batch_update_deal_name",
-  description: "Update deal name. Only updates provided fields.",
+export const updateDealsTool = {
+  name: "update_deals",
+  description:
+    "Partial update for up to 100 deals in one call. " +
+    "Required per item: id. " +
+    "Optional per item: name, notes, organizationIds, userIds, contactIds, services (array of { serviceId, quantity }), customFieldValues. " +
+    "WARNING: if you pass organizationIds, userIds, contactIds, or services, the array REPLACES existing links (any id not in the array is unlinked). " +
+    "To ADD or REMOVE a single link without touching the rest, use link_entities or unlink_entities instead. " +
+    NO_NULL_WIPE_WARNING +
+    " Idempotent: same payload produces the same state.",
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateDealsNameSchema,
-  execute: async (params: z.infer<typeof UpdateDealsNameSchema>) => {
-    const result = await getUpdateManyDealsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} deal(s)`;
-  },
-};
-
-export const batchSetDealOrganizationsTool = {
-  name: "batch_set_deal_organizations",
-  description: "Set (replace) all organizations linked to a deal. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeDealsOrganizationsSchema,
-  execute: async (params: z.infer<typeof ChangeDealsOrganizationsSchema>) => {
-    const result = await getUpdateManyDealsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} deal(s)`;
-  },
-};
-
-export const batchSetDealUsersTool = {
-  name: "batch_set_deal_users",
-  description: "Set (replace) all users assigned to a deal. Pass empty array to unassign all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeDealsUsersSchema,
-  execute: async (params: z.infer<typeof ChangeDealsUsersSchema>) => {
-    const result = await getUpdateManyDealsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} deal(s)`;
-  },
-};
-
-export const batchSetDealContactsTool = {
-  name: "batch_set_deal_contacts",
-  description: "Set (replace) all contacts linked to a deal. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeDealsContactsSchema,
-  execute: async (params: z.infer<typeof ChangeDealsContactsSchema>) => {
-    const result = await getUpdateManyDealsInteractor().invoke(params);
-    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
-    return `Updated ${result.data.length} deal(s)`;
-  },
-};
-
-export const batchSetDealServicesTool = {
-  name: "batch_set_deal_services",
-  description: "Set (replace) all services linked to a deal with quantities. Pass empty array to unlink all.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: ChangeDealsServicesSchema,
-  execute: async (params: z.infer<typeof ChangeDealsServicesSchema>) => {
+  inputSchema: UpdateDealsSchema,
+  execute: async (params: z.infer<typeof UpdateDealsSchema>) => {
     const result = await getUpdateManyDealsInteractor().invoke(params);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     return `Updated ${result.data.length} deal(s)`;

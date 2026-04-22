@@ -81,4 +81,8 @@ export class DealDetailStore extends BaseCustomColumnEntityModalStore<CreateDeal
 
     this.onChange("services", newServices);
   };
+
+  protected buildRecentSearchItem(entity: DealDto) {
+    return { type: "deal" as const, id: entity.id, name: entity.name };
+  }
 }

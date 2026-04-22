@@ -7,12 +7,31 @@ import { WaveDecoration } from "@/components/marketing/wave-decoration";
 
 import { EuropeanFlagIcon } from "./european-flag-icon";
 import { GitHubStarButton } from "./github-star-button";
+import { RotatingAccent } from "./rotating-accent";
 
 import { AppLink } from "@/components/shared/app-link";
 
 type Props = {
   heroSection: Hero;
 };
+
+const ACCENT_ROTATIONS = ["ChatGPT", "Claude", "Cursor", "Codex", "your AI"];
+
+function renderTitleAccent(accent: string, rotations?: string[]) {
+  const words = rotations?.length ? rotations : ACCENT_ROTATIONS;
+  const firstWord = words[0];
+
+  if (!accent.endsWith(firstWord)) return <span className="block font-serif italic text-primary mt-1">{accent}</span>;
+
+  const prefix = accent.slice(0, accent.length - firstWord.length).replace(/\s+$/, "");
+  return (
+    <>
+      {prefix && <span className="block mt-1">{prefix}</span>}
+
+      <RotatingAccent className="font-serif italic text-primary" words={words} />
+    </>
+  );
+}
 
 export function HomepageHero({ heroSection }: Props) {
   return (
@@ -37,12 +56,10 @@ export function HomepageHero({ heroSection }: Props) {
       <div className="relative z-10 flex w-full flex-col items-center">
         <GitHubStarButton />
 
-        <h1 className="text-x-4xl px-4 max-w-4xl text-center">
+        <h1 className="text-x-4xl px-4 max-w-4xl lg:max-w-6xl text-center">
           <span className="block">{heroSection.title}</span>
 
-          {heroSection.titleAccent && (
-            <span className="block font-serif italic text-primary mt-1">{heroSection.titleAccent}</span>
-          )}
+          {heroSection.titleAccent && renderTitleAccent(heroSection.titleAccent, heroSection.titleAccentRotations)}
         </h1>
 
         <h2 className="text-x-lg pt-4 md:pt-6 px-4 max-w-4xl text-center text-subdued">

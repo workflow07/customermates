@@ -1,80 +1,95 @@
 import { z } from "zod";
 import { EntityType, WidgetGroupByType, AggregationType } from "@/generated/prisma";
 
-import { encodeToToon } from "./utils";
+import { encodeToToon, enumHint, FILTER_FIELD_DESCRIPTION } from "./utils";
 
-import { getUpsertWidgetInteractor, getGetWidgetsInteractor, getGetWidgetByIdInteractor } from "@/core/di";
+import {
+  getUpsertWidgetInteractor,
+  getGetWidgetsInteractor,
+  getGetWidgetByIdInteractor,
+  getDeleteWidgetInteractor,
+} from "@/core/di";
 import { type UpsertWidgetData } from "@/features/widget/upsert-widget.interactor";
 import { ChartColor, DisplayType } from "@/features/widget/widget.types";
 import { FilterSchema } from "@/core/base/base-get.schema";
 
-const GetWidgetsSchema = z.object({});
-
-const GetWidgetDetailsSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-});
-
-const UpdateWidgetGroupingSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-  groupByType: z.enum(WidgetGroupByType).describe("How to group the data"),
-  groupByCustomColumnId: z
-    .uuid()
-    .optional()
-    .describe("Custom column ID to group by (required if groupByType is customColumn)"),
-});
-
-const UpdateWidgetAggregationSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-  aggregationType: z
-    .enum(AggregationType)
-    .describe(
-      "How to aggregate the data. Either the count of the entities or the sum of the deal values related to the entities or the sum of the deal quantities related to the entities.",
-    ),
-});
-
-const UpdateWidgetEntityFiltersSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-  entityFilters: z.array(FilterSchema).describe("Filters to apply to the entity"),
-});
-
-const UpdateWidgetDealFiltersSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-  dealFilters: z.array(FilterSchema).describe("Filters to apply to deals (not allowed for deal entities)"),
-});
-
-const UpdateWidgetDisplayOptionsSchema = z.object({
-  id: z.uuid().describe("Widget ID"),
-  displayType: z.enum(DisplayType).optional().describe("Type of the chart"),
-  reverseXAxis: z.boolean().optional().describe("Reverse the X axis"),
-  reverseYAxis: z.boolean().optional().describe("Reverse the Y axis"),
-  barColors: z.array(z.enum(ChartColor)).optional().describe("Bar colors for the chart"),
-});
+const entityTypeValues = Object.values(EntityType);
+const groupByValues = Object.values(WidgetGroupByType);
+const aggregationValues = Object.values(AggregationType);
+const displayTypeValues = Object.values(DisplayType);
+const chartColorValues = Object.values(ChartColor);
 
 const CreateWidgetSchema = z.object({
-  name: z.string().min(1).describe("Name of the widget"),
-  entityType: z.enum(EntityType).describe("Entity type to create widget for"),
-  entityFilters: z.array(FilterSchema).optional().describe("Filters to apply to the entity"),
-  dealFilters: z.array(FilterSchema).optional().describe("Filters to apply to deals (not allowed for deal entities)"),
-  displayType: z.enum(DisplayType).describe("Type of the chart"),
-  groupByType: z.enum(WidgetGroupByType).describe("How to group the data"),
+  name: z.string().min(1).describe("Human-readable widget title shown on the dashboard"),
+  entityType: z.enum(EntityType).describe(`Entity type the widget counts/aggregates ${enumHint(entityTypeValues)}`),
+  entityFilters: z
+    .array(FilterSchema)
+    .optional()
+    .describe(`Filters applied to the entity. ${FILTER_FIELD_DESCRIPTION}`),
+  dealFilters: z
+    .array(FilterSchema)
+    .optional()
+    .describe(
+      `Filters applied to deals when aggregating dealValue/dealQuantity. Not allowed when entityType is deal. ${FILTER_FIELD_DESCRIPTION}`,
+    ),
+  displayType: z.enum(DisplayType).describe(`Chart type ${enumHint(displayTypeValues)}`),
+  groupByType: z.enum(WidgetGroupByType).describe(`How to group the data ${enumHint(groupByValues)}`),
   groupByCustomColumnId: z
     .uuid()
     .optional()
-    .describe("Custom column ID to group by (required if groupByType is customColumn)"),
+    .describe("Custom-column id to group by. Required if groupByType is customColumn."),
   aggregationType: z
     .enum(AggregationType)
     .describe(
-      "How to aggregate the data. Either the count of the entities or the sum of the deal values related to the entities or the sum of the deal quantities related to the entities.",
+      `Aggregation to compute. ${enumHint(aggregationValues)}. ` +
+        "count = number of entities; dealValue = sum of related deal values; dealQuantity = sum of related deal quantities.",
     ),
 });
 
-export const getWidgetsTool = {
-  name: "get_widgets",
-  description: "Get all dashboard widgets with their IDs and names.",
+const UpdateWidgetSchema = z.object({
+  id: z.uuid().describe("Widget id"),
+  name: z.string().min(1).optional(),
+  groupByType: z
+    .enum(WidgetGroupByType)
+    .optional()
+    .describe(`${enumHint(groupByValues)}`),
+  groupByCustomColumnId: z.uuid().optional().describe("Custom-column id. Required if groupByType is customColumn."),
+  aggregationType: z
+    .enum(AggregationType)
+    .optional()
+    .describe(`${enumHint(aggregationValues)}`),
+  entityFilters: z.array(FilterSchema).optional().describe(`REPLACES entity filters. ${FILTER_FIELD_DESCRIPTION}`),
+  dealFilters: z.array(FilterSchema).optional().describe(`REPLACES deal filters. ${FILTER_FIELD_DESCRIPTION}`),
+  displayType: z
+    .enum(DisplayType)
+    .optional()
+    .describe(`${enumHint(displayTypeValues)}`),
+  reverseXAxis: z.boolean().optional(),
+  reverseYAxis: z.boolean().optional(),
+  barColors: z
+    .array(z.enum(ChartColor))
+    .optional()
+    .describe(`Each color ${enumHint(chartColorValues)}`),
+});
+
+const GetWidgetsSchema = z.object({
+  ids: z.array(z.uuid()).min(1).describe("Widget ids to fetch"),
+});
+
+const DeleteWidgetSchema = z.object({
+  id: z.uuid().describe("Widget id"),
+});
+
+export const listWidgetsTool = {
+  name: "list_widgets",
+  description: "List every dashboard widget. Returns { id, name } pairs. No arguments.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  inputSchema: GetWidgetsSchema,
+  inputSchema: z.object({}),
   execute: async () => {
-    const result = await getGetWidgetsInteractor().invoke();
+    const result = (await getGetWidgetsInteractor().invoke()) as
+      | { ok: true; data: Array<{ id: string; name: string }> }
+      | { ok: false; error: z.ZodError };
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
     const widgets = result.data;
     return encodeToToon({
       items: widgets.map((widget) => ({ id: widget.id, name: widget.name })),
@@ -83,129 +98,56 @@ export const getWidgetsTool = {
   },
 };
 
-export const batchGetWidgetDetailsTool = {
-  name: "batch_get_widget_details",
-  description: "Get complete details of widgets by IDs.",
+export const getWidgetsTool = {
+  name: "get_widgets",
+  description:
+    "Fetch full configuration for one or more widgets by id. " +
+    "Required: ids. " +
+    "Use this before update_widget when you need the current groupBy / filters / displayOptions.",
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  inputSchema: GetWidgetDetailsSchema,
-  execute: async (params: z.infer<typeof GetWidgetDetailsSchema>) => {
-    const widgetResult = await getGetWidgetByIdInteractor().invoke({ id: params.id });
-    const widget = widgetResult.data;
-    if (!widget) return `Validation error: Widget with ID ${params.id} not found`;
-
-    return encodeToToon({
-      id: widget.id,
-      name: widget.name,
-      entityType: widget.entityType,
-      groupByType: widget.groupByType,
-      groupByCustomColumnId: widget.groupByCustomColumnId,
-      aggregationType: widget.aggregationType,
-      entityFilters: widget.entityFilters,
-      dealFilters: widget.dealFilters,
-      displayOptions: widget.displayOptions,
-      isTemplate: widget.isTemplate,
-    });
-  },
-};
-
-export const updateWidgetGroupingTool = {
-  name: "update_widget_grouping",
-  description: "Update widget grouping configuration (groupByType and groupByCustomColumnId).",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateWidgetGroupingSchema,
-  execute: async (params: z.infer<typeof UpdateWidgetGroupingSchema>) => {
-    return updateWidget(
-      params.id,
-      {
-        groupByType: params.groupByType,
-        groupByCustomColumnId: params.groupByCustomColumnId,
-      },
-      'Widget "{name}" grouping updated successfully',
+  inputSchema: GetWidgetsSchema,
+  execute: async ({ ids }: z.infer<typeof GetWidgetsSchema>) => {
+    const results = await Promise.all(
+      ids.map(async (id) => {
+        const result = await getGetWidgetByIdInteractor().invoke({ id });
+        const widget = result.data;
+        if (!widget) return { error: `Widget ${id} not found` };
+        return {
+          id: widget.id,
+          name: widget.name,
+          entityType: widget.entityType,
+          groupByType: widget.groupByType,
+          groupByCustomColumnId: widget.groupByCustomColumnId,
+          aggregationType: widget.aggregationType,
+          entityFilters: widget.entityFilters,
+          dealFilters: widget.dealFilters,
+          displayOptions: widget.displayOptions,
+          isTemplate: widget.isTemplate,
+        };
+      }),
     );
-  },
-};
-
-export const updateWidgetAggregationTool = {
-  name: "update_widget_aggregation",
-  description: "Update widget aggregation type.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateWidgetAggregationSchema,
-  execute: async (params: z.infer<typeof UpdateWidgetAggregationSchema>) => {
-    return updateWidget(
-      params.id,
-      { aggregationType: params.aggregationType },
-      'Widget "{name}" aggregation updated successfully',
-    );
-  },
-};
-
-export const updateWidgetEntityFiltersTool = {
-  name: "update_widget_entity_filters",
-  description: "Update widget entity filters.",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateWidgetEntityFiltersSchema,
-  execute: async (params: z.infer<typeof UpdateWidgetEntityFiltersSchema>) => {
-    return updateWidget(
-      params.id,
-      { entityFilters: params.entityFilters },
-      'Widget "{name}" entity filters updated successfully',
-    );
-  },
-};
-
-export const updateWidgetDealFiltersTool = {
-  name: "update_widget_deal_filters",
-  description: "Update widget deal filters (not allowed for deal entity type).",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateWidgetDealFiltersSchema,
-  execute: async (params: z.infer<typeof UpdateWidgetDealFiltersSchema>) => {
-    return updateWidget(
-      params.id,
-      { dealFilters: params.dealFilters },
-      'Widget "{name}" deal filters updated successfully',
-    );
-  },
-};
-
-export const updateWidgetDisplayOptionsTool = {
-  name: "update_widget_display_options",
-  description: "Update widget display options (chart type, axis reversal, colors).",
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-  inputSchema: UpdateWidgetDisplayOptionsSchema,
-  execute: async (params: z.infer<typeof UpdateWidgetDisplayOptionsSchema>) => {
-    const widgetResult = await getGetWidgetByIdInteractor().invoke({ id: params.id });
-    const widget = widgetResult.data;
-    if (!widget) return `Validation error: Widget with ID ${params.id} not found`;
-
-    return updateWidget(
-      params.id,
-      {
-        displayOptions: {
-          displayType: params.displayType ?? widget.displayOptions.displayType,
-          reverseXAxis: params.reverseXAxis ?? widget.displayOptions.reverseXAxis,
-          reverseYAxis: params.reverseYAxis ?? widget.displayOptions.reverseYAxis,
-          barColors: params.barColors ?? widget.displayOptions.barColors,
-        },
-      },
-      'Widget "{name}" display options updated successfully',
-    );
+    return encodeToToon(results);
   },
 };
 
 export const createWidgetTool = {
   name: "create_widget",
-  description: "Create a dashboard widget (chart/statistic). Returns widget ID.",
+  description:
+    "Create a dashboard widget. " +
+    "Required: name, entityType, displayType, groupByType, aggregationType. " +
+    "Optional: groupByCustomColumnId (required when groupByType is customColumn), entityFilters, dealFilters. " +
+    "Returns the new widget id and name.",
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   inputSchema: CreateWidgetSchema,
   execute: async (params: z.infer<typeof CreateWidgetSchema>) => {
-    const result = await getUpsertWidgetInteractor().invoke({
+    const payload = {
       name: params.name,
       entityType: params.entityType,
       groupByType: params.groupByType,
       groupByCustomColumnId: params.groupByCustomColumnId,
       aggregationType: params.aggregationType,
-      entityFilters: params.entityFilters,
-      dealFilters: params.dealFilters,
+      entityFilters: Array.isArray(params.entityFilters) ? params.entityFilters : [],
+      dealFilters: Array.isArray(params.dealFilters) ? params.dealFilters : [],
       displayOptions: {
         displayType: params.displayType,
         reverseXAxis: false,
@@ -213,8 +155,8 @@ export const createWidgetTool = {
         barColors: [ChartColor.primary1, ChartColor.primary2],
       },
       isTemplate: false,
-    });
-
+    };
+    const result = await getUpsertWidgetInteractor().invoke(payload);
     if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
 
     return encodeToToon({
@@ -225,34 +167,76 @@ export const createWidgetTool = {
   },
 };
 
-async function updateWidget(
-  id: string,
-  updates: Partial<Omit<UpsertWidgetData, "id">>,
-  successMessage: string,
-): Promise<string> {
-  const widgetResult = await getGetWidgetByIdInteractor().invoke({ id });
-  const widget = widgetResult.data;
-  if (!widget) return `Validation error: Widget with ID ${id} not found`;
+export const updateWidgetTool = {
+  name: "update_widget",
+  description:
+    "Partial update for one widget. " +
+    "Required: id. All other fields optional; only provided fields change. " +
+    "WARNING: entityFilters and dealFilters REPLACE the existing filter arrays. " +
+    "Idempotent: same payload produces the same state.",
+  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  inputSchema: UpdateWidgetSchema,
+  execute: async (params: z.infer<typeof UpdateWidgetSchema>) => {
+    const widgetResult = await getGetWidgetByIdInteractor().invoke({ id: params.id });
+    const widget = widgetResult.data;
+    if (!widget) return `Validation error: Widget ${params.id} not found`;
 
-  const result = await getUpsertWidgetInteractor().invoke({
-    id,
-    name: widget.name,
-    entityType: widget.entityType,
-    groupByType: widget.groupByType,
-    groupByCustomColumnId: widget.groupByCustomColumnId ?? undefined,
-    aggregationType: widget.aggregationType,
-    entityFilters: widget.entityFilters,
-    dealFilters: widget.dealFilters,
-    displayOptions: widget.displayOptions,
-    isTemplate: widget.isTemplate,
-    ...updates,
-  });
+    const displayOptionsChanged =
+      params.displayType !== undefined ||
+      params.reverseXAxis !== undefined ||
+      params.reverseYAxis !== undefined ||
+      params.barColors !== undefined;
 
-  if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    const updates: Partial<Omit<UpsertWidgetData, "id">> = {};
+    if (params.name !== undefined) updates.name = params.name;
+    if (params.groupByType !== undefined) updates.groupByType = params.groupByType;
+    if (params.groupByCustomColumnId !== undefined) updates.groupByCustomColumnId = params.groupByCustomColumnId;
+    if (params.aggregationType !== undefined) updates.aggregationType = params.aggregationType;
+    if (Array.isArray(params.entityFilters)) updates.entityFilters = params.entityFilters;
+    if (Array.isArray(params.dealFilters)) updates.dealFilters = params.dealFilters;
+    if (displayOptionsChanged) {
+      updates.displayOptions = {
+        displayType: params.displayType ?? widget.displayOptions.displayType,
+        reverseXAxis: params.reverseXAxis ?? widget.displayOptions.reverseXAxis,
+        reverseYAxis: params.reverseYAxis ?? widget.displayOptions.reverseYAxis,
+        barColors: params.barColors ?? widget.displayOptions.barColors,
+      };
+    }
 
-  return encodeToToon({
-    id: result.data.id,
-    name: result.data.name,
-    message: successMessage.replace("{name}", result.data.name),
-  });
-}
+    const result = await getUpsertWidgetInteractor().invoke({
+      id: params.id,
+      name: widget.name,
+      entityType: widget.entityType,
+      groupByType: widget.groupByType,
+      groupByCustomColumnId: widget.groupByCustomColumnId ?? undefined,
+      aggregationType: widget.aggregationType,
+      entityFilters: widget.entityFilters,
+      dealFilters: widget.dealFilters,
+      displayOptions: widget.displayOptions,
+      isTemplate: widget.isTemplate,
+      ...updates,
+    });
+
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+
+    return encodeToToon({
+      id: result.data.id,
+      name: result.data.name,
+      message: `Widget "${result.data.name}" updated`,
+    });
+  },
+};
+
+export const deleteWidgetTool = {
+  name: "delete_widget",
+  description: "IRREVERSIBLE. Delete a widget by id. Required: id.",
+  annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
+  inputSchema: DeleteWidgetSchema,
+  execute: async ({ id }: z.infer<typeof DeleteWidgetSchema>) => {
+    const result = (await getDeleteWidgetInteractor().invoke({ id })) as
+      | { ok: true; data: unknown }
+      | { ok: false; error: z.ZodError };
+    if (!result.ok) return `Validation error: ${z.prettifyError(result.error)}`;
+    return `Deleted widget ${id}`;
+  },
+};

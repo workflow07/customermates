@@ -24,7 +24,7 @@ import { getCompanyRepo, getCustomColumnRepo } from "@/core/di";
 
 export const CreateManyTasksSchema = z
   .object({
-    tasks: z.array(BaseCreateTaskSchema).min(1).max(10),
+    tasks: z.array(BaseCreateTaskSchema).min(1).max(100),
   })
   .superRefine(async (data, ctx) => {
     const userSet = new Set<string>();
