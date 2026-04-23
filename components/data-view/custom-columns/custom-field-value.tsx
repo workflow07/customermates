@@ -90,21 +90,24 @@ export const CustomFieldValue = observer(
           const options = column.options.options;
 
           return (
-            <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-              <DropdownMenuTrigger asChild>
-                <span>
-                  <ClickableChip variant={selectedVariant}>{selectedOption.label}</ClickableChip>
-                </span>
-              </DropdownMenuTrigger>
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events -- stops clicks on the radix dropdown (trigger + portaled items) from bubbling to the parent card's navigation handler
+            <span onClick={(event) => event.stopPropagation()}>
+              <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                <DropdownMenuTrigger asChild>
+                  <span>
+                    <ClickableChip variant={selectedVariant}>{selectedOption.label}</ClickableChip>
+                  </span>
+                </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="max-h-60 overflow-y-auto">
-                {options.map((option) => (
-                  <DropdownMenuItem key={option.value} onSelect={() => void handleSelectOption(option.value)}>
-                    <AppChip variant={option.color}>{option.label}</AppChip>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <DropdownMenuContent className="max-h-60 overflow-y-auto">
+                  {options.map((option) => (
+                    <DropdownMenuItem key={option.value} onSelect={() => void handleSelectOption(option.value)}>
+                      <AppChip variant={option.color}>{option.label}</AppChip>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </span>
           );
         }
 
