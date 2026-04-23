@@ -23,10 +23,15 @@ import { updateEntityCustomFieldValueAction } from "@/app/actions";
 import { Card, CardContent } from "@/components/ui/card";
 import { AppChip } from "@/components/chip/app-chip";
 import type { CustomColumnOption } from "@/features/custom-column/custom-column.schema";
+import { useApplicationErrorHandler } from "@/components/shared/unexpected-error-toaster";
 import { DataCardBody } from "./data-card-body";
 import { cn } from "@/lib/utils";
 
-type Props<E extends HasId & { customFieldValues?: Array<{ columnId: string; value: unknown }> }> = {
+type HasCustomFieldValues = HasId & {
+  customFieldValues?: Array<{ columnId: string; value: unknown }>;
+};
+
+type Props<E extends HasCustomFieldValues> = {
   store: BaseDataViewStore<E>;
   columns: ColumnDef<E>[];
   onCardClick?: (item: E) => void;
@@ -48,6 +53,13 @@ function getGroupValue<E extends HasId>(
   return String(raw);
 }
 
+function patchCustomFieldValue<E extends HasCustomFieldValues>(item: E, columnId: string, value: unknown): E {
+  const existing = item.customFieldValues ?? [];
+  const others = existing.filter((cfv) => cfv.columnId !== columnId);
+  const next = value == null ? others : [...others, { columnId, value }];
+  return { ...item, customFieldValues: next };
+}
+
 function KanbanCard({
   itemId,
   children,
@@ -61,15 +73,20 @@ function KanbanCard({
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: itemId });
 
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`, zIndex: 50 } : undefined;
+  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
 
   return (
     <Card
       ref={setNodeRef}
-      className={cn("gap-2 py-3 touch-none", onClick && "interactive-surface", isDragging && "opacity-50", className)}
+      className={cn(
+        "gap-2 py-3 touch-none select-none",
+        onClick && !isDragging && "interactive-surface",
+        isDragging && "z-50 cursor-grabbing shadow-lg shadow-black/20 ring-1 ring-border/60",
+        className,
+      )}
       style={style}
       onClick={(e) => {
-        if (!transform) onClick?.();
+        if (!isDragging && !transform) onClick?.();
         e.stopPropagation();
       }}
       {...listeners}
@@ -85,20 +102,18 @@ function KanbanColumn({
   label,
   count,
   option,
-  isLast,
   children,
 }: {
   id: string;
   label: string;
   count: number;
   option?: CustomColumnOption;
-  isLast: boolean;
   children: ReactNode;
 }) {
-  const { isOver, setNodeRef } = useDroppable({ id });
+  const { setNodeRef } = useDroppable({ id });
   return (
-    <div className={cn("flex w-72 shrink-0 flex-col", !isLast && "border-r border-border pr-4")}>
-      <div className="sticky top-0 z-10 -mx-4 flex w-auto items-center gap-2 bg-background/70 backdrop-blur-md px-4 py-2">
+    <div ref={setNodeRef} className="flex w-72 shrink-0 flex-col rounded-lg p-0">
+      <div className="sticky top-0 z-10 -mx-2 mb-1 flex items-center gap-2 rounded-t-lg bg-background/80 px-3 py-2 backdrop-blur-md">
         {option ? (
           <AppChip size="sm" variant={option.color}>
             <span className="truncate">
@@ -118,26 +133,26 @@ function KanbanColumn({
         )}
       </div>
 
-      <div
-        ref={setNodeRef}
-        className={cn("flex flex-1 flex-col gap-3 py-2 min-h-20 transition-colors", isOver && "bg-muted/40")}
-      >
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col gap-3 min-h-20">{children}</div>
     </div>
   );
 }
 
-export const DataKanbanView = observer(function DataKanbanView<
-  E extends HasId & { customFieldValues?: Array<{ columnId: string; value: unknown }> },
->({ store, columns, onCardClick, renderCard, className }: Props<E>) {
+export const DataKanbanView = observer(function DataKanbanView<E extends HasCustomFieldValues>({
+  store,
+  columns,
+  onCardClick,
+  renderCard,
+  className,
+}: Props<E>) {
   const t = useTranslations("");
+  const handleApplicationError = useApplicationErrorHandler();
   const groupingColumnId = store.groupingColumnId ?? "";
   const rawGrouping = store.customColumns.find((c) => c.id === groupingColumnId);
   const groupingCustomColumn =
     rawGrouping && rawGrouping.type === CustomColumnType.singleSelect ? rawGrouping : undefined;
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   const hidden = new Set(store.hiddenColumns);
   const visibleColumns = columns.filter((c) => !hidden.has((c as { id?: string }).id ?? ""));
@@ -190,6 +205,9 @@ export const DataKanbanView = observer(function DataKanbanView<
 
     const nextValue = targetGroup === EMPTY_GROUP_KEY ? null : targetGroup;
 
+    const optimisticItem = patchCustomFieldValue(item, groupingColumnId, nextValue);
+    store.upsertItemLocal(optimisticItem);
+
     try {
       const result = await updateEntityCustomFieldValueAction({
         entityType: groupingCustomColumn.entityType,
@@ -197,33 +215,24 @@ export const DataKanbanView = observer(function DataKanbanView<
         customFieldValues: [{ columnId: groupingColumnId, value: nextValue }],
       });
       if (result?.ok) await store.upsertItem(result.data as unknown as E);
+      else store.upsertItemLocal(item);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : t("Common.notifications.unexpectedError"));
+      store.upsertItemLocal(item);
+      handleApplicationError(err);
     }
   }
 
   if (groups.size === 0) return <div className="py-12 text-center text-sm text-muted-foreground">No items found.</div>;
 
-  const groupEntries = Array.from(groups.entries());
-
-  const lastIndex = groupEntries.length - 1;
-
   return (
     <DndContext sensors={sensors} onDragEnd={(event) => void handleDragEnd(event)}>
       <div className={cn("flex flex-col overflow-x-auto", className)} data-slot="kanban-root">
         <div className="flex min-w-max flex-1 items-stretch gap-4 px-4">
-          {groupEntries.map(([key, items], index) => {
+          {Array.from(groups.entries()).map(([key, items]) => {
             const option = groupingCustomColumn?.options?.options.find((o) => o.value === key);
             const label = key === EMPTY_GROUP_KEY ? EMPTY_GROUP_LABEL : (option?.label ?? key);
             return (
-              <KanbanColumn
-                key={key}
-                count={items.length}
-                id={key}
-                isLast={index === lastIndex}
-                label={label}
-                option={option}
-              >
+              <KanbanColumn key={key} count={items.length} id={key} label={label} option={option}>
                 {items.map((item) => {
                   const row = rowsById.get(item.id);
                   return (

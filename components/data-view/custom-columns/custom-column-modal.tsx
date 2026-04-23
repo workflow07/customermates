@@ -39,7 +39,6 @@ import { FormSwitch } from "@/components/forms/form-switch";
 import { AppModal, ModalFooter } from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/shared/icon";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -102,11 +101,11 @@ const SortableOptionItem = observer(
         </div>
 
         <div className="flex gap-0 w-full">
-          <Input
+          <FormInput
             className="rounded-r-none border-r-0"
+            containerClassName="flex-1 min-w-0"
             id={labelId}
-            value={option.label}
-            onChange={(e) => onChange(labelId, e.target.value)}
+            label={null}
           />
 
           <DropdownMenu>

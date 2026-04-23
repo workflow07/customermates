@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { FormLabel } from "./form-label";
 import { cn } from "@/lib/utils";
+import { useRootStore } from "@/core/stores/root-store.provider";
 
 import { useAppForm } from "./form-context";
 
@@ -62,20 +63,23 @@ export const FormNumberInput = observer(
     const t = useTranslations("Common.inputs");
     const resolvedLabel = label === null ? undefined : (label ?? t(id));
     const store = useAppForm();
+    const { intlStore } = useRootStore();
     const controlled = onValueChange !== undefined;
 
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
     const isDisabled = store?.isDisabled;
 
+    const effectiveLocale = locale ?? intlStore.formattingLocale;
+
     const format = useMemo(
       () =>
-        new Intl.NumberFormat(locale, {
+        new Intl.NumberFormat(effectiveLocale, {
           maximumFractionDigits: 2,
           useGrouping: true,
           ...formatOptions,
         }),
-      [locale, formatOptions],
+      [effectiveLocale, formatOptions],
     );
 
     const fmt = useCallback(

@@ -9,14 +9,13 @@ import { toast } from "sonner";
 import { CustomColumnType } from "@/generated/prisma";
 
 import { AppChip } from "@/components/chip/app-chip";
+import { FormInput } from "@/components/forms/form-input";
 import { FormSelect } from "@/components/forms/form-select";
 import { FormInputChips } from "@/components/forms/form-input-chips";
 import { FormNumberInput } from "@/components/forms/form-number-input";
 import { FormIsoDatePicker } from "@/components/forms/form-iso-date-picker";
 import { Icon } from "@/components/shared/icon";
 import { Favicon } from "@/components/shared/favicon";
-import { FormLabel } from "@/components/forms/form-label";
-import { Input } from "@/components/ui/input";
 import { copyToClipboard } from "@/lib/clipboard";
 import { useRootStore } from "@/core/stores/root-store.provider";
 
@@ -76,7 +75,7 @@ export const CustomFieldEditor = observer(function CustomFieldEditor({
         <FormInputChips
           allowMultiple={column.options?.allowMultiple}
           chipColor={column.options?.color}
-          id={inputId}
+          id={id ?? inputId}
           label={formLabel}
           renderChip={(url, endContent) => {
             let startContent: React.ReactNode;
@@ -142,26 +141,34 @@ export const CustomFieldEditor = observer(function CustomFieldEditor({
       );
 
     case CustomColumnType.plain:
-      return (
-        <div className="space-y-1.5">
-          {formLabel && <FormLabel htmlFor={id ?? inputId}>{formLabel}</FormLabel>}
-
-          <Input id={id ?? inputId} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
-        </div>
-      );
+      return <FormInput id={id ?? inputId} label={formLabelNullable} />;
 
     case CustomColumnType.date:
-      return <FormIsoDatePicker dateOnly id={id ?? inputId} label={formLabelNullable} />;
+      return (
+        <FormIsoDatePicker
+          dateOnly
+          displayFormat={column.options?.displayFormat ?? undefined}
+          id={id ?? inputId}
+          label={formLabelNullable}
+        />
+      );
 
     case CustomColumnType.dateTime:
-      return <FormIsoDatePicker dateOnly={false} id={id ?? inputId} label={formLabelNullable} />;
+      return (
+        <FormIsoDatePicker
+          dateOnly={false}
+          displayFormat={column.options?.displayFormat ?? undefined}
+          id={id ?? inputId}
+          label={formLabelNullable}
+        />
+      );
 
     case CustomColumnType.email:
       return (
         <FormInputChips
           allowMultiple={column.options?.allowMultiple}
           chipColor={column.options?.color}
-          id={inputId}
+          id={id ?? inputId}
           label={formLabel}
           value={value}
           onChipClick={(val) => void handleCopy(val)}
@@ -174,7 +181,7 @@ export const CustomFieldEditor = observer(function CustomFieldEditor({
         <FormInputChips
           allowMultiple={column.options?.allowMultiple}
           chipColor={column.options?.color}
-          id={inputId}
+          id={id ?? inputId}
           label={formLabel}
           value={value}
           onChipClick={(val) => void handleCopy(val)}

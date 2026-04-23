@@ -108,6 +108,7 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       refresh: action,
       refreshCustomColumns: action,
       upsertItem: action,
+      upsertItemLocal: action,
       removeItem: action,
       registerOnChange: action,
       setCustomColumns: action,
@@ -370,16 +371,18 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
   };
 
   upsertItem = async (target: Entity): Promise<void> => {
-    let items: Entity[] = [];
-    const targetId = target.id;
+    this.upsertItemLocal(target);
+    await this.executeOnChanges();
+  };
 
+  upsertItemLocal = (target: Entity): void => {
+    const targetId = target.id;
     const existingIndex = this.items.findIndex(({ id: sourceId }) => sourceId === targetId);
 
-    if (existingIndex >= 0) items = this.items.map((source) => (source.id === targetId ? target : source));
-    else items = [...this.items, target];
-
-    this.items = items;
-    await this.executeOnChanges();
+    this.items =
+      existingIndex >= 0
+        ? this.items.map((source) => (source.id === targetId ? target : source))
+        : [...this.items, target];
   };
 
   removeItem = async (targetId: string): Promise<void> => {

@@ -1,8 +1,9 @@
 "use client";
 
+import type { DateDisplayFormat } from "@/constants/date-format";
+
 import { observer } from "mobx-react-lite";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 
 import { Calendar } from "@/components/ui/calendar";
@@ -11,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { FormLabel } from "./form-label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useRootStore } from "@/core/stores/root-store.provider";
 
 import { useAppForm } from "./form-context";
 
@@ -19,7 +21,7 @@ type Props = {
   label?: string | null;
   placeholder?: string;
   required?: boolean;
-  dateFormat?: string;
+  displayFormat?: DateDisplayFormat;
   dateOnly?: boolean;
   className?: string;
   containerClassName?: string;
@@ -31,13 +33,14 @@ export const FormIsoDatePicker = observer(
     label,
     placeholder = "Pick a date",
     required,
-    dateFormat,
+    displayFormat = "descriptiveLong",
     dateOnly = true,
     className,
     containerClassName,
   }: Props) => {
     const t = useTranslations("Common.inputs");
     const store = useAppForm();
+    const { intlStore } = useRootStore();
 
     const raw = store?.getValue(id);
     const isoValue = typeof raw === "string" ? raw : undefined;
@@ -46,7 +49,8 @@ export const FormIsoDatePicker = observer(
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
 
     const resolvedLabel = label === null ? undefined : (label ?? safeTranslate(t, id));
-    const resolvedFormat = dateFormat ?? (dateOnly ? "PPP" : "PPp");
+
+    const formatter = dateOnly ? intlStore.dateFormatMap[displayFormat] : intlStore.dateTimeFormatMap[displayFormat];
 
     function commit(date: Date | undefined) {
       if (!date) {
@@ -61,7 +65,7 @@ export const FormIsoDatePicker = observer(
         commit(undefined);
         return;
       }
-      // Preserve the time portion if one was already set (dateTime mode).
+
       if (!dateOnly && parsed) next.setHours(parsed.getHours(), parsed.getMinutes(), 0, 0);
 
       commit(next);
@@ -108,7 +112,7 @@ export const FormIsoDatePicker = observer(
             >
               <CalendarIcon className="mr-2 size-4" />
 
-              {parsed ? format(parsed, resolvedFormat) : <span>{placeholder}</span>}
+              {parsed ? formatter(parsed) : <span>{placeholder}</span>}
             </Button>
           </PopoverTrigger>
 
