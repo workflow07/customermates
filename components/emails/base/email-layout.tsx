@@ -68,6 +68,10 @@ export function EmailLayout({ preview, title, children }: Props) {
                   <br />
 
                   <span>mail@customermates.com</span>
+
+                  <br />
+
+                  <span>USt-IdNr: DE335193602</span>
                 </Text>
               </>
             ) : null}

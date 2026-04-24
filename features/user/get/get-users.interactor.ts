@@ -1,6 +1,6 @@
 import type { P13nRepo } from "@/core/base/base-get.interactor";
 
-import { Resource, Action, Status } from "@/generated/prisma";
+import { Resource, Action } from "@/generated/prisma";
 
 import { type UserDto } from "../user.schema";
 
@@ -11,8 +11,6 @@ import { GetQueryParamsSchema, type GetQueryParams, createGetResultSchema } from
 import { Enforce } from "@/core/decorators/enforce.decorator";
 import { ValidateOutput } from "@/core/decorators/validate-output.decorator";
 import { UserDtoSchema } from "../user.schema";
-import { FilterOperatorKey } from "@/core/base/base-query-builder";
-import { FilterFieldKey } from "@/core/types/filter-field-key";
 
 export abstract class GetUsersRepo extends BaseGetRepo<UserDto> {}
 
@@ -28,13 +26,6 @@ export class GetUsersInteractor extends BaseGetInteractor<UserDto> {
   constructor(repo: GetUsersRepo, p13nRepo: P13nRepo) {
     super(repo, p13nRepo, {
       sortDescriptor: { field: "name", direction: "asc" },
-      filters: [
-        {
-          field: FilterFieldKey.status,
-          operator: FilterOperatorKey.in,
-          value: [Status.active],
-        },
-      ],
     });
   }
 
