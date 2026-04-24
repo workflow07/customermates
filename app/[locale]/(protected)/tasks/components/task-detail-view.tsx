@@ -25,13 +25,7 @@ export const TaskDetailView = observer(function TaskDetailView({ layout = "drawe
     taskDetailStore;
 
   return (
-    <EntityDetailBody
-      canDelete={isCustomTask}
-      entityType={EntityType.task}
-      layout={layout}
-      store={taskDetailStore}
-      titleKey="TaskModal.title"
-    >
+    <EntityDetailBody entityType={EntityType.task} layout={layout} store={taskDetailStore} titleKey="TaskModal.title">
       {systemTaskAlertConfig && (
         <Alert color="warning">
           <p className="text-x-sm">

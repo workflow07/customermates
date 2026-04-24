@@ -39,6 +39,7 @@ export abstract class BaseCustomColumnEntityModalStore<
   TDto extends EntityDto = EntityDto,
 > extends BaseModalStore<TForm> {
   public fetchedEntity: TDto | null = null;
+  public lastCreatedId: string | null = null;
 
   constructor(
     rootStore: RootStore,
@@ -51,17 +52,25 @@ export abstract class BaseCustomColumnEntityModalStore<
 
     makeObservable(this, {
       fetchedEntity: observable,
+      lastCreatedId: observable,
 
       add: action,
       delete: action,
       loadById: action,
       initialize: action,
       onSubmit: action,
+      consumeLastCreatedId: action,
 
       isAssignedToCurrentUser: computed,
       customColumns: computed,
     });
   }
+
+  consumeLastCreatedId = (): string | null => {
+    const id = this.lastCreatedId;
+    this.lastCreatedId = null;
+    return id;
+  };
 
   get customColumns() {
     return this.entityStore.customColumns;
@@ -172,12 +181,14 @@ export abstract class BaseCustomColumnEntityModalStore<
       const res = formData.id
         ? await this.actions.update({ ...formData, id: formData.id })
         : await this.actions.create(formData);
+      const isCreate = !formData.id;
 
       if (res.ok) {
         this.setError(undefined);
         await this.entityStore.upsertItem(res.data);
         if (this.fetchedEntity) this.fetchedEntity = res.data;
         this.onInitOrRefresh(this.initFormWithCustomFieldValues(res.data));
+        if (isCreate) this.lastCreatedId = res.data.id;
         this.close();
       } else this.setError(res.error as any);
     } finally {
