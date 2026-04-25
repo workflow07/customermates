@@ -86,7 +86,7 @@ export const FormAutocomplete = observer(
     const [selectedData, setSelectedData] = useState<Map<string, T>>(new Map());
 
     const raw = controlledValue ?? (store?.getValue(id) as string | string[] | undefined);
-    const selectedKeys = raw === undefined ? [] : Array.isArray(raw) ? raw : [raw];
+    const selectedKeys = (raw === undefined ? [] : Array.isArray(raw) ? raw : [raw]).filter(Boolean);
 
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
