@@ -51,7 +51,7 @@ import { AuditLogsStore } from "@/app/[locale]/(protected)/company/components/au
 import { EntityHistoryDetailsModalStore } from "@/app/[locale]/(protected)/company/components/audit-log/entity-history-details-modal.store";
 import { EntityHistoryModalStore } from "@/app/[locale]/(protected)/company/components/audit-log/entity-history-modal.store";
 import { FeedbackModalStore } from "@/app/[locale]/(protected)/company/components/feedback/feedback-modal.store";
-import { ContactStore } from "@/app/[locale]/(static)/contact/contact.store";
+import { ContactStore } from "@/app/[locale]/(public)/contact/contact.store";
 
 export class RootStore {
   private readonly modalStores = new Set<BaseModalStore<any>>();
