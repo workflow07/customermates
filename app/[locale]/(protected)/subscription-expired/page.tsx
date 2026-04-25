@@ -5,7 +5,7 @@ import { Resource } from "@/generated/prisma";
 import { SubscriptionExpiredView } from "./components/subscription-expired-view";
 
 import { getGetSubscriptionInteractor, getRouteGuardService } from "@/core/di";
-import { PageContainer } from "@/components/shared/page-container";
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
 
 export default async function SubscriptionExpiredPage() {
   await getRouteGuardService().ensureAccessOrRedirect({
@@ -26,10 +26,8 @@ export default async function SubscriptionExpiredPage() {
   if (!isExpired) redirect("/company/details");
 
   return (
-    <PageContainer>
-      <div className="size-full flex flex-1 items-center justify-center p-4">
-        <SubscriptionExpiredView />
-      </div>
-    </PageContainer>
+    <CenteredCardPage>
+      <SubscriptionExpiredView />
+    </CenteredCardPage>
   );
 }

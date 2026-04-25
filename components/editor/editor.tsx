@@ -21,9 +21,10 @@ import "./editor.scss";
 type Props = {
   data?: object;
   onChange?: (data: object) => void;
+  readOnly?: boolean;
 };
 
-export function Editor({ data, onChange }: Props) {
+export function Editor({ data, onChange, readOnly = false }: Props) {
   const t = useTranslations("Editor");
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
@@ -33,15 +34,20 @@ export function Editor({ data, onChange }: Props) {
   const slashMenuRef = useRef<HTMLDivElement>(null);
   const isSettingContentRef = useRef(false);
 
-  const showBubbleMenuForSelection = useCallback((view: EditorView) => {
-    const { from, to } = view.state.selection;
-    const hasSelection = from !== to;
+  const showBubbleMenuForSelection = useCallback(
+    (view: EditorView) => {
+      if (readOnly) return;
+      const { from, to } = view.state.selection;
+      const hasSelection = from !== to;
 
-    if (hasSelection && !view.state.selection.empty) setShowBubbleMenu(true);
-  }, []);
+      if (hasSelection && !view.state.selection.empty) setShowBubbleMenu(true);
+    },
+    [readOnly],
+  );
 
   const editor = useEditor({
     immediatelyRender: false,
+    editable: !readOnly,
     extensions: [
       ...baseExtensions,
       Placeholder.configure({
@@ -120,6 +126,12 @@ export function Editor({ data, onChange }: Props) {
       isSettingContentRef.current = false;
     }
   }, [editor, data]);
+
+  useEffect(() => {
+    if (!editor) return;
+    if (editor.isEditable === !readOnly) return;
+    editor.setEditable(!readOnly);
+  }, [editor, readOnly]);
 
   useEffect(() => {
     function handleGlobalMouseUp() {

@@ -5,6 +5,7 @@ import type { UpdateUserDetailsRepo } from "@/features/user/upsert/update-user-d
 import type { UpdateUserSettingsRepo } from "@/features/user/upsert/update-user-settings.interactor";
 import type { AdminUpdateUserDetailsRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
 import type { GetUserByIdRepo } from "@/features/user/get/get-user-by-id.interactor";
+import type { CompleteOnboardingWizardRepo } from "@/features/onboarding-wizard/complete-onboarding-wizard.interactor";
 import type { SendWelcomeAndDemoActionRepo } from "@/ee/lifecycle/send-welcome-and-demo.interactor";
 import type { SendTrialExtensionOfferActionRepo } from "@/ee/lifecycle/send-trial-extension-offer.interactor";
 import type { SendTrialInactivationReminderActionRepo } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
@@ -36,7 +37,8 @@ export class PrismaUserRepo
     SendTrialExtensionOfferActionRepo,
     SendTrialInactivationReminderActionRepo,
     DeactivateTrialUsersAndSendNoticeRepo,
-    DeactivateUsersAfterSubscriptionGracePeriodRepo
+    DeactivateUsersAfterSubscriptionGracePeriodRepo,
+    CompleteOnboardingWizardRepo
 {
   private get extendedUserSelect() {
     return {
@@ -55,6 +57,7 @@ export class PrismaUserRepo
       agreeToTerms: true,
       marketingEmails: true,
       lastActiveAt: true,
+      onboardingWizardCompletedAt: true,
       createdAt: true,
       updatedAt: true,
       role: {
@@ -138,6 +141,14 @@ export class PrismaUserRepo
     });
 
     return args;
+  }
+
+  async markOnboardingWizardCompleted(userId: string) {
+    const { companyId } = this.user;
+    await this.prisma.user.updateMany({
+      data: { onboardingWizardCompletedAt: new Date() },
+      where: { id: userId, companyId },
+    });
   }
 
   @Transaction

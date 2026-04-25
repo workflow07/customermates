@@ -34,6 +34,7 @@ type Props<T extends Identifiable> = {
   onChipClick?: (key: string) => void;
   emptyContent?: ReactNode;
   disabled?: boolean;
+  readOnly?: boolean;
   className?: string;
   containerClassName?: string;
 };
@@ -70,6 +71,7 @@ export const FormAutocomplete = observer(
     onChipClick,
     emptyContent = "No results.",
     disabled,
+    readOnly,
     className,
     containerClassName,
   }: Props<T>) => {
@@ -88,7 +90,8 @@ export const FormAutocomplete = observer(
 
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
-    const isDisabled = disabled || store?.isDisabled;
+    const isReadOnly = readOnly ?? store?.isReadOnly ?? false;
+    const isDisabled = (disabled ?? store?.isLoading) || false;
 
     const itemsArray: T[] = useMemo(() => Array.from(items ?? []), [items]);
 
@@ -185,33 +188,31 @@ export const FormAutocomplete = observer(
         const itemKey = toRender[i]?.key;
         if (!itemKey) return el;
 
-        // Render the remove affordance as a <span role="button"> rather than
-        // a real <button>. The enclosing PopoverTrigger renders a <button>, so
-        // nesting a real <button> here produces invalid HTML and triggers a
-        // hydration mismatch on every autocomplete with selected chips.
-        const withClose = React.cloneElement(el as React.ReactElement<{ endContent?: React.ReactNode }>, {
-          endContent: (
-            <span
-              aria-label="Remove"
-              className="inline-flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
-              role="button"
-              tabIndex={-1}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemove(itemKey);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleRemove(itemKey);
-                }
-              }}
-            >
-              <XIcon className="size-3" />
-            </span>
-          ),
-        });
+        const withClose = isReadOnly
+          ? el
+          : React.cloneElement(el as React.ReactElement<{ endContent?: React.ReactNode }>, {
+              endContent: (
+                <span
+                  aria-label="Remove"
+                  className="inline-flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
+                  role="button"
+                  tabIndex={-1}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove(itemKey);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleRemove(itemKey);
+                    }
+                  }}
+                >
+                  <XIcon className="size-3" />
+                </span>
+              ),
+            });
 
         if (!onChipClick) return <span key={itemKey}>{withClose}</span>;
         return (
@@ -221,10 +222,6 @@ export const FormAutocomplete = observer(
             role="button"
             tabIndex={0}
             onClick={(e) => {
-              // The PopoverTrigger renders an outer <button>, so "any button
-              // ancestor" isn't a useful signal. The only inner interactive
-              // control is the X-remove span (identified by aria-label); bail
-              // only when that was the actual click target.
               if ((e.target as HTMLElement).closest('[aria-label="Remove"]')) return;
               e.stopPropagation();
               onChipClick(itemKey);
@@ -237,7 +234,7 @@ export const FormAutocomplete = observer(
           </span>
         );
       });
-    }, [selectedKeys, allItems, selectionMode, renderValue, onChipClick]);
+    }, [selectedKeys, allItems, selectionMode, renderValue, onChipClick, isReadOnly]);
 
     const showCreate = Boolean(onCreate) && input.trim() && filteredItems.length === 0;
 
@@ -251,14 +248,16 @@ export const FormAutocomplete = observer(
           </FormLabel>
         )}
 
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? undefined : setOpen}>
           <PopoverTrigger asChild>
             <Button
               aria-expanded={open}
               aria-invalid={hasError}
+              aria-readonly={isReadOnly || undefined}
               className={cn(
                 "w-full justify-between font-normal h-auto min-h-9 px-3 py-1.5",
                 !selectedKeys.length && "text-muted-foreground",
+                isReadOnly && "cursor-default hover:bg-input-background hover:text-foreground",
                 className,
               )}
               disabled={isDisabled}
@@ -271,7 +270,7 @@ export const FormAutocomplete = observer(
                 {selectedKeys.length ? renderedSelection : placeholder}
               </span>
 
-              <ChevronsUpDownIcon className="ml-2 size-4 shrink-0 opacity-50" />
+              {!isReadOnly && <ChevronsUpDownIcon className="ml-2 size-4 shrink-0 opacity-50" />}
             </Button>
           </PopoverTrigger>
 

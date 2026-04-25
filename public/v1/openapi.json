@@ -15595,7 +15595,6 @@
                       "type": "string",
                       "enum": [
                         "userPendingAuthorization",
-                        "companyOnboarding",
                         "custom"
                       ]
                     },
@@ -15786,7 +15785,6 @@
                         "type": "string",
                         "enum": [
                           "userPendingAuthorization",
-                          "companyOnboarding",
                           "custom"
                         ]
                       },
@@ -15976,7 +15974,6 @@
                         "type": "string",
                         "enum": [
                           "userPendingAuthorization",
-                          "companyOnboarding",
                           "custom"
                         ]
                       },
@@ -17345,7 +17342,6 @@
                             "type": "string",
                             "enum": [
                               "userPendingAuthorization",
-                              "companyOnboarding",
                               "custom"
                             ]
                           },
@@ -18159,7 +18155,6 @@
                               "type": "string",
                               "enum": [
                                 "userPendingAuthorization",
-                                "companyOnboarding",
                                 "custom"
                               ]
                             },
@@ -18921,7 +18916,6 @@
                       "type": "string",
                       "enum": [
                         "userPendingAuthorization",
-                        "companyOnboarding",
                         "custom"
                       ]
                     },
@@ -25242,7 +25236,6 @@
                     "type": "string",
                     "enum": [
                       "userPendingAuthorization",
-                      "companyOnboarding",
                       "custom"
                     ]
                   },
@@ -25401,7 +25394,6 @@
                         "type": "string",
                         "enum": [
                           "userPendingAuthorization",
-                          "companyOnboarding",
                           "custom"
                         ]
                       },
@@ -25765,7 +25757,6 @@
                     "type": "string",
                     "enum": [
                       "userPendingAuthorization",
-                      "companyOnboarding",
                       "custom"
                     ]
                   },

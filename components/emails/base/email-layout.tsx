@@ -1,10 +1,10 @@
 import type { PropsWithChildren } from "react";
 
-import { Body, Container, Head, Heading, Hr, Html, Preview, Tailwind, Text } from "@react-email/components";
+import { Body, Container, Head, Heading, Html, Preview, Section, Tailwind, Text } from "@react-email/components";
 
 import { EmailImage } from "./email-image";
 
-import { IS_CLOUD_HOSTED } from "@/constants/env";
+import { BASE_URL, IS_CLOUD_HOSTED, IS_DEVELOPMENT } from "@/constants/env";
 import { colorPalettes } from "@/styles/color-palettes";
 
 const config = {
@@ -17,12 +17,16 @@ const config = {
   },
 };
 
+const ICON_URL = `${BASE_URL}/images/email/customermates-icon@2x.png`;
+
 type Props = PropsWithChildren<{
   preview?: string;
   title?: string;
 }>;
 
 export function EmailLayout({ preview, title, children }: Props) {
+  const year = new Date().getFullYear();
+
   return (
     <Html>
       <Tailwind config={config}>
@@ -32,49 +36,35 @@ export function EmailLayout({ preview, title, children }: Props) {
 
         {preview ? <Preview>{preview}</Preview> : null}
 
-        <Body className="m-0 py-2.5 font-sans bg-content1">
-          <Container className="mx-auto p-[45px]">
-            <EmailImage
-              alt="Customermates"
-              className="mb-8"
-              height={40}
-              src="https://www.customermates.com/images/light/customermates.svg"
-              width={150}
-            />
+        <Body className="m-0 py-8 font-sans bg-content2">
+          <Container className="mx-auto max-w-[600px] px-4">
+            <Section className="pb-6">
+              <EmailImage alt="Customermates" height={56} src={ICON_URL} style={{ margin: "0 auto" }} width={56} />
+            </Section>
 
-            {title ? <Heading className="text-2xl font-semibold tracking-tight mb-2">{title}</Heading> : null}
+            <Section className="bg-content1 rounded-xl p-10">
+              {title ? (
+                <Heading className="text-2xl font-semibold tracking-tight text-default-900 mt-0 mb-4">{title}</Heading>
+              ) : null}
 
-            {children}
+              {children}
+            </Section>
 
-            {IS_CLOUD_HOSTED ? (
-              <>
-                <Hr className="my-7" />
+            <Section className="pt-6 text-center">
+              <Text className="m-0 text-xs text-default-700">
+                © {year} Customermates · The agentic, open-source CRM
+              </Text>
 
-                <Text className="text-xs leading-5 text-default-700">
-                  <span>Customermates</span>
+              {IS_DEVELOPMENT || IS_CLOUD_HOSTED ? (
+                <Text className="mt-2 text-xs text-default-700">
+                  <span>Benjamin Wagner · An den Kasernen 25 · 68167 Mannheim, Germany · </span>
 
-                  <br />
-
-                  <span>Benjamin Wagner</span>
-
-                  <br />
-
-                  <span>An den Kasernen 25</span>
-
-                  <br />
-
-                  <span>68167 Mannheim</span>
-
-                  <br />
-
-                  <span>mail@customermates.com</span>
-
-                  <br />
-
-                  <span>USt-IdNr: DE335193602</span>
+                  <a className="text-default-700 underline" href="mailto:mail@customermates.com">
+                    mail@customermates.com
+                  </a>
                 </Text>
-              </>
-            ) : null}
+              ) : null}
+            </Section>
           </Container>
         </Body>
       </Tailwind>

@@ -22,15 +22,19 @@ export class RouteGuardService {
     resource?: Resource;
     allowedActions?: Action[];
     skipSubscriptionCheck?: boolean;
+    skipOnboardingWizardCheck?: boolean;
   }): Promise<void> {
     const user = await this.userService.getUser();
 
-    if (!user) redirect("/onboarding");
+    if (!user) redirect("/onboarding/wizard");
 
     if (user.status !== Status.active) {
       const path = RouteGuardService.STATUS_REDIRECTS[user.status] ?? "/auth/signin";
       redirect(path);
     }
+
+    if (!options?.skipOnboardingWizardCheck && user.role?.isSystemRole && user.onboardingWizardCompletedAt == null)
+      redirect("/onboarding/wizard");
 
     if (!options?.skipSubscriptionCheck && !IS_DEMO_MODE) await this.checkSubscriptionAndRedirect(user.companyId);
 

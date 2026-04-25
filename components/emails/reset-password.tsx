@@ -9,22 +9,23 @@ type Props = {
   url: string;
   subject: string;
   intro: string;
+  cta: string;
   fallback: string;
   securityNotice: string;
 };
 
-export default function ResetPassword({ url, subject, intro, fallback, securityNotice }: Props) {
+export default function ResetPassword({ url, subject, intro, cta, fallback, securityNotice }: Props) {
   return (
     <EmailLayout preview={subject} title={subject}>
       <EmailText>{intro}</EmailText>
 
       <EmailSection>
-        <EmailButton href={url}>{subject}</EmailButton>
+        <EmailButton href={url}>{cta}</EmailButton>
       </EmailSection>
 
-      <EmailText>{securityNotice}</EmailText>
+      <EmailText className="text-sm text-default-700">{securityNotice}</EmailText>
 
-      <EmailText>
+      <EmailText className="text-sm text-default-700">
         {fallback}
 
         <EmailLink href={url}>{url}</EmailLink>
@@ -33,12 +34,13 @@ export default function ResetPassword({ url, subject, intro, fallback, securityN
   );
 }
 
-const resetPasswordTranslations = enMessages.ResetPassword;
+const t = enMessages.ResetPassword;
 
 ResetPassword.PreviewProps = {
   url: "https://example.com/auth/reset?token=TEST",
-  subject: resetPasswordTranslations.subject,
-  intro: resetPasswordTranslations.intro,
-  fallback: resetPasswordTranslations.fallback,
-  securityNotice: resetPasswordTranslations.securityNotice,
+  subject: t.subject,
+  intro: t.intro,
+  cta: t.cta,
+  fallback: t.fallback,
+  securityNotice: t.securityNotice,
 };

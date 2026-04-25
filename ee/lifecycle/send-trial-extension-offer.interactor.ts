@@ -7,6 +7,7 @@ import type { User } from "@/generated/prisma";
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
 import TrialExpiredOffer from "@/components/emails/trial-expired-offer";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
+import { BASE_URL } from "@/constants/env";
 
 export abstract class SendTrialExtensionOfferActionRepo {
   abstract findUsersWithTrialEndedLast24Hours(): Promise<User[]>;
@@ -28,8 +29,7 @@ export class SendTrialExtensionOfferInteractor {
       if (!claimed) continue;
 
       const locale = user.displayLanguage === "system" ? ROUTING_DEFAULT_LOCALE : user.displayLanguage;
-      const contactHref =
-        locale === "de" ? "https://customermates.com/de/contact" : "https://customermates.com/en/contact";
+      const contactHref = `${BASE_URL}/contact`;
       const t = await getTranslations({
         locale,
         namespace: "TrialExpiredOffer",
@@ -40,6 +40,7 @@ export class SendTrialExtensionOfferInteractor {
         react: TrialExpiredOffer({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
+          cta: t("cta"),
           scheduleFallback: t("scheduleFallback"),
           signoff: t("signoff"),
           subject: t("subject"),

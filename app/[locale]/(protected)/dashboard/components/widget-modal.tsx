@@ -158,7 +158,7 @@ export const WidgetModal = observer(({ customColumns, filterableFields }: Props)
                     <FormLabel htmlFor="groupByValue">{t("Common.inputs.groupByValue")}</FormLabel>
 
                     <Select
-                      value={widgetModalStore.groupBySelectValue || undefined}
+                      value={widgetModalStore.groupBySelectValue}
                       onValueChange={(key) => widgetModalStore.onGroupByChange(key)}
                     >
                       <SelectTrigger className="w-full" id="groupByValue">

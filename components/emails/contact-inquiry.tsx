@@ -1,6 +1,5 @@
+import { EmailField } from "@/components/emails/base/email-field";
 import { EmailLayout } from "@/components/emails/base/email-layout";
-import { EmailSection } from "@/components/emails/base/email-section";
-import { EmailText } from "@/components/emails/base/email-text";
 
 type Props = {
   name: string;
@@ -14,27 +13,11 @@ export default function ContactInquiry({ name, email, company, message }: Props)
 
   return (
     <EmailLayout preview={subject} title={subject}>
-      <EmailSection>
-        <EmailText>
-          <strong>From:</strong>
+      <EmailField label="From">{`${name} (${email})`}</EmailField>
 
-          {` ${name} (${email})`}
-        </EmailText>
+      {company ? <EmailField label="Company">{company}</EmailField> : null}
 
-        {company ? (
-          <EmailText>
-            <strong>Company:</strong>
-
-            {` ${company}`}
-          </EmailText>
-        ) : null}
-
-        <EmailText>
-          <strong>Message:</strong>
-        </EmailText>
-
-        <EmailText className="whitespace-pre-wrap">{message}</EmailText>
-      </EmailSection>
+      <EmailField label="Message">{message}</EmailField>
     </EmailLayout>
   );
 }

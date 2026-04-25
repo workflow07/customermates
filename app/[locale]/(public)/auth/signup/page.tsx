@@ -7,6 +7,7 @@ import { SignUpForm } from "./sign-up-form";
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { getInviteTokenValidationInteractor } from "@/core/di";
 import { IS_CLOUD_HOSTED } from "@/constants/env";
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -20,8 +21,8 @@ export default async function SignUpPage() {
   const companyName = result.data.valid ? result.data.companyName : null;
 
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
+    <CenteredCardPage>
       <SignUpForm companyName={companyName} showSocialProviders={IS_CLOUD_HOSTED} />
-    </div>
+    </CenteredCardPage>
   );
 }

@@ -16,7 +16,6 @@ import { FormActions } from "@/components/card/form-actions";
 import { useSetTopBarActions } from "@/app/components/topbar-actions-context";
 import { useRootStore } from "@/core/stores/root-store.provider";
 import { CURRENCIES } from "@/constants/currencies";
-import { Alert } from "@/components/shared/alert";
 import { AppChip } from "@/components/chip/app-chip";
 import { useRouter } from "@/i18n/navigation";
 
@@ -24,89 +23,80 @@ import { SubscriptionPanel } from "../subscription/subscription-panel";
 import { SubscribeManageButton } from "../subscription/subscribe-manage-button";
 
 type Props = {
-  isCompanyOnboarding: boolean;
   company: Company;
   initialSubscription: SubscriptionDto | null;
   showSubscription: boolean;
 };
 
-export const CompanyDetailsForm = observer(
-  ({ company, isCompanyOnboarding, initialSubscription, showSubscription }: Props) => {
-    const t = useTranslations("");
-    const router = useRouter();
-    const formId = useId();
-    const { companyDetailsStore: store } = useRootStore();
+export const CompanyDetailsForm = observer(({ company, initialSubscription, showSubscription }: Props) => {
+  const t = useTranslations("");
+  const router = useRouter();
+  const formId = useId();
+  const { companyDetailsStore: store } = useRootStore();
 
-    useEffect(() => {
-      store.onInitOrRefresh({
-        name: company.name ?? "",
-        street: company.street ?? "",
-        city: company.city ?? "",
-        country: company.country ?? CountryCode.de,
-        postalCode: company.postalCode ?? "",
-        currency: company.currency,
-      });
-    }, [company]);
+  useEffect(() => {
+    store.onInitOrRefresh({
+      name: company.name ?? "",
+      street: company.street ?? "",
+      city: company.city ?? "",
+      country: company.country ?? CountryCode.de,
+      postalCode: company.postalCode ?? "",
+      currency: company.currency,
+    });
+  }, [company]);
 
-    const topBarActions = useMemo(
-      () => (
-        <div className="flex items-center gap-2">
-          {showSubscription && <SubscribeManageButton />}
+  const topBarActions = useMemo(
+    () => (
+      <div className="flex items-center gap-2">
+        {showSubscription && <SubscribeManageButton />}
 
-          <FormActions formId={formId} store={store} variant="topbar" />
+        <FormActions formId={formId} store={store} variant="topbar" />
+      </div>
+    ),
+    [formId, store, showSubscription],
+  );
+  useSetTopBarActions(topBarActions);
+
+  return (
+    <AppForm
+      id={formId}
+      store={store}
+      onSubmit={(event) =>
+        void store.onSubmit(event).then(() => {
+          if (!store.error) router.refresh();
+        })
+      }
+    >
+      <div className="flex w-full max-w-3xl flex-col gap-4">
+        <FormInput required id="name" />
+
+        <FormInput required id="street" />
+
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+          <FormInput required id="postalCode" />
+
+          <FormInput required id="city" />
         </div>
-      ),
-      [formId, store, showSubscription],
-    );
-    useSetTopBarActions(topBarActions);
 
-    return (
-      <AppForm
-        id={formId}
-        store={store}
-        onSubmit={(event) =>
-          void store.onSubmit(event).then(() => {
-            if (!store.error) router.refresh();
-          })
-        }
-      >
-        <div className="flex w-full max-w-3xl flex-col gap-4">
-          {isCompanyOnboarding && !store.hasSubmittedSuccessfully && (
-            <Alert color="warning">
-              <p className="text-x-sm"> {t("Common.systemTasks.companyOnboarding.description")} </p>
-            </Alert>
-          )}
+        <FormAutocompleteCountry required id="country" />
 
-          <FormInput required id="name" />
+        <FormAutocomplete
+          required
+          id="currency"
+          items={CURRENCIES}
+          renderValue={(items) =>
+            items.map((item) => <AppChip key={item.key}>{t(`Common.currencies.${item.key}`)}</AppChip>)
+          }
+        >
+          {({ key }) => <span>{t(`Common.currencies.${key}`)}</span>}
+        </FormAutocomplete>
 
-          <FormInput required id="street" />
-
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
-            <FormInput required id="postalCode" />
-
-            <FormInput required id="city" />
+        {showSubscription && (
+          <div className="mt-4">
+            <SubscriptionPanel initialSubscription={initialSubscription} />
           </div>
-
-          <FormAutocompleteCountry required id="country" />
-
-          <FormAutocomplete
-            required
-            id="currency"
-            items={CURRENCIES}
-            renderValue={(items) =>
-              items.map((item) => <AppChip key={item.key}>{t(`Common.currencies.${item.key}`)}</AppChip>)
-            }
-          >
-            {({ key }) => <span>{t(`Common.currencies.${key}`)}</span>}
-          </FormAutocomplete>
-
-          {showSubscription && (
-            <div className="mt-4">
-              <SubscriptionPanel initialSubscription={initialSubscription} />
-            </div>
-          )}
-        </div>
-      </AppForm>
-    );
-  },
-);
+        )}
+      </div>
+    </AppForm>
+  );
+});

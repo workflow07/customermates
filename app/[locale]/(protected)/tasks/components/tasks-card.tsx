@@ -5,7 +5,7 @@ import type { GetResult } from "@/core/base/base-get.interactor";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EntityType, TaskType } from "@/generated/prisma";
@@ -14,9 +14,7 @@ import { getSystemTaskNameTranslationKey } from "./system-task.config";
 
 import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { DataViewContainer } from "@/components/data-view";
-import { AvatarStack } from "@/components/shared/avatar-stack";
-import { CustomFieldValue } from "@/components/data-view/custom-columns/custom-field-value";
+import { DataViewContainer, standardTailColumns, useDataViewSync } from "@/components/data-view";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useOpenEntity } from "@/components/modal/hooks/use-entity-drawer-stack";
 
@@ -30,19 +28,12 @@ export const TasksCardComponent = observer(({ tasks }: Props) => {
   const { tasksStore, intlStore, userModalStore } = useRootStore();
   const openEntity = useOpenEntity();
 
-  useEffect(() => tasksStore.setItems(tasks), [tasks]);
-
-  useEffect(() => {
-    const cleanupUrlSync = tasksStore.withUrlSync();
-    return () => cleanupUrlSync();
-  }, []);
+  useDataViewSync(tasksStore, tasks);
 
   const columns = useMemo<ColumnDef<TaskDto>[]>(() => {
     return [
       {
         id: "name",
-        accessorKey: "name",
-        header: t("Common.table.columns.name"),
         cell: ({ row }) => {
           const item = row.original;
           const isSystemTask = item.type !== TaskType.custom;
@@ -68,39 +59,9 @@ export const TasksCardComponent = observer(({ tasks }: Props) => {
           );
         },
       },
-      ...tasksStore.customColumns.map<ColumnDef<TaskDto>>((column) => ({
-        id: column.id,
-        header: column.label,
-        cell: ({ row }) => <CustomFieldValue column={column} item={row.original} store={tasksStore} />,
-      })),
-      {
-        id: "users",
-        header: t("Common.table.columns.users"),
-        cell: ({ row }) => (
-          <AvatarStack
-            items={row.original.users || []}
-            onAvatarClick={(user) => void userModalStore.loadById(user.id)}
-          />
-        ),
-      },
-      {
-        id: "updatedAt",
-        accessorKey: "updatedAt",
-        header: t("Common.table.columns.updatedAt"),
-        cell: ({ row }) => (
-          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.updatedAt)}</span>
-        ),
-      },
-      {
-        id: "createdAt",
-        accessorKey: "createdAt",
-        header: t("Common.table.columns.createdAt"),
-        cell: ({ row }) => (
-          <span className="text-sm">{intlStore.formatNumericalShortDateTime(row.original.createdAt)}</span>
-        ),
-      },
+      ...standardTailColumns({ store: tasksStore, intlStore, userModalStore }),
     ];
-  }, [t, tasksStore.customColumns, intlStore, userModalStore]);
+  }, [t, tasksStore, tasksStore.customColumns, intlStore, userModalStore]);
 
   return (
     <DataViewContainer

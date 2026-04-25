@@ -10,7 +10,6 @@ import { BaseModalStore } from "@/core/base/base-modal.store";
 export class CompanyInviteModalStore extends BaseModalStore<{
   inviteLink: string;
   expiresAt: Date | null;
-  isDisabled: boolean;
 }> {
   constructor(public readonly rootStore: RootStore) {
     super(
@@ -18,20 +17,14 @@ export class CompanyInviteModalStore extends BaseModalStore<{
       {
         inviteLink: "",
         expiresAt: null,
-        isDisabled: false,
       },
       Resource.users,
     );
 
     makeObservable(this, {
       generateInviteLink: action,
-      setIsDisabled: action,
     });
   }
-
-  setIsDisabled = (value: boolean) => {
-    this.form.isDisabled = value;
-  };
 
   generateInviteLink = async () => {
     this.setIsLoading(true);

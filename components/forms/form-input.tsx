@@ -19,18 +19,31 @@ type Props = Omit<ComponentProps<"input">, "value" | "onChange" | "id"> & {
   className?: string;
   containerClassName?: string;
   disabled?: boolean;
+  readOnly?: boolean;
   endContent?: ReactNode;
 };
 
 export const FormInput = observer(
-  ({ id, label, description, required, className, containerClassName, disabled, endContent, ...props }: Props) => {
+  ({
+    id,
+    label,
+    description,
+    required,
+    className,
+    containerClassName,
+    disabled,
+    readOnly,
+    endContent,
+    ...props
+  }: Props) => {
     const store = useAppForm();
     const t = useTranslations("Common.inputs");
     const resolvedLabel = label === null ? undefined : (label ?? t(id));
     const value = (store?.getValue(id) as string | number | undefined) ?? "";
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
-    const isDisabled = disabled ?? store?.isDisabled;
+    const isDisabled = disabled ?? store?.isLoading;
+    const isReadOnly = readOnly ?? store?.isReadOnly;
 
     return (
       <div className={cn("space-y-1.5", containerClassName)}>
@@ -48,6 +61,7 @@ export const FormInput = observer(
             className={cn(endContent && "pr-10", className)}
             disabled={isDisabled}
             id={id}
+            readOnly={isReadOnly}
             required={required}
             value={value}
             onChange={(event) => store?.onChange(id, event.target.value)}
@@ -59,7 +73,7 @@ export const FormInput = observer(
           )}
         </div>
 
-        {description && !hasError && <p className="text-sm text-muted-foreground">{description}</p>}
+        {description && !hasError && <p className="text-xs text-muted-foreground">{description}</p>}
       </div>
     );
   },

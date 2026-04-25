@@ -1,0 +1,26 @@
+"use client";
+
+import type { BaseDataViewStore, HasId } from "@/core/base/base-data-view.store";
+import type { GetResult } from "@/core/base/base-get.interactor";
+
+import { useEffect } from "react";
+
+type LinkedStore = Pick<BaseDataViewStore<HasId>, "registerOnChange">;
+
+export function useDataViewSync<E extends HasId>(
+  store: BaseDataViewStore<E>,
+  initialResult: GetResult<E>,
+  linkedStores: LinkedStore[] = [],
+): void {
+  useEffect(() => store.setItems(initialResult), [initialResult]);
+
+  useEffect(() => {
+    const cleanupUrlSync = store.withUrlSync();
+    const unregisters = linkedStores.map((s) => s.registerOnChange(() => store.refresh()));
+    return () => {
+      cleanupUrlSync();
+      unregisters.forEach((u) => u());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- store/linkedStores are stable instances; we only want to wire sync once on mount
+  }, []);
+}

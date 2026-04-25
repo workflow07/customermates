@@ -28,8 +28,6 @@ export class SendWelcomeAndDemoInteractor {
       if (!claimed) continue;
 
       const locale = user.displayLanguage === "system" ? ROUTING_DEFAULT_LOCALE : user.displayLanguage;
-      const contactHref =
-        locale === "de" ? "https://customermates.com/de/contact" : "https://customermates.com/en/contact";
       const t = await getTranslations({
         locale,
         namespace: "TrialWelcome",
@@ -42,11 +40,9 @@ export class SendWelcomeAndDemoInteractor {
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
           dismiss: t("dismiss"),
-          scheduleFallback: t("scheduleFallback"),
           signoff: t("signoff"),
           subject: t("subject"),
           title: t("title"),
-          href: contactHref,
         }),
       });
     }

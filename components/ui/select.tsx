@@ -48,7 +48,7 @@ function SelectTrigger({
 function SelectContent({
   className,
   children,
-  position = "item-aligned",
+  position = "popper",
   align = "center",
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
@@ -94,7 +94,7 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   );
 }
 
-function SelectItem({ className, children, textValue, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
       className={cn(
@@ -102,7 +102,6 @@ function SelectItem({ className, children, textValue, ...props }: React.Componen
         className,
       )}
       data-slot="select-item"
-      textValue={textValue}
       {...props}
     >
       <span className="absolute right-2 flex size-3.5 items-center justify-center" data-slot="select-item-indicator">
@@ -111,19 +110,7 @@ function SelectItem({ className, children, textValue, ...props }: React.Componen
         </SelectPrimitive.ItemIndicator>
       </span>
 
-      {textValue ? (
-        <>
-          <SelectPrimitive.ItemText>
-            <span className="sr-only">{textValue}</span>
-          </SelectPrimitive.ItemText>
-
-          <span className="flex items-center gap-2" data-slot="select-item-content">
-            {children}
-          </span>
-        </>
-      ) : (
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-      )}
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );
 }

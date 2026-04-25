@@ -1,9 +1,11 @@
 import { PendingCard } from "./pending-card";
 
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
+
 export default function PendingPage() {
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
+    <CenteredCardPage>
       <PendingCard />
-    </div>
+    </CenteredCardPage>
   );
 }

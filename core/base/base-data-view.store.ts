@@ -92,6 +92,8 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
       orderedColumns: computed,
       headerColumns: computed,
       visibleColumnsCount: computed,
+      visibleColumnIds: computed,
+      sortableColumnIds: computed,
       activePresetId: computed,
       canReadAll: computed,
       canAccess: computed,
@@ -123,6 +125,14 @@ export abstract class BaseDataViewStore<Entity extends HasId> {
     const hiddenSet = new Set(this.hiddenColumns);
 
     return this.columnsDefinition.filter((col) => !hiddenSet.has(col.uid)).length;
+  }
+
+  get visibleColumnIds(): Set<string> {
+    return new Set(this.columnsDefinition.map((col) => col.uid));
+  }
+
+  get sortableColumnIds(): Set<string> {
+    return new Set(this.columnsDefinition.filter((col) => col.sortable).map((col) => col.uid));
   }
 
   get canReadAll(): boolean {

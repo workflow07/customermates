@@ -10,6 +10,7 @@ import type { UpsertRoleData } from "@/features/role/upsert-role.interactor";
 import type { UpsertWebhookData } from "@/features/webhook/upsert-webhook.interactor";
 import type { DeleteWebhookData } from "@/features/webhook/delete-webhook.interactor";
 import type { ResendWebhookDeliveryData } from "@/features/webhook/resend-webhook-delivery.interactor";
+import type { InviteUsersByEmailData } from "@/features/company/invite-users-by-email.interactor";
 
 import {
   getGetUsersInteractor,
@@ -17,6 +18,7 @@ import {
   getAdminUpdateUserDetailsInteractor,
   getGetCompanyDetailsInteractor,
   getGetOrCreateInviteTokenInteractor,
+  getInviteUsersByEmailInteractor,
   getUpdateCompanyDetailsInteractor,
   getSendFeedbackInteractor,
   getGetRolesInteractor,
@@ -62,6 +64,10 @@ export async function adminUpdateUserDetailsAction(data: AdminUpdateUserDetailsD
 export async function getOrCreateInviteTokenAction() {
   const result = await getGetOrCreateInviteTokenInteractor().invoke();
   return result.data;
+}
+
+export async function inviteUsersByEmailAction(data: InviteUsersByEmailData) {
+  return serializeResult(getInviteUsersByEmailInteractor().invoke(data));
 }
 
 export async function getCompanyDetailsAction() {

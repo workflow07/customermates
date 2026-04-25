@@ -52,7 +52,7 @@ export const FormRadioGroup = observer(
           className={cn(orientation === "horizontal" ? "flex flex-wrap gap-4" : "grid gap-3", className)}
           disabled={store?.isDisabled}
           id={id}
-          value={value || undefined}
+          value={value}
           onValueChange={(next) => store?.onChange(id, next)}
         >
           {options?.map((option) => {

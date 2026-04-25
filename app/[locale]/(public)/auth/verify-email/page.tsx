@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { VerifyEmailCard } from "./verify-email-card";
 
 import { getAuthService } from "@/core/di";
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
 
 export default async function VerifyEmailPage() {
   const session = await getAuthService().getSession();
@@ -12,8 +13,8 @@ export default async function VerifyEmailPage() {
   if (session?.user?.emailVerified) redirect("/");
 
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
+    <CenteredCardPage>
       <VerifyEmailCard email={session?.user?.email} />
-    </div>
+    </CenteredCardPage>
   );
 }

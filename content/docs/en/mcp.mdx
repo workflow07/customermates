@@ -5,7 +5,7 @@ description: Customermates exposes a native MCP endpoint at /api/v1/mcp so Claud
 
 Point an MCP client at `https://customermates.com/api/v1/mcp`, send your API key in the `x-api-key` header, and the client discovers all 57 CRM tools automatically.
 
-If you want full end-to-end setup for a specific client (API key, JSON config, setup prompt, first command, all on one page), jump directly to [Claude](/docs/mcp-connect-claude), [ChatGPT](/docs/mcp-connect-chatgpt), or [Cursor](/docs/mcp-connect-cursor). This page is the protocol reference.
+If you want full end-to-end setup for a specific client (API key, JSON config, setup prompt, first command, all on one page), jump directly to [Claude](/docs/mcp-connect-claude-desktop), [ChatGPT](/docs/mcp-connect-chatgpt), or [Cursor](/docs/mcp-connect-cursor). This page is the protocol reference.
 
 ## When to use MCP
 
@@ -29,7 +29,7 @@ The endpoint speaks the Model Context Protocol (streamable HTTP variant). `tools
 
 | Client | Guide |
 |---|---|
-| Claude Desktop | [Connect Claude](/docs/mcp-connect-claude) |
+| Claude Desktop | [Connect Claude](/docs/mcp-connect-claude-desktop) |
 | ChatGPT | [Connect ChatGPT](/docs/mcp-connect-chatgpt) |
 | Cursor | [Connect Cursor](/docs/mcp-connect-cursor) |
 | Any MCP client | Use the endpoint and header above |
@@ -61,5 +61,5 @@ Both live at the same base URL. MCP is `/api/v1/mcp`; the OpenAPI spec is at `/a
 ## Next
 
 - [MCP tool catalog](/docs/mcp-tool-catalog): every tool, grouped and flagged.
-- [Connect Claude](/docs/mcp-connect-claude): end-to-end setup on one page.
+- [Connect Claude](/docs/mcp-connect-claude-desktop): end-to-end setup on one page.
 - [Webhooks](/docs/webhooks): the other half of the agentic loop.

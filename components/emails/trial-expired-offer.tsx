@@ -1,13 +1,17 @@
 import enMessages from "@/i18n/locales/en.json";
+import { EmailButton } from "@/components/emails/base/email-button";
 import { EmailLayout } from "@/components/emails/base/email-layout";
 import { EmailLink } from "@/components/emails/base/email-link";
+import { EmailSection } from "@/components/emails/base/email-section";
 import { EmailText } from "@/components/emails/base/email-text";
-const CONTACT_HREF_EN = "https://customermates.com/en/contact";
-const CONTACT_HREF_DE = "https://customermates.com/de/contact";
+import { BASE_URL } from "@/constants/env";
+
+const CONTACT_HREF = `${BASE_URL}/contact`;
 
 type Props = {
   greeting: string;
   body: string;
+  cta: string;
   scheduleFallback: string;
   signoff: string;
   subject: string;
@@ -15,9 +19,17 @@ type Props = {
   href?: string;
 };
 
-export default function TrialExpiredOffer({ greeting, body, scheduleFallback, signoff, subject, title, href }: Props) {
-  const resolvedHref = href ?? CONTACT_HREF_EN;
-  const shouldRenderFallbackLink = resolvedHref === CONTACT_HREF_EN || resolvedHref === CONTACT_HREF_DE;
+export default function TrialExpiredOffer({
+  greeting,
+  body,
+  cta,
+  scheduleFallback,
+  signoff,
+  subject,
+  title,
+  href,
+}: Props) {
+  const resolvedHref = href ?? CONTACT_HREF;
 
   return (
     <EmailLayout preview={subject} title={title}>
@@ -25,28 +37,31 @@ export default function TrialExpiredOffer({ greeting, body, scheduleFallback, si
 
       <EmailText>{body}</EmailText>
 
-      {shouldRenderFallbackLink ? (
-        <EmailText>
-          {scheduleFallback}
+      <EmailSection>
+        <EmailButton href={resolvedHref}>{cta}</EmailButton>
+      </EmailSection>
 
-          <EmailLink href={resolvedHref}>{resolvedHref}</EmailLink>
-        </EmailText>
-      ) : null}
+      <EmailText className="text-sm text-default-700">
+        {scheduleFallback}
 
-      <EmailText>{signoff}</EmailText>
+        <EmailLink href={resolvedHref}>{resolvedHref}</EmailLink>
+      </EmailText>
+
+      <EmailText className="whitespace-pre-line">{signoff}</EmailText>
     </EmailLayout>
   );
 }
 
-const offerTranslations = enMessages.TrialExpiredOffer;
+const t = enMessages.TrialExpiredOffer;
 const previewFirstName = "Sofia";
 
 TrialExpiredOffer.PreviewProps = {
-  greeting: offerTranslations.greeting.replace("{firstName}", previewFirstName),
-  body: offerTranslations.body,
-  scheduleFallback: offerTranslations.scheduleFallback,
-  signoff: offerTranslations.signoff,
-  subject: offerTranslations.subject,
-  title: offerTranslations.title,
-  href: CONTACT_HREF_EN,
+  greeting: t.greeting.replace("{firstName}", previewFirstName),
+  body: t.body,
+  cta: t.cta,
+  scheduleFallback: t.scheduleFallback,
+  signoff: t.signoff,
+  subject: t.subject,
+  title: t.title,
+  href: CONTACT_HREF,
 };

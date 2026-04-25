@@ -13,11 +13,6 @@ export const SYSTEM_TASK_CONFIG: Record<
     linkHref: "/company/members",
     nameTranslationKey: "Common.systemTasks.userPendingAuthorization.title",
   },
-  companyOnboarding: {
-    alertTranslationKey: "Common.systemTasks.companyOnboarding.alert",
-    linkHref: "/company/details",
-    nameTranslationKey: "Common.systemTasks.companyOnboarding.title",
-  },
   custom: {
     alertTranslationKey: "",
     linkHref: "",

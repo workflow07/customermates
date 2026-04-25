@@ -9,22 +9,23 @@ type Props = {
   url: string;
   subject: string;
   intro: string;
+  cta: string;
   fallback: string;
   securityNotice: string;
 };
 
-export default function VerifyEmail({ url, subject, intro, fallback, securityNotice }: Props) {
+export default function VerifyEmail({ url, subject, intro, cta, fallback, securityNotice }: Props) {
   return (
     <EmailLayout preview={subject} title={subject}>
       <EmailText>{intro}</EmailText>
 
       <EmailSection>
-        <EmailButton href={url}>{subject}</EmailButton>
+        <EmailButton href={url}>{cta}</EmailButton>
       </EmailSection>
 
-      <EmailText>{securityNotice}</EmailText>
+      <EmailText className="text-sm text-default-700">{securityNotice}</EmailText>
 
-      <EmailText>
+      <EmailText className="text-sm text-default-700">
         {fallback}
 
         <EmailLink href={url}>{url}</EmailLink>
@@ -33,12 +34,13 @@ export default function VerifyEmail({ url, subject, intro, fallback, securityNot
   );
 }
 
-const verifyEmailTranslations = enMessages.VerifyEmail;
+const t = enMessages.VerifyEmail;
 
 VerifyEmail.PreviewProps = {
   url: "https://example.com/auth/verify?token=TEST",
-  subject: verifyEmailTranslations.subject,
-  intro: verifyEmailTranslations.intro,
-  fallback: verifyEmailTranslations.fallback,
-  securityNotice: verifyEmailTranslations.securityNotice,
+  subject: t.subject,
+  intro: t.intro,
+  cta: t.cta,
+  fallback: t.fallback,
+  securityNotice: t.securityNotice,
 };

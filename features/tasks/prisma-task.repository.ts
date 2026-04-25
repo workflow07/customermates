@@ -8,7 +8,6 @@ import type { CreateTaskRepo } from "@/features/tasks/upsert/create-task.repo";
 import type { UpdateTaskRepo } from "@/features/tasks/upsert/update-task.repo";
 import type { DeleteTaskRepo } from "@/features/tasks/delete/delete-task.repo";
 import type { GetTaskByIdRepo } from "@/features/tasks/get/get-task-by-id.interactor";
-import type { GetTaskByTypeRepo } from "@/features/tasks/get/get-task-by-type.interactor";
 import type { FindTasksByIdsRepo } from "@/features/tasks/find-tasks-by-ids.repo";
 
 import { CustomColumnType, EntityType, TaskType, Resource, Action } from "@/generated/prisma";
@@ -36,7 +35,6 @@ export class PrismaTaskRepo
     UpdateTaskRepo,
     DeleteTaskRepo,
     GetTaskByIdRepo,
-    GetTaskByTypeRepo,
     GetWidgetFilterableFieldsTaskRepo,
     FindTasksByIdsRepo
 {
@@ -120,23 +118,14 @@ export class PrismaTaskRepo
   }
 
   async getSystemTasksCount(): Promise<number> {
-    const canUpdateUsers = this.hasPermission(Resource.users, Action.update);
-    const canUpdateCompany = this.hasPermission(Resource.company, Action.update);
+    if (!this.hasPermission(Resource.users, Action.update)) return 0;
 
-    const systemTaskTypes: TaskType[] = [];
-    if (canUpdateUsers) systemTaskTypes.push(TaskType.userPendingAuthorization);
-    if (canUpdateCompany) systemTaskTypes.push(TaskType.companyOnboarding);
-
-    if (systemTaskTypes.length === 0) return 0;
-
-    const where = {
-      ...this.accessWhere("task"),
-      type: {
-        in: systemTaskTypes,
+    return this.prisma.task.count({
+      where: {
+        ...this.accessWhere("task"),
+        type: TaskType.userPendingAuthorization,
       },
-    };
-
-    return this.prisma.task.count({ where });
+    });
   }
 
   async findByType(args: Parameters<TaskWorkerRepo["findByType"]>[0]) {
@@ -220,31 +209,6 @@ export class PrismaTaskRepo
     await Promise.all(promises);
 
     return task;
-  }
-
-  async getTaskByType(type: TaskType): Promise<TaskDto | null> {
-    const task = await this.prisma.task.findFirst({
-      where: {
-        ...this.accessWhere("task"),
-        type,
-      },
-      include: {
-        users: {
-          where: { user: this.accessWhere("user") },
-          include: {
-            user: true,
-          },
-        },
-        customFieldValues: true,
-      },
-    });
-
-    if (!task) return null;
-
-    return {
-      ...task,
-      users: task.users.map((it) => it.user),
-    };
   }
 
   @Transaction

@@ -38,7 +38,6 @@ import { WidgetDataFetcher } from "@/features/widget/calculator/widget-data-fetc
 import { WidgetGroupingService } from "@/features/widget/calculator/widget-grouping.service";
 import { SubscriptionService } from "@/ee/subscription/subscription.service";
 // Task Listeners
-import { CompanyOnboardingTaskListener } from "@/features/tasks/listener/company-onboarding-task.listener";
 import { UserPendingAuthorizationTaskListener } from "@/features/tasks/listener/user-pending-authorization-task.listener";
 import { DomainEvent } from "@/features/event/domain-events";
 // Contacts interactors
@@ -90,7 +89,6 @@ import { GetTasksInteractor } from "@/features/tasks/get/get-tasks.interactor";
 import { GetTasksApiInteractor } from "@/features/tasks/get/get-tasks-api.interactor";
 import { GetTasksConfigurationInteractor } from "@/features/tasks/get/get-tasks-configuration.interactor";
 import { GetTaskByIdInteractor } from "@/features/tasks/get/get-task-by-id.interactor";
-import { GetTaskByTypeInteractor } from "@/features/tasks/get/get-task-by-type.interactor";
 import { CountUserTasksInteractor } from "@/features/tasks/count-user-tasks.interactor";
 import { CountSystemTasksInteractor } from "@/features/tasks/count-system-tasks.interactor";
 import { CreateTaskInteractor } from "@/features/tasks/upsert/create-task.interactor";
@@ -102,6 +100,7 @@ import { DeleteManyTasksInteractor } from "@/features/tasks/delete/delete-many-t
 // User interactors
 import { RegisterUserInteractor } from "@/features/user/register/register-user.interactor";
 import { UpdateUserDetailsInteractor } from "@/features/user/upsert/update-user-details.interactor";
+import { CompleteOnboardingWizardInteractor } from "@/features/onboarding-wizard/complete-onboarding-wizard.interactor";
 import { UpdateUserSettingsInteractor } from "@/features/user/upsert/update-user-settings.interactor";
 import { GetUserDetailsInteractor } from "@/features/user/get/get-user-details.interactor";
 import { GetUserByIdInteractor } from "@/features/user/get/get-user-by-id.interactor";
@@ -119,6 +118,7 @@ import { SignOutInteractor } from "@/features/auth/sign-out.interactor";
 import { GetCompanyDetailsInteractor } from "@/features/company/get-company-details.interactor";
 import { UpdateCompanyDetailsInteractor } from "@/features/company/update-company-details.interactor";
 import { GetOrCreateInviteTokenInteractor } from "@/features/company/get-or-create-invite-token.interactor";
+import { InviteUsersByEmailInteractor } from "@/features/company/invite-users-by-email.interactor";
 import { InviteTokenValidationInteractor } from "@/features/company/invite-token-validation.interactor";
 // Role interactors
 import { UpsertRoleInteractor } from "@/features/role/upsert-role.interactor";
@@ -201,11 +201,9 @@ export const getUserService = () => new UserService(getAuthService(), getUserRep
 export const getRouteGuardService = () => new RouteGuardService(getUserService(), getCompanyRepo());
 export const getTaskService = () => new TaskService(getTaskRepo());
 export const getValidateQueryParams = () => new ValidateQueryParamsValidator();
-export const getCompanyOnboardingTaskListener = () => new CompanyOnboardingTaskListener(getTaskService());
 export const getUserPendingAuthorizationTaskListener = () => new UserPendingAuthorizationTaskListener(getTaskService());
 
 const EXPECTED_TASK_LISTENER_HANDLERS = [
-  { factory: getCompanyOnboardingTaskListener, events: [DomainEvent.USER_REGISTERED, DomainEvent.COMPANY_UPDATED] },
   {
     factory: getUserPendingAuthorizationTaskListener,
     events: [DomainEvent.USER_REGISTERED, DomainEvent.USER_UPDATED],
@@ -474,8 +472,6 @@ export const getGetTasksConfigurationInteractor = () => new GetTasksConfiguratio
 
 export const getGetTaskByIdInteractor = () => new GetTaskByIdInteractor(getTaskRepo(), getCustomColumnRepo());
 
-export const getGetTaskByTypeInteractor = () => new GetTaskByTypeInteractor(getTaskRepo());
-
 export const getCountUserTasksInteractor = () => new CountUserTasksInteractor(getTaskRepo());
 
 export const getCountSystemTasksInteractor = () => new CountSystemTasksInteractor(getTaskRepo());
@@ -504,6 +500,8 @@ export const getRegisterUserInteractor = () =>
   new RegisterUserInteractor(getAuthService(), getUserRepo(), getEventService());
 
 export const getUpdateUserDetailsInteractor = () => new UpdateUserDetailsInteractor(getUserRepo(), getEventService());
+
+export const getCompleteOnboardingWizardInteractor = () => new CompleteOnboardingWizardInteractor(getUserRepo());
 
 export const getUpdateUserSettingsInteractor = () => new UpdateUserSettingsInteractor(getUserRepo());
 
@@ -547,6 +545,13 @@ export const getUpdateCompanyDetailsInteractor = () =>
   new UpdateCompanyDetailsInteractor(getCompanyRepo(), getEventService());
 
 export const getGetOrCreateInviteTokenInteractor = () => new GetOrCreateInviteTokenInteractor(getCompanyRepo());
+
+export const getInviteUsersByEmailInteractor = () =>
+  new InviteUsersByEmailInteractor(
+    getEmailService(),
+    getGetOrCreateInviteTokenInteractor(),
+    getGetCompanyDetailsInteractor(),
+  );
 
 export const getInviteTokenValidationInteractor = () => new InviteTokenValidationInteractor(getCompanyRepo());
 

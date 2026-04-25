@@ -124,6 +124,7 @@ model User {
   trialExpiredOfferSentAt      DateTime?
   trialInactivationReminderSentAt DateTime?
   trialInactivationNoticeSentAt DateTime?
+  onboardingWizardCompletedAt DateTime?
   createdAt              DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   company          Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -899,7 +900,6 @@ enum CountryCode {
 
 enum TaskType {
   userPendingAuthorization
-  companyOnboarding
   custom
 }
 

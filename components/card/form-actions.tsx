@@ -35,11 +35,14 @@ export const FormActions = observer(function FormActions({
 
   const dirty = store?.hasUnsavedChanges ?? false;
   const loading = store?.isLoading ?? false;
+  const canManage = store?.canManage ?? true;
   const disabled = !dirty || Boolean(overrideDisabled) || (store?.isDisabled ?? loading);
 
   const isTopBar = variant === "topbar";
   const buttonSize = isTopBar ? "sm" : undefined;
   const buttonClassName = isTopBar ? "h-8" : undefined;
+
+  if (!canManage) return null;
 
   const buttons = (
     <>

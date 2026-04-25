@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { ChipColor } from "@/constants/chip-colors";
 
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 
 import { AppChip } from "@/components/chip/app-chip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,7 +22,7 @@ export type FormSelectItem = {
 
 type Props = {
   id: string;
-  label?: string;
+  label?: string | null;
   placeholder?: string;
   required?: boolean;
   items?: FormSelectItem[];
@@ -34,34 +35,49 @@ type Props = {
 export const FormSelect = observer(
   ({ id, label, placeholder, required, items, children, className, containerClassName, onValueChange }: Props) => {
     const store = useAppForm();
+    const t = useTranslations("Common.inputs");
+    const resolvedLabel = label === null ? undefined : (label ?? t(id));
     const raw = store?.getValue(id);
     const value = raw == null ? "" : String(raw);
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
     const selectedItem = items?.find((it) => it.value === value);
+    const isReadOnly = store?.isReadOnly ?? false;
+    const isLoading = store?.isLoading ?? false;
 
     return (
       <div className={cn("space-y-1.5", containerClassName)}>
-        {label && (
+        {resolvedLabel && (
           <FormLabel htmlFor={id}>
-            {label}
+            {resolvedLabel}
 
             {required ? <span className="text-destructive"> *</span> : null}
           </FormLabel>
         )}
 
         <Select
-          disabled={store?.isDisabled}
-          value={value || undefined}
+          disabled={isLoading}
+          open={isReadOnly ? false : undefined}
+          value={value}
           onValueChange={(next) => (onValueChange ? onValueChange(next) : store?.onChange(id, next))}
         >
-          <SelectTrigger aria-invalid={hasError} className={cn("w-full", className)} id={id}>
+          <SelectTrigger
+            aria-invalid={hasError}
+            aria-readonly={isReadOnly || undefined}
+            className={cn(
+              "w-full",
+              isReadOnly && "cursor-default hover:bg-input-background hover:text-foreground [&>svg:last-child]:hidden",
+              className,
+            )}
+            id={id}
+          >
             <SelectValue placeholder={placeholder ?? " "}>
-              {selectedItem?.color ? (
-                <AppChip variant={selectedItem.color}>{selectedItem.label}</AppChip>
-              ) : (
-                selectedItem?.label
-              )}
+              {selectedItem &&
+                (selectedItem.color ? (
+                  <AppChip variant={selectedItem.color}>{selectedItem.label}</AppChip>
+                ) : (
+                  <span>{selectedItem.label}</span>
+                ))}
             </SelectValue>
           </SelectTrigger>
 

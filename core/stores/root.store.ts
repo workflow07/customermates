@@ -7,6 +7,7 @@ import { CompanyDetailsStore } from "@/app/[locale]/(protected)/company/componen
 import { SubscriptionStore } from "@/app/[locale]/(protected)/company/components/subscription/subscription.store";
 import { SubscriptionExpiredStore } from "@/app/[locale]/(protected)/subscription-expired/components/subscription-expired.store";
 import { CompanyInviteModalStore } from "@/app/[locale]/(protected)/company/components/company-invite/company-invite-modal.store";
+import { InviteByEmailStore } from "@/app/[locale]/(protected)/company/components/company-invite/invite-by-email.store";
 import { UserModalStore } from "@/app/[locale]/(protected)/company/components/user/user-modal.store";
 import { RoleModalStore } from "@/app/[locale]/(protected)/company/components/role/role-modal.store";
 import { UsersStore } from "@/app/[locale]/(protected)/company/components/user/users.store";
@@ -14,7 +15,9 @@ import { CompanyStore } from "@/app/[locale]/(protected)/company/components/comp
 import { ContactDetailStore } from "@/app/[locale]/(protected)/contacts/components/contact-detail.store";
 import { OrganizationDetailStore } from "@/app/[locale]/(protected)/organizations/components/organization-detail.store";
 import { OrganizationsStore } from "@/app/[locale]/(protected)/organizations/components/organizations.store";
-import { OnboardingStore } from "@/app/[locale]/(public)/onboarding/components/onboarding.store";
+import { StepAiStore } from "@/app/[locale]/(protected)/onboarding/wizard/components/step-ai.store";
+import { StepProfileStore } from "@/app/[locale]/(protected)/onboarding/wizard/components/step-profile.store";
+import { OnboardingWizardStore } from "@/app/[locale]/(protected)/onboarding/wizard/components/onboarding-wizard.store";
 import { UserDetailsStore } from "@/app/[locale]/(protected)/profile/components/user-details.store";
 import { UserSettingsStore } from "@/app/[locale]/(protected)/profile/components/user-settings.store";
 import { ApiKeyModalStore } from "@/app/[locale]/(protected)/profile/components/api-key-modal.store";
@@ -74,7 +77,10 @@ export class RootStore {
 
   private _companyDetailsStore?: CompanyDetailsStore;
   private _forgotPasswordStore?: ForgotPasswordStore;
-  private _onboardingStore?: OnboardingStore;
+  private _inviteByEmailStore?: InviteByEmailStore;
+  private _stepAiStore?: StepAiStore;
+  private _stepProfileStore?: StepProfileStore;
+  private _onboardingWizardStore?: OnboardingWizardStore;
   private _resetPasswordStore?: ResetPasswordStore;
   private _contactStore?: ContactStore;
   private _signInStore?: SignInStore;
@@ -198,8 +204,20 @@ export class RootStore {
     return (this._apiKeysStore ??= new ApiKeysStore(this));
   }
 
-  get onboardingStore() {
-    return (this._onboardingStore ??= new OnboardingStore(this));
+  get stepProfileStore() {
+    return (this._stepProfileStore ??= new StepProfileStore(this));
+  }
+
+  get stepAiStore() {
+    return (this._stepAiStore ??= new StepAiStore(this));
+  }
+
+  get inviteByEmailStore() {
+    return (this._inviteByEmailStore ??= new InviteByEmailStore(this));
+  }
+
+  get onboardingWizardStore() {
+    return (this._onboardingWizardStore ??= new OnboardingWizardStore(this));
   }
 
   get contactStore() {

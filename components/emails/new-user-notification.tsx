@@ -1,5 +1,5 @@
+import { EmailField } from "@/components/emails/base/email-field";
 import { EmailLayout } from "@/components/emails/base/email-layout";
-import { EmailText } from "@/components/emails/base/email-text";
 
 type Props = {
   email: string;
@@ -8,11 +8,13 @@ type Props = {
 };
 
 export default function NewUserNotification({ email, name, provider }: Props) {
-  return (
-    <EmailLayout preview="New User Registration" title="New User Registration">
-      <EmailText>A new user has registered{provider ? ` via ${provider}` : ""}:</EmailText>
+  const subject = "New user registration";
 
-      <EmailText>{`${name} (${email})`}</EmailText>
+  return (
+    <EmailLayout preview={subject} title={subject}>
+      <EmailField label="User">{`${name} (${email})`}</EmailField>
+
+      {provider ? <EmailField label="Provider">{provider}</EmailField> : null}
     </EmailLayout>
   );
 }

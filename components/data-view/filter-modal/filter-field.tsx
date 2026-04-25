@@ -125,7 +125,7 @@ export const FilterField = observer(({ customColumns, filter, filterableFields, 
     return (
       <div className="flex flex-col gap-2 min-w-0">
         <div className="relative">
-          <Select value={operator || undefined} onValueChange={(v) => handleOperatorChange(v)}>
+          <Select value={operator ?? ""} onValueChange={(v) => handleOperatorChange(v)}>
             <SelectTrigger
               className={cn(
                 "w-full",
@@ -174,7 +174,7 @@ export const FilterField = observer(({ customColumns, filter, filterableFields, 
         {label && <FormLabel htmlFor={operatorId}>{label}</FormLabel>}
 
         <div className="relative">
-          <Select value={operator || undefined} onValueChange={(v) => handleOperatorChange(v)}>
+          <Select value={operator ?? ""} onValueChange={(v) => handleOperatorChange(v)}>
             <SelectTrigger
               className={cn("w-full", isValidFilter && "border-primary bg-primary/10", operator && "pr-8")}
               id={operatorId}

@@ -6,6 +6,8 @@ import { APIPage } from "./api-page";
 import { ComparisonTable } from "./comparison-table";
 import { MarkdownImage } from "./markdown-image";
 import { markdownBaseComponents } from "./markdown-base-components";
+import { McpInstallSnippet } from "./mcp-install-snippet";
+import { McpSetupPrompt } from "./mcp-setup-prompt";
 import { Mermaid } from "./mermaid";
 import { StatusAvailable, StatusPartial, StatusUnavailable } from "./status-icon";
 import { YouTube } from "./youtube-embed";
@@ -19,6 +21,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     APIPage,
     ComparisonTable,
     MarkdownImage,
+    McpInstallSnippet,
+    McpSetupPrompt,
     Mermaid,
     StatusAvailable,
     StatusPartial,

@@ -7,6 +7,7 @@ import type { User } from "@/generated/prisma";
 import { SystemInteractor } from "@/core/decorators/system-interactor.decorator";
 import TrialInactivationReminder from "@/components/emails/trial-inactivation-reminder";
 import { ROUTING_DEFAULT_LOCALE } from "@/i18n/routing";
+import { BASE_URL } from "@/constants/env";
 
 export abstract class SendTrialInactivationReminderActionRepo {
   abstract findUsersWithTrialEndedBetween3And4Days(): Promise<User[]>;
@@ -28,6 +29,7 @@ export class SendTrialInactivationReminderInteractor {
       if (!claimed) continue;
 
       const locale = user.displayLanguage === "system" ? ROUTING_DEFAULT_LOCALE : user.displayLanguage;
+      const contactHref = `${BASE_URL}/contact`;
       const t = await getTranslations({
         locale,
         namespace: "TrialInactivationReminder",
@@ -38,10 +40,13 @@ export class SendTrialInactivationReminderInteractor {
         react: TrialInactivationReminder({
           greeting: t("greeting", { firstName: user.firstName }),
           body: t("body"),
+          cta: t("cta"),
           dismiss: t("dismiss"),
+          scheduleFallback: t("scheduleFallback"),
           signoff: t("signoff"),
           subject: t("subject"),
           title: t("title"),
+          href: contactHref,
         }),
       });
     }

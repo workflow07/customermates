@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { FormLabel } from "@/components/forms/form-label";
 import { AppModal, ModalFooter } from "@/components/modal";
 import { AppCard } from "@/components/card/app-card";
@@ -14,7 +15,8 @@ import { AppCardHeader } from "@/components/card/app-card-header";
 import { AppCardBody } from "@/components/card/app-card-body";
 import { Icon } from "@/components/shared/icon";
 import { useRootStore } from "@/core/stores/root-store.provider";
-import { Alert } from "@/components/shared/alert";
+
+import { InviteByEmailForm } from "./invite-by-email-form";
 
 export const CompanyInviteModal = observer(() => {
   const t = useTranslations("");
@@ -24,8 +26,6 @@ export const CompanyInviteModal = observer(() => {
   const { form, isLoading } = companyInviteModalStore;
 
   async function handleCopy() {
-    if (form.isDisabled) return;
-
     try {
       await navigator.clipboard.writeText(form.inviteLink);
       toast.success(
@@ -51,11 +51,7 @@ export const CompanyInviteModal = observer(() => {
     })}`;
   }
 
-  const resolvedValue = form.isDisabled
-    ? t("CompanyInviteModal.notAvailable")
-    : isLoading
-      ? t("CompanyInviteModal.generating")
-      : form.inviteLink;
+  const resolvedValue = isLoading ? t("CompanyInviteModal.generating") : form.inviteLink;
 
   return (
     <AppModal store={companyInviteModalStore} title={t("CompanyInviteModal.title")}>
@@ -65,36 +61,33 @@ export const CompanyInviteModal = observer(() => {
         </AppCardHeader>
 
         <AppCardBody>
-          <div className="space-y-1.5">
-            <FormLabel htmlFor="inviteLink">{t("CompanyInviteModal.label")}</FormLabel>
+          <Tabs defaultValue="link">
+            <TabsList>
+              <TabsTrigger value="link">{t("OnboardingWizard.invite.tabs.link")}</TabsTrigger>
 
-            <div className="flex gap-2 items-center">
-              <Input
-                readOnly
-                className="truncate"
-                disabled={isLoading || form.isDisabled}
-                id="inviteLink"
-                value={resolvedValue}
-              />
+              <TabsTrigger value="email">{t("OnboardingWizard.invite.tabs.email")}</TabsTrigger>
+            </TabsList>
 
-              <Button
-                disabled={isLoading || form.isDisabled}
-                size="icon"
-                variant="ghost"
-                onClick={() => void handleCopy()}
-              >
-                <Icon icon={Clipboard} />
-              </Button>
-            </div>
+            <TabsContent className="mt-3" value="link">
+              <div className="space-y-1.5">
+                <FormLabel htmlFor="inviteLink">{t("CompanyInviteModal.label")}</FormLabel>
 
-            <p className="text-subdued text-xs">{getDescription()}</p>
-          </div>
+                <div className="flex gap-2 items-center">
+                  <Input readOnly className="truncate" disabled={isLoading} id="inviteLink" value={resolvedValue} />
 
-          {form.isDisabled && (
-            <Alert color="warning">
-              <p className="text-x-sm">{t("CompanyInviteModal.disabled")}</p>
-            </Alert>
-          )}
+                  <Button disabled={isLoading} size="icon" variant="ghost" onClick={() => void handleCopy()}>
+                    <Icon icon={Clipboard} />
+                  </Button>
+                </div>
+
+                <p className="text-subdued text-xs">{getDescription()}</p>
+              </div>
+            </TabsContent>
+
+            <TabsContent className="mt-3" value="email">
+              <InviteByEmailForm />
+            </TabsContent>
+          </Tabs>
         </AppCardBody>
 
         <ModalFooter className="p-6 pt-0">

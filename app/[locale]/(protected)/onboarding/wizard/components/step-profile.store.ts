@@ -5,11 +5,11 @@ import type { RootStore } from "@/core/stores/root.store";
 import { action, makeObservable, toJS } from "mobx";
 import { CountryCode } from "@/generated/prisma";
 
-import { onboardingAction } from "../actions";
+import { registerProfileAction } from "../actions";
 
 import { BaseFormStore } from "@/core/base/base-form.store";
 
-export class OnboardingStore extends BaseFormStore<RegisterUserData> {
+export class StepProfileStore extends BaseFormStore<RegisterUserData> {
   constructor(public readonly rootStore: RootStore) {
     super(rootStore, {
       firstName: "",
@@ -31,7 +31,7 @@ export class OnboardingStore extends BaseFormStore<RegisterUserData> {
     this.setIsLoading(true);
 
     try {
-      const res = await onboardingAction(toJS(this.form));
+      const res = await registerProfileAction(toJS(this.form));
 
       if (!res.ok) this.setError(res.error);
       else this.setError(undefined);

@@ -1,112 +1,53 @@
 ---
 title: Quickstart
-description: Von der Registrierung bis zum ersten KI-aktualisierten Deal in fünf Minuten, auf einer Seite.
+description: Von der Registrierung bis zum ersten KI-aktualisierten Deal in fünf Minuten.
 ---
 
-Account anlegen, API-Key erzeugen, einen JSON-Block in Claude einfügen, Setup-Prompt einfügen, und dein CRM aktualisiert sich selbst, während du arbeitest.
-
-Diese Seite enthält alles. Du musst nirgendwo anders hinklicken.
+Account anlegen, API-Key erzeugen, Customermates mit deinem KI-Tool verbinden, Setup-Prompt einfügen. Fünf Minuten.
 
 ## 1. Account anlegen
 
-[customermates.com/auth/signup](https://customermates.com/auth/signup). Keine Kreditkarte. Erste drei Tage kostenlos, danach wählst du einen Plan.
+[customermates.com/auth/signup](https://customermates.com/auth/signup). Keine Kreditkarte. Erste drei Tage kostenlos; danach wählst du einen Plan.
 
 ## 2. API-Key erzeugen
 
-**Profil → API Keys → Neuer Key**. Die 64 Zeichen **sofort** kopieren. Sie werden nur einmal angezeigt.
+**Profil → API Keys → Neuer Key**. Die 64 Zeichen **sofort** kopieren — sie werden nur einmal angezeigt.
 
-Nicht ins Source-Repo einchecken. Als Umgebungsvariable in dein Shell-Profil setzen:
+## 3. Customermates mit deinem KI-Tool verbinden
 
-```bash
-echo 'export CUSTOMERMATES_API_KEY=dein-64-zeichen-key' >> ~/.zshrc
-source ~/.zshrc
-```
+Die Seite für dein Tool öffnen:
 
-## 3. Claude Desktop verbinden
+- [Claude Code](/docs/mcp-connect-claude-code) — ein Terminal-Befehl (am einfachsten)
+- [Cursor](/docs/mcp-connect-cursor) — Settings-UI, zwei Klicks
+- [Codex](/docs/mcp-connect-codex) — ein TOML-Block in `~/.codex/config.toml`
+- [Claude Desktop](/docs/mcp-connect-claude-desktop) — Konfigurationsdatei + Neustart
+- [ChatGPT](/docs/mcp-connect-chatgpt) — Custom Connector UI (bezahlter Plan)
 
-(Oder [ChatGPT](/docs/mcp-connect-chatgpt) bzw. [Cursor](/docs/mcp-connect-cursor). Das JSON ist fast identisch.)
-
-**Claude → Settings → Developer → Edit Config** öffnen. Diesen Block mergen:
-
-```json
-{
-  "mcpServers": {
-    "customermates": {
-      "url": "https://customermates.com/api/v1/mcp",
-      "headers": {
-        "x-api-key": "${CUSTOMERMATES_API_KEY}"
-      }
-    }
-  }
-}
-```
-
-Bei Self-Host: URL durch deine Instanz ersetzen.
-
-Claude Desktop neu starten. Die Customermates-Tools erscheinen im Tools-Panel.
+Jede Seite ist ein 3-Schritt-Vorgang, der mit demselben Setup-Prompt endet.
 
 ## 4. Diesen Setup-Prompt als erste Nachricht einfügen
 
-Den ganzen Block kopieren und in einen neuen Claude-Chat paste, bevor du irgendetwas anderes fragst. Er orientiert den Assistenten an deinem CRM und verhindert die typischen Weak-Model-Fehler (Beziehungen löschen, falsches Update-Tool, Enum-Werte raten).
+Nachdem du den Server registriert hast, das hier zuerst an deinen Agent senden:
 
-````markdown
-Du bist jetzt per MCP mit meinem Customermates CRM verbunden.
+<McpSetupPrompt locale="de" />
 
-## Über Customermates
-Customermates ist ein Open-Source-CRM, bei dem die KI, die ich ohnehin nutze, die Daten aktuell hält. Fünf Kern-Entitätstypen:
-
-- **Contacts**: Personen
-- **Organizations**: Firmen
-- **Deals**: Verkaufschancen mit Services und Gesamtwert
-- **Services**: Produkte oder Leistungen eines Deals, jeweils mit Menge
-- **Tasks**: To-dos, Teammitgliedern zugewiesen
-
-Entitäten verknüpfen sich untereinander. Ein Contact gehört zu einer oder mehreren Organizations und Deals. Ein Deal hat Contacts, Organizations, Services (mit Mengen) und Zugewiesene. Ein Task hat nur Zugewiesene. Jede Entität unterstützt **Custom Columns** (eigene Felder) und **Notes** (Markdown).
-
-## Bevor du etwas tust, frag mich nach
-1. Meinem Customermates-API-Key. Ich paste ihn; nutz ihn im Header `x-api-key` bei jedem MCP-Call.
-2. Meinem Namen und meiner Rolle, damit du deine Antworten anpasst.
-3. Wofür ich mein CRM typischerweise nutze, in einem Satz.
-
-## Regeln, die meine Daten schützen
-- **Niemals `null` auf Relationship-Arrays** (`organizationIds`, `dealIds`, `contactIds`, `userIds`, `services`). Null löscht die Beziehung. Feld weglassen, um bestehende Links zu behalten, `[]` um alle zu löschen, oder `link_entities` / `unlink_entities` für einzelne IDs.
-- **Bevorzug `link_entities` und `unlink_entities`** gegenüber `update_*` mit Relationship-Arrays. Sie mergen statt zu ersetzen.
-- **Custom Fields sind per-Column-Merge**. Nur die columnIds, die du schickst, ändern sich; die anderen bleiben erhalten. Um ein Feld zu leeren: `{ columnId, value: null }`.
-- **Nutze das richtige per-Type-Custom-Column-Tool**. `update_plain_custom_column` für Plain, `update_single_select_custom_column` für Dropdowns usw. Der Server sagt dir, wenn du das falsche gewählt hast.
-- **Vor Create oder Update**: `get_entity_configuration` aufrufen, um Custom-Column-IDs und Filter-Syntax zu kennen.
-- **Destruktive Aktionen bestätigen lassen.** Bei `delete_*` oder allem, was als IRREVERSIBLE markiert ist, frag nach, es sei denn ich habe "mach einfach" gesagt.
-
-## Vorgeschlagene erste Schritte
-1. Ruf `get_current_user` und `get_company` auf und sag mir, wer und wo ich arbeite.
-2. Ruf `count_entity` für contact, organization, deal, service und task.
-3. Ruf `list_custom_columns`, damit wir keine Felder neu anlegen, die bereits existieren.
-4. Frag, woran ich zuerst arbeiten will.
-
-## Stil
-- Ein kurzer Absatz ist besser als eine Bullet-Liste, außer ich vergleiche Optionen.
-- Bevor du ein destruktives Tool ausführst: nenn Tool und Argumente.
-- Wenn ich frage "was ist mit X?", nutz erst `search_all_entities`, bevor du den Entity-Typ rätst.
-
-Bereit. Bitte frag nach meinem API-Key.
-````
+Er erklärt dem Agent, wie er sicher mit deinem CRM arbeitet — keine Relationship-Wipes, richtiges Tool pro Custom-Column-Typ, etc.
 
 ## 5. Einen echten Prompt probieren
 
-Eine Zeile, und du siehst es laufen:
+- *"Verschieb den Acme-Deal in Stage 'Won' und füge eine Notiz hinzu, dass der Vertrag heute unterschrieben wurde."*
+- *"Hol die letzten zehn Contacts, die ich angelegt habe. Welche haben keine E-Mail-Adresse?"*
+- *"Leg einen Contact für Jane Doe bei Initech an, verknüpf ihn mit der Initech-Org und starte einen Deal über 12 Stunden Beratung."*
 
-- *"Verschieb den Acme-Deal auf Stage 'Won' und hinterleg die Notiz, dass der Vertrag heute unterschrieben wurde."*
-- *"Zeig mir die letzten zehn Contacts, die ich erstellt habe. Welche haben keine E-Mail?"*
-- *"Leg Jane Doe bei Initech an, verknüpf mit der Initech-Org, und starte einen Deal für 12 Stunden Beratung."*
-
-Der Assistent sagt dir, welche Tools er genutzt hat und was sich geändert hat. Kein Copy-Paste, kein App-Wechsel.
+Der Agent sagt dir, welche Tools er genutzt hat und was sich geändert hat. Kein Copy-Paste, kein App-Wechsel.
 
 ## 6. Optional: einen Webhook abonnieren
 
-Sollen deine anderen Tools Bescheid wissen, wenn sich im CRM etwas ändert?
+Sollen andere Tools Bescheid wissen, wenn sich im CRM etwas ändert?
 
 **Unternehmen → Webhooks → Neu**. URL: eine Einweg-[webhook.site](https://webhook.site). Events: `contact.created` und `deal.updated`. Speichern.
 
-Einen Contact bearbeiten. Innerhalb von Sekunden landet die Delivery auf webhook.site mit voller Payload. So erzählt dein CRM dem Rest des Stacks, was sich geändert hat.
+Einen Contact bearbeiten. Innerhalb von Sekunden landet die Delivery auf webhook.site mit voller Payload. So erzählt dein CRM dem Rest deines Stacks, was sich geändert hat.
 
 Volle Webhook-Docs: [Webhooks](/docs/webhooks).
 

@@ -16,7 +16,6 @@ import { USER_STATUS_COLORS_MAP } from "@/constants/user-statuses";
 import { DataViewContainer } from "@/components/data-view";
 
 type Props = {
-  isCompanyOnboarding: boolean;
   initialUsers: GetResult<UserDto>;
   initialRoles: GetResult<UserRoleDto>;
 };
@@ -25,7 +24,7 @@ function getInitials(firstName?: string, lastName?: string) {
   return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
 }
 
-export const UsersCard = observer(({ isCompanyOnboarding, initialUsers, initialRoles }: Props) => {
+export const UsersCard = observer(({ initialUsers, initialRoles }: Props) => {
   const t = useTranslations("");
   const { usersStore, userModalStore, companyInviteModalStore, rolesStore, intlStore } = useRootStore();
   const { canManage } = usersStore;
@@ -116,7 +115,6 @@ export const UsersCard = observer(({ isCompanyOnboarding, initialUsers, initialR
         canManage
           ? () => {
               void companyInviteModalStore.generateInviteLink();
-              companyInviteModalStore.setIsDisabled(isCompanyOnboarding);
               companyInviteModalStore.open();
             }
           : undefined

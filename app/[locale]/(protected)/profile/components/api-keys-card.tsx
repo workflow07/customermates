@@ -21,18 +21,20 @@ export const ApiKeysCard = observer(({ apiKeys }: Props) => {
   const t = useTranslations("");
   const { showDeleteConfirmation } = useDeleteConfirmation();
   const { apiKeyModalStore, apiKeysStore, intlStore } = useRootStore();
+  const { canManage } = apiKeysStore;
 
   useEffect(() => apiKeysStore.setItems({ items: apiKeys }), [apiKeys]);
 
   const topBarActions = useMemo(
-    () => (
-      <Button className="h-8" size="sm" onClick={() => void apiKeyModalStore.add()}>
-        <Plus className="size-3.5" />
+    () =>
+      canManage ? (
+        <Button className="h-8" size="sm" onClick={() => void apiKeyModalStore.add()}>
+          <Plus className="size-3.5" />
 
-        <span className="hidden sm:inline">{t("Common.actions.add")}</span>
-      </Button>
-    ),
-    [apiKeyModalStore, t],
+          <span className="hidden sm:inline">{t("Common.actions.add")}</span>
+        </Button>
+      ) : null,
+    [apiKeyModalStore, t, canManage],
   );
   useSetTopBarActions(topBarActions);
 
@@ -68,13 +70,15 @@ export const ApiKeysCard = observer(({ apiKeys }: Props) => {
                 </div>
               </div>
 
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => showDeleteConfirmation(() => void apiKeysStore.delete(key.id), key.name ?? undefined)}
-              >
-                <Icon className="text-destructive" icon={Trash2} />
-              </Button>
+              {canManage && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => showDeleteConfirmation(() => void apiKeysStore.delete(key.id), key.name ?? undefined)}
+                >
+                  <Icon className="text-destructive" icon={Trash2} />
+                </Button>
+              )}
             </div>
           ))}
         </div>

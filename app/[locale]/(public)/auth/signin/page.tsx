@@ -4,6 +4,7 @@ import { SignInForm } from "./sign-in-form";
 
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
 import { IS_CLOUD_HOSTED } from "@/constants/env";
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -12,8 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default function SignInPage() {
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
+    <CenteredCardPage>
       <SignInForm showSocialProviders={IS_CLOUD_HOSTED} />
-    </div>
+    </CenteredCardPage>
   );
 }

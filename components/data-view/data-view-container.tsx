@@ -5,6 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 import { ViewMode } from "@/core/base/base-query-builder";
@@ -46,7 +47,21 @@ export const DataViewContainer = observer(function DataViewContainer<E extends H
   searchPlaceholder,
   className,
 }: Props<E>) {
+  const t = useTranslations("Common.table.columns");
   const isEmbedded = embedded || Boolean(title);
+
+  const resolvedColumns = useMemo<ColumnDef<E>[]>(
+    () =>
+      columns
+        .filter((c) => store.visibleColumnIds.has(c.id ?? ""))
+        .map((c) => {
+          const withHeader = c.header ? c : { ...c, header: t(c.id ?? "") };
+          return c.id && store.sortableColumnIds.has(c.id)
+            ? ({ ...withHeader, accessorKey: c.id } as ColumnDef<E>)
+            : withHeader;
+        }),
+    [columns, store.visibleColumnIds, store.sortableColumnIds, t],
+  );
 
   const topBarNode = useMemo(
     () =>
@@ -70,11 +85,11 @@ export const DataViewContainer = observer(function DataViewContainer<E extends H
   const isKanban = store.viewMode === ViewMode.card && Boolean(store.groupingColumnId);
 
   const body = isTable ? (
-    <DataTable columns={columns} store={store} onRowClick={onRowClick} />
+    <DataTable columns={resolvedColumns} store={store} onRowClick={onRowClick} />
   ) : isKanban ? (
-    <DataKanbanView columns={columns} renderCard={renderCard} store={store} onCardClick={onRowClick} />
+    <DataKanbanView columns={resolvedColumns} renderCard={renderCard} store={store} onCardClick={onRowClick} />
   ) : (
-    <DataCardView columns={columns} renderCard={renderCard} store={store} onCardClick={onRowClick} />
+    <DataCardView columns={resolvedColumns} renderCard={renderCard} store={store} onCardClick={onRowClick} />
   );
 
   const toolbar = (

@@ -5,6 +5,7 @@ import type { ChipColor } from "@/constants/chip-colors";
 
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 import { XIcon } from "lucide-react";
 
 import { AppChip } from "@/components/chip/app-chip";
@@ -14,7 +15,7 @@ import { useAppForm } from "./form-context";
 
 type Props = {
   id: string;
-  label?: string;
+  label?: string | null;
   placeholder?: string;
   required?: boolean;
   allowMultiple?: boolean;
@@ -45,11 +46,14 @@ export const FormInputChips = observer(
     const [inputValue, setInputValue] = useState("");
 
     const store = useAppForm();
+    const t = useTranslations("Common.inputs");
+    const resolvedLabel = label === null ? undefined : (label ?? t(id));
     const storeValue = (store?.getValue(id) ?? undefined) as string | undefined;
     const fieldValue = controlledValue ?? storeValue;
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
-    const isDisabled = store?.isDisabled;
+    const isReadOnly = store?.isReadOnly ?? false;
+    const isDisabled = store?.isLoading ?? false;
 
     let chipValues: string[] = [];
     if (fieldValue != null && fieldValue !== "") {
@@ -97,9 +101,9 @@ export const FormInputChips = observer(
 
     return (
       <div className={cn("space-y-1.5", containerClassName)}>
-        {label && (
+        {resolvedLabel && (
           <FormLabel htmlFor={id}>
-            {label}
+            {resolvedLabel}
 
             {required ? <span className="text-destructive"> *</span> : null}
           </FormLabel>
@@ -112,11 +116,12 @@ export const FormInputChips = observer(
             hasError &&
               "border-destructive focus-within:border-destructive ring-destructive/20 focus-within:ring-destructive/20",
             isDisabled && "pointer-events-none opacity-50",
+            isReadOnly && "cursor-default",
             className,
           )}
         >
           {chipValues.map((item) => {
-            const removeButton = (
+            const removeButton = isReadOnly ? undefined : (
               <button
                 aria-label="Remove"
                 className="opacity-50 hover:opacity-100 transition-opacity"
@@ -158,17 +163,19 @@ export const FormInputChips = observer(
             return <span key={item}>{chip}</span>;
           })}
 
-          <input
-            aria-invalid={hasError}
-            className="flex-1 min-w-24 border-0 bg-transparent px-1 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
-            disabled={isDisabled}
-            id={id}
-            placeholder={placeholder}
-            value={inputValue}
-            onBlur={commitInput}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={onKeyDown}
-          />
+          {!isReadOnly && (
+            <input
+              aria-invalid={hasError}
+              className="flex-1 min-w-24 border-0 bg-transparent px-1 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+              disabled={isDisabled}
+              id={id}
+              placeholder={placeholder}
+              value={inputValue}
+              onBlur={commitInput}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={onKeyDown}
+            />
+          )}
         </div>
       </div>
     );

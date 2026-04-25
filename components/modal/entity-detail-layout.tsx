@@ -25,6 +25,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useDeleteConfirmation } from "@/components/modal/hooks/use-delete-confirmation";
 import { useRouter } from "@/i18n/navigation";
 import { useRootStore } from "@/core/stores/root-store.provider";
+import { cn } from "@/lib/utils";
 
 import { EntityAuditLogPanel } from "./entity-audit-log-panel";
 import { EntityNotesPanel } from "./entity-notes-panel";
@@ -145,7 +146,7 @@ export const EntityDetailLayout = observer(function EntityDetailLayout<
               </>
             )}
 
-            {store.hasUnsavedChanges && (
+            {canManage && store.hasUnsavedChanges && (
               <Button
                 className="h-8"
                 disabled={isLoading}
@@ -158,15 +159,18 @@ export const EntityDetailLayout = observer(function EntityDetailLayout<
               </Button>
             )}
 
-            <Button className="h-8" disabled={saveDisabled} form={formId} size="sm" type="submit">
-              {t("Common.actions.save")}
-            </Button>
+            {canManage && (
+              <Button className="h-8" disabled={saveDisabled} form={formId} size="sm" type="submit">
+                {t("Common.actions.save")}
+              </Button>
+            )}
           </div>
         </TooltipProvider>
       ),
     [
       showLoading,
       t,
+      canManage,
       showDeleteAction,
       isLoading,
       saveDisabled,
@@ -194,7 +198,14 @@ export const EntityDetailLayout = observer(function EntityDetailLayout<
   return (
     <AppForm id={formId} store={store as unknown as BaseFormStore}>
       <div className="flex flex-col w-full flex-1 min-h-0 overflow-y-auto xl:overflow-y-visible">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[1fr_1fr_360px] gap-px bg-border xl:flex-1 xl:min-h-0">
+        <div
+          className={cn(
+            "grid grid-cols-1 md:grid-cols-2 gap-px bg-border",
+            canSeeHistory
+              ? "xl:flex-1 xl:min-h-0 xl:grid-cols-[1fr_1fr_360px]"
+              : "md:flex-1 md:min-h-0 md:grid-rows-1 xl:grid-cols-2",
+          )}
+        >
           <div className="flex flex-col bg-background xl:min-h-0 xl:overflow-auto">
             <div className="flex items-center gap-2 px-4 pt-3 pb-1 shrink-0 min-h-8">
               <Icon className="size-3.5 text-muted-foreground" icon={SquarePen} />

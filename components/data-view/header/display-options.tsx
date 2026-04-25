@@ -240,7 +240,7 @@ export const DataViewDisplayOptions = observer(function DataViewDisplayOptions<E
 
                 <Section label={t("sort.field")}>
                   <div className="flex gap-1 w-full">
-                    <Select value={currentSortField || undefined} onValueChange={handleSortFieldChange}>
+                    <Select value={currentSortField} onValueChange={handleSortFieldChange}>
                       <SelectTrigger className="h-8 flex-1" size="sm">
                         <SelectValue />
                       </SelectTrigger>

@@ -6,7 +6,6 @@ import { DomainEvent } from "./domain-events";
 
 const SYSTEM_TASK_NAME_TRANSLATION_KEYS: Record<TaskType, string> = {
   userPendingAuthorization: "Common.systemTasks.userPendingAuthorization.title",
-  companyOnboarding: "Common.systemTasks.companyOnboarding.title",
   custom: "",
 };
 

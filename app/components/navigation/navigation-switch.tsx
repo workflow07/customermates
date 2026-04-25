@@ -37,8 +37,10 @@ export function NavigationSwitch({
 }: Props) {
   const pathname = usePathname();
   const isDocsRoute = pathname === "/docs" || pathname.startsWith("/docs/");
+  const isOnboardingWizard = pathname === "/onboarding/wizard" || pathname.startsWith("/onboarding/wizard/");
+  const hideAppShell = !isAuthenticated || isOnboardingWizard;
   const { layoutStore } = useRootStore();
-  const shouldShowNavbar = !isAuthenticated && !isDocsRoute;
+  const shouldShowNavbar = hideAppShell && !isDocsRoute;
 
   useLayoutEffect(() => {
     layoutStore.setIsNavbarVisible(shouldShowNavbar);
@@ -58,7 +60,7 @@ export function NavigationSwitch({
     );
   }
 
-  if (!isAuthenticated) {
+  if (hideAppShell) {
     return (
       <div className="h-screen flex">
         <main className="flex flex-col relative flex-1 overflow-y-auto bg-background min-w-0">

@@ -1,6 +1,5 @@
+import { EmailField } from "@/components/emails/base/email-field";
 import { EmailLayout } from "@/components/emails/base/email-layout";
-import { EmailSection } from "@/components/emails/base/email-section";
-import { EmailText } from "@/components/emails/base/email-text";
 
 type Props = {
   feedback: string;
@@ -12,25 +11,11 @@ type Props = {
 export default function Feedback({ feedback, userEmail, userName, subject }: Props) {
   return (
     <EmailLayout preview={subject} title={subject}>
-      <EmailSection>
-        <EmailText>
-          <strong>From:</strong>
+      <EmailField label="From">{`${userName} (${userEmail})`}</EmailField>
 
-          {` ${userName} (${userEmail})`}
-        </EmailText>
+      <EmailField label="Type">{subject}</EmailField>
 
-        <EmailText>
-          <strong>Type:</strong>
-
-          {` ${subject}`}
-        </EmailText>
-
-        <EmailText>
-          <strong>Feedback:</strong>
-        </EmailText>
-
-        <EmailText className="whitespace-pre-wrap">{feedback}</EmailText>
-      </EmailSection>
+      <EmailField label="Feedback">{feedback}</EmailField>
     </EmailLayout>
   );
 }

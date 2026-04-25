@@ -38,6 +38,7 @@ export abstract class BaseFormStore<T extends object = object> {
       canReadOwn: computed,
       canAccess: computed,
       canManage: computed,
+      isReadOnly: computed,
       isDisabled: computed,
       onInitOrRefresh: action,
       onChange: action,
@@ -123,7 +124,7 @@ export abstract class BaseFormStore<T extends object = object> {
     toast.error(
       createElement(
         "div",
-        { className: "space-y-1-5 text-xs" },
+        { className: "flex flex-col gap-1.5 text-xs" },
         items.map((text, i) => createElement("div", { key: i }, text)),
       ),
     );
@@ -161,14 +162,18 @@ export abstract class BaseFormStore<T extends object = object> {
     return this.rootStore.userStore.canManage(this.resource);
   }
 
-  get isDisabled(): boolean {
-    if (this.isLoading) return true;
-
+  get isReadOnly(): boolean {
     if (!this.resource) return false;
 
     if (!this.rootStore.userStore.user) return false;
 
     return !this.rootStore.userStore.canManage(this.resource);
+  }
+
+  get isDisabled(): boolean {
+    if (this.isLoading) return true;
+
+    return this.isReadOnly;
   }
 
   onSubmit?: (event?: FormEvent<HTMLFormElement>) => Promise<void>;

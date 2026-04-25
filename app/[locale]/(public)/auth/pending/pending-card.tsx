@@ -16,20 +16,18 @@ export function PendingCard() {
   useEffect(() => void checkPendingStatusAndRedirect(), []);
 
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
-      <AppCard className="max-w-md">
-        <CardHeroHeader subtitle={t("PendingCard.subtitle")} title={t("PendingCard.title")} />
+    <AppCard className="max-w-md">
+      <CardHeroHeader subtitle={t("PendingCard.subtitle")} title={t("PendingCard.title")} />
 
-        <AppCardBody>
-          <p className="text-x-sm text-center">{t("PendingCard.body")}</p>
-        </AppCardBody>
+      <AppCardBody>
+        <p className="text-x-sm text-center">{t("PendingCard.body")}</p>
+      </AppCardBody>
 
-        <AppCardFooter>
-          <Button className="w-full" onClick={() => void checkPendingStatusAndRedirect()}>
-            {t("Common.actions.refresh")}
-          </Button>
-        </AppCardFooter>
-      </AppCard>
-    </div>
+      <AppCardFooter>
+        <Button className="w-full" onClick={() => void checkPendingStatusAndRedirect()}>
+          {t("Common.actions.refresh")}
+        </Button>
+      </AppCardFooter>
+    </AppCard>
   );
 }

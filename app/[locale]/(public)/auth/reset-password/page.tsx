@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { ResetPasswordForm } from "./reset-password-form";
 
 import { generateMetadataFromMeta } from "@/core/fumadocs/metadata";
+import { CenteredCardPage } from "@/components/shared/centered-card-page";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -21,8 +22,8 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
   if (error === "INVALID_TOKEN") redirect("/auth/forgot-password?info=RESET_LINK_INVALID");
 
   return (
-    <div className="size-full flex flex-1 items-center justify-center p-4">
+    <CenteredCardPage>
       <ResetPasswordForm />
-    </div>
+    </CenteredCardPage>
   );
 }

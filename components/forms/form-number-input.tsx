@@ -68,7 +68,8 @@ export const FormNumberInput = observer(
 
     const errors = store?.getError(id);
     const hasError = Array.isArray(errors) ? errors.length > 0 : Boolean(errors);
-    const isDisabled = store?.isDisabled;
+    const isDisabled = store?.isLoading;
+    const isReadOnly = store?.isReadOnly;
 
     const effectiveLocale = locale ?? intlStore.formattingLocale;
 
@@ -119,6 +120,7 @@ export const FormNumberInput = observer(
             disabled={isDisabled}
             id={id}
             inputMode="decimal"
+            readOnly={isReadOnly}
             required={isReq}
             type="text"
             value={text}

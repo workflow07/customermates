@@ -41,6 +41,9 @@ next-env.d.ts
 
 .vscode/settings.json
 
+# local agent tooling
+.claude/
+
 # database dumps
 dumps/
 

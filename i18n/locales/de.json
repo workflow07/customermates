@@ -294,6 +294,7 @@
       "closeFilters": "Filter schließen",
       "editCurrent": "Filter bearbeiten",
       "fields": {
+        "assignedUserId": "Zugewiesen",
         "contactIds": "Kontakt",
         "createdAt": "Erstellt am",
         "dealIds": "Deal",
@@ -381,7 +382,7 @@
       },
       "displayType": "Anzeigetyp",
       "email": "E-Mail",
-      "emails": "E-Mail",
+      "emails": "E-Mails",
       "emptyContent": "Keine Ergebnisse gefunden",
       "endDate": "Enddatum",
       "entityType": "Element",
@@ -508,11 +509,6 @@
     "status": "Status",
     "street": "Straße",
     "systemTasks": {
-      "companyOnboarding": {
-        "alert": "Dies ist eine Systemaufgabe, die nicht manuell gelöscht werden kann. Bitte vervollständigen Sie das Unternehmensprofil in den <link>Unternehmenseinstellungen</link>, um diese Aufgabe zu lösen.",
-        "description": "Ihr Unternehmen ist derzeit im Onboarding-Prozess. Bitte füllen Sie die Informationen im Unternehmensprofil aus, um den Prozess abzuschließen.",
-        "title": "Unternehmensprofil vervollständigen"
-      },
       "userPendingAuthorization": {
         "alert": "Dies ist eine Systemaufgabe, die nicht manuell gelöscht werden kann. Bitte genehmigen Sie den Benutzer in den <link>Unternehmenseinstellungen</link>, um diese Aufgabe zu lösen.",
         "description": "Ein Benutzer hat Ihre Einladung angenommen. Bitte genehmigen Sie den Benutzer, um die Einladung zu akzeptieren.",
@@ -610,7 +606,6 @@
     "userStatuses": {
       "active": "Aktiv",
       "inactive": "Inaktiv",
-      "onboarding": "Onboarding",
       "pendingAuthorization": "Wartet auf Genehmigung"
     },
     "validations": {
@@ -626,14 +621,19 @@
     "subtitle": "Name, Adresse und Standardwährung deines Workspace.",
     "title": "Unternehmensprofil"
   },
+  "CompanyInvite": {
+    "cta": "Einladung annehmen",
+    "fallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
+    "intro": "{inviterName} hat dich eingeladen, dem Team auf Customermates beizutreten. Klicke auf den Button unten, um die Einladung anzunehmen und dein Konto zu erstellen.",
+    "preview": "{inviterName} hat dich zu {companyName} auf Customermates eingeladen",
+    "subject": "Tritt {companyName} auf Customermates bei"
+  },
   "CompanyInviteModal": {
     "copyLink": "Link kopieren",
     "description": "Teilen Sie diesen Link mit Benutzern, die Sie zu Ihrem Unternehmen einladen möchten.",
-    "disabled": "Ihr Unternehmen befindet sich derzeit im Onboarding-Prozess. Bitte vervollständigen Sie das Unternehmensprofil, bevor Sie weitere Benutzer einladen.",
     "expiresAt": "Läuft am {date} ab.",
     "generating": "Link generieren ...",
     "label": "Einladungslink",
-    "notAvailable": "Nicht verfügbar",
     "title": "Benutzer einladen"
   },
   "CompanyUserModal": {
@@ -692,7 +692,8 @@
     "aggregationTypes": {
       "count": "Anzahl {entities}",
       "dealQuantity": "Anzahl Services in Deals",
-      "dealValue": "Dealwert bezogen auf {entity}"
+      "dealValue": "Dealwert bezogen auf {entity}",
+      "field": "Feld"
     },
     "barColors": "Balkenfarben",
     "displayType": "Anzeigetyp",
@@ -737,6 +738,7 @@
       "display": "Darstellung",
       "filters": "{entityType} Filter"
     },
+    "ungrouped": "Ungruppiert",
     "widget": "Diagramm",
     "widgetTitle": "Titel",
     "widgetType": "Typ",
@@ -822,7 +824,9 @@
     "comparison": "Vergleich",
     "concepts": "Kernkonzepte",
     "connectChatgpt": "ChatGPT verbinden",
-    "connectClaude": "Claude Desktop verbinden",
+    "connectClaudeCode": "Claude Code verbinden",
+    "connectClaudeDesktop": "Claude Desktop verbinden",
+    "connectCodex": "Codex verbinden",
     "connectCursor": "Cursor verbinden",
     "connectYourAi": "KI verbinden",
     "customColumns": "Benutzerdefinierte Felder",
@@ -923,7 +927,7 @@
       "description": "Ihr Feedback hilft uns, besser zu werden. Teilen Sie Ideen, melden Sie Probleme oder sagen Sie uns, was gut funktioniert, damit wir ein besseres Produkt für Sie bauen können.",
       "title": "Teilen Sie Ihr Feedback"
     },
-    "success": "Feedback received. You're officially part of the build crew."
+    "success": "Feedback erhalten. Du bist offiziell Teil der Build-Crew."
   },
   "Footer": {
     "blog": "Blog",
@@ -1015,7 +1019,7 @@
   "HomepageStatsRow": {
     "taglineMcp": "MCP",
     "taglinePost": ", also funktioniert es mit dem Modell, das du ohnehin schon bezahlst",
-    "taglinePre": "Bring your own AI. Customermates spricht"
+    "taglinePre": "Bring deine eigene KI mit. Customermates spricht"
   },
   "Loading": {
     "text": "Laden..."
@@ -1071,9 +1075,111 @@
     "title": "Huch! Du hast die Leere betreten"
   },
   "OnboardingForm": {
-    "agreeToTerms": "Ich stimme der <dataPrivacyLink>Datenschutzerklärung</dataPrivacyLink> und den <termsOfServiceLink>Nutzungsbedingungen</termsOfServiceLink> zu",
-    "subtitle": "Vervollständige dein Profil, um loszulegen.",
-    "title": "Onboarding"
+    "agreeToTerms": "Ich stimme der <dataPrivacyLink>Datenschutzerklärung</dataPrivacyLink> und den <termsOfServiceLink>Nutzungsbedingungen</termsOfServiceLink> zu"
+  },
+  "OnboardingWizard": {
+    "ai": {
+      "choices": {
+        "claudeCode": "Claude Code",
+        "claudeDesktop": "Claude Desktop",
+        "codex": "Codex",
+        "cursor": "Cursor",
+        "skip": "Später einrichten"
+      },
+      "createKey": "API-Key erstellen",
+      "createKeyIntro": "Erstelle einen API-Key für diesen Agenten. Der Key wird nur einmal angezeigt und ist im Install-Snippet unten enthalten.",
+      "errors": {
+        "createFailed": "API-Key konnte nicht erstellt werden. Bitte erneut versuchen."
+      },
+      "fullGuide": "Vollständige Anleitung →",
+      "install": {
+        "instruction": {
+          "claudeCode": "In einem Terminal ausführen:",
+          "claudeDesktop": "Claude → Settings → Developer → Edit Config öffnen, das hier mergen, dann Claude Desktop beenden und neu öffnen:",
+          "codex": "Zu ~/.codex/config.toml hinzufügen:",
+          "cursor": "In Cursor: Settings → Tools & MCP → Add new MCP server öffnen und einfügen:"
+        },
+        "label": "Customermates mit {tool} verbinden"
+      },
+      "promptHint": "Schicke das als erste Nachricht in deinem KI-Tool. Es erklärt dem Agenten, wie er sicher mit deinem CRM arbeitet.",
+      "promptLabel": "Schicke das als Eröffnungsnachricht",
+      "skipHint": "Du kannst das später in deinem Profil einrichten."
+    },
+    "avatarDescription": "Optional. Füge einen Link zu einem Foto von dir ein — der Link muss öffentlich zugänglich sein (jede Person mit dem Link kann das Bild sehen). Lässt du das Feld leer, zeigen wir deine Initialen.",
+    "back": "Zurück",
+    "companyNameDescription": "Dieser Name wird jeder Person angezeigt, die du in deinen Workspace einlädst.",
+    "continue": "Weiter",
+    "entities": {
+      "contact": {
+        "example": "John Doe bei Example Inc. — dein Startkontakt.",
+        "purpose": "Eine Person, mit der du Geschäfte machst.",
+        "title": "Kontakt"
+      },
+      "deal": {
+        "example": "First Project (1.000 €) — verknüpft John Doe und Example Inc.",
+        "purpose": "Ein potenzieller Verkauf. Erfasst Wert, Phase und erwarteten Abschluss.",
+        "title": "Deal"
+      },
+      "intro": "Von jedem Typ haben wir dir schon ein Beispiel in den Workspace gelegt, damit du es direkt anschauen kannst. Kein Stress — du kannst sie jederzeit ersetzen oder löschen.",
+      "organization": {
+        "example": "Example Inc. — wo John Doe arbeitet.",
+        "purpose": "Ein Unternehmen, eine Agentur oder jede Gruppe von Kontakten.",
+        "title": "Organisation"
+      },
+      "service": {
+        "example": "Consulting Service (1.000 €) — Teil von First Project.",
+        "purpose": "Was auch immer du verkaufst — ein Produkt, ein einmaliges Paket oder eine wiederkehrende Dienstleistung. Erfasst, was aktiv ist und wann es verlängert wird.",
+        "title": "Service"
+      },
+      "task": {
+        "example": "Alles Umsetzbare — Folgetermine, Erinnerungen, nächste Schritte.",
+        "purpose": "Etwas zu erledigen, optional mit Kontakt, Deal oder Organisation verknüpft.",
+        "title": "Aufgabe"
+      }
+    },
+    "finish": "Fertig",
+    "invite": {
+      "emailCount": "{current} von {max} E-Mails",
+      "emailDescription": "Trenne Adressen mit Komma oder drücke Enter. Maximal 20.",
+      "emailPlaceholder": "kollegin@beispiel.de",
+      "linkDescription": "Jede Person mit diesem Link kann deinem Team beitreten.",
+      "linkFailed": "Einladungslink konnte nicht erstellt werden.",
+      "linkValidity": "Der Link ist 7 Tage gültig.",
+      "loadingLink": "Link wird generiert…",
+      "send": "Einladungen senden",
+      "sentSuccess": "{count} Einladung(en) gesendet.",
+      "tabs": {
+        "email": "E-Mails senden",
+        "link": "Link teilen"
+      }
+    },
+    "next": "Weiter",
+    "progress": "Schritt {current} von {total}",
+    "steps": {
+      "ai": {
+        "placeholder": "Platzhalter KI-Integration",
+        "subtitle": "Lass Claude Code oder Codex dein CRM für dich führen.",
+        "title": "KI-Agent verbinden"
+      },
+      "company": {
+        "placeholder": "Platzhalter Unternehmensformular",
+        "subtitle": "Ein paar Details, damit Einladungen und E-Mails richtig aussehen.",
+        "title": "Dein Unternehmen"
+      },
+      "entities": {
+        "subtitle": "Ein kurzer Rundgang durch die fünf Dinge, mit denen du arbeitest.",
+        "title": "Die Grundbausteine"
+      },
+      "invite": {
+        "placeholder": "Platzhalter Team einladen",
+        "subtitle": "Teile einen Link oder verschicke E-Mail-Einladungen.",
+        "title": "Team einladen"
+      },
+      "profile": {
+        "subtitle": "Erzähle uns, wer du bist, damit wir deinen Workspace einrichten können.",
+        "title": "Dein Profil"
+      }
+    }
   },
   "OrganizationCard": {
     "title": "Organisationen"
@@ -1083,8 +1189,8 @@
     "title": "Organisation"
   },
   "PendingCard": {
-    "body": "Du wirst benachrichtigt, sobald dein Konto genehmigt wurde.",
-    "subtitle": "Dein Konto wartet auf Genehmigung",
+    "body": "Du kannst dich anmelden, sobald dein Konto von einem Administrator deines Unternehmens genehmigt wurde.",
+    "subtitle": "Dein Konto wird derzeit von einem Administrator deines Unternehmens geprüft",
     "title": "Warten auf Genehmigung"
   },
   "PendingPage": {
@@ -1101,9 +1207,10 @@
     "settingsDescription": "Sprache, Theme, Formatierung, E-Mail-Präferenzen."
   },
   "ResetPassword": {
-    "fallback": "Sollte der Button nicht funktionieren, kopiere bitte den folgenden Link in die Adresszeile deines Browsers: ",
-    "intro": "Klicke auf den Button, um dein Passwort zurückzusetzen.",
-    "securityNotice": "Solltest du die Zurücksetzung deines Passworts nicht angefordert haben, betrachte diese Nachricht bitte als gegenstandslos.",
+    "cta": "Passwort zurücksetzen",
+    "fallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
+    "intro": "Klicke auf den Button, um ein neues Passwort zu wählen.",
+    "securityNotice": "Solltest du die Zurücksetzung deines Passworts nicht angefordert haben, kannst du diese Nachricht ignorieren und löschen.",
     "subject": "Passwort zurücksetzen"
   },
   "ResetPasswordForm": {
@@ -1219,8 +1326,10 @@
   },
   "SubscriptionInactivationNotice": {
     "body": "Ihr Konto ist jetzt inaktiv, weil Ihr Abonnement seit mehr als 3 Tagen unbezahlt oder abgelaufen ist. Wenn Sie weitermachen möchten, helfe ich Ihnen gerne dabei, den Zugang schnell wiederherzustellen.",
-    "dismiss": "Falls diese E-Mail Sie gerade zu einem ungünstigen Zeitpunkt erreicht, antworten Sie einfach später und wir helfen Ihnen bei den nächsten Schritten.",
+    "cta": "Kontakt aufnehmen",
+    "dismiss": "Falls diese E-Mail Sie gerade zu einem ungünstigen Zeitpunkt erreicht, antworten Sie einfach später und ich helfe Ihnen bei den nächsten Schritten.",
     "greeting": "Hallo {firstName},",
+    "scheduleFallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
     "signoff": "Viele Grüße\nBen",
     "subject": "Ihr Konto ist inaktiv - wir helfen bei der Wiederherstellung",
     "title": "Abonnement deaktiviert"
@@ -1239,33 +1348,37 @@
   },
   "TrialExpiredOffer": {
     "body": "Ihr Testzeitraum ist vor Kurzem abgelaufen, aber ich möchte Sie gerne weiter begleiten. Wenn Sie möchten, verlängere ich den Test und gehe Ihr Setup gemeinsam mit Ihnen Schritt für Schritt durch.",
+    "cta": "Kontakt aufnehmen",
     "greeting": "Hallo {firstName},",
-    "scheduleFallback": "Wenn Sie uns kontaktieren möchten, können Sie diesen Link nutzen: ",
+    "scheduleFallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
     "signoff": "Viele Grüße\nBen",
     "subject": "Mehr Zeit nötig? Wir machen gemeinsam weiter",
     "title": "Angebot zur Testverlängerung"
   },
   "TrialInactivationNotice": {
     "body": "Ihr Konto ist jetzt inaktiv, weil Ihr Test vor mehr als 6 Tagen geendet hat. Wenn Sie weitermachen möchten, helfe ich Ihnen gerne bei der schnellen Reaktivierung.",
+    "cta": "Kontakt aufnehmen",
     "dismiss": "Falls es gerade nicht passt, kein Problem. Sie können jederzeit zurückkommen und ich helfe Ihnen persönlich.",
     "greeting": "Hallo {firstName},",
+    "scheduleFallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
     "signoff": "Viele Grüße\nBen",
     "subject": "Ihr Konto ist inaktiv - wir helfen beim Neustart",
     "title": "Konto inaktiv gesetzt"
   },
   "TrialInactivationReminder": {
     "body": "Ihr Testzeitraum ist vor einigen Tagen abgelaufen und Ihr Konto wird in 3 Tagen inaktiv. Wenn Sie möchten, unterstütze ich Sie kurz beim Setup, damit alles aktiv bleibt.",
+    "cta": "Kontakt aufnehmen",
     "dismiss": "Wenn Sie Ihr Konto nicht mehr benötigen, ist keine Aktion erforderlich.",
     "greeting": "Hallo {firstName},",
+    "scheduleFallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
     "signoff": "Viele Grüße\nBen",
     "subject": "Noch 3 Tage bis zur Inaktivierung Ihres Kontos",
     "title": "Erinnerung zur Inaktivierung"
   },
   "TrialWelcome": {
-    "body": "Schön, dass Sie da sind. Ich helfe Ihnen gerne dabei, schnell loszulegen und die ersten Schritte so einfach wie möglich zu machen.",
-    "dismiss": "Ich bin Ben, Gründer von Customermates. Wenn Sie Fragen oder Interesse an einem persönlichen Gespräch haben, können Sie gerne auf diese E-Mail antworten.",
+    "body": "Schön, dass Sie da sind. Ich bin Ben, Gründer von Customermates, und helfe Ihnen gerne dabei, schnell loszulegen und die ersten Schritte so einfach wie möglich zu machen.",
+    "dismiss": "Wenn Sie Fragen oder Interesse an einem persönlichen Gespräch haben, antworten Sie einfach auf diese E-Mail — sie landet direkt in meinem Postfach.",
     "greeting": "Hallo {firstName},",
-    "scheduleFallback": "Wenn Sie uns kontaktieren möchten, können Sie diesen Link nutzen: ",
     "signoff": "Viele Grüße\nBen",
     "subject": "Willkommen bei Customermates",
     "title": "Willkommen in Ihrer Testphase"
@@ -1314,9 +1427,10 @@
     "title": "Einstellungen"
   },
   "VerifyEmail": {
-    "fallback": "Sollte der Button nicht funktionieren, kopiere bitte den folgenden Link in die Adresszeile deines Browsers: ",
+    "cta": "E-Mail bestätigen",
+    "fallback": "Falls der Button nicht funktioniert, kopiere diesen Link und füge ihn in deinen Browser ein: ",
     "intro": "Bestätige deine E-Mail, um fortzufahren.",
-    "securityNotice": "Solltest du diese E-Mail nicht angefordert haben oder keine Verifizierung wünschen, kannst du diese Nachricht ignorieren und löschen.",
+    "securityNotice": "Solltest du diese E-Mail nicht angefordert haben, kannst du diese Nachricht ignorieren und löschen.",
     "subject": "E-Mail bestätigen"
   },
   "VerifyEmailCard": {
@@ -1345,7 +1459,7 @@
     "responseMessage": "Antwort-Nachricht",
     "statusCode": "Status-Code",
     "success": "Erfolgreich",
-    "title": "Event Details",
+    "title": "Ereignis-Details",
     "url": "URL"
   },
   "WebhookModal": {

@@ -120,7 +120,7 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
       const verificationUrl = new URL(url);
-      verificationUrl.searchParams.set("callbackURL", "/onboarding");
+      verificationUrl.searchParams.set("callbackURL", "/onboarding/wizard");
 
       const { getAuthService } = await import("@/core/di");
       await getAuthService().sendVerificationEmail({ to: user.email, url: verificationUrl.toString() });

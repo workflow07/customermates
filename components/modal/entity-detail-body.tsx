@@ -53,7 +53,7 @@ export const EntityDetailBody = observer(
     const t = useTranslations("");
     const router = useRouter();
 
-    const { form, isLoading, lastCreatedId } = store;
+    const { form, isLoading, lastCreatedId, canManage, isReadOnly } = store;
 
     useEffect(() => {
       if (!lastCreatedId) return;
@@ -85,16 +85,18 @@ export const EntityDetailBody = observer(
                     {t("Common.actions.labelNotes")}
                   </span>
 
-                  <Editor data={form.notes} onChange={handleNotesChange} />
+                  <Editor data={form.notes} readOnly={isReadOnly} onChange={handleNotesChange} />
                 </div>
               </div>
             </AppCardBody>
 
-            <ModalFooter className="p-6 pt-0">
-              <Button disabled={isLoading || !store.hasUnsavedChanges || store.isDisabled} type="submit">
-                {t("Common.actions.save")}
-              </Button>
-            </ModalFooter>
+            {canManage && (
+              <ModalFooter className="p-6 pt-0">
+                <Button disabled={isLoading || !store.hasUnsavedChanges || store.isDisabled} type="submit">
+                  {t("Common.actions.save")}
+                </Button>
+              </ModalFooter>
+            )}
           </AppCard>
         </AppForm>
 
