@@ -169,7 +169,7 @@ export const FormInputChips = observer(
               className="flex-1 min-w-24 border-0 bg-transparent px-1 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
               disabled={isDisabled}
               id={id}
-              placeholder={placeholder}
+              placeholder={chipValues.length === 0 ? placeholder : undefined}
               value={inputValue}
               onBlur={commitInput}
               onChange={(e) => setInputValue(e.target.value)}

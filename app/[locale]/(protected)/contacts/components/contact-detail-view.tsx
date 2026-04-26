@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 import { EntityType, Resource } from "@/generated/prisma";
 
 import { createDealByNameAction, getDealsAction } from "../../deals/actions";
@@ -11,6 +13,7 @@ import { EntityDetailBody } from "@/components/modal/entity-detail-body";
 import { AppChip } from "@/components/chip/app-chip";
 import { CustomFieldValueInput } from "@/components/data-view/custom-columns/custom-field-value-input";
 import { FormInput } from "@/components/forms/form-input";
+import { FormInputChips } from "@/components/forms/form-input-chips";
 import { FormAutocomplete } from "@/components/forms/form-autocomplete";
 import { FormAutocompleteAvatar } from "@/components/forms/form-autocomplete-avatar";
 import { FormAutocompleteItem } from "@/components/forms/form-autocomplete-item";
@@ -22,8 +25,14 @@ type Props = {
 };
 
 export const ContactDetailView = observer(function ContactDetailView({ layout = "drawer" }: Props) {
+  const t = useTranslations("ContactModal");
   const { contactDetailStore, userStore, userModalStore } = useRootStore();
   const openEntity = useOpenEntity();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const { isEditingCustomField, customColumns, fetchedEntity } = contactDetailStore;
 
@@ -40,7 +49,21 @@ export const ContactDetailView = observer(function ContactDetailView({ layout = 
         <FormInput id="lastName" />
       </div>
 
-      {userStore.canAccess(Resource.organizations) && (
+      <FormInputChips
+        allowMultiple
+        id="emails"
+        label={t("emailsLabel")}
+        placeholder="email@example.com"
+        value={(contactDetailStore.form.emails ?? []).join(",")}
+        onValueChange={(v) =>
+          contactDetailStore.onChange(
+            "emails",
+            v ? v.split(",").map((s) => s.trim()).filter(Boolean) : [],
+          )
+        }
+      />
+
+      {hasMounted && userStore.canAccess(Resource.organizations) && (
         <FormAutocomplete
           getItems={getOrganizationsAction}
           id="organizationIds"
@@ -54,7 +77,7 @@ export const ContactDetailView = observer(function ContactDetailView({ layout = 
         </FormAutocomplete>
       )}
 
-      {userStore.canAccess(Resource.deals) && (
+      {hasMounted && userStore.canAccess(Resource.deals) && (
         <FormAutocomplete
           getItems={getDealsAction}
           id="dealIds"

@@ -182,6 +182,13 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
                   icon: UserCircle,
                   visible: userStore.can(Resource.api, Action.readAll),
                 },
+                {
+                  key: "profile-email",
+                  title: t("NavigationBar.email"),
+                  href: "/profile/email",
+                  icon: UserCircle,
+                  visible: true,
+                },
               ].filter((i) => i.visible),
             },
             {

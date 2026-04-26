@@ -1,0 +1,1 @@
+ALTER TABLE "Contact" ADD COLUMN "emails" TEXT[] NOT NULL DEFAULT '{}';

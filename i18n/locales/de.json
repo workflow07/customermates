@@ -84,7 +84,8 @@
       "signIn": "Login",
       "submit": "Senden",
       "update": "Aktualisieren",
-      "view": "Ansehen"
+      "view": "Ansehen",
+      "sendEmail": "E-Mail senden"
     },
     "ariaLabels": {
       "close": "Schließen",
@@ -245,7 +246,8 @@
       "contact": {
         "created": "Kontakt erstellt",
         "deleted": "Kontakt gelöscht",
-        "updated": "Kontakt aktualisiert"
+        "updated": "Kontakt aktualisiert",
+        "email_sent": "E-Mail gesendet"
       },
       "custom_column": {
         "created": "Benutzerdefinierte Spalte erstellt",
@@ -408,6 +410,7 @@
       "organizationId": "Organisation",
       "organizationIds": "Organisationen",
       "pageSize": "Seitengröße",
+      "body": "Nachricht",
       "password": "Passwort",
       "permissions": {
         "api": {
@@ -469,7 +472,10 @@
       "title": "Titel",
       "type": "Typ",
       "url": "URL",
-      "userIds": "Zugewiesen"
+      "userIds": "Zugewiesen",
+      "to": "An",
+      "subject": "Betreff",
+      "body": "Nachricht"
     },
     "label": "Bezeichnung",
     "language": "Sprache",
@@ -876,7 +882,9 @@
     "taskList": "Aufgabenliste",
     "underline": "Unterstrichen",
     "urlPlaceholder": "URL eingeben...",
-    "urlPrompt": "URL"
+    "urlPrompt": "URL",
+    "confirm": "Bestätigen",
+    "remove": "Entfernen"
   },
   "ErrorCard": {
     "contactSupport": "Keine Sorge, wir wurden automatisch über dieses Problem benachrichtigt und kümmern uns bereits darum. Wenn du sofortige Hilfe benötigst, kannst du dich gerne an unser Support-Team wenden.",
@@ -1065,6 +1073,7 @@
     "services": "Services",
     "settings": "Einstellungen",
     "tasks": "Aufgaben",
+    "email": "E-Mail",
     "webhooks": "Webhooks",
     "workspace": "Workspace"
   },
@@ -1424,6 +1433,8 @@
     "formattingLocale": "Formatierungssprache",
     "formattingLocaleHint": "Steuert, wie Zahlen, Daten und Währungen formatiert werden.",
     "marketingEmails": "Ich möchte Nachrichten und Angebote per E-Mail erhalten",
+    "emailSignature": "E-Mail-Signatur",
+    "emailSignatureHint": "Wird automatisch an das Ende jeder E-Mail angehängt, die du über das CRM versendest.",
     "title": "Einstellungen"
   },
   "VerifyEmail": {
@@ -1472,5 +1483,23 @@
   },
   "WebhooksCard": {
     "title": "Webhooks"
+  },
+  "SendContactEmail": {
+    "title": "E-Mail senden",
+    "send": "Senden",
+    "success": "E-Mail erfolgreich gesendet",
+    "bodyPlaceholder": "Schreibe deine Nachricht hier…"
+  },
+  "SmtpSettings": {
+    "title": "E-Mail-Einstellungen",
+    "smtpTitle": "SMTP-Konfiguration",
+    "smtpHost": "SMTP-Host",
+    "smtpPort": "SMTP-Port",
+    "smtpUser": "SMTP-Benutzer",
+    "smtpPassword": "SMTP-Passwort",
+    "smtpFromEmail": "Absender-E-Mail",
+    "emailSignature": "E-Mail-Signatur",
+    "emailSignatureHint": "Wird automatisch am Ende jeder E-Mail angehängt, die Sie aus dem CRM senden.",
+    "emailSignaturePlaceholder": "Jane Doe\nVertriebsleiter · +49 555 000 1234"
   }
 }

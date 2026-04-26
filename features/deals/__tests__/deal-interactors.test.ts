@@ -194,7 +194,7 @@ describe("CreateDealInteractor", () => {
     mockContactRepo.getManyOrThrowUnscoped.mockResolvedValue([contact]);
 
     const dealWithContacts = makeDealDto({
-      contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+      contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     });
     mockCreateRepo.createDealOrThrow.mockResolvedValue(dealWithContacts);
 
@@ -288,14 +288,14 @@ describe("UpdateDealInteractor", () => {
 
   const previousDeal = makeDealDto({
     organizations: [makeOrgDto(ORG_ID_1)],
-    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     services: [{ id: SERVICE_ID_1, name: "Service 30", amount: 50, quantity: 1 }],
   });
 
   const updatedDeal = makeDealDto({
     name: "Updated Deal",
     organizations: [makeOrgDto(ORG_ID_1)],
-    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     services: [{ id: SERVICE_ID_1, name: "Service 30", amount: 50, quantity: 2 }],
     updatedAt: new Date("2025-02-01"),
   });
@@ -448,7 +448,7 @@ describe("DeleteDealInteractor", () => {
 
   const dealWithRelations = makeDealDto({
     organizations: [makeOrgDto(ORG_ID_1)],
-    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     services: [{ id: SERVICE_ID_1, name: "Service 30", amount: 50, quantity: 1 }],
   });
 
@@ -868,7 +868,7 @@ describe("DeleteManyDealsInteractor", () => {
 
   const deal1 = makeDealDto({
     organizations: [makeOrgDto(ORG_ID_1)],
-    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     services: [{ id: SERVICE_ID_1, name: "Service 30", amount: 50, quantity: 1 }],
   });
   const deal2 = makeDealDto({ id: DEAL_ID_2, name: "Deal Two" });

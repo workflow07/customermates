@@ -11,6 +11,8 @@ import type { SendTrialExtensionOfferActionRepo } from "@/ee/lifecycle/send-tria
 import type { SendTrialInactivationReminderActionRepo } from "@/ee/lifecycle/send-trial-inactivation-reminder.interactor";
 import type { DeactivateTrialUsersAndSendNoticeRepo } from "@/ee/lifecycle/deactivate-trial-users-and-send-notice.interactor";
 import type { DeactivateUsersAfterSubscriptionGracePeriodRepo } from "@/ee/lifecycle/deactivate-users-after-subscription-grace-period.interactor";
+import type { GetSmtpSettingsRepo } from "@/features/company/smtp/get-smtp-settings.interactor";
+import type { UpdateSmtpSettingsRepo } from "@/features/company/smtp/update-smtp-settings.interactor";
 
 import { randomUUID } from "crypto";
 
@@ -38,7 +40,9 @@ export class PrismaUserRepo
     SendTrialInactivationReminderActionRepo,
     DeactivateTrialUsersAndSendNoticeRepo,
     DeactivateUsersAfterSubscriptionGracePeriodRepo,
-    CompleteOnboardingWizardRepo
+    CompleteOnboardingWizardRepo,
+    GetSmtpSettingsRepo,
+    UpdateSmtpSettingsRepo
 {
   private get extendedUserSelect() {
     return {
@@ -56,6 +60,12 @@ export class PrismaUserRepo
       avatarUrl: true,
       agreeToTerms: true,
       marketingEmails: true,
+      emailSignature: true,
+      smtpHost: true,
+      smtpPort: true,
+      smtpUser: true,
+      smtpPassword: true,
+      smtpFromEmail: true,
       lastActiveAt: true,
       onboardingWizardCompletedAt: true,
       createdAt: true,
@@ -119,6 +129,7 @@ export class PrismaUserRepo
         displayLanguage: args.displayLanguage,
         formattingLocale: args.formattingLocale,
         marketingEmails: args.marketingEmails,
+        ...(args.emailSignature !== undefined ? { emailSignature: args.emailSignature } : {}),
       },
       where: { id: userId, companyId },
     });
@@ -141,6 +152,30 @@ export class PrismaUserRepo
     });
 
     return args;
+  }
+
+  async getSmtpSettings() {
+    const { id: userId, companyId } = this.user;
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: { id: userId, companyId },
+      select: { smtpHost: true, smtpPort: true, smtpUser: true, smtpPassword: true, smtpFromEmail: true, emailSignature: true },
+    });
+    return user;
+  }
+
+  async updateSmtpSettings(args: { smtpHost: string | null; smtpPort: number | null; smtpUser: string | null; smtpPassword: string | null; smtpFromEmail: string | null; emailSignature?: string | null }) {
+    const { id: userId, companyId } = this.user;
+    await this.prisma.user.updateMany({
+      where: { id: userId, companyId },
+      data: {
+        smtpHost: args.smtpHost,
+        smtpPort: args.smtpPort,
+        smtpUser: args.smtpUser,
+        smtpPassword: args.smtpPassword,
+        smtpFromEmail: args.smtpFromEmail,
+        ...(args.emailSignature !== undefined ? { emailSignature: args.emailSignature } : {}),
+      },
+    });
   }
 
   async markOnboardingWizardCompleted(userId: string) {

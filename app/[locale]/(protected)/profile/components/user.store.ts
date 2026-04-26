@@ -57,6 +57,7 @@ export class UserStore {
         displayLanguage: user.displayLanguage,
         formattingLocale: user.formattingLocale,
         theme: user.theme,
+        emailSignature: user.emailSignature ?? null,
       });
     }
   };

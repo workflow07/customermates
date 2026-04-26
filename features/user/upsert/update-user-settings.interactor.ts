@@ -14,6 +14,7 @@ const Schema = z.object({
   displayLanguage: z.enum(Locale),
   formattingLocale: z.enum(Locale),
   marketingEmails: z.boolean(),
+  emailSignature: z.string().nullable().optional(),
 });
 export type UpdateUserSettingsData = Data<typeof Schema>;
 

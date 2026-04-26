@@ -50,12 +50,14 @@ type Props<Form extends FormEntityDto, Dto extends EntityDto> = {
   masterData: ReactNode;
   identity: IdentityProps;
   canDelete?: boolean;
+  extraActions?: ReactNode;
+  extraAuditLogRefreshKey?: unknown;
 };
 
 export const EntityDetailLayout = observer(function EntityDetailLayout<
   Form extends FormEntityDto,
   Dto extends EntityDto,
->({ entityId, entityType, store, masterData, identity, canDelete = true }: Props<Form, Dto>) {
+>({ entityId, entityType, store, masterData, identity, canDelete = true, extraActions, extraAuditLogRefreshKey }: Props<Form, Dto>) {
   const t = useTranslations("");
   const router = useRouter();
   const rootStore = useRootStore();
@@ -123,6 +125,8 @@ export const EntityDetailLayout = observer(function EntityDetailLayout<
                 <TooltipContent>{t("Common.actions.delete")}</TooltipContent>
               </Tooltip>
             )}
+
+            {extraActions}
 
             {showEditFieldsAction && (
               <Button className="h-8" size="sm" type="button" variant="outline" onClick={toggleEditingCustomField}>
@@ -224,7 +228,7 @@ export const EntityDetailLayout = observer(function EntityDetailLayout<
 
           {canSeeHistory && (
             <div className="md:col-span-2 xl:col-span-1 flex flex-col bg-background xl:min-h-0 xl:overflow-hidden">
-              {hasMounted && <EntityAuditLogPanel entityId={entityId} refreshKey={store.fetchedEntity} />}
+              {hasMounted && <EntityAuditLogPanel entityId={entityId} refreshKey={[store.fetchedEntity, extraAuditLogRefreshKey]} />}
             </div>
           )}
         </div>

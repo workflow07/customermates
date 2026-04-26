@@ -10,7 +10,6 @@ import type { GetSubscriptionRepo } from "@/ee/subscription/get-subscription.int
 import type { RefreshSubscriptionRepo } from "@/ee/subscription/refresh-subscription.interactor";
 import type { AdminUpdateUserSubscriptionRepo } from "@/features/user/upsert/admin-update-user-details.interactor";
 import type { CreateCheckoutCompanyRepo } from "@/ee/subscription/create-checkout-session.interactor";
-
 import { Status, SubscriptionStatus } from "@/generated/prisma";
 
 import type { Subscription } from "@/generated/prisma";
@@ -192,4 +191,5 @@ export class PrismaCompanyRepo
       where: { companyId: this.user.companyId, status: Status.active },
     });
   }
+
 }

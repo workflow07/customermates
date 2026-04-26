@@ -1,0 +1,12 @@
+-- Move SMTP settings from Company to User (per-user email configuration)
+ALTER TABLE "Company" DROP COLUMN IF EXISTS "smtpHost";
+ALTER TABLE "Company" DROP COLUMN IF EXISTS "smtpPort";
+ALTER TABLE "Company" DROP COLUMN IF EXISTS "smtpUser";
+ALTER TABLE "Company" DROP COLUMN IF EXISTS "smtpPassword";
+ALTER TABLE "Company" DROP COLUMN IF EXISTS "smtpFromEmail";
+
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "smtpHost" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "smtpPort" INTEGER;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "smtpUser" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "smtpPassword" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "smtpFromEmail" TEXT;

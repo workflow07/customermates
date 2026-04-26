@@ -40,6 +40,7 @@ export class PrismaContactRepo
       id: true,
       firstName: true,
       lastName: true,
+      emails: true,
       notes: true,
       createdAt: true,
       updatedAt: true,
@@ -202,11 +203,12 @@ export class PrismaContactRepo
   @Transaction
   async createContactOrThrow(args: RepoArgs<CreateContactRepo, "createContactOrThrow">) {
     const { companyId } = this.user;
-    const { organizationIds, userIds, dealIds, customFieldValues, firstName, lastName, notes } = args;
+    const { organizationIds, userIds, dealIds, customFieldValues, firstName, lastName, emails, notes } = args;
 
     const data = {
       firstName,
       lastName,
+      emails,
       notes: notes,
       companyId,
     };
@@ -285,6 +287,7 @@ export class PrismaContactRepo
 
     if (contactData.firstName !== undefined) data.firstName = contactData.firstName;
     if (contactData.lastName !== undefined) data.lastName = contactData.lastName;
+    if (contactData.emails !== undefined && contactData.emails !== null) data.emails = { set: contactData.emails };
     if (contactData.notes !== undefined) data.notes = contactData.notes;
 
     await this.prisma.contact.updateMany({

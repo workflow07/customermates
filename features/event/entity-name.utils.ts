@@ -29,6 +29,7 @@ const entityNameExtractors: {
   [DomainEvent.CONTACT_DELETED]: (eventData) => `${eventData.payload.firstName} ${eventData.payload.lastName}`.trim(),
   [DomainEvent.CONTACT_UPDATED]: (eventData) =>
     `${eventData.payload.contact.firstName} ${eventData.payload.contact.lastName}`.trim(),
+  [DomainEvent.CONTACT_EMAIL_SENT]: (eventData) => eventData.payload.to,
   [DomainEvent.ORGANIZATION_CREATED]: (eventData) => eventData.payload.name,
   [DomainEvent.ORGANIZATION_DELETED]: (eventData) => eventData.payload.name,
   [DomainEvent.ORGANIZATION_UPDATED]: (eventData) => eventData.payload.organization.name,

@@ -26,6 +26,7 @@ export const ContactReferenceSchema = z.object({
   id: z.uuid(),
   firstName: z.string(),
   lastName: z.string(),
+  emails: z.array(z.email()),
 });
 
 export const ServiceReferenceSchema = z.object({

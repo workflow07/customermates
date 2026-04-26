@@ -11,7 +11,7 @@ import VerifyEmail from "@/components/emails/verify-email";
 import NewUserNotification from "@/components/emails/new-user-notification";
 import { auth } from "@/core/auth/better-auth";
 import { CustomErrorCode } from "@/core/validation/validation.types";
-import { BASE_URL, RESEND_FROM_EMAIL } from "@/constants/env";
+import { BASE_URL, SKIP_EMAIL_VERIFICATION, SMTP_FROM_EMAIL } from "@/constants/env";
 
 type AuthUser = { id: string; email: string; name: string; emailVerified: boolean };
 export type AuthResult = { ok: true; user: AuthUser } | { ok: false; error: CustomErrorCode };
@@ -34,7 +34,7 @@ export class AuthService {
 
     const session = await auth.api.getSession({ headers: headersList });
     if (!session) redirect("/auth/signin");
-    if (!session.user?.emailVerified) redirect("/auth/verify-email");
+    if (!SKIP_EMAIL_VERIFICATION && !session.user?.emailVerified) redirect("/auth/verify-email");
 
     return session;
   }
@@ -144,7 +144,7 @@ export class AuthService {
 
   async sendNewUserNotificationEmail(args: { email: string; name: string; provider?: string }): Promise<void> {
     await this.emailService.send({
-      to: RESEND_FROM_EMAIL,
+      to: SMTP_FROM_EMAIL,
       subject: "New User Registration",
       react: React.createElement(NewUserNotification, {
         email: args.email,

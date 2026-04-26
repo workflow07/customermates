@@ -152,8 +152,8 @@ describe("CreateOrganizationInteractor", () => {
 
     const orgWithContacts = makeOrgDto({
       contacts: [
-        { id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" },
-        { id: CONTACT_ID_2, firstName: "Jane", lastName: "Doe" },
+        { id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] },
+        { id: CONTACT_ID_2, firstName: "Jane", lastName: "Doe", emails: [] },
       ],
     });
     mockCreateRepo.createOrganizationOrThrow.mockResolvedValue(orgWithContacts);
@@ -339,7 +339,7 @@ describe("DeleteOrganizationInteractor", () => {
     vi.clearAllMocks();
 
     const orgDto = makeOrgDto({
-      contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+      contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
       deals: [{ id: DEAL_ID_1, name: "Deal 20" }],
     });
 
@@ -502,7 +502,7 @@ describe("CreateManyOrganizationsInteractor", () => {
     mockContactRepo.getManyOrThrowUnscoped.mockResolvedValue([contact]);
     mockCreateRepo.createOrganizationOrThrow.mockReset();
     mockCreateRepo.createOrganizationOrThrow.mockResolvedValueOnce(
-      makeOrgDto({ contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }] }),
+      makeOrgDto({ contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }] }),
     );
 
     const interactor = createInteractor();
@@ -701,7 +701,7 @@ describe("DeleteManyOrganizationsInteractor", () => {
   let mockWidgetService: any;
 
   const org1 = makeOrgDto({
-    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe" }],
+    contacts: [{ id: CONTACT_ID_1, firstName: "Jane", lastName: "Doe", emails: [] }],
     deals: [{ id: DEAL_ID_1, name: "Deal 20" }],
   });
   const org2 = makeOrgDto({ id: ORG_ID_2, name: "Org Two" });

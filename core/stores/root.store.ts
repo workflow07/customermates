@@ -13,6 +13,8 @@ import { RoleModalStore } from "@/app/[locale]/(protected)/company/components/ro
 import { UsersStore } from "@/app/[locale]/(protected)/company/components/user/users.store";
 import { CompanyStore } from "@/app/[locale]/(protected)/company/components/company.store";
 import { ContactDetailStore } from "@/app/[locale]/(protected)/contacts/components/contact-detail.store";
+import { SendContactEmailModalStore } from "@/app/[locale]/(protected)/contacts/components/send-contact-email-modal.store";
+import { ProfileEmailStore } from "@/app/[locale]/(protected)/profile/components/profile-email.store";
 import { OrganizationDetailStore } from "@/app/[locale]/(protected)/organizations/components/organization-detail.store";
 import { OrganizationsStore } from "@/app/[locale]/(protected)/organizations/components/organizations.store";
 import { StepAiStore } from "@/app/[locale]/(protected)/onboarding/wizard/components/step-ai.store";
@@ -92,6 +94,8 @@ export class RootStore {
 
   private _companyInviteModalStore?: CompanyInviteModalStore;
   private _contactDetailStore?: ContactDetailStore;
+  private _sendContactEmailModalStore?: SendContactEmailModalStore;
+  private _profileEmailStore?: ProfileEmailStore;
   private _createApiKeyModalStore?: ApiKeyModalStore;
   private _dealDetailStore?: DealDetailStore;
   private _deleteConfirmationModalStore?: DeleteConfirmationModalStore;
@@ -266,6 +270,14 @@ export class RootStore {
 
   get contactDetailStore() {
     return (this._contactDetailStore ??= new ContactDetailStore(this));
+  }
+
+  get sendContactEmailModalStore() {
+    return (this._sendContactEmailModalStore ??= new SendContactEmailModalStore(this));
+  }
+
+  get profileEmailStore() {
+    return (this._profileEmailStore ??= new ProfileEmailStore(this));
   }
 
   get organizationDetailStore() {

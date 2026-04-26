@@ -119,6 +119,12 @@ model User {
   avatarUrl        String?
   agreeToTerms     Boolean            @default(false)
   marketingEmails  Boolean            @default(false)
+  emailSignature   String?
+  smtpHost         String?
+  smtpPort         Int?
+  smtpUser         String?
+  smtpPassword     String?
+  smtpFromEmail    String?
   lastActiveAt           DateTime?
   welcomeEmailSentAt           DateTime?
   trialExpiredOfferSentAt      DateTime?
@@ -266,6 +272,7 @@ model Contact {
   id                String                @id @default(uuid())
   firstName         String
   lastName          String
+  emails            String[]
   companyId         String
   notes             Json?
   createdAt         DateTime              @default(now())

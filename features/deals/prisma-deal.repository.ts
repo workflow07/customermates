@@ -54,7 +54,7 @@ export class PrismaDealRepo
       },
       contacts: {
         where: { contact: this.accessWhere("contact") },
-        select: { contact: { select: { id: true, firstName: true, lastName: true } } },
+        select: { contact: { select: { id: true, firstName: true, lastName: true, emails: true } } },
       },
       services: {
         where: { service: this.accessWhere("service") },

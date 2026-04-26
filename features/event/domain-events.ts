@@ -16,6 +16,7 @@ export enum DomainEvent {
   CONTACT_CREATED = "contact.created",
   CONTACT_UPDATED = "contact.updated",
   CONTACT_DELETED = "contact.deleted",
+  CONTACT_EMAIL_SENT = "contact.email_sent",
   ORGANIZATION_CREATED = "organization.created",
   ORGANIZATION_UPDATED = "organization.updated",
   ORGANIZATION_DELETED = "organization.deleted",
@@ -101,6 +102,15 @@ export type DomainEventMap = {
     companyId: string;
     entityId: string;
     payload: ContactDto;
+  };
+  [DomainEvent.CONTACT_EMAIL_SENT]: {
+    userId: string;
+    companyId: string;
+    entityId: string;
+    payload: {
+      to: string;
+      subject: string;
+    };
   };
   [DomainEvent.ORGANIZATION_CREATED]: {
     userId: string;

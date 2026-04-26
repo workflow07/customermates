@@ -5,6 +5,7 @@ import type { CreateContactData } from "@/features/contacts/upsert/create-contac
 import type { UpdateContactData } from "@/features/contacts/upsert/update-contact.interactor";
 import type { GetQueryParams } from "@/core/base/base-get.schema";
 import type { DeleteContactData } from "@/features/contacts/delete/delete-contact.interactor";
+import type { SendContactEmailData } from "@/features/contacts/send-email/send-contact-email.interactor";
 
 import {
   getGetContactsInteractor,
@@ -12,6 +13,7 @@ import {
   getCreateContactInteractor,
   getUpdateContactInteractor,
   getDeleteContactInteractor,
+  getSendContactEmailInteractor,
 } from "@/core/di";
 import { serializeResult } from "@/core/utils/action-result";
 
@@ -39,6 +41,10 @@ export async function getContactByIdAction(data: GetContactByIdData) {
     : { entity: null, customColumns: [] };
 }
 
+export async function sendContactEmailAction(data: SendContactEmailData) {
+  return serializeResult(getSendContactEmailInteractor().invoke(data));
+}
+
 export async function createContactByNameAction(name: string, userId: string | null | undefined) {
   const parts = name.split(/\s+/);
   const firstName = parts[0] || "";
@@ -47,6 +53,7 @@ export async function createContactByNameAction(name: string, userId: string | n
   const result = await createContactAction({
     firstName,
     lastName,
+    emails: [],
     notes: null,
     organizationIds: [],
     userIds: userId ? [userId] : [],

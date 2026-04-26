@@ -16,6 +16,7 @@ export class UserSettingsStore extends BaseFormStore<UpdateUserSettingsData> {
       displayLanguage: Locale.en,
       formattingLocale: Locale.en,
       marketingEmails: true,
+      emailSignature: null,
     });
 
     makeObservable(this, {

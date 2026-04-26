@@ -51,6 +51,7 @@ import { UpdateContactInteractor } from "@/features/contacts/upsert/update-conta
 import { UpdateManyContactsInteractor } from "@/features/contacts/upsert/update-many-contacts.interactor";
 import { DeleteContactInteractor } from "@/features/contacts/delete/delete-contact.interactor";
 import { DeleteManyContactsInteractor } from "@/features/contacts/delete/delete-many-contacts.interactor";
+import { SendContactEmailInteractor } from "@/features/contacts/send-email/send-contact-email.interactor";
 // Organizations interactors
 import { GetOrganizationsInteractor } from "@/features/organizations/get/get-organizations.interactor";
 import { GetOrganizationsApiInteractor } from "@/features/organizations/get/get-organizations-api.interactor";
@@ -120,6 +121,8 @@ import { UpdateCompanyDetailsInteractor } from "@/features/company/update-compan
 import { GetOrCreateInviteTokenInteractor } from "@/features/company/get-or-create-invite-token.interactor";
 import { InviteUsersByEmailInteractor } from "@/features/company/invite-users-by-email.interactor";
 import { InviteTokenValidationInteractor } from "@/features/company/invite-token-validation.interactor";
+import { GetSmtpSettingsInteractor } from "@/features/company/smtp/get-smtp-settings.interactor";
+import { UpdateSmtpSettingsInteractor } from "@/features/company/smtp/update-smtp-settings.interactor";
 // Role interactors
 import { UpsertRoleInteractor } from "@/features/role/upsert-role.interactor";
 import { GetRolesInteractor } from "@/features/role/get-roles.interactor";
@@ -296,6 +299,9 @@ export const getDeleteManyContactsInteractor = () =>
     getEventService(),
     getWidgetService(),
   );
+
+export const getSendContactEmailInteractor = () =>
+  new SendContactEmailInteractor(getEmailService(), getEventService(), getUserRepo());
 
 // --- Organizations ---
 
@@ -545,6 +551,10 @@ export const getUpdateCompanyDetailsInteractor = () =>
   new UpdateCompanyDetailsInteractor(getCompanyRepo(), getEventService());
 
 export const getGetOrCreateInviteTokenInteractor = () => new GetOrCreateInviteTokenInteractor(getCompanyRepo());
+
+export const getGetSmtpSettingsInteractor = () => new GetSmtpSettingsInteractor(getUserRepo());
+
+export const getUpdateSmtpSettingsInteractor = () => new UpdateSmtpSettingsInteractor(getUserRepo());
 
 export const getInviteUsersByEmailInteractor = () =>
   new InviteUsersByEmailInteractor(

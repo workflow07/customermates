@@ -44,7 +44,7 @@ export class PrismaOrganizationRepo
       updatedAt: true,
       contacts: {
         where: { contact: this.accessWhere("contact") },
-        select: { contact: { select: { id: true, firstName: true, lastName: true } } },
+        select: { contact: { select: { id: true, firstName: true, lastName: true, emails: true } } },
       },
       users: {
         where: { user: { is: this.accessWhere("user") } },

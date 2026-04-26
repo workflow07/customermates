@@ -70,6 +70,7 @@ export const UserSettingsForm = observer(() => {
 
           <FormSwitch id="marketingEmails" label={t("Common.inputs.marketingEmails")} />
         </div>
+
       </div>
     </AppForm>
   );

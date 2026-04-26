@@ -11,7 +11,6 @@ import type { UpsertWebhookData } from "@/features/webhook/upsert-webhook.intera
 import type { DeleteWebhookData } from "@/features/webhook/delete-webhook.interactor";
 import type { ResendWebhookDeliveryData } from "@/features/webhook/resend-webhook-delivery.interactor";
 import type { InviteUsersByEmailData } from "@/features/company/invite-users-by-email.interactor";
-
 import {
   getGetUsersInteractor,
   getGetUserByIdInteractor,
@@ -125,3 +124,4 @@ export async function getWebhookDeliveriesAction(params?: GetQueryParams) {
 export async function resendWebhookDeliveryAction(data: ResendWebhookDeliveryData) {
   return getResendWebhookDeliveryInteractor().invoke(data);
 }
+

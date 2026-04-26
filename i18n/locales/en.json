@@ -84,7 +84,8 @@
       "signIn": "Login",
       "submit": "Submit",
       "update": "Update",
-      "view": "View"
+      "view": "View",
+      "sendEmail": "Send Email"
     },
     "ariaLabels": {
       "close": "Close",
@@ -245,7 +246,8 @@
       "contact": {
         "created": "Contact Created",
         "deleted": "Contact Deleted",
-        "updated": "Contact Updated"
+        "updated": "Contact Updated",
+        "email_sent": "Email Sent"
       },
       "custom_column": {
         "created": "Custom Column Created",
@@ -408,6 +410,7 @@
       "organizationId": "Organization",
       "organizationIds": "Organizations",
       "pageSize": "Page Size",
+      "body": "Message",
       "password": "Password",
       "permissions": {
         "api": {
@@ -469,7 +472,10 @@
       "title": "Title",
       "type": "Type",
       "url": "URL",
-      "userIds": "Assigned"
+      "userIds": "Assigned",
+      "to": "To",
+      "subject": "Subject",
+      "body": "Body"
     },
     "label": "Label",
     "language": "Language",
@@ -876,7 +882,9 @@
     "taskList": "Task List",
     "underline": "Underline",
     "urlPlaceholder": "Enter URL...",
-    "urlPrompt": "URL"
+    "urlPrompt": "URL",
+    "confirm": "Confirm",
+    "remove": "Remove"
   },
   "ErrorCard": {
     "contactSupport": "Don't worry, we've been automatically notified about this issue and are already looking into it. If you need immediate assistance, feel free to reach out to our support team.",
@@ -1065,6 +1073,7 @@
     "services": "Services",
     "settings": "Settings",
     "tasks": "Tasks",
+    "email": "Email",
     "webhooks": "Webhooks",
     "workspace": "Workspace"
   },
@@ -1424,6 +1433,8 @@
     "formattingLocale": "Formatting Locale",
     "formattingLocaleHint": "Controls how numbers, dates, and currencies are formatted.",
     "marketingEmails": "I want to receive news and offers by email",
+    "emailSignature": "Email Signature",
+    "emailSignatureHint": "Automatically appended to the bottom of every email you send from the CRM.",
     "title": "Settings"
   },
   "VerifyEmail": {
@@ -1472,5 +1483,23 @@
   },
   "WebhooksCard": {
     "title": "Webhooks"
+  },
+  "SendContactEmail": {
+    "title": "Send Email",
+    "send": "Send",
+    "success": "Email sent successfully",
+    "bodyPlaceholder": "Write your message here…"
+  },
+  "SmtpSettings": {
+    "title": "Email Settings",
+    "smtpTitle": "SMTP Configuration",
+    "smtpHost": "SMTP Host",
+    "smtpPort": "SMTP Port",
+    "smtpUser": "SMTP User",
+    "smtpPassword": "SMTP Password",
+    "smtpFromEmail": "From Email",
+    "emailSignature": "Email Signature",
+    "emailSignatureHint": "Automatically appended to the bottom of every email you send from the CRM.",
+    "emailSignaturePlaceholder": "Jane Doe\nSales Manager · +1 555 000 1234"
   }
 }
