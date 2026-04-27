@@ -37,6 +37,7 @@ const GROUP_MAP: Record<string, { group: "overview" | "crm" | "settings" | null;
   organizations: { group: "crm", label: "organizations" },
   deals: { group: "crm", label: "deals" },
   services: { group: "crm", label: "services" },
+  accounting: { group: null, label: "accounting" },
   settings: { group: "settings", label: "settings" },
   profile: { group: "settings", label: "profile" },
   company: { group: "settings", label: "company" },
@@ -56,11 +57,16 @@ const SUB_LABEL_MAP: Record<string, Record<string, string>> = {
     webhooks: "WebhooksCard.title",
     "webhook-deliveries": "WebhookDeliveriesCard.title",
   },
+  accounting: {
+    estimates: "NavigationBar.estimates",
+    invoices: "NavigationBar.invoices",
+  },
 };
 
 const SECTION_DEFAULT_SUBROUTE: Record<string, string> = {
   profile: "details",
   company: "details",
+  accounting: "estimates",
 };
 
 function getSectionHref(section: string): string {
@@ -154,8 +160,15 @@ function buildCrumbs(
     const leaf = parts[1];
     const subKey = subMap?.[leaf];
     if (subKey) {
-      const siblings: Sibling[] = Object.entries(subMap).map(([slug, key]) => ({ slug, label: t(key) }));
-      crumbs.push({ label: t(subKey), siblings });
+      if (parts.length > 2) {
+        // 3-level: section > subsection (link) > detail page
+        crumbs.push({ label: t(subKey), href: `/${first}/${leaf}` });
+        const detail = parts[2];
+        crumbs.push({ label: runtimeTitle ?? (detail.length > 10 ? `${detail.slice(0, 8)}…` : detail) });
+      } else {
+        const siblings: Sibling[] = Object.entries(subMap).map(([slug, key]) => ({ slug, label: t(key) }));
+        crumbs.push({ label: t(subKey), siblings });
+      }
     } else {
       const fallback = leaf.length > 10 ? `${leaf.slice(0, 8)}…` : leaf;
       crumbs.push({ label: runtimeTitle ?? fallback });

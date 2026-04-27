@@ -189,6 +189,8 @@ model Company {
   webhooks             Webhook[]
   webhookDeliveries    WebhookDelivery[]
   subscription         Subscription?
+  estimates            Estimate[]
+  invoices             Invoice[]
 }
 
 model P13n {
@@ -282,6 +284,8 @@ model Contact {
   users             ContactUser[]
   deals             DealContact[]
   customFieldValues CustomFieldValue[]
+  estimates         Estimate[]
+  invoices          Invoice[]
 
   @@index([companyId])
   @@index([firstName])
@@ -370,6 +374,8 @@ model Deal {
   contacts          DealContact[]
   services          ServiceDeal[]
   customFieldValues CustomFieldValue[]
+  estimates         Estimate[]
+  invoices          Invoice[]
 
   @@index([companyId])
   @@index([name])
@@ -393,6 +399,90 @@ model Service {
 
   @@index([companyId])
   @@index([name])
+}
+
+model Estimate {
+  id          String          @id @default(uuid())
+  number      Int
+  companyId   String
+  contactId   String?
+  dealId      String?
+  status      DocumentStatus  @default(draft)
+  dueDate     DateTime?
+  taxPercent  Float           @default(0)
+  subtotal    Float           @default(0)
+  grandTotal  Float           @default(0)
+  notes       String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  company     Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contact     Contact?        @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  deal        Deal?           @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  lineItems   EstimateLineItem[]
+
+  @@unique([companyId, number])
+  @@index([companyId])
+  @@index([contactId])
+  @@index([dealId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model EstimateLineItem {
+  id          String   @id @default(uuid())
+  estimateId  String
+  description String
+  quantity    Float    @default(1)
+  unitPrice   Float    @default(0)
+  total       Float    @default(0)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  estimate    Estimate @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+
+  @@index([estimateId])
+}
+
+model Invoice {
+  id          String          @id @default(uuid())
+  number      Int
+  companyId   String
+  contactId   String?
+  dealId      String?
+  status      DocumentStatus  @default(draft)
+  dueDate     DateTime?
+  taxPercent  Float           @default(0)
+  subtotal    Float           @default(0)
+  grandTotal  Float           @default(0)
+  notes       String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  company     Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contact     Contact?        @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  deal        Deal?           @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  lineItems   InvoiceLineItem[]
+
+  @@unique([companyId, number])
+  @@index([companyId])
+  @@index([contactId])
+  @@index([dealId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model InvoiceLineItem {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  description String
+  quantity    Float    @default(1)
+  unitPrice   Float    @default(0)
+  total       Float    @default(0)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
 }
 
 model ServiceDeal {
@@ -680,6 +770,8 @@ enum Resource {
   tasks
   api
   auditLog
+  estimates
+  invoices
 }
 
 enum Action {
@@ -927,6 +1019,13 @@ enum EntityType {
   deal
   service
   task
+}
+
+enum DocumentStatus {
+  draft
+  sent
+  paid
+  overdue
 }
 
 enum Currency {

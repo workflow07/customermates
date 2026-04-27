@@ -32,6 +32,8 @@ import { LayoutStore } from "@/components/layout/layout.store";
 import { LoadingOverlayStore } from "@/components/shared/loading-overlay.store";
 import { ServicesStore } from "@/app/[locale]/(protected)/services/components/services.store";
 import { ServiceDetailStore } from "@/app/[locale]/(protected)/services/components/service-detail.store";
+import { EstimatesStore } from "@/app/[locale]/(protected)/accounting/estimates/components/estimates.store";
+import { InvoicesStore } from "@/app/[locale]/(protected)/accounting/invoices/components/invoices.store";
 import { IntlStore } from "@/core/stores/intl.store";
 import { LocaleStore } from "@/core/stores/locale.store";
 import { WidgetsStore } from "@/app/[locale]/(protected)/dashboard/components/widgets.store";
@@ -69,6 +71,8 @@ export class RootStore {
   private _organizationsStore?: OrganizationsStore;
   private _rolesStore?: RolesStore;
   private _servicesStore?: ServicesStore;
+  private _estimatesStore?: EstimatesStore;
+  private _invoicesStore?: InvoicesStore;
   private _tasksStore?: TasksStore;
   private _userStore?: UserStore;
   private _usersStore?: UsersStore;
@@ -178,6 +182,14 @@ export class RootStore {
 
   get servicesStore() {
     return (this._servicesStore ??= new ServicesStore(this));
+  }
+
+  get estimatesStore() {
+    return (this._estimatesStore ??= new EstimatesStore(this));
+  }
+
+  get invoicesStore() {
+    return (this._invoicesStore ??= new InvoicesStore(this));
   }
 
   get customColumnModalStore() {

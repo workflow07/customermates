@@ -26,6 +26,8 @@ import { PrismaWebhookRepo } from "@/features/webhook/prisma-webhook.repository"
 import { PrismaWebhookDeliveryRepo } from "@/features/webhook/prisma-webhook-delivery.repository";
 import { PrismaAuditLogRepo } from "@/ee/audit-log/prisma-audit-log.repository";
 import { PrismaGlobalSearchRepo } from "@/features/search/prisma-global-search.repository";
+import { PrismaEstimateRepo } from "@/features/estimates/prisma-estimate.repository";
+import { PrismaInvoiceRepo } from "@/features/invoices/prisma-invoice.repository";
 // Services
 import { EmailService } from "@/features/email/email.service";
 import { AuthService } from "@/features/auth/auth.service";
@@ -98,6 +100,16 @@ import { UpdateTaskInteractor } from "@/features/tasks/upsert/update-task.intera
 import { UpdateManyTasksInteractor } from "@/features/tasks/upsert/update-many-tasks.interactor";
 import { DeleteTaskInteractor } from "@/features/tasks/delete/delete-task.interactor";
 import { DeleteManyTasksInteractor } from "@/features/tasks/delete/delete-many-tasks.interactor";
+// Estimates interactors
+import { GetEstimatesInteractor } from "@/features/estimates/get/get-estimates.interactor";
+import { GetEstimateByIdInteractor } from "@/features/estimates/get/get-estimate-by-id.interactor";
+import { UpsertEstimateInteractor } from "@/features/estimates/upsert/upsert-estimate.interactor";
+import { DeleteEstimateInteractor } from "@/features/estimates/delete/delete-estimate.interactor";
+// Invoices interactors
+import { GetInvoicesInteractor } from "@/features/invoices/get/get-invoices.interactor";
+import { GetInvoiceByIdInteractor } from "@/features/invoices/get/get-invoice-by-id.interactor";
+import { UpsertInvoiceInteractor } from "@/features/invoices/upsert/upsert-invoice.interactor";
+import { DeleteInvoiceInteractor } from "@/features/invoices/delete/delete-invoice.interactor";
 // User interactors
 import { RegisterUserInteractor } from "@/features/user/register/register-user.interactor";
 import { UpdateUserDetailsInteractor } from "@/features/user/upsert/update-user-details.interactor";
@@ -183,6 +195,8 @@ export const getContactRepo = () => new PrismaContactRepo();
 export const getOrganizationRepo = () => new PrismaOrganizationRepo();
 export const getDealRepo = () => new PrismaDealRepo();
 export const getServiceRepo = () => new PrismaServiceRepo();
+export const getEstimateRepo = () => new PrismaEstimateRepo();
+export const getInvoiceRepo = () => new PrismaInvoiceRepo();
 export const getTaskRepo = () => new PrismaTaskRepo();
 export const getUserRepo = () => new PrismaUserRepo();
 export const getCompanyRepo = () => new PrismaCompanyRepo();
@@ -691,3 +705,18 @@ export const getDeactivateTrialUsersAndSendNoticeInteractor = () =>
 
 export const getDeactivateUsersAfterSubscriptionGracePeriodInteractor = () =>
   new DeactivateUsersAfterSubscriptionGracePeriodInteractor(getUserRepo(), getEmailService());
+
+
+// --- Estimates ---
+
+export const getGetEstimatesInteractor = () => new GetEstimatesInteractor(getEstimateRepo());
+export const getGetEstimateByIdInteractor = () => new GetEstimateByIdInteractor(getEstimateRepo());
+export const getUpsertEstimateInteractor = () => new UpsertEstimateInteractor(getEstimateRepo());
+export const getDeleteEstimateInteractor = () => new DeleteEstimateInteractor(getEstimateRepo());
+
+// --- Invoices ---
+
+export const getGetInvoicesInteractor = () => new GetInvoicesInteractor(getInvoiceRepo());
+export const getGetInvoiceByIdInteractor = () => new GetInvoiceByIdInteractor(getInvoiceRepo());
+export const getUpsertInvoiceInteractor = () => new UpsertInvoiceInteractor(getInvoiceRepo());
+export const getDeleteInvoiceInteractor = () => new DeleteInvoiceInteractor(getInvoiceRepo());

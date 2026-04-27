@@ -27,6 +27,8 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
           api: { canManage: "no", readAccess: "none" },
           tasks: { canManage: "no", readAccess: "own" },
           auditLog: { readAccess: "none" },
+          estimates: { canManage: "no", readAccess: "none" },
+          invoices: { canManage: "no", readAccess: "none" },
         },
       },
       Resource.users,
@@ -83,6 +85,8 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
         api: { canManage: "no", readAccess: "none" },
         tasks: { canManage: "no", readAccess: "own" },
         auditLog: { readAccess: "none" },
+        estimates: { canManage: "no", readAccess: "none" },
+        invoices: { canManage: "no", readAccess: "none" },
       },
     });
   };
@@ -119,6 +123,8 @@ export class RoleModalStore extends BaseModalStore<UpsertRoleData> {
       api: { canManage: "no", readAccess: "none" },
       tasks: { canManage: "no", readAccess: "none" },
       auditLog: { readAccess: "none" },
+      estimates: { canManage: "no", readAccess: "none" },
+      invoices: { canManage: "no", readAccess: "none" },
     };
 
     if (role.isSystemRole) {

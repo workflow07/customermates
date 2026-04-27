@@ -135,6 +135,10 @@ export const RoleModal = observer(({ store }: Props) => {
               {renderResourcePermissions(Resource.deals)}
 
               {renderResourcePermissions(Resource.services)}
+
+              {renderResourcePermissions(Resource.estimates)}
+
+              {renderResourcePermissions(Resource.invoices)}
             </div>
           </AppCardBody>
 
