@@ -1057,7 +1057,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1092,7 +1094,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1153,7 +1157,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1214,7 +1220,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1274,7 +1282,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1334,7 +1344,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1418,7 +1430,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -1478,7 +1492,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2194,7 +2210,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2229,7 +2247,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2290,7 +2310,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2351,7 +2373,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2411,7 +2435,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2471,7 +2497,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2555,7 +2583,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2615,7 +2645,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -2987,7 +3019,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3022,7 +3056,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3083,7 +3119,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3144,7 +3182,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3204,7 +3244,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3264,7 +3306,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3348,7 +3392,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -3408,7 +3454,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -4986,7 +5034,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5021,7 +5071,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5082,7 +5134,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5143,7 +5197,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5203,7 +5259,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5263,7 +5321,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5347,7 +5407,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -5407,7 +5469,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6123,7 +6187,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6158,7 +6224,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6219,7 +6287,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6280,7 +6350,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6340,7 +6412,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6400,7 +6474,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6484,7 +6560,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6544,7 +6622,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6916,7 +6996,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -6951,7 +7033,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7012,7 +7096,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7073,7 +7159,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7133,7 +7221,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7193,7 +7283,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7277,7 +7369,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -7337,7 +7431,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9010,7 +9106,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9045,7 +9143,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9106,7 +9206,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9167,7 +9269,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9227,7 +9331,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9287,7 +9393,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9371,7 +9479,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -9431,7 +9541,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10185,7 +10297,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10220,7 +10334,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10281,7 +10397,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10342,7 +10460,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10402,7 +10522,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10462,7 +10584,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10546,7 +10670,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -10606,7 +10732,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11016,7 +11144,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11051,7 +11181,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11112,7 +11244,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11173,7 +11307,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11233,7 +11369,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11293,7 +11431,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11377,7 +11517,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -11437,7 +11579,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -12969,7 +13113,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13004,7 +13150,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13065,7 +13213,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13126,7 +13276,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13186,7 +13338,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13246,7 +13400,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13330,7 +13486,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -13390,7 +13548,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14075,7 +14235,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14110,7 +14272,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14171,7 +14335,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14232,7 +14398,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14292,7 +14460,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14352,7 +14522,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14436,7 +14608,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14496,7 +14670,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14837,7 +15013,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14872,7 +15050,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14933,7 +15113,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -14994,7 +15176,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -15054,7 +15238,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -15114,7 +15300,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -15198,7 +15386,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -15258,7 +15448,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16628,7 +16820,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16663,7 +16857,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16724,7 +16920,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16785,7 +16983,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16845,7 +17045,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16905,7 +17107,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -16989,7 +17193,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17049,7 +17255,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17716,7 +17924,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17751,7 +17961,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17812,7 +18024,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17873,7 +18087,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17933,7 +18149,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -17993,7 +18211,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18077,7 +18297,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18137,7 +18359,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18460,7 +18684,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18495,7 +18721,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18556,7 +18784,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18617,7 +18847,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18677,7 +18909,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18737,7 +18971,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18821,7 +19057,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {
@@ -18881,7 +19119,9 @@
                                   "organization",
                                   "deal",
                                   "service",
-                                  "task"
+                                  "task",
+                                  "estimate",
+                                  "invoice"
                                 ]
                               },
                               "type": {

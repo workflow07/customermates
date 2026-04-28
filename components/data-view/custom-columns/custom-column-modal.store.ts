@@ -45,6 +45,8 @@ export class CustomColumnModalStore extends BaseModalStore<UpsertCustomColumnDat
       [EntityType.deal]: Resource.deals,
       [EntityType.service]: Resource.services,
       [EntityType.task]: Resource.tasks,
+      [EntityType.estimate]: Resource.estimates,
+      [EntityType.invoice]: Resource.invoices,
     };
 
     const resource = entityTypeToResource[this.form.entityType];
@@ -54,7 +56,8 @@ export class CustomColumnModalStore extends BaseModalStore<UpsertCustomColumnDat
   }
 
   get customColumns() {
-    return this.tableStoreMap[this.form.entityType].customColumns;
+    const map = this.tableStoreMap;
+    return (map[this.form.entityType as keyof typeof map] as (typeof map)[keyof typeof map] | undefined)?.customColumns ?? [];
   }
 
   private get tableStoreMap() {
@@ -226,8 +229,12 @@ export class CustomColumnModalStore extends BaseModalStore<UpsertCustomColumnDat
   };
 
   private refresh = async () => {
-    const modalStore = this.entityModalMap[this.form.entityType];
-    const tableStore = this.tableStoreMap[this.form.entityType];
+    const entityModalMap = this.entityModalMap;
+    const tableStoreMap = this.tableStoreMap;
+    const key = this.form.entityType as keyof typeof entityModalMap;
+    const modalStore = entityModalMap[key] as (typeof entityModalMap)[keyof typeof entityModalMap] | undefined;
+    const tableStore = tableStoreMap[key as keyof typeof tableStoreMap] as (typeof tableStoreMap)[keyof typeof tableStoreMap] | undefined;
+    if (!modalStore || !tableStore) return;
     const entityId = modalStore.form.id;
 
     await tableStore.refresh();

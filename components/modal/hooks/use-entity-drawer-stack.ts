@@ -20,6 +20,8 @@ export const ENTITY_URL_SEGMENT: Record<EntityType, string> = {
   deal: "deals",
   service: "services",
   task: "tasks",
+  estimate: "accounting/estimates",
+  invoice: "accounting/invoices",
 };
 
 function parseOpenParam(raw: string | null): EntityDrawerEntry[] {

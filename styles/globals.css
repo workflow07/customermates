@@ -349,3 +349,47 @@ path:focus {
     border-width: 0 !important;
   }
 }
+
+@media print {
+  [data-slot="sidebar-gap"],
+  [data-slot="sidebar-container"],
+  [data-slot="sidebar-trigger"] {
+    display: none !important;
+  }
+
+  @page {
+    size: letter;
+    margin: 1cm;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Prevent scroll/clip containers from capping or overflowing print height */
+  main,
+  #scroll-container,
+  [data-slot="sidebar-inset"] {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Prevent a blank trailing page */
+  #scroll-container > * {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+}

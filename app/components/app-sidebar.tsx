@@ -26,7 +26,7 @@ import {
   UserCircle,
   Users,
 } from "lucide-react";
-import { Resource, Theme as ThemeEnum } from "@/generated/prisma";
+import { Action, Resource, Theme as ThemeEnum } from "@/generated/prisma";
 import { updateThemeAction } from "@/app/[locale]/(protected)/dashboard/actions";
 
 import { useRootStore } from "@/core/stores/root-store.provider";
@@ -36,12 +36,22 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Icon } from "@/components/shared/icon";
 import { signOutAction } from "@/app/[locale]/actions";
 import { FeedbackType } from "@/features/feedback/send-feedback.schema";
-import { EntityType, Action } from "@/generated/prisma";
+import { EntityType } from "@/generated/prisma";
 
 import { NavHeader } from "./navigation/nav-header";
 import { NavMain } from "./navigation/nav-main";
 import { NavSecondary } from "./navigation/nav-secondary";
 import { NavUser } from "./navigation/nav-user";
+
+function canFromUser(user: Props["user"], resource: Resource, action: Action): boolean {
+  if (!user?.role) return false;
+  if (user.role.isSystemRole) return true;
+  return user.role.permissions.some((p) => p.resource === resource && p.action === action);
+}
+
+function canAccessFromUser(user: Props["user"], resource: Resource): boolean {
+  return canFromUser(user, resource, Action.readOwn) || canFromUser(user, resource, Action.readAll);
+}
 
 type Props = {
   systemTaskCount: number;
@@ -112,7 +122,7 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
               title: t("NavigationBar.tasks"),
               href: "/tasks",
               icon: CheckCircle2,
-              visible: userStore.canAccess(Resource.tasks),
+              visible: canAccessFromUser(user, Resource.tasks),
               badge: systemTaskCount,
             },
           ].filter((i) => i.visible),
@@ -126,28 +136,28 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
               title: t("NavigationBar.contacts"),
               href: "/contacts",
               icon: Users,
-              visible: userStore.canAccess(Resource.contacts),
+              visible: canAccessFromUser(user, Resource.contacts),
             },
             {
               key: "organizations",
               title: t("NavigationBar.organizations"),
               href: "/organizations",
               icon: Building2,
-              visible: userStore.canAccess(Resource.organizations),
+              visible: canAccessFromUser(user, Resource.organizations),
             },
             {
               key: "deals",
               title: t("NavigationBar.deals"),
               href: "/deals",
               icon: TrendingUp,
-              visible: userStore.canAccess(Resource.deals),
+              visible: canAccessFromUser(user, Resource.deals),
             },
             {
               key: "services",
               title: t("NavigationBar.services"),
               href: "/services",
               icon: Package,
-              visible: userStore.canAccess(Resource.services),
+              visible: canAccessFromUser(user, Resource.services),
             },
           ].filter((i) => i.visible),
         },
@@ -160,14 +170,14 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
               title: t("NavigationBar.estimates"),
               href: "/accounting/estimates",
               icon: Calculator,
-              visible: userStore.canAccess(Resource.estimates),
+              visible: canAccessFromUser(user, Resource.estimates),
             },
             {
               key: "invoices",
               title: t("NavigationBar.invoices"),
               href: "/accounting/invoices",
               icon: Calculator,
-              visible: userStore.canAccess(Resource.invoices),
+              visible: canAccessFromUser(user, Resource.invoices),
             },
           ].filter((i) => i.visible),
         },
@@ -201,7 +211,7 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
                   title: t("ApiKeysCard.title"),
                   href: "/profile/api-keys",
                   icon: UserCircle,
-                  visible: userStore.can(Resource.api, Action.readAll),
+                  visible: canFromUser(user, Resource.api, Action.readAll),
                 },
                 {
                   key: "profile-email",
@@ -218,59 +228,59 @@ export const AppSidebar = observer(function AppSidebar({ user, systemTaskCount, 
               href: "/company/details",
               icon: Building,
               visible:
-                userStore.canAccess(Resource.company) ||
-                userStore.canAccess(Resource.users) ||
-                (rootStore.isCloudHosted && userStore.can(Resource.auditLog, Action.readAll)) ||
-                userStore.can(Resource.api, Action.readAll),
+                canAccessFromUser(user, Resource.company) ||
+                canAccessFromUser(user, Resource.users) ||
+                (rootStore.isCloudHosted && canFromUser(user, Resource.auditLog, Action.readAll)) ||
+                canFromUser(user, Resource.api, Action.readAll),
               items: [
                 {
                   key: "company-details",
                   title: t("NavigationBar.general"),
                   href: "/company/details",
                   icon: Building,
-                  visible: userStore.canAccess(Resource.company),
+                  visible: canAccessFromUser(user, Resource.company),
                 },
                 {
                   key: "company-members",
                   title: t("NavigationBar.members"),
                   href: "/company/members",
                   icon: Building,
-                  visible: userStore.canAccess(Resource.users),
+                  visible: canAccessFromUser(user, Resource.users),
                 },
                 {
                   key: "company-roles",
                   title: t("RolesCard.title"),
                   href: "/company/roles",
                   icon: Building,
-                  visible: userStore.canAccess(Resource.users),
+                  visible: canAccessFromUser(user, Resource.users),
                 },
                 {
                   key: "company-audit-logs",
                   title: t("AuditLogsCard.title"),
                   href: "/company/audit-logs",
                   icon: Building,
-                  visible: rootStore.isCloudHosted && userStore.can(Resource.auditLog, Action.readAll),
+                  visible: rootStore.isCloudHosted && canFromUser(user, Resource.auditLog, Action.readAll),
                 },
                 {
                   key: "company-webhooks",
                   title: t("WebhooksCard.title"),
                   href: "/company/webhooks",
                   icon: Building,
-                  visible: userStore.can(Resource.api, Action.readAll),
+                  visible: canFromUser(user, Resource.api, Action.readAll),
                 },
                 {
                   key: "company-webhook-deliveries",
                   title: t("WebhookDeliveriesCard.title"),
                   href: "/company/webhook-deliveries",
                   icon: Building,
-                  visible: userStore.can(Resource.api, Action.readAll),
+                  visible: canFromUser(user, Resource.api, Action.readAll),
                 },
               ].filter((i) => i.visible),
             },
           ].filter((i) => i.visible),
         },
       ].filter((g) => g.items.length > 0),
-    [t, rootStore.isCloudHosted, subscriptionStatus, userStore.user, systemTaskCount],
+    [t, rootStore.isCloudHosted, subscriptionStatus, user, systemTaskCount],
   );
 
   const secondaryItems: NavSecondaryItem[] = useMemo(

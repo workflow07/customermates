@@ -22,6 +22,8 @@ export class WidgetDataFetcher extends BaseRepository {
         return await getServiceRepo().getCount({ filters });
       case EntityType.task:
         return await getTaskRepo().getCount({ filters });
+      default:
+        return 0;
     }
   }
 
@@ -47,6 +49,8 @@ export class WidgetDataFetcher extends BaseRepository {
         const tasks = await this.getTasks(filters);
         return tasks.map((t) => ({ id: t.id, name: t.name }));
       }
+      default:
+        return [];
     }
   }
 

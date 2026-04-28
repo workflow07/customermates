@@ -472,6 +472,9 @@
       "title": "Titel",
       "type": "Typ",
       "url": "URL",
+      "logoUrl": "Logo URL",
+      "vatNumber": "USt-IdNr.",
+      "website": "Website",
       "userIds": "Zugewiesen",
       "to": "An",
       "subject": "Betreff",
@@ -1119,6 +1122,15 @@
       "sent": "Versendet",
       "paid": "Bezahlt",
       "overdue": "Überfällig"
+    },
+    "print": {
+      "invoice": "RECHNUNG",
+      "estimate": "ANGEBOT",
+      "billTo": "Rechnungsempfänger",
+      "date": "Datum",
+      "tax": "Steuer",
+      "thankYou": "Vielen Dank für Ihr Vertrauen!",
+      "vat": "USt-IdNr."
     }
   },
   "NotFoundPage": {

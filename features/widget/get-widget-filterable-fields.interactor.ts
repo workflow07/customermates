@@ -61,6 +61,8 @@ export class GetWidgetFilterableFieldsInteractor extends BaseInteractor<void, Re
         [EntityType.deal]: dealFields,
         [EntityType.service]: serviceFields,
         [EntityType.task]: taskFields,
+        [EntityType.estimate]: [],
+        [EntityType.invoice]: [],
       },
     };
   }

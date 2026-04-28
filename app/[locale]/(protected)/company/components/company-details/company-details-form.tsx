@@ -42,6 +42,11 @@ export const CompanyDetailsForm = observer(({ company, initialSubscription, show
       country: company.country ?? CountryCode.de,
       postalCode: company.postalCode ?? "",
       currency: company.currency,
+      phone: company.phone ?? null,
+      email: company.email ?? null,
+      website: company.website ?? null,
+      vatNumber: company.vatNumber ?? null,
+      logoUrl: company.logoUrl ?? null,
     });
   }, [company]);
 
@@ -70,6 +75,8 @@ export const CompanyDetailsForm = observer(({ company, initialSubscription, show
       <div className="flex w-full max-w-3xl flex-col gap-4">
         <FormInput required id="name" />
 
+        <FormInput id="logoUrl" type="url" />
+
         <FormInput required id="street" />
 
         <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
@@ -90,6 +97,16 @@ export const CompanyDetailsForm = observer(({ company, initialSubscription, show
         >
           {({ key }) => <span>{t(`Common.currencies.${key}`)}</span>}
         </FormAutocomplete>
+
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+          <FormInput id="phone" type="tel" />
+          <FormInput id="email" type="email" />
+        </div>
+
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+          <FormInput id="website" type="url" />
+          <FormInput id="vatNumber" />
+        </div>
 
         {showSubscription && (
           <div className="mt-4">

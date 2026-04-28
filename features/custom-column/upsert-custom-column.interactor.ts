@@ -127,6 +127,8 @@ export class UpsertCustomColumnInteractor extends BaseInteractor<UpsertCustomCol
       [EntityType.deal]: { resource: Resource.deals, action: Action.update },
       [EntityType.service]: { resource: Resource.services, action: Action.update },
       [EntityType.task]: { resource: Resource.tasks, action: Action.update },
+      [EntityType.estimate]: { resource: Resource.estimates, action: Action.update },
+      [EntityType.invoice]: { resource: Resource.invoices, action: Action.update },
     };
 
     const createPermissionMap: Record<EntityType, { resource: Resource; action: Action }> = {
@@ -135,6 +137,8 @@ export class UpsertCustomColumnInteractor extends BaseInteractor<UpsertCustomCol
       [EntityType.deal]: { resource: Resource.deals, action: Action.create },
       [EntityType.service]: { resource: Resource.services, action: Action.create },
       [EntityType.task]: { resource: Resource.tasks, action: Action.create },
+      [EntityType.estimate]: { resource: Resource.estimates, action: Action.create },
+      [EntityType.invoice]: { resource: Resource.invoices, action: Action.create },
     };
 
     const permission = data.id ? updatePermissionMap[data.entityType] : createPermissionMap[data.entityType];

@@ -20,6 +20,11 @@ const Schema = z.object({
   postalCode: z.string().min(1),
   country: z.enum(CountryCode),
   currency: z.enum(Currency).default(Currency.eur),
+  phone: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+  website: z.string().nullable().optional(),
+  vatNumber: z.string().nullable().optional(),
+  logoUrl: z.string().nullable().optional(),
 });
 
 export type UpdateCompanyDetailsData = Data<typeof Schema>;

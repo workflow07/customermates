@@ -22,6 +22,11 @@ export class CompanyDetailsStore extends BaseFormStore<UpdateCompanyDetailsData>
         country: CountryCode.de,
         postalCode: "",
         currency: Currency.eur,
+        phone: null,
+        email: null,
+        website: null,
+        vatNumber: null,
+        logoUrl: null,
       },
       Resource.company,
     );

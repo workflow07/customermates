@@ -4,7 +4,7 @@ import type { InvoiceDto } from "@/features/invoices/invoice.schema";
 import type { ContactDto } from "@/features/contacts/contact.schema";
 import type { DealDto } from "@/features/deals/deal.schema";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormLabel } from "@/components/forms/form-label";
 import { SendContactEmailModal } from "@/app/[locale]/(protected)/contacts/components/send-contact-email-modal";
+import { DocumentPrintView } from "@/app/[locale]/(protected)/accounting/components/document-print-view";
 import { InvoiceDetailStore } from "./invoice-detail.store";
 
 type Props = {
@@ -30,9 +31,11 @@ const STATUSES = ["draft", "sent", "paid", "overdue"] as const;
 export const InvoiceDetailView = observer(({ invoice, contacts, deals }: Props) => {
   const t = useTranslations("Accounting");
   const router = useRouter();
-  const { intlStore, sendContactEmailModalStore, layoutStore } = useRootStore();
+  const { intlStore, sendContactEmailModalStore, layoutStore, companyStore } = useRootStore();
 
   const store = useMemo(() => new InvoiceDetailStore(), []);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (invoice) store.initFromDto(invoice);
@@ -74,85 +77,62 @@ export const InvoiceDetailView = observer(({ invoice, contacts, deals }: Props) 
     <>
       <SendContactEmailModal />
 
-      {/* Print-only layout */}
-      <div className="hidden print:block print:p-8">
-        <div className="flex justify-between items-start mb-8">
-          <h1 className="text-3xl font-bold">{docNumber}</h1>
-          {store.dueDate && (
-            <div className="text-right text-sm">
-              <div className="text-gray-500">{t("dueDate")}</div>
-              <div className="font-medium">{store.dueDate.toLocaleDateString()}</div>
-            </div>
-          )}
-        </div>
-
-        {(selectedContact || selectedDeal) && (
-          <div className="mb-6 text-sm space-y-0.5">
-            {selectedContact && (
-              <div>
-                <span className="text-gray-500">{t("contact")}: </span>
-                {selectedContact.firstName} {selectedContact.lastName}
-              </div>
-            )}
-            {selectedDeal && (
-              <div>
-                <span className="text-gray-500">{t("deal")}: </span>
-                {selectedDeal.name}
-              </div>
-            )}
-          </div>
-        )}
-
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="border-b-2 border-black">
-              <th className="text-left py-2 font-semibold">{t("description")}</th>
-              <th className="text-right py-2 font-semibold w-20">{t("quantity")}</th>
-              <th className="text-right py-2 font-semibold w-32">{t("unitPrice")}</th>
-              <th className="text-right py-2 font-semibold w-32">{t("total")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {store.lineItems.map((li) => (
-              <tr key={li._key} className="border-b border-gray-200">
-                <td className="py-2">{li.description}</td>
-                <td className="py-2 text-right tabular-nums">{li.quantity}</td>
-                <td className="py-2 text-right tabular-nums">{intlStore.formatCurrency(li.unitPrice)}</td>
-                <td className="py-2 text-right tabular-nums">
-                  {intlStore.formatCurrency((li.quantity || 0) * (li.unitPrice || 0))}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="flex justify-end mt-4">
-          <div className="w-64 text-sm">
-            <div className="flex justify-between py-1">
-              <span className="text-gray-500">{t("subtotal")}</span>
-              <span className="tabular-nums">{intlStore.formatCurrency(store.subtotal)}</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span className="text-gray-500">{t("taxPercent")} ({store.taxPercent}%)</span>
-              <span className="tabular-nums">{intlStore.formatCurrency(store.grandTotal - store.subtotal)}</span>
-            </div>
-            <div className="flex justify-between py-1 font-bold border-t border-black pt-2">
-              <span>{t("grandTotal")}</span>
-              <span className="tabular-nums">{intlStore.formatCurrency(store.grandTotal)}</span>
-            </div>
-          </div>
-        </div>
-
-        {store.notes && (
-          <div className="mt-6 text-sm">
-            <div className="font-semibold mb-1">{t("notes")}</div>
-            <div className="text-gray-600 whitespace-pre-wrap">{store.notes}</div>
-          </div>
-        )}
+      {/* Print-only layout — rendered client-side only to avoid store hydration mismatch */}
+      {mounted && (
+      <div className="hidden print:block" style={{ pageBreakAfter: "avoid", breakAfter: "avoid" }}>
+        <DocumentPrintView
+          company={companyStore.company ? {
+            name: companyStore.company.name,
+            logoUrl: companyStore.company.logoUrl,
+            street: companyStore.company.street,
+            city: companyStore.company.city,
+            postalCode: companyStore.company.postalCode,
+            phone: companyStore.company.phone,
+            email: companyStore.company.email,
+            website: companyStore.company.website,
+            vatNumber: companyStore.company.vatNumber,
+          } : null}
+          contact={selectedContact ?? null}
+          createdAt={invoice?.createdAt ?? null}
+          docNumber={docNumber}
+          dueDate={store.dueDate}
+          formatCurrency={(n) => intlStore.formatCurrency(n)}
+          formatDate={(d) => intlStore.formatDescriptiveLongDate(d)}
+          grandTotal={store.grandTotal}
+          labels={{
+            docTypeLabel: t("print.invoice"),
+            billTo: t("print.billTo"),
+            date: t("print.date"),
+            dueDate: t("dueDate"),
+            status: t("status"),
+            description: t("description"),
+            quantity: t("quantity"),
+            unitPrice: t("unitPrice"),
+            total: t("total"),
+            subtotal: t("subtotal"),
+            tax: t("print.tax"),
+            grandTotal: t("grandTotal"),
+            notes: t("notes"),
+            thankYou: t("print.thankYou"),
+            vat: t("print.vat"),
+          }}
+          lineItems={store.lineItems}
+          notes={store.notes}
+          statusLabel={t(`statuses.${store.status}`)}
+          subtotal={store.subtotal}
+          taxPercent={store.taxPercent}
+        />
       </div>
+      )}
 
       {/* Editable UI — hidden when printing */}
       <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full print:hidden">
+        {/* PDF export tip */}
+        <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+          <span className="font-semibold shrink-0">Tip:</span>
+          <span>To remove the browser header &amp; footer from the PDF, open the print dialog &rarr; <strong>More settings</strong> &rarr; uncheck <strong>Headers and footers</strong>.</span>
+        </div>
+
         {/* Header */}
         <div className="flex items-center gap-4">
           <Button size="icon-sm" variant="ghost" onClick={() => router.push("/accounting/invoices")}>
@@ -302,7 +282,7 @@ export const InvoiceDetailView = observer(({ invoice, contacts, deals }: Props) 
                         onChange={(e) => store.updateLineItem(li._key, "unitPrice", parseFloat(e.target.value) || 0)}
                       />
                     </td>
-                    <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">
+                    <td suppressHydrationWarning className="px-3 py-2 text-right tabular-nums text-muted-foreground">
                       {intlStore.formatCurrency((li.quantity || 0) * (li.unitPrice || 0))}
                     </td>
                     <td className="px-1 py-1.5 text-center">
@@ -332,7 +312,7 @@ export const InvoiceDetailView = observer(({ invoice, contacts, deals }: Props) 
           <div className="flex flex-col items-end gap-1.5 pt-2">
             <div className="flex items-center gap-8 text-sm">
               <span className="text-muted-foreground">{t("subtotal")}</span>
-              <span className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.subtotal)}</span>
+              <span suppressHydrationWarning className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.subtotal)}</span>
             </div>
             <div className="flex items-center gap-4 text-sm">
               <span className="text-muted-foreground">{t("taxPercent")}</span>
@@ -344,11 +324,11 @@ export const InvoiceDetailView = observer(({ invoice, contacts, deals }: Props) 
                   onChange={(e) => store.setField("taxPercent", parseFloat(e.target.value) || 0)}
                 />
               </div>
-              <span className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.grandTotal - store.subtotal)}</span>
+              <span suppressHydrationWarning className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.grandTotal - store.subtotal)}</span>
             </div>
             <div className="flex items-center gap-8 text-sm font-semibold border-t border-input pt-1.5">
               <span>{t("grandTotal")}</span>
-              <span className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.grandTotal)}</span>
+              <span suppressHydrationWarning className="tabular-nums w-32 text-right">{intlStore.formatCurrency(store.grandTotal)}</span>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ type Props = {
 
 export function ShellHeader({ children, actions }: Props) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background md:rounded-t-xl">
+    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background md:rounded-t-xl print:hidden">
       <div className="flex flex-1 min-w-0 items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
 

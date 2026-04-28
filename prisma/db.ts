@@ -20,14 +20,15 @@ const prisma = basePrisma.$extends({
   query: {
     $allModels: {
       $allOperations({ model, operation, args, query }) {
+        const modelLower = model.toLowerCase();
         const isAuthModel =
-          model === "AuthUser" ||
-          model === "AuthAccount" ||
-          model === "AuthSession" ||
-          model === "AuthVerification" ||
-          model === "Apikey" ||
-          model === "EstimateLineItem" ||
-          model === "InvoiceLineItem";
+          modelLower === "authuser" ||
+          modelLower === "authaccount" ||
+          modelLower === "authsession" ||
+          modelLower === "authverification" ||
+          modelLower === "apikey" ||
+          modelLower === "estimatelineitem" ||
+          modelLower === "invoicelineitem";
 
         if (isAuthModel) return query(args);
 

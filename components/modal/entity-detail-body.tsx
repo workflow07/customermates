@@ -32,6 +32,8 @@ const DETAIL_HREF_BY_ENTITY: Record<EntityType, string> = {
   [EntityType.deal]: "/deals",
   [EntityType.service]: "/services",
   [EntityType.task]: "/tasks",
+  [EntityType.estimate]: "/accounting/estimates",
+  [EntityType.invoice]: "/accounting/invoices",
 };
 
 type Props<Form extends FormEntityDto, Dto extends EntityDto> = {

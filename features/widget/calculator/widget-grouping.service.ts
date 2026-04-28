@@ -197,6 +197,8 @@ export class WidgetGroupingService extends BaseRepository {
       case EntityType.task: {
         return [];
       }
+      default:
+        return [];
     }
   }
 
@@ -283,6 +285,8 @@ export class WidgetGroupingService extends BaseRepository {
         return entity.name || entity.id;
       case EntityType.task:
         return entity.name || entity.id;
+      default:
+        return entity.id;
     }
   }
 }

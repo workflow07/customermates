@@ -92,6 +92,8 @@ const Schema = z
         [EntityType.deal]: WidgetGroupByType.deal,
         [EntityType.service]: WidgetGroupByType.service,
         [EntityType.task]: undefined,
+        [EntityType.estimate]: undefined,
+        [EntityType.invoice]: undefined,
       };
 
       if (data.entityType === EntityType.task) {

@@ -48,6 +48,8 @@ export class DeleteCustomColumnInteractor extends BaseInteractor<DeleteCustomCol
       [EntityType.deal]: { resource: Resource.deals, action: Action.delete },
       [EntityType.service]: { resource: Resource.services, action: Action.delete },
       [EntityType.task]: { resource: Resource.tasks, action: Action.delete },
+      [EntityType.estimate]: { resource: Resource.estimates, action: Action.delete },
+      [EntityType.invoice]: { resource: Resource.invoices, action: Action.delete },
     };
 
     const permission = entityTypePermissionMap[customColumn.entityType];

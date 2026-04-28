@@ -472,6 +472,9 @@
       "title": "Title",
       "type": "Type",
       "url": "URL",
+      "logoUrl": "Logo URL",
+      "vatNumber": "VAT Number",
+      "website": "Website",
       "userIds": "Assigned",
       "to": "To",
       "subject": "Subject",
@@ -1119,6 +1122,15 @@
       "sent": "Sent",
       "paid": "Paid",
       "overdue": "Overdue"
+    },
+    "print": {
+      "invoice": "INVOICE",
+      "estimate": "ESTIMATE",
+      "billTo": "Bill To",
+      "date": "Date",
+      "tax": "Tax",
+      "thankYou": "Thank you for your business!",
+      "vat": "VAT"
     }
   },
   "NotFoundPage": {
