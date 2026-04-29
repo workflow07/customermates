@@ -6,12 +6,17 @@ type Props = {
   subject: string;
   body: string;
   signature?: string | null;
+  documentHtml?: string | null;
 };
 
-export default function ContactEmail({ subject, body, signature }: Props) {
+export default function ContactEmail({ subject, body, signature, documentHtml }: Props) {
   return (
     <EmailLayout preview={subject} title={subject}>
       <div dangerouslySetInnerHTML={{ __html: body }} />
+
+      {documentHtml && (
+        <div dangerouslySetInnerHTML={{ __html: documentHtml }} />
+      )}
 
       {signature && (
         <>

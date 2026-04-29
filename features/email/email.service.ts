@@ -13,11 +13,18 @@ export type SmtpConfig = {
   fromEmail: string;
 };
 
+type Attachment = {
+  filename: string;
+  content: Buffer;
+  contentType: string;
+};
+
 type SendArgs = {
   to: string;
   subject: string;
   react: React.ReactElement<Record<string, unknown>>;
   from?: string;
+  attachments?: Attachment[];
 };
 
 function createTransport(config?: SmtpConfig | null) {
@@ -64,6 +71,7 @@ export class EmailService {
       to: args.to,
       subject: args.subject,
       html,
+      attachments: args.attachments,
     });
   }
 }

@@ -152,7 +152,7 @@ export default async function RootLayout({ children }: Props) {
     >
       <head />
 
-      <body className="h-screen flex flex-col font-sans antialiased">
+      <body className="h-screen print:h-auto flex flex-col font-sans antialiased">
         <Providers
           defaultTheme={themeCookie}
           displayLanguage={displayLanguage}

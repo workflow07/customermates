@@ -724,6 +724,8 @@
     "entityTypes": {
       "contact": "Kontakt",
       "deal": "Deal",
+      "estimate": "Kostenvoranschlag",
+      "invoice": "Rechnung",
       "organization": "Organisation",
       "service": "Service",
       "task": "Aufgabe"

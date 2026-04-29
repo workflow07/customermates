@@ -10,7 +10,7 @@ export function PageContainer({ className, children, padded = true }: Props) {
   return (
     <div
       className={cn(
-        "flex flex-1 flex-col min-w-0 overflow-y-auto overflow-x-clip",
+        "flex flex-1 flex-col min-w-0 overflow-y-auto overflow-x-clip print:overflow-visible print:flex-none print:bg-white",
         padded && "gap-6 p-4 md:p-6",
         className,
       )}

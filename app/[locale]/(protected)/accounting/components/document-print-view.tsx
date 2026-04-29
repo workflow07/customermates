@@ -40,7 +40,6 @@ export type PrintLabels = {
   subtotal: string;
   tax: string;
   grandTotal: string;
-  notes: string;
   thankYou: string;
   vat: string;
 };
@@ -54,7 +53,6 @@ type Props = {
   subtotal: number;
   taxPercent: number;
   grandTotal: number;
-  notes: string | null;
   contact: PrintContact | null;
   company: PrintCompany | null;
   formatCurrency: (n: number) => string;
@@ -71,7 +69,6 @@ export function DocumentPrintView({
   subtotal,
   taxPercent,
   grandTotal,
-  notes,
   contact,
   company,
   formatCurrency,
@@ -90,6 +87,8 @@ export function DocumentPrintView({
         fontSize: "11px",
         lineHeight: "1.5",
         background: "#fff",
+        width: "100%",
+        boxSizing: "border-box",
       }}
     >
       {/* Top accent bar */}
@@ -317,25 +316,6 @@ export function DocumentPrintView({
           </div>
         </div>
       </div>
-
-      {/* Notes */}
-      {notes && (
-        <div style={{ marginBottom: "14px", borderTop: `1px solid ${BORDER}`, paddingTop: "10px" }}>
-          <div
-            style={{
-              fontWeight: "700",
-              marginBottom: "4px",
-              fontSize: "8px",
-              textTransform: "uppercase" as const,
-              letterSpacing: "0.08em",
-              color: GRAY,
-            }}
-          >
-            {labels.notes}
-          </div>
-          <div style={{ whiteSpace: "pre-wrap" as const, color: "#333", fontSize: "10px" }}>{notes}</div>
-        </div>
-      )}
 
       {/* Footer */}
       <div

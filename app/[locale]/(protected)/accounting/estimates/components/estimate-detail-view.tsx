@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { FormLabel } from "@/components/forms/form-label";
 import { SendContactEmailModal } from "@/app/[locale]/(protected)/contacts/components/send-contact-email-modal";
 import { DocumentPrintView } from "@/app/[locale]/(protected)/accounting/components/document-print-view";
+import { buildDocumentEmailHtml } from "@/app/[locale]/(protected)/accounting/components/document-email-html";
 import { EstimateDetailStore } from "./estimate-detail.store";
 
 type Props = {
@@ -69,22 +70,107 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
     if (invoice) router.push(`/accounting/invoices/${invoice.id}`);
   }
 
-  function handleSendByEmail() {
+  function buildPdfProps(contact: (typeof contacts)[number] | undefined) {
+    return {
+      docNumber,
+      createdAt: estimate?.createdAt ?? null,
+      dueDate: store.dueDate,
+      statusLabel: t(`statuses.${store.status}`),
+      notes: store.notes,
+      lineItems: store.lineItems,
+      subtotal: store.subtotal,
+      taxPercent: store.taxPercent,
+      grandTotal: store.grandTotal,
+      contact: contact
+        ? { firstName: contact.firstName, lastName: contact.lastName, emails: contact.emails }
+        : null,
+      company: companyStore.company
+        ? {
+            name: companyStore.company.name,
+            street: companyStore.company.street,
+            city: companyStore.company.city,
+            postalCode: companyStore.company.postalCode,
+            phone: companyStore.company.phone,
+            email: companyStore.company.email,
+            website: companyStore.company.website,
+            vatNumber: companyStore.company.vatNumber,
+          }
+        : null,
+      formatCurrency: (n: number) => intlStore.formatCurrency(n),
+      formatDate: (d: Date) => intlStore.formatDescriptiveLongDate(d),
+      labels: {
+        docTypeLabel: t("print.estimate"),
+        billTo: t("print.billTo"),
+        date: t("print.date"),
+        dueDate: t("dueDate"),
+        status: t("status"),
+        description: t("description"),
+        quantity: t("quantity"),
+        unitPrice: t("unitPrice"),
+        total: t("total"),
+        subtotal: t("subtotal"),
+        tax: t("print.tax"),
+        grandTotal: t("grandTotal"),
+        thankYou: t("print.thankYou"),
+        vat: t("print.vat"),
+        notes: t("notes"),
+      },
+    };
+  }
+
+  async function handleExportPdf() {
+    const { downloadPdf } = await import("@/app/[locale]/(protected)/accounting/components/generate-pdf");
+    await downloadPdf(buildPdfProps(selectedContact), `${docNumber}.pdf`);
+  }
+
+  async function handleSendByEmail() {
     const contact = contacts.find((c) => c.id === store.contactId);
     if (!contact || !contact.emails[0]) return;
-    sendContactEmailModalStore.initialize(contact.id, contact.emails[0]);
+    const documentHtml = buildDocumentEmailHtml({
+      docTypeLabel: t("print.estimate"),
+      docNumber,
+      company: companyStore.company ? { name: companyStore.company.name } : null,
+      contact: { firstName: contact.firstName, lastName: contact.lastName },
+      notes: store.notes,
+      lineItems: store.lineItems,
+      subtotal: store.subtotal,
+      taxPercent: store.taxPercent,
+      grandTotal: store.grandTotal,
+      formatCurrency: (n) => intlStore.formatCurrency(n),
+      createdAt: estimate?.createdAt ?? null,
+      dueDate: store.dueDate,
+      formatDate: (d) => intlStore.formatDescriptiveLongDate(d),
+      statusLabel: t(`statuses.${store.status}`),
+      labels: {
+        billTo: t("print.billTo"),
+        date: t("print.date"),
+        dueDate: t("dueDate"),
+        status: t("status"),
+        description: t("description"),
+        quantity: t("quantity"),
+        unitPrice: t("unitPrice"),
+        total: t("total"),
+        subtotal: t("subtotal"),
+        tax: t("print.tax"),
+        grandTotal: t("grandTotal"),
+        notes: t("notes"),
+      },
+    });
+    const { generatePdfBase64 } = await import("@/app/[locale]/(protected)/accounting/components/generate-pdf");
+    const pdfBase64 = await generatePdfBase64(buildPdfProps(contact));
+    sendContactEmailModalStore.initialize(contact.id, contact.emails[0], documentHtml, pdfBase64, `${docNumber}.pdf`);
   }
 
   const selectedContact = contacts.find((c) => c.id === store.contactId);
   const selectedDeal = deals.find((d) => d.id === store.dealId);
 
   return (
-    <>
+    <div className="flex flex-col flex-1 min-h-0">
       <SendContactEmailModal />
 
       {/* Print-only layout — rendered client-side only to avoid store hydration mismatch */}
       {mounted && (
-      <div className="hidden print:block" style={{ pageBreakAfter: "avoid", breakAfter: "avoid" }}>
+      <div className="hidden print:block w-full">
         <DocumentPrintView
           company={companyStore.company ? {
             name: companyStore.company.name,
@@ -117,12 +203,10 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
             subtotal: t("subtotal"),
             tax: t("print.tax"),
             grandTotal: t("grandTotal"),
-            notes: t("notes"),
             thankYou: t("print.thankYou"),
             vat: t("print.vat"),
           }}
           lineItems={store.lineItems}
-          notes={store.notes}
           statusLabel={t(`statuses.${store.status}`)}
           subtotal={store.subtotal}
           taxPercent={store.taxPercent}
@@ -131,13 +215,7 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
       )}
 
       {/* Editable UI — hidden when printing */}
-      <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full print:hidden">
-        {/* PDF export tip */}
-        <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-          <span className="font-semibold shrink-0">Tip:</span>
-          <span>To remove the browser header &amp; footer from the PDF, open the print dialog &rarr; <strong>More settings</strong> &rarr; uncheck <strong>Headers and footers</strong>.</span>
-        </div>
-
+      <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full pb-16 print:hidden">
         {/* Header */}
         <div className="flex items-center gap-4">
           <Button size="icon-sm" variant="ghost" onClick={() => router.push("/accounting/estimates")}>
@@ -146,7 +224,7 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
           <h1 className="text-xl font-semibold flex-1">{docNumber}</h1>
           <div className="flex items-center gap-2">
             {store.contactId && (
-              <Button size="sm" variant="outline" onClick={handleSendByEmail}>
+              <Button size="sm" variant="outline" onClick={() => void handleSendByEmail()}>
                 <Mail className="size-4 mr-1.5" />
                 {t("sendByEmail")}
               </Button>
@@ -162,7 +240,7 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
                 {t("convertToInvoice")}
               </Button>
             )}
-            <Button size="sm" variant="outline" onClick={() => window.print()}>
+            <Button size="sm" variant="outline" onClick={() => void handleExportPdf()}>
               <FileDown className="size-4 mr-1.5" />
               {t("exportPdf")}
             </Button>
@@ -353,14 +431,14 @@ export const EstimateDetailView = observer(({ estimate, contacts, deals }: Props
         <div className="space-y-1.5">
           <FormLabel>{t("notes")}</FormLabel>
           <Textarea
-            className="resize-none"
+            className="min-h-[120px]"
             placeholder={t("notes")}
-            rows={3}
+            rows={5}
             value={store.notes ?? ""}
             onChange={(e) => store.setField("notes", e.target.value || null)}
           />
         </div>
       </div>
-    </>
+    </div>
   );
 });

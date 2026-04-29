@@ -75,7 +75,7 @@ export function NavigationSwitch({
   }
 
   return (
-    <SidebarProvider defaultOpen={defaultSidebarOpen}>
+    <SidebarProvider className="print:h-auto" defaultOpen={defaultSidebarOpen}>
       <AppSidebar
         company={company}
         subscriptionStatus={subscriptionStatus}
@@ -83,7 +83,7 @@ export function NavigationSwitch({
         user={user}
       />
 
-      <SidebarInset className="min-w-0 overflow-x-clip">
+      <SidebarInset className="min-w-0 overflow-x-clip print:overflow-visible print:bg-white">
         <TopBarActionsProvider>
           <AppTopBar />
 

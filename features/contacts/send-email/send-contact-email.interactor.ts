@@ -20,6 +20,9 @@ const Schema = z.object({
   subject: z.string().min(1),
   body: z.string().min(1),
   signature: z.string().nullable().optional(),
+  documentHtml: z.string().nullable().optional(),
+  pdfBase64: z.string().nullable().optional(),
+  pdfFilename: z.string().nullable().optional(),
 });
 
 const ResultSchema = z.object({ sent: z.boolean() });
@@ -52,6 +55,11 @@ export class SendContactEmailInteractor extends BaseInteractor<SendContactEmailD
       };
     }
 
+    const attachments =
+      data.pdfBase64 && data.pdfFilename
+        ? [{ filename: data.pdfFilename, content: Buffer.from(data.pdfBase64, "base64"), contentType: "application/pdf" }]
+        : undefined;
+
     await this.emailService.send(
       {
         to: data.to,
@@ -60,7 +68,9 @@ export class SendContactEmailInteractor extends BaseInteractor<SendContactEmailD
           subject: data.subject,
           body: data.body,
           signature: data.signature ?? null,
+          documentHtml: data.documentHtml ?? null,
         }),
+        attachments,
       },
       smtpConfig,
     );

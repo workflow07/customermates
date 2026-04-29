@@ -48,39 +48,41 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     <>
       {children}
 
-      <Toaster />
+      <div className="print:hidden">
+        <Toaster />
 
-      <DeleteConfirmationModal />
+        <DeleteConfirmationModal />
 
-      <LoadingOverlay />
+        <LoadingOverlay />
 
-      <UnexpectedErrorToaster />
+        <UnexpectedErrorToaster />
 
-      <TranslationSync />
+        <TranslationSync />
 
-      <GlobalSearchModal />
+        <GlobalSearchModal />
 
-      <CompanyUserModal />
+        <CompanyUserModal />
 
-      <CompanyInviteModal />
+        <CompanyInviteModal />
 
-      <EntityDrawer />
+        <EntityDrawer />
 
-      <FeedbackModal />
+        <FeedbackModal />
 
-      <CustomColumnModal />
+        <CustomColumnModal />
 
-      <AuditLogModal />
+        <AuditLogModal />
 
-      <EntityHistoryModal />
+        <EntityHistoryModal />
 
-      <EntityHistoryDetailsModal />
+        <EntityHistoryDetailsModal />
 
-      <ApiKeyModal />
+        <ApiKeyModal />
 
-      <WebhookDeliveryModal />
+        <WebhookDeliveryModal />
 
-      <WebhookModal />
+        <WebhookModal />
+      </div>
     </>
   );
 }

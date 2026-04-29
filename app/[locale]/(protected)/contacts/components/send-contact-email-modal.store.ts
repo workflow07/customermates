@@ -14,13 +14,16 @@ type Form = {
   subject: string;
   body: string;
   signature: string | null;
+  documentHtml: string | null;
+  pdfBase64: string | null;
+  pdfFilename: string | null;
 };
 
 export class SendContactEmailModalStore extends BaseModalStore<Form> {
   auditLogRefreshKey = 0;
 
   constructor(public readonly rootStore: RootStore) {
-    super(rootStore, { contactId: "", to: "", subject: "", body: "", signature: null });
+    super(rootStore, { contactId: "", to: "", subject: "", body: "", signature: null, documentHtml: null, pdfBase64: null, pdfFilename: null });
 
     makeObservable(this, {
       auditLogRefreshKey: observable,
@@ -28,9 +31,9 @@ export class SendContactEmailModalStore extends BaseModalStore<Form> {
     });
   }
 
-  initialize(contactId: string, toEmail: string) {
+  initialize(contactId: string, toEmail: string, documentHtml?: string | null, pdfBase64?: string | null, pdfFilename?: string | null) {
     const signature = this.rootStore.userStore.user?.emailSignature ?? null;
-    this.onInitOrRefresh({ contactId, to: toEmail, subject: "", body: "", signature });
+    this.onInitOrRefresh({ contactId, to: toEmail, subject: "", body: "", signature, documentHtml: documentHtml ?? null, pdfBase64: pdfBase64 ?? null, pdfFilename: pdfFilename ?? null });
     this.open();
   }
 
@@ -46,6 +49,9 @@ export class SendContactEmailModalStore extends BaseModalStore<Form> {
         subject: this.form.subject,
         body: this.form.body,
         signature: this.form.signature,
+        documentHtml: this.form.documentHtml,
+        pdfBase64: this.form.pdfBase64,
+        pdfFilename: this.form.pdfFilename,
       });
 
       if (res.ok) {

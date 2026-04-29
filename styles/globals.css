@@ -351,45 +351,58 @@ path:focus {
 }
 
 @media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  * {
+    background-color: white !important;
+  }
+
+  /* Hide shell chrome */
   [data-slot="sidebar-gap"],
   [data-slot="sidebar-container"],
   [data-slot="sidebar-trigger"] {
     display: none !important;
   }
 
-  @page {
-    size: letter;
-    margin: 1cm;
-  }
-
-  html,
-  body {
-    height: auto !important;
-    min-height: 0 !important;
-    overflow: visible !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  /* Prevent scroll/clip containers from capping or overflowing print height */
+  /* Flatten all scroll/flex containers so they don't exceed one page */
   main,
   #scroll-container,
-  [data-slot="sidebar-inset"] {
+  [data-slot="sidebar-inset"],
+  [data-slot="sidebar-wrapper"] {
+    display: block !important;
     overflow: visible !important;
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
     padding: 0 !important;
-    gap: 0 !important;
     margin: 0 !important;
+    gap: 0 !important;
+    flex: none !important;
   }
 
-  /* Prevent a blank trailing page */
-  #scroll-container > * {
-    page-break-after: avoid;
-    break-after: avoid;
+  /* Hide toasters, modals, and portals that collapse into the document flow during print */
+  [data-sonner-toaster],
+  [data-radix-portal],
+  [role="dialog"],
+  [role="alertdialog"],
+  [data-vaul-drawer-wrapper] {
+    display: none !important;
   }
 }
